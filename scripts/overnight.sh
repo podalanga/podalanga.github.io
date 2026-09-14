@@ -5,6 +5,7 @@
 # Usage (from repo root):  tmux new -s overnight './scripts/overnight.sh'
 #   detach: Ctrl-b d      reattach: tmux attach -t overnight
 #   options: FIRST_PHASE=3 LAST_PHASE=10 MAX_ATTEMPTS=3 PHASE_TIMEOUT=4h MODEL=sonnet
+#            MAX_LIMIT_WAITS=12 LIMIT_POLL=1800  (usage limit: sleep until reset, retry free)
 set -uo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -31,6 +32,37 @@ log() { echo "[$(date '+%F %T')] $*" | tee -a "$SUMMARY"; }
 phase_done() {
   [[ -f docs/PROGRESS.md ]] &&
     grep -Eq "^\|[[:space:]]*$1[[:space:]]*\|[[:space:]]*(DONE|BLOCKED-FALLBACK)" docs/PROGRESS.md
+}
+
+MAX_LIMIT_WAITS="${MAX_LIMIT_WAITS:-12}"
+LIMIT_POLL="${LIMIT_POLL:-1800}"   # seconds to wait when the reset time can't be parsed
+limit_waits=0
+
+# Did this session end because of a usage / rate limit? (checks only the tail of the log)
+hit_limit() {
+  local pattern='usage limit|limit reached|rate.?limit|"api_error_status":(429|529)|overloaded|out of (extra )?usage|resets? at'
+  local result
+  result="$(grep '"type":"result"' "$1" | tail -1)"
+  if [[ -n "$result" ]]; then
+    # Only trust errored results, so a normal reply that mentions "rate limit" doesn't trigger a wait.
+    grep -q '"is_error":true' <<<"$result" && grep -Eqi "$pattern" <<<"$result"
+  else
+    tail -n 5 "$1" | grep -Eqi "$pattern"
+  fi
+}
+
+# Sleep until the reset time if the log contains one ("...limit reached|<epoch>"), else LIMIT_POLL.
+wait_for_reset() {
+  local epoch now secs
+  epoch="$(tail -n 5 "$1" | grep -Eo 'limit reached\|[0-9]{10}' | grep -Eo '[0-9]{10}' | tail -1)"
+  now="$(date +%s)"
+  if [[ -n "$epoch" && "$epoch" -gt "$now" ]]; then
+    secs=$(( epoch - now + 120 ))
+  else
+    secs="$LIMIT_POLL"
+  fi
+  log "Usage limit hit — sleeping $((secs / 60)) min (until ~$(date -d "@$((now + secs))" '+%H:%M')), then resuming Phase $n."
+  sleep "$secs"
 }
 
 stop_servers() {
@@ -85,6 +117,19 @@ for (( n = FIRST_PHASE; n <= LAST_PHASE; n++ )); do
       log "Phase $n COMPLETE (exit $status). HEAD: $(git log --oneline -1)"
       break
     fi
+
+    # Usage/rate limit: wait for the reset, then retry without spending an attempt.
+    if hit_limit "$logfile"; then
+      if (( limit_waits >= MAX_LIMIT_WAITS )); then
+        log "Hit usage limit $limit_waits times — giving up on waiting."
+      else
+        limit_waits=$((limit_waits + 1))
+        wait_for_reset "$logfile"
+        attempt=$((attempt - 1))
+        continue
+      fi
+    fi
+
     log "Phase $n not marked complete after attempt $attempt (exit $status)."
     sleep 30
   done
