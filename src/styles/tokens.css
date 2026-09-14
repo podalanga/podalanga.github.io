@@ -1,0 +1,58 @@
+:root {
+  /* color — dark (default) */
+  --bg: #0a0a0a;
+  --bg-raised: #121212;
+  --fg: #e8e6e3;
+  --fg-muted: #8a8783;
+  --line: #262626;
+  --signal: #ff3333;
+  --signal-dim: #ff333326;
+  --redact: #e8e6e3;
+
+  /* type */
+  --font-display: 'Archivo Variable', system-ui, sans-serif;
+  --font-body: 'Archivo Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --stretch-display: 125%;
+  --stretch-body: 100%;
+
+  /* fluid type scale */
+  --text-xs: clamp(0.72rem, 0.69rem + 0.16vw, 0.82rem);
+  --text-sm: clamp(0.85rem, 0.8rem + 0.22vw, 0.95rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
+  --text-md: clamp(1.15rem, 1.05rem + 0.45vw, 1.4rem);
+  --text-lg: clamp(1.4rem, 1.2rem + 0.9vw, 1.9rem);
+  --text-xl: clamp(1.9rem, 1.5rem + 1.8vw, 2.9rem);
+  --text-2xl: clamp(2.6rem, 1.8rem + 3.6vw, 4.6rem);
+  --text-3xl: clamp(3.2rem, 1.8rem + 6.5vw, 7.5rem);
+
+  /* spacing — 4px base */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* layout */
+  --content-max: 1440px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --header-h: 4.25rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-theme='light'] {
+  --bg: #f2f0eb;
+  --bg-raised: #e8e5de;
+  --fg: #0a0a0a;
+  --fg-muted: #55524d;
+  --line: #cfcac0;
+  --signal: #d90000;
+  --signal-dim: #d9000020;
+  --redact: #0a0a0a;
+}

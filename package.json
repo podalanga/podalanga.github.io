@@ -11,20 +11,22 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
+    "qa": "bash scripts/run-qa.sh",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.2",
-    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2",
     "sharp": "^0.35.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "typescript": "^6.0.3",
-    "vitest": "^5.0.0",
     "@fontsource-variable/archivo": "^5.3.0",
-    "@fontsource-variable/jetbrains-mono": "^5.3.0"
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "playwright": "^1.63.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0"
   },
   "allowScripts": {
     "esbuild": true

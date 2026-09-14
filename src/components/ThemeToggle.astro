@@ -1,0 +1,77 @@
+---
+---
+
+<button
+  id="theme-toggle"
+  class="theme-toggle mono"
+  type="button"
+  aria-pressed="false"
+  aria-label="Switch to light theme"
+>
+  <span class="icon" aria-hidden="true">◉</span>
+  <span class="text">THEME</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: 1px solid var(--line);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+  }
+
+  .theme-toggle:hover {
+    color: var(--fg);
+    border-color: var(--fg-muted);
+  }
+
+  .icon {
+    color: var(--signal);
+  }
+
+  .text {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .text {
+      display: inline;
+    }
+  }
+</style>
+
+<script>
+  import { setItem } from '../lib/storage';
+
+  const button = document.getElementById('theme-toggle');
+  if (button) {
+    const sync = () => {
+      const isLight = document.documentElement.dataset.theme === 'light';
+      button.setAttribute('aria-pressed', String(isLight));
+      button.setAttribute(
+        'aria-label',
+        isLight ? 'Switch to dark theme' : 'Switch to light theme'
+      );
+      const icon = button.querySelector('.icon');
+      if (icon) icon.textContent = isLight ? '◎' : '◉';
+    };
+
+    sync();
+
+    button.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      setItem('pdl:theme', next);
+      sync();
+    });
+
+    document.addEventListener('astro:after-swap', sync);
+  }
+</script>

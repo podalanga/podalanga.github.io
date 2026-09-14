@@ -1,0 +1,47 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  size?: 'header' | 'hero';
+}
+const { size = 'header' } = Astro.props;
+---
+
+<a href="/" class:list={['logo', size]} aria-label={`${site.name} — home`}>
+  <span class="wordmark">{site.name}</span><span class="dot" aria-hidden="true">.</span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    font-weight: 900;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+
+  .dot {
+    color: var(--signal);
+    font-family: var(--font-display);
+    font-weight: 900;
+  }
+
+  .header .wordmark {
+    font-size: var(--text-md);
+  }
+
+  .hero .wordmark {
+    font-size: var(--text-3xl);
+  }
+
+  .hero .dot {
+    font-size: var(--text-3xl);
+  }
+</style>

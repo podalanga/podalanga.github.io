@@ -1,0 +1,178 @@
+---
+import { site } from '../config/site';
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <Logo size="header" />
+
+    <nav aria-label="Primary">
+      <ul>
+        {
+          site.nav.map((item) => {
+            const itemPath = item.href.replace(/\/$/, '') || '/';
+            const active = path === itemPath;
+            return (
+              <li>
+                <a href={item.href} aria-current={active ? 'page' : undefined}>
+                  {active && <span class="dot" aria-hidden="true">●</span>}
+                  <span class="mono">{item.label}</span>
+                  <span class="index mono">/{item.index}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <div class="tools">
+      <span class="rec mono" aria-hidden="true"><span class="dot" />REC</span>
+      <time id="ist-clock" class="mono clock" datetime="">—</time>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  nav {
+    display: none;
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    text-decoration: none;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    transition: color 0.15s var(--ease-out);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--fg);
+  }
+
+  nav a .dot {
+    color: var(--signal);
+    font-size: 0.5em;
+  }
+
+  nav a .index {
+    color: var(--fg-muted);
+    opacity: 0.7;
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .rec {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .rec .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .clock {
+    display: none;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rec .dot {
+      animation: none;
+    }
+  }
+
+  @media (min-width: 780px) {
+    nav {
+      display: block;
+    }
+    .rec,
+    .clock {
+      display: inline-flex;
+    }
+  }
+</style>
+
+<script>
+  const clock = document.getElementById('ist-clock');
+
+  function tick() {
+    if (!clock) return;
+    const now = new Date();
+    const ist = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).format(now);
+    clock.textContent = `${ist} IST`;
+    clock.setAttribute('datetime', now.toISOString());
+  }
+
+  tick();
+  const id = window.setInterval(tick, 1000);
+
+  document.addEventListener('astro:before-swap', () => window.clearInterval(id), { once: true });
+</script>
