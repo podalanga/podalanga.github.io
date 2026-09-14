@@ -1,2 +1,8 @@
 resume_docs/
 test_images/
+node_modules/
+dist/
+.astro/
+.env*
+qa-artifacts/
+overnight-logs/

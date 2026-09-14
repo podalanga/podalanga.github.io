@@ -1,6 +1,7 @@
 # Podalanga — personal portfolio
 
 **Read `docs/BUILD_PLAN.md` first.** It is the approved, final spec (decisions, design system, content model, effects, phases, verification). Execute it phase by phase; don't re-ask decisions it marks as locked.
+When launched by `scripts/overnight.sh` (headless), follow **§14 Autonomous overnight mode**: never ask questions, one phase per session, self-verify with `npm run qa` screenshots, log decisions in `docs/PROGRESS.md`.
 
 ## Stack
 Astro 7 (static) · TypeScript strict · vanilla TS canvas effects · Sveltia CMS (`/admin`, GitHub token sign-in) · GitHub Pages via `withastro/action`.

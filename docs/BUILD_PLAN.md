@@ -408,3 +408,49 @@ Browser (use Playwright MCP against `npm run preview`):
 - Performance: `npx lighthouse http://localhost:4321/ --preset=desktop` (if available) — target Perf ≥ 90, A11y ≥ 95, SEO 100 (loader excluded from LCP concerns since content is in HTML).
 
 Final report to owner: what was built, screenshots, how to edit content, the 4 manual GitHub steps (§10), and anything deferred.
+
+---
+
+## 14. AUTONOMOUS OVERNIGHT MODE (overrides anything above that implies waiting for the owner)
+
+The owner is **asleep**. You are run headless by `scripts/overnight.sh`, **one phase per session** (fresh context each time). Nobody can answer questions or look at screenshots until morning.
+
+### 14.1 Operating rules
+1. **Never stop to ask.** No AskUserQuestion, no "should I proceed?". Make the best judgment consistent with this plan, then record it under *Decisions made without the owner* in `docs/PROGRESS.md`.
+2. **Start of every session:** read `CLAUDE.md`, this plan, `docs/PROGRESS.md`, and `git log --oneline`. Resume exactly where the previous session stopped (a phase may be half-done — inspect the working tree, don't redo committed work, don't blindly overwrite).
+3. **Do only the phase you were given.** When its *Done when* criteria pass: update `docs/PROGRESS.md`, commit, and end the session with the final line `PHASE <N> COMPLETE`.
+4. **If blocked:** try up to 3 genuinely different approaches. Still blocked → implement the simplest working fallback that preserves the plan's intent (e.g. a simpler effect, a static image), log it under *Known issues / fallbacks*, and still complete the phase. Never leave the build broken at the end of a session — `npm run build` must pass before you commit.
+5. **Forbidden:** `git push`, `gh` commands that change anything remote, deleting/rewriting git history, touching files outside this repo (except the scratchpad / system temp), `sudo`, installing global/system packages, editing `~/.claude` settings, committing anything from `resume_docs/` or original `test_images/` paths.
+6. **Background processes:** any `astro dev`/`preview` server you start must be stopped before the session ends (`kill` the PID you started; use ports 4321/4322 only).
+7. **Context hygiene:** don't dump whole PDFs or huge logs into context; pipe through `head`/`grep`. Use subagents for heavy reading (e.g. extracting one report) if helpful.
+
+### 14.2 Self-verification replaces owner review
+Add devDependency `playwright` (allowed exception to §12 dependency rule; do **not** download browsers — use the installed Google Chrome via `channel: 'chrome'`, headless). Create `scripts/qa.mjs` + npm script `qa` that, against `npm run preview`:
+- captures screenshots listed in §13 (both themes, 1440×900 and 390×844) into `qa-artifacts/screenshots/<phase>/` (git-ignored),
+- collects console errors/page errors and fails on any,
+- checks no horizontal overflow at 390px (`document.documentElement.scrollWidth <= innerWidth`),
+- for Phase 5+: loader frames (localStorage cleared → mid-sequence screenshot; second load fast; keypress skip), for Phase 6+: mid-wipe screenshot, reduced-motion run, JS-disabled run.
+
+Then **look at the screenshots yourself with the Read tool** and critique them against §3 and the frontend-design skill (hierarchy, spacing, contrast in both themes, nothing generic, nothing overlapping/clipped at 390px). Fix what you find, re-shoot. At least one critique→fix iteration in Phases 2, 4, 5, 6, 10. Record the critique briefly in PROGRESS.md.
+
+Playwright MCP tools are also available if useful, but `npm run qa` is the source of truth.
+
+### 14.3 `docs/PROGRESS.md` format (create in Phase 1, keep updated)
+```
+# Build progress
+| Phase | Status | Commit | Notes |
+|---|---|---|---|
+| 0 | DONE | fc3c589 | plan + CLAUDE.md |
+| 1 | DONE / IN PROGRESS / BLOCKED-FALLBACK | <sha> | ... |
+
+## Decisions made without the owner
+## Known issues / fallbacks
+## QA log (per phase: what was checked, what was fixed)
+```
+
+### 14.4 Phase 10 extra deliverable — `docs/MORNING_REPORT.md`
+Written for the owner to read with coffee: what was built (per page), how to run it (`npm install && npm run preview`), a curated list of the best screenshot paths to open, all decisions made without them, known issues, the §10 manual GitHub steps, and a suggested short list of things they should personally review/decide. Also copy ~8 key screenshots to `docs/preview/` (committed, compressed ≤300KB each) so they can view them on GitHub/phone.
+
+### 14.5 Phase-specific notes for unattended runs
+- **Phase 8 (CMS):** "Work with Local Repository" needs a human clicking a browser folder picker — skip that. Instead: validate `public/admin/config.yml` against the Sveltia JSON schema (`https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json`, e.g. with a tiny `ajv` run via `npx`), load `/admin/` in headless Chrome and confirm the login screen renders with no console errors, and hand-write one test entry per collection exactly as Sveltia would save it (frontmatter keys/format per its docs) → `npm run build` passes → delete the test entries. Note in MORNING_REPORT that the owner should do one real CMS round-trip.
+- **Phase 9:** don't run the workflow; validate YAML syntax (`npx --yes yaml-lint` or node `yaml` parse) and do the clean-clone build.
