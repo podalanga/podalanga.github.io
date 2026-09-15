@@ -1,0 +1,69 @@
+---
+// A ring of glyphs arranged on a circle, then rotated as one unit via CSS — the "head" (index 0)
+// is the signal color, chasing its own tail forever. Positions are computed at build time so no
+// JS is needed for the shape itself, only to pause rotation when the footer scrolls offscreen.
+const COUNT = 20;
+const RADIUS = 38;
+const CENTER = 44;
+const GLYPHS = '·:-=+*#@';
+
+const points = Array.from({ length: COUNT }, (_, i) => {
+  const angle = (i / COUNT) * Math.PI * 2 - Math.PI / 2;
+  return {
+    x: CENTER + Math.cos(angle) * RADIUS,
+    y: CENTER + Math.sin(angle) * RADIUS,
+    char: GLYPHS[i % GLYPHS.length],
+    head: i === 0,
+  };
+});
+---
+
+<div class="ouroboros" aria-hidden="true">
+  <div class="ring" data-ouroboros>
+    {
+      points.map((p) => (
+        <span class:list={{ glyph: true, head: p.head }} style={`left:${p.x}px;top:${p.y}px`}>
+          {p.char}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .ouroboros {
+    width: 88px;
+    height: 88px;
+  }
+
+  .ring {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: spin 24s linear infinite;
+  }
+
+  .ring.paused {
+    animation-play-state: paused;
+  }
+
+  .glyph {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    opacity: 0.6;
+  }
+
+  .glyph.head {
+    color: var(--signal);
+    opacity: 1;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

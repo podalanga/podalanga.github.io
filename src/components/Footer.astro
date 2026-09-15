@@ -1,12 +1,14 @@
 ---
 import { site } from '../config/site';
+import Ouroboros from './Ouroboros.astro';
+import Telemetry from './Telemetry.astro';
 
 const startYear = new Date(site.epoch).getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container grid">
-    <div class="ouroboros mono" aria-hidden="true">∞ ∞ ∞ ∞ ∞ ∞</div>
+    <Ouroboros />
 
     <div class="links">
       <a href={site.socials.github} rel="me noopener noreferrer" target="_blank" class="mono">
@@ -15,7 +17,12 @@ const startYear = new Date(site.epoch).getFullYear();
       <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank" class="mono">
         LINKEDIN
       </a>
+      <button type="button" class="mono terminal-hint" data-terminal-open>
+        PRESS <kbd>`</kbd> TO OPEN TERMINAL
+      </button>
     </div>
+
+    <Telemetry variant="compact" />
 
     <p class="copy mono">© {startYear}–∞ PODALANGA</p>
   </div>
@@ -35,15 +42,10 @@ const startYear = new Date(site.epoch).getFullYear();
     gap: var(--space-5);
   }
 
-  .ouroboros {
-    color: var(--signal);
-    font-size: var(--text-sm);
-    letter-spacing: 0.15em;
-    opacity: 0.8;
-  }
-
   .links {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-5);
   }
 
@@ -56,6 +58,27 @@ const startYear = new Date(site.epoch).getFullYear();
 
   .links a:hover {
     color: var(--signal);
+  }
+
+  .terminal-hint {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    cursor: pointer;
+  }
+
+  .terminal-hint:hover {
+    color: var(--signal);
+  }
+
+  .terminal-hint kbd {
+    font-family: var(--font-mono);
+    border: 1px solid var(--line);
+    padding: 0 0.3em;
+    border-radius: 2px;
   }
 
   .copy {

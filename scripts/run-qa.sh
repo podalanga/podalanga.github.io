@@ -14,6 +14,9 @@ SERVER_PID=$!
 cleanup() {
   kill "$SERVER_PID" 2>/dev/null || true
   wait "$SERVER_PID" 2>/dev/null || true
+  # `astro preview` runs its own detached daemon (tracked by its own PID file, independent of
+  # $SERVER_PID) — kill that too so a run never leaves a server behind.
+  npx astro preview stop >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 

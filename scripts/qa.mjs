@@ -278,6 +278,127 @@ async function runThemeWipeChecks(browser) {
   return problems;
 }
 
+async function waitForEyeDone(page) {
+  await page.waitForFunction(() => !document.documentElement.classList.contains('eye-pending'), undefined, {
+    timeout: 5000,
+  });
+}
+
+async function runTerminalChecks(browser) {
+  const dir = path.join(OUT_DIR, 'terminal');
+  await mkdir(dir, { recursive: true });
+  const problems = [];
+
+  // 1) Backtick opens, commands work, Esc closes + a11y (focus trap, redaction has real text).
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e)));
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/works/zbot', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    await waitForEyeDone(page);
+    await page.waitForTimeout(200);
+
+    await page.keyboard.press('Backquote');
+    await page.waitForTimeout(150);
+    const open = await page.evaluate(() => document.getElementById('terminal')?.classList.contains('open'));
+    if (!open) problems.push('backtick did not open the terminal');
+    const focused = await page.evaluate(() => document.activeElement?.id);
+    if (focused !== 'terminal-input') problems.push(`terminal did not focus its input on open (focused: ${focused})`);
+    await page.screenshot({ path: path.join(dir, 'open.png') });
+
+    async function run(cmd) {
+      await page.fill('#terminal-input', cmd);
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(80);
+    }
+
+    await run('help');
+    await run('ls works');
+    const logText = await page.evaluate(() => document.getElementById('terminal-log')?.textContent ?? '');
+    if (!logText.includes('ZBOT')) problems.push("'ls works' output missing ZBOT codename");
+    await run('cat zbot');
+    if (!(await page.evaluate(() => document.getElementById('terminal-log')?.textContent?.includes('/works/zbot'))))
+      problems.push("'cat zbot' output missing the work link");
+    await page.screenshot({ path: path.join(dir, 'after-commands.png') });
+
+    // Tab wraps within the panel (close button -> input -> close button); DOM/tab order has
+    // the close button first, so tabbing from the input (last) should wrap back to it.
+    await page.evaluate(() => document.getElementById('terminal-input')?.focus());
+    await page.keyboard.press('Tab');
+    const afterTab = await page.evaluate(() => document.activeElement?.id);
+    if (afterTab !== 'terminal-close') problems.push(`Tab from input did not wrap to close button (got ${afterTab})`);
+    await page.keyboard.press('Tab');
+    const afterTab2 = await page.evaluate(() => document.activeElement?.id);
+    if (afterTab2 !== 'terminal-input') problems.push(`Tab from close button did not move to input (got ${afterTab2})`);
+
+    await run('open archive');
+    await page.waitForTimeout(500);
+    await page.waitForLoadState('networkidle');
+    const url = page.url();
+    if (!url.endsWith('/archive/') && !url.endsWith('/archive')) problems.push(`'open archive' did not navigate (at ${url})`);
+
+    if (errors.length) problems.push('terminal console errors: ' + errors.join(' | '));
+    await context.close();
+  }
+
+  // 2) Esc closes.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    await waitForEyeDone(page);
+    await page.keyboard.press('Backquote');
+    await page.waitForTimeout(150);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+    const open = await page.evaluate(() => document.getElementById('terminal')?.classList.contains('open'));
+    if (open) problems.push('Esc did not close the terminal');
+    await context.close();
+  }
+
+  // 3) Redaction: real text is in the accessible name even while visually barred.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    await waitForEyeDone(page);
+    const label = await page.evaluate(() => document.querySelector('[data-redact]')?.getAttribute('aria-label'));
+    if (!label) problems.push('redacted element missing an aria-label with the real text');
+    await page.hover('[data-redact]');
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: path.join(dir, 'redacted-hover.png') });
+    await context.close();
+  }
+
+  // 4) Konami code triggers the flash.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    await waitForEyeDone(page);
+    for (const key of ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']) {
+      await page.keyboard.press(key);
+    }
+    await page.waitForTimeout(200);
+    const flashed = await page.evaluate(() => !!document.getElementById('konami-flash'));
+    if (!flashed) problems.push('konami code did not trigger the flash overlay');
+    await page.screenshot({ path: path.join(dir, 'konami.png') });
+    await context.close();
+  }
+
+  for (const p of problems) console.log(`[FAIL] terminal: ${p}`);
+  console.log(`terminal checks: ${problems.length ? problems.length + ' problem(s)' : 'ok'} -> ${dir}`);
+  return problems;
+}
+
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -293,6 +414,7 @@ async function main() {
 
   const loaderProblems = await runEyeLoaderChecks(browser);
   const themeWipeProblems = await runThemeWipeChecks(browser);
+  const terminalProblems = await runTerminalChecks(browser);
 
   await browser.close();
 
@@ -309,6 +431,7 @@ async function main() {
 
   if (loaderProblems.length) failed = true;
   if (themeWipeProblems.length) failed = true;
+  if (terminalProblems.length) failed = true;
 
   if (failed) {
     process.exitCode = 1;

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkMeta from '../../components/WorkMeta.astro';
 import Gallery from '../../components/Gallery.astro';
+import Redacted from '../../components/Redacted.astro';
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
@@ -38,6 +39,20 @@ const { data } = work;
     />
 
     <h1 class="title">{data.title}</h1>
+
+    {
+      data.classified && data.classified.length > 0 && (
+        <p class="classified mono">
+          CLASSIFIED:{' '}
+          {data.classified.map((phrase, i) => (
+            <>
+              <Redacted text={phrase} />
+              {i < data.classified!.length - 1 && ', '}
+            </>
+          ))}
+        </p>
+      )
+    }
 
     {
       data.metrics && data.metrics.length > 0 && (
@@ -102,6 +117,16 @@ const { data } = work;
   .title {
     font-size: var(--text-xl);
     max-width: 24ch;
+  }
+
+  .classified {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
   }
 
   .metrics {

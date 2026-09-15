@@ -4,6 +4,8 @@ import CaseFileCard from '../components/CaseFileCard.astro';
 import PostCard from '../components/PostCard.astro';
 import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
+import Redacted from '../components/Redacted.astro';
+import Telemetry from '../components/Telemetry.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { site } from '../config/site';
@@ -27,8 +29,12 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
   <section class="hero container">
     <p class="label">§ 00 — INDEX</p>
     <Logo size="hero" />
-    <h1 class="headline">{site.tagline}</h1>
+    <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
     <p class="sub mono">CONTROL · ROBOTICS · SIMULATION — NIT TRICHY / EPFL</p>
+    <p class="clearance mono">
+      CLEARANCE <Redacted text="OBSERVER — LEVEL 3" />
+    </p>
+    <Telemetry />
   </section>
 
   <section class="container featured">
@@ -106,6 +112,15 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
     color: var(--fg-muted);
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
+  }
+
+  .clearance {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
   }
 
   section {

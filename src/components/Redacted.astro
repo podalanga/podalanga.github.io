@@ -1,0 +1,38 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span class="redacted" tabindex="0" role="button" aria-label={text} data-redact={text}>
+  <span class="bar" aria-hidden="true"></span>
+  <span class="redact-text mono" aria-hidden="true">{text}</span>
+</span>
+
+<style>
+  .redacted {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .redact-text {
+    visibility: hidden;
+  }
+
+  .redacted.revealed .redact-text {
+    visibility: visible;
+  }
+
+  .bar {
+    position: absolute;
+    inset: 0;
+    background: var(--redact);
+  }
+
+  .redacted.revealed .bar {
+    opacity: 0;
+  }
+</style>

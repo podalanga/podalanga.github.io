@@ -1,0 +1,50 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+const coords = site.telemetry.coords.map((c) => c.value);
+---
+
+<div class="telemetry mono" class:list={{ compact: variant === 'compact' }} data-telemetry data-telemetry-epoch={site.epoch} data-telemetry-coords={JSON.stringify(coords)} aria-hidden="true">
+  <span class="field"><span class="telemetry-clock">—</span></span>
+  <span class="field">UPTIME <span class="telemetry-uptime">0000:00:00:00</span></span>
+  {
+    variant === 'full' && (
+      <>
+        <span class="field telemetry-coord">{coords[0]}</span>
+        <span class="field">SIGNAL <span class="telemetry-signal">▮▮▮▯</span></span>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .telemetry {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+  }
+
+  .field {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .telemetry-signal,
+  .telemetry-clock,
+  .telemetry-uptime {
+    color: var(--signal);
+  }
+
+  .telemetry.compact {
+    gap: var(--space-3);
+    opacity: 0.7;
+  }
+</style>
