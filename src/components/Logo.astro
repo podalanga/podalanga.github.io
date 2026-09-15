@@ -6,23 +6,35 @@ interface Props {
   text?: string;
 }
 const { size = 'header', text = site.name } = Astro.props;
+
+// The dot must always render immediately after the last word: split it off into its own
+// non-wrapping unit so it can never land on its own line, detached from the name, when the
+// wordmark wraps at narrow widths.
+const words = text.trim().split(/\s+/);
+const lastWord = words.pop() ?? text;
+const leading = words.length ? `${words.join(' ')} ` : '';
 ---
 
 <span class:list={['logo', size]}>
-  <a href="/" class="wordmark" aria-label={`${site.name} home`}>{text}</a><button
+  {leading && (
+    <a href="/" class="wordmark lead" aria-hidden="true" tabindex="-1">{leading}</a>
+  )}<span class="tail"><a href="/" class="wordmark" aria-label={`${site.name} home`}>{lastWord}</a><button
     type="button"
     class="dot"
     data-terminal-open
     aria-label="Open terminal"
-  >.</button>
+  >.</button></span>
 </span>
 
 <style>
   .logo {
     position: relative;
-    display: inline-flex;
-    align-items: baseline;
+    display: inline;
     line-height: 1;
+  }
+
+  .tail {
+    white-space: nowrap;
   }
 
   .wordmark {

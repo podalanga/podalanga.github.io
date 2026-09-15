@@ -57,6 +57,18 @@ function setupElement(el: HTMLElement): Controller {
     raf: 0,
     start(durationMs: number) {
       cancelAnimationFrame(controller.raf);
+
+      // Lock the box to its final rendered size before scrambling: swapping in glyphs of
+      // different widths (proportional display font) would otherwise reflow everything
+      // after this element on every frame, producing a page-wide jitter.
+      const rect = el.getBoundingClientRect();
+      const originalWidth = el.style.width;
+      const originalDisplay = el.style.display;
+      if (getComputedStyle(el).display === 'inline') {
+        el.style.display = 'inline-block';
+      }
+      el.style.width = `${rect.width}px`;
+
       const startedAt = performance.now();
       const tick = (now: number) => {
         const progress = (now - startedAt) / durationMs;
@@ -65,6 +77,8 @@ function setupElement(el: HTMLElement): Controller {
           controller.raf = requestAnimationFrame(tick);
         } else {
           track.textContent = finalText;
+          el.style.width = originalWidth;
+          el.style.display = originalDisplay;
         }
       };
       controller.raf = requestAnimationFrame(tick);
