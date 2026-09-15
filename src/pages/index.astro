@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseFileCard from '../components/CaseFileCard.astro';
-import PostCard from '../components/PostCard.astro';
 import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
 import Redacted from '../components/Redacted.astro';
@@ -9,42 +8,61 @@ import Telemetry from '../components/Telemetry.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { site } from '../config/site';
+import portrait from '../assets/profile/portrait.jpg';
 
-const works = await getCollection('works');
-const featured = works
-  .filter((w) => w.data.featured)
-  .sort((a, b) => a.data.fileNo - b.data.fileNo);
+const works = (await getCollection('works')).sort(
+  (a, b) => b.data.start.getTime() - a.data.start.getTime()
+);
+const internships = works.filter((w) => w.data.kind === 'internship');
+const projects = works.filter((w) => w.data.kind !== 'internship');
 
-const archiveTeaser = (await getCollection('archive'))
-  .filter((a) => a.data.kind === 'photo' && a.data.image)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
-
-const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true)))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
+const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout>
   <section class="hero container">
-    <p class="label">§ 00 — INDEX</p>
-    <Logo size="hero" />
-    <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
-    <p class="sub mono">CONTROL · ROBOTICS · SIMULATION — NIT TRICHY / EPFL</p>
-    <p class="clearance mono">
-      CLEARANCE <Redacted text="OBSERVER — LEVEL 3" />
-    </p>
-    <Telemetry />
+    <div class="hero-text">
+      <p class="label">§ 00 — INDEX</p>
+      <Logo size="hero" />
+      <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
+      <p class="sub mono">CONTROL · ROBOTICS · SIMULATION — NIT TRICHY / EPFL</p>
+      <p class="clearance mono">
+        CLEARANCE <Redacted text="OBSERVER — LEVEL 3" />
+      </p>
+      <Telemetry />
+    </div>
+    <div class="hero-portrait">
+      <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640]} sizes="(min-width: 780px) 32vw, 60vw" />
+    </div>
   </section>
 
-  <section class="container featured">
+  <section class="container education">
     <h2 class="section-title">
-      Featured files
+      Education
+      <a class="view-all mono" href="/profile">FULL PROFILE →</a>
+    </h2>
+    <div class="dossier-grid">
+      {
+        education.map((e) => (
+          <article class="dossier-entry">
+            <p class="org">{e.data.institution}</p>
+            <p class="degree">{e.data.degree}</p>
+            <p class="meta mono">{e.data.location} · {e.data.start} — {e.data.end} · {e.data.detail}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container internships">
+    <h2 class="section-title">
+      Internships
       <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
     </h2>
-    <div class="featured-grid">
+    <div class="case-grid">
       {
-        featured.map((work) => (
+        internships.map((work) => (
           <CaseFileCard
             slug={work.id}
             fileNo={work.data.fileNo}
@@ -57,34 +75,40 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
             kind={work.data.kind}
             summary={work.data.summary}
             tags={work.data.tags}
+            cover={work.data.cover}
+            coverAlt={work.data.coverAlt}
           />
         ))
       }
     </div>
   </section>
 
-  <section class="container archive-teaser">
+  <section class="container projects">
     <h2 class="section-title">
-      Archive
-      <a class="view-all mono" href="/archive">OPEN ARCHIVE →</a>
+      Projects
+      <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
     </h2>
-    <div class="strip">
+    <div class="case-grid">
       {
-        archiveTeaser.map((entry) => (
-          <a href="/archive" class="thumb">
-            <Image src={entry.data.image!} alt={entry.data.alt ?? entry.data.title} width={400} height={400} />
-          </a>
+        projects.map((work) => (
+          <CaseFileCard
+            slug={work.id}
+            fileNo={work.data.fileNo}
+            codename={work.data.codename}
+            title={work.data.title}
+            org={work.data.org}
+            start={work.data.start}
+            end={work.data.end}
+            status={work.data.status}
+            kind={work.data.kind}
+            summary={work.data.summary}
+            tags={work.data.tags}
+            cover={work.data.cover}
+            coverAlt={work.data.coverAlt}
+          />
         ))
       }
     </div>
-  </section>
-
-  <section class="container log-teaser">
-    <h2 class="section-title">
-      Log
-      <a class="view-all mono" href="/blog">ALL ENTRIES →</a>
-    </h2>
-    {latestLog.map((post) => <PostCard slug={post.id} title={post.data.title} date={post.data.date} description={post.data.description} tags={post.data.tags} />)}
   </section>
 
   <section class="container contact">
@@ -93,14 +117,74 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
       <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
     </p>
   </section>
+
+  <section class="container skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      {
+        skillGroups.map((g) => (
+          <div class="skill-group">
+            <p class="group-label mono">{g.data.label}</p>
+            <ul class="mono">
+              {g.data.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   .hero {
     padding-block: var(--space-9) var(--space-8);
     display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-6);
+  }
+
+  .hero-text {
+    display: flex;
     flex-direction: column;
     gap: var(--space-5);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero-portrait {
+    align-self: center;
+    width: min(60vw, 320px);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    filter: saturate(0.85) sepia(0.08);
+    transition: filter 0.2s var(--ease-out);
+  }
+
+  .hero-portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (hover: hover) {
+    .hero-portrait:hover {
+      filter: none;
+    }
+  }
+
+  @media (min-width: 780px) {
+    .hero {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-portrait {
+      width: 32%;
+      align-self: stretch;
+      aspect-ratio: auto;
+    }
   }
 
   .headline {
@@ -152,39 +236,52 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
     color: var(--signal);
   }
 
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  .case-grid {
+    display: flex;
+    flex-direction: column;
     gap: var(--space-4);
   }
 
-  .strip {
+  .dossier-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-3);
+    gap: var(--space-5);
   }
 
-  .thumb {
-    display: block;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border: 1px solid var(--line);
+  .dossier-entry .org {
+    font-size: var(--text-md);
   }
 
-  .thumb :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: saturate(0.85) sepia(0.08);
+  .dossier-entry .degree {
+    color: var(--fg-muted);
   }
 
-  @media (hover: hover) {
-    .thumb:hover :global(img) {
-      filter: none;
-    }
+  .dossier-entry .meta {
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    margin-top: var(--space-2);
   }
 
-  .log-teaser :global(.post-card:last-child) {
-    border-bottom: 0;
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-5);
+  }
+
+  .group-label {
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--signal);
+    margin-bottom: var(--space-2);
+  }
+
+  .skill-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
   }
 </style>
