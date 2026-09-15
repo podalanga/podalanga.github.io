@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import { site } from '../config/site';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import EyeLoader from '../components/EyeLoader.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -59,14 +60,26 @@ const personSchema = {
         } catch (e) {
           document.documentElement.dataset.theme = 'dark';
         }
+        document.documentElement.classList.add('eye-pending');
       })();
     </script>
+    <noscript>
+      <style>
+        html.eye-pending body > *:not(#eye-loader) {
+          display: revert !important;
+        }
+        #eye-loader {
+          display: none !important;
+        }
+      </style>
+    </noscript>
 
     {isHome && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
 
     <ClientRouter />
   </head>
   <body>
+    <EyeLoader />
     <div class="grain"></div>
     <div class="scanlines"></div>
     <Header />

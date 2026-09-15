@@ -1,0 +1,49 @@
+---
+// ASCII Orwell Eye boot loader — full sequence on first document load, fast on repeats.
+// Content lives in the rest of the HTML (see BaseLayout's noscript/eye-pending guard),
+// so this overlay is purely a progressive-enhancement veil, never a content gate.
+---
+
+<div id="eye-loader" aria-hidden="true">
+  <canvas id="eye-canvas"></canvas>
+  <p id="eye-caption" class="mono"></p>
+  <p id="eye-percent" class="mono"></p>
+</div>
+
+<style>
+  #eye-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0a0a;
+  }
+
+  #eye-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #eye-caption,
+  #eye-percent {
+    position: absolute;
+    bottom: var(--space-4);
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--signal);
+  }
+
+  #eye-caption {
+    left: var(--space-4);
+  }
+
+  #eye-percent {
+    right: var(--space-4);
+  }
+</style>
+
+<script>
+  import { initEyeLoader } from '../effects/eye-loader';
+  initEyeLoader();
+</script>
