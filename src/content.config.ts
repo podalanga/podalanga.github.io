@@ -79,4 +79,48 @@ const log = defineCollection({
     }),
 });
 
-export const collections = { works, archive, log };
+const education = defineCollection({
+  loader: glob({ pattern: '**/index.md', base: './src/content/education' }),
+  schema: z.object({
+    order: z.number(),
+    institution: z.string(),
+    degree: z.string(),
+    location: z.string(),
+    start: z.string(),
+    end: z.string(),
+    detail: z.string(),
+    coursework: z.array(z.string()),
+  }),
+});
+
+const skills = defineCollection({
+  loader: glob({ pattern: '**/index.md', base: './src/content/skills' }),
+  schema: z.object({
+    order: z.number(),
+    label: z.string(),
+    items: z.array(z.string()),
+  }),
+});
+
+const positions = defineCollection({
+  loader: glob({ pattern: '**/index.md', base: './src/content/positions' }),
+  schema: z.object({
+    order: z.number(),
+    role: z.string(),
+    org: z.string(),
+    start: z.string(),
+    end: z.string(),
+    detail: z.string(),
+  }),
+});
+
+const awards = defineCollection({
+  loader: glob({ pattern: '**/index.md', base: './src/content/awards' }),
+  schema: z.object({
+    order: z.number(),
+    title: z.string(),
+    detail: z.string(),
+  }),
+});
+
+export const collections = { works, archive, log, education, skills, positions, awards };

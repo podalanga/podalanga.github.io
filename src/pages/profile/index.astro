@@ -4,11 +4,15 @@ import CaseFileCard from '../../components/CaseFileCard.astro';
 import ContactEmail from '../../components/ContactEmail.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../../config/site';
-import { education, skillGroups, awards, positions } from '../../config/dossier';
 
 const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
 );
+
+const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
+const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
+const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.data.order);
+const positions = (await getCollection('positions')).sort((a, b) => a.data.order - b.data.order);
 
 const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competition' | 'hobby' }[] = [
   { label: 'ALL', value: 'all' },
@@ -68,11 +72,11 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       {
         education.map((e) => (
           <article class="dossier-entry">
-            <p class="org">{e.institution}</p>
-            <p class="degree">{e.degree}</p>
-            <p class="meta mono">{e.location} · {e.start} — {e.end} · {e.detail}</p>
+            <p class="org">{e.data.institution}</p>
+            <p class="degree">{e.data.degree}</p>
+            <p class="meta mono">{e.data.location} · {e.data.start} — {e.data.end} · {e.data.detail}</p>
             <ul class="coursework mono">
-              {e.coursework.map((c) => <li>{c}</li>)}
+              {e.data.coursework.map((c) => <li>{c}</li>)}
             </ul>
           </article>
         ))
@@ -84,9 +88,9 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       {
         skillGroups.map((g) => (
           <div class="skill-group">
-            <p class="group-label mono">{g.label}</p>
+            <p class="group-label mono">{g.data.label}</p>
             <ul class="mono">
-              {g.items.map((item) => <li>{item}</li>)}
+              {g.data.items.map((item) => <li>{item}</li>)}
             </ul>
           </div>
         ))
@@ -98,8 +102,8 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       {
         awards.map((a) => (
           <li>
-            <p class="org">{a.title}</p>
-            <p class="meta">{a.detail}</p>
+            <p class="org">{a.data.title}</p>
+            <p class="meta">{a.data.detail}</p>
           </li>
         ))
       }
@@ -110,9 +114,9 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       {
         positions.map((p) => (
           <li>
-            <p class="org">{p.role} — {p.org}</p>
-            <p class="meta mono">{p.start} — {p.end}</p>
-            <p class="meta">{p.detail}</p>
+            <p class="org">{p.data.role} — {p.data.org}</p>
+            <p class="meta mono">{p.data.start} — {p.data.end}</p>
+            <p class="meta">{p.data.detail}</p>
           </li>
         ))
       }

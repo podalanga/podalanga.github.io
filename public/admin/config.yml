@@ -126,3 +126,71 @@ collections:
         hint: 'Decorative redacted phrases shown under the title. No new facts — flavor text only.'
         field: { name: phrase, label: Phrase, widget: string }
       - { name: body, label: Body, widget: markdown }
+
+  - name: education
+    label: Education
+    label_singular: Education entry
+    folder: /src/content/education
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    identifier_field: institution
+    slug: '{{slug}}'
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
+      - { name: institution, label: Institution, widget: string }
+      - { name: degree, label: Degree, widget: string }
+      - { name: location, label: Location, widget: string }
+      - { name: start, label: Start, widget: string }
+      - { name: end, label: End, widget: string }
+      - { name: detail, label: Detail, widget: string, hint: 'e.g. CGPA 8.5 / 10' }
+      - { name: coursework, label: Coursework, widget: list, field: { name: course, label: Course, widget: string } }
+
+  - name: skills
+    label: Skills
+    label_singular: Skill group
+    folder: /src/content/skills
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    identifier_field: label
+    slug: '{{slug}}'
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
+      - { name: label, label: Group label, widget: string }
+      - { name: items, label: Items, widget: list, field: { name: item, label: Item, widget: string } }
+
+  - name: positions
+    label: Positions
+    label_singular: Position
+    folder: /src/content/positions
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    identifier_field: role
+    slug: '{{slug}}'
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
+      - { name: role, label: Role, widget: string }
+      - { name: org, label: Organization, widget: string }
+      - { name: start, label: Start, widget: string }
+      - { name: end, label: End, widget: string }
+      - { name: detail, label: Detail, widget: text }
+
+  - name: awards
+    label: Awards
+    label_singular: Award
+    folder: /src/content/awards
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    identifier_field: title
+    slug: '{{slug}}'
+    fields:
+      - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
+      - { name: title, label: Title, widget: string }
+      - { name: detail, label: Detail, widget: string }
