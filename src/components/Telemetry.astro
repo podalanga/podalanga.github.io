@@ -9,9 +9,8 @@ const { variant = 'full' } = Astro.props;
 const coords = site.telemetry.coords.map((c) => c.value);
 ---
 
-<div class="telemetry mono" class:list={{ compact: variant === 'compact' }} data-telemetry data-telemetry-epoch={site.epoch} data-telemetry-coords={JSON.stringify(coords)} aria-hidden="true">
+<div class="telemetry mono" class:list={{ compact: variant === 'compact' }} data-telemetry data-telemetry-coords={JSON.stringify(coords)} aria-hidden="true">
   <span class="field"><span class="telemetry-clock">—</span></span>
-  <span class="field">UPTIME <span class="telemetry-uptime">0000:00:00:00</span></span>
   {
     variant === 'full' && (
       <>
@@ -38,8 +37,7 @@ const coords = site.telemetry.coords.map((c) => c.value);
   }
 
   .telemetry-signal,
-  .telemetry-clock,
-  .telemetry-uptime {
+  .telemetry-clock {
     color: var(--signal);
   }
 
