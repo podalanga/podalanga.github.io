@@ -15,7 +15,7 @@ const VIEWPORTS = [
 
 const THEMES = ['dark', 'light'];
 
-const ROUTES = ['/'];
+const ROUTES = ['/', '/works', '/works/zbot', '/archive', '/log', '/log/signal-acquired', '/404'];
 
 async function shootRoute(browser, route, viewport, theme) {
   const context = await browser.newContext({ viewport });
@@ -36,6 +36,19 @@ async function shootRoute(browser, route, viewport, theme) {
   }, theme);
 
   await page.goto(new URL(route, BASE_URL).toString(), { waitUntil: 'networkidle' });
+
+  // scroll through the full page first so native `loading="lazy"` images have
+  // fired their network request before the full-page screenshot captures them
+  await page.evaluate(async () => {
+    const step = window.innerHeight;
+    const total = document.documentElement.scrollHeight;
+    for (let y = 0; y < total; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 60));
+    }
+    window.scrollTo(0, 0);
+  });
+  await page.waitForLoadState('networkidle');
 
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth

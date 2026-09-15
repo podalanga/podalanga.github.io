@@ -1,0 +1,118 @@
+---
+import Tag from './Tag.astro';
+import { formatRange } from '../lib/dates';
+
+interface Props {
+  fileNo: number;
+  codename: string;
+  org: string;
+  location: string;
+  supervisor?: string;
+  start: Date;
+  end?: Date;
+  status: 'ongoing' | 'completed';
+  stack: string[];
+}
+
+const { fileNo, codename, org, location, supervisor, start, end, status, stack } = Astro.props;
+const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
+const stamp = status === 'ongoing' ? 'ONGOING' : 'CLOSED';
+---
+
+<div class="work-meta">
+  <div class="heading">
+    <p class="file mono">{fileLabel} // {codename}</p>
+    <span class="stamp mono" class:list={{ ongoing: status === 'ongoing' }}>{stamp}</span>
+  </div>
+
+  <dl class="fields mono">
+    <div>
+      <dt>ORG</dt>
+      <dd>{org}</dd>
+    </div>
+    <div>
+      <dt>LOCATION</dt>
+      <dd>{location}</dd>
+    </div>
+    {
+      supervisor && (
+        <div>
+          <dt>SUPERVISOR</dt>
+          <dd>{supervisor}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt>DATES</dt>
+      <dd>{formatRange(start, end, status)}</dd>
+    </div>
+  </dl>
+
+  <ul class="stack mono">
+    {stack.map((item) => <li><Tag label={item} /></li>)}
+  </ul>
+</div>
+
+<style>
+  .work-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .file {
+    font-size: var(--text-sm);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+  }
+
+  .stamp {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border: 2px solid var(--fg-muted);
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+    transform: rotate(-4deg);
+  }
+
+  .stamp.ongoing {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .fields dt {
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+  }
+
+  .fields dd {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+    color: var(--fg);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>

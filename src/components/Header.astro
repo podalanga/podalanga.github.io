@@ -15,7 +15,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
         {
           site.nav.map((item) => {
             const itemPath = item.href.replace(/\/$/, '') || '/';
-            const active = path === itemPath;
+            const active = itemPath === '/' ? path === '/' : path === itemPath || path.startsWith(`${itemPath}/`);
             return (
               <li>
                 <a href={item.href} aria-current={active ? 'page' : undefined}>

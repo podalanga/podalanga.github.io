@@ -1,0 +1,161 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkMeta from '../../components/WorkMeta.astro';
+import Gallery from '../../components/Gallery.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  const sorted = [...works].sort((a, b) => a.data.fileNo - b.data.fileNo);
+  return sorted.map((work, i) => ({
+    params: { slug: work.id },
+    props: {
+      work,
+      prev: sorted[i - 1],
+      next: sorted[i + 1],
+    },
+  }));
+}
+
+const { work, prev, next } = Astro.props;
+const { Content } = await render(work);
+const { data } = work;
+---
+
+<BaseLayout title={`${data.title} — FILE ${String(data.fileNo).padStart(2, '0')}`} description={data.summary}>
+  <article class="container case-file">
+    <WorkMeta
+      fileNo={data.fileNo}
+      codename={data.codename}
+      org={data.org}
+      location={data.location}
+      supervisor={data.supervisor}
+      start={data.start}
+      end={data.end}
+      status={data.status}
+      stack={data.stack}
+    />
+
+    <h1 class="title">{data.title}</h1>
+
+    {
+      data.metrics && data.metrics.length > 0 && (
+        <dl class="metrics">
+          {data.metrics.map((m) => (
+            <div>
+              <dd>{m.value}</dd>
+              <dt class="mono">{m.label}</dt>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+
+    {
+      data.cover && (
+        <Image src={data.cover} alt={data.coverAlt ?? data.title} class="cover" widths={[640, 1200, 1800]} sizes="100vw" />
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      data.figures && data.figures.length > 0 && (
+        <section class="figures">
+          <h2 class="section-title">Figures</h2>
+          <Gallery
+            id={`work-${work.id}`}
+            figures={data.figures.map((f) => ({ src: f.src, alt: f.caption, caption: f.caption }))}
+          />
+        </section>
+      )
+    }
+
+    <nav class="prev-next mono" aria-label="Other case files">
+      {
+        prev ? (
+          <a href={`/works/${prev.id}`}>← FILE {String(prev.data.fileNo).padStart(2, '0')} // {prev.data.codename}</a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next && (
+          <a href={`/works/${next.id}`}>FILE {String(next.data.fileNo).padStart(2, '0')} // {next.data.codename} →</a>
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-file {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-7) var(--space-9);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+    max-width: 24ch;
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .metrics dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    font-weight: 800;
+    font-size: var(--text-lg);
+    color: var(--signal);
+  }
+
+  .metrics dt {
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .case-file :global(.cover) {
+    width: 100%;
+    border: 1px solid var(--line);
+  }
+
+  .section-title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .prev-next {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+  }
+
+  .prev-next a {
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .prev-next a:hover {
+    color: var(--signal);
+  }
+</style>

@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseFileCard from '../../components/CaseFileCard.astro';
+import ContactEmail from '../../components/ContactEmail.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../config/site';
+import { education, skillGroups, awards, positions } from '../../config/dossier';
+
+const works = (await getCollection('works')).sort(
+  (a, b) => b.data.start.getTime() - a.data.start.getTime()
+);
+
+const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competition' }[] = [
+  { label: 'ALL', value: 'all' },
+  { label: 'INTERNSHIPS', value: 'internship' },
+  { label: 'PROJECTS', value: 'project' },
+  { label: 'COMPETITION', value: 'competition' },
+];
+---
+
+<BaseLayout title={`Works — ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
+  <section class="container intro">
+    <p class="label">§ 01 — WORKS</p>
+    <h1>Case files</h1>
+    <p class="dek">Internships, projects, and competitions — sorted by start date, newest first.</p>
+  </section>
+
+  <section class="container filters" aria-label="Filter case files by type">
+    <div class="chips mono" role="group">
+      {
+        kinds.map((k) => (
+          <button type="button" class="chip" data-filter={k.value} aria-pressed={k.value === 'all'}>
+            {k.label}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container timeline" aria-label="Case file timeline">
+    {
+      works.map((work) => (
+        <div class="row" data-kind={work.data.kind}>
+          <CaseFileCard
+            slug={work.id}
+            fileNo={work.data.fileNo}
+            codename={work.data.codename}
+            title={work.data.title}
+            org={work.data.org}
+            start={work.data.start}
+            end={work.data.end}
+            status={work.data.status}
+            kind={work.data.kind}
+            summary={work.data.summary}
+            tags={work.data.tags}
+            variant="row"
+          />
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="container dossier">
+    <h2 class="section-title">Education</h2>
+    <div class="dossier-grid">
+      {
+        education.map((e) => (
+          <article class="dossier-entry">
+            <p class="org">{e.institution}</p>
+            <p class="degree">{e.degree}</p>
+            <p class="meta mono">{e.location} · {e.start} — {e.end} · {e.detail}</p>
+            <ul class="coursework mono">
+              {e.coursework.map((c) => <li>{c}</li>)}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      {
+        skillGroups.map((g) => (
+          <div class="skill-group">
+            <p class="group-label mono">{g.label}</p>
+            <ul class="mono">
+              {g.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2 class="section-title">Awards</h2>
+    <ul class="list-entries">
+      {
+        awards.map((a) => (
+          <li>
+            <p class="org">{a.title}</p>
+            <p class="meta">{a.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="section-title">Positions</h2>
+    <ul class="list-entries">
+      {
+        positions.map((p) => (
+          <li>
+            <p class="org">{p.role} — {p.org}</p>
+            <p class="meta mono">{p.start} — {p.end}</p>
+            <p class="meta">{p.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="container contact">
+    <h2 class="section-title">Contact</h2>
+    <p>
+      <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro,
+  .filters,
+  .timeline,
+  .dossier,
+  .contact {
+    padding-block: var(--space-7);
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-bottom: var(--space-5);
+  }
+
+  .dek {
+    color: var(--fg-muted);
+    max-width: 52ch;
+  }
+
+  .filters {
+    padding-block: 0 var(--space-5);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+  }
+
+  .chip:hover {
+    color: var(--fg);
+  }
+
+  .chip[aria-pressed='true'] {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .timeline {
+    padding-top: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .row {
+    display: block;
+  }
+
+  .row[hidden] {
+    display: none;
+  }
+
+  .dossier {
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .section-title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .dossier-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .dossier-entry .org {
+    font-size: var(--text-md);
+  }
+
+  .dossier-entry .degree {
+    color: var(--fg-muted);
+  }
+
+  .dossier-entry .meta {
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    margin-top: var(--space-2);
+  }
+
+  .coursework {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    font-size: var(--text-xs);
+  }
+
+  .coursework li {
+    border: 1px solid var(--line);
+    padding: var(--space-1) var(--space-2);
+    color: var(--fg-muted);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-5);
+  }
+
+  .group-label {
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--signal);
+    margin-bottom: var(--space-2);
+  }
+
+  .skill-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+  }
+
+  .list-entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .list-entries li {
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .list-entries .org {
+    font-size: var(--text-md);
+  }
+
+  .list-entries .meta {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    margin-top: var(--space-1);
+  }
+
+  .contact {
+    border-top: 1px solid var(--line);
+  }
+</style>
+
+<script>
+  function initFilters() {
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    const rows = document.querySelectorAll<HTMLElement>('.row');
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        rows.forEach((row) => {
+          const show = filter === 'all' || row.dataset.kind === filter;
+          row.hidden = !show;
+        });
+      });
+    });
+  }
+
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
+</script>

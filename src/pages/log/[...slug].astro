@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Attachments from '../../components/Attachments.astro';
+import Tag from '../../components/Tag.astro';
+import { Image } from 'astro:assets';
+import { formatDateLong } from '../../lib/dates';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true));
+  const sorted = [...posts].sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+  return sorted.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, prev: sorted[i - 1], next: sorted[i + 1] },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+const { data } = post;
+---
+
+<BaseLayout title={`${data.title} — Log`} description={data.description}>
+  <article class="container post">
+    <header class="post-header">
+      <p class="date mono">{formatDateLong(data.date)}{data.updated && ` · UPDATED ${formatDateLong(data.updated)}`}</p>
+      <h1>{data.title}</h1>
+      <p class="description">{data.description}</p>
+      {
+        data.tags.length > 0 && (
+          <ul class="tags">
+            {data.tags.map((tag) => (
+              <li>
+                <Tag label={tag} href={`/log/tag/${tag}`} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {data.cover && <Image src={data.cover} alt={data.coverAlt ?? data.title} class="cover" widths={[640, 1200, 1800]} sizes="100vw" />}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      data.attachments && data.attachments.length > 0 && (
+        <section class="attachments-section">
+          <h2 class="section-title">Attachments</h2>
+          <Attachments attachments={data.attachments} />
+        </section>
+      )
+    }
+
+    <nav class="prev-next mono" aria-label="Other log entries">
+      {prev ? <a href={`/log/${prev.id}`}>← {prev.data.title}</a> : <span />}
+      {next && <a href={`/log/${next.id}`}>{next.data.title} →</a>}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-7) var(--space-9);
+    max-width: 72ch;
+  }
+
+  .post-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .date {
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+  }
+
+  .description {
+    color: var(--fg-muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post :global(.cover) {
+    width: 100%;
+    border: 1px solid var(--line);
+  }
+
+  .section-title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .prev-next {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-xs);
+  }
+
+  .prev-next a {
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .prev-next a:hover {
+    color: var(--signal);
+  }
+</style>

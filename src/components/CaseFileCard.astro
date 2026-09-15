@@ -1,0 +1,152 @@
+---
+import { formatRange } from '../lib/dates';
+
+interface Props {
+  slug: string;
+  fileNo: number;
+  codename: string;
+  title: string;
+  org: string;
+  start: Date;
+  end?: Date;
+  status: 'ongoing' | 'completed';
+  kind: 'internship' | 'project' | 'competition';
+  summary: string;
+  tags: string[];
+  variant?: 'grid' | 'row';
+}
+
+const {
+  slug,
+  fileNo,
+  codename,
+  title,
+  org,
+  start,
+  end,
+  status,
+  kind,
+  summary,
+  tags,
+  variant = 'grid',
+} = Astro.props;
+
+const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
+---
+
+<a href={`/works/${slug}`} class:list={['case-card', variant]} data-kind={kind}>
+  <div class="top mono">
+    <span class="file">{fileLabel} // {codename}</span>
+    <span class="status" class:list={{ ongoing: status === 'ongoing' }}>
+      <span class="dot" aria-hidden="true"></span>
+      {status === 'ongoing' ? 'ONGOING' : 'CLOSED'}
+    </span>
+  </div>
+
+  <h3 class="title">{title}</h3>
+  <p class="org mono">{org} · {formatRange(start, end, status)}</p>
+  <p class="summary">{summary}</p>
+
+  <ul class="tags mono">
+    {tags.slice(0, 4).map((tag) => <li>{tag}</li>)}
+  </ul>
+</a>
+
+<style>
+  .case-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 0.15s var(--ease-out);
+  }
+
+  .case-card:hover {
+    border-color: var(--signal);
+  }
+
+  .case-card.row {
+    flex-direction: column;
+    padding: var(--space-4) 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg-muted);
+  }
+
+  .status.ongoing .dot {
+    background: var(--signal);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status.ongoing .dot {
+      animation: none;
+    }
+  }
+
+  .title {
+    font-size: var(--text-md);
+  }
+
+  .org {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .summary {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  .tags li {
+    border: 1px solid var(--line);
+    padding: var(--space-1) var(--space-2);
+  }
+</style>

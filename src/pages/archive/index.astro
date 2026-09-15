@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Gallery from '../../components/Gallery.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import { formatDateLong } from '../../lib/dates';
+import { site } from '../../config/site';
+
+const entries = await getCollection('archive');
+const byCategory = {
+  photography: entries.filter((e) => e.data.category === 'photography').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+  music: entries.filter((e) => e.data.category === 'music').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+  misc: entries.filter((e) => e.data.category === 'misc').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+};
+
+const photoFigures = byCategory.photography
+  .filter((e) => e.data.kind === 'photo' && e.data.image)
+  .map((e) => ({
+    src: e.data.image!,
+    alt: e.data.alt ?? e.data.title,
+    caption: `${e.data.title} · ${formatDateLong(e.data.date)}`,
+  }));
+
+const tabs = [
+  { id: 'photography', label: 'PHOTOGRAPHY' },
+  { id: 'music', label: 'MUSIC' },
+  { id: 'misc', label: 'MISC' },
+] as const;
+---
+
+<BaseLayout title={`Archive — ${site.name}`} description="A running archive of photography, music, and miscellaneous transmissions.">
+  <section class="container intro">
+    <p class="label">§ 02 — ARCHIVE</p>
+    <h1>Archive</h1>
+    <p class="dek">Photographs, audio, and things that don't fit a case file.</p>
+  </section>
+
+  <nav class="container tabs mono" aria-label="Archive categories">
+    {tabs.map((tab) => <a href={`#${tab.id}`} data-tab={tab.id}>{tab.label}</a>)}
+  </nav>
+
+  <section id="photography" class="container archive-section">
+    <h2 class="section-title mono">PHOTOGRAPHY</h2>
+    {
+      photoFigures.length > 0 ? (
+        <Gallery id="archive-photography" figures={photoFigures} variant="masonry" />
+      ) : (
+        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+      )
+    }
+  </section>
+
+  <section id="music" class="container archive-section">
+    <h2 class="section-title mono">MUSIC</h2>
+    {
+      byCategory.music.length > 0 ? (
+        <div class="video-grid">
+          {byCategory.music.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
+        </div>
+      ) : (
+        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+      )
+    }
+  </section>
+
+  <section id="misc" class="container archive-section">
+    <h2 class="section-title mono">MISC</h2>
+    {
+      byCategory.misc.length > 0 ? (
+        <div class="video-grid">
+          {byCategory.misc.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
+        </div>
+      ) : (
+        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-block: var(--space-7) var(--space-5);
+  }
+
+  .dek {
+    color: var(--fg-muted);
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-5);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tabs a {
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .tabs a:hover,
+  .tabs a.active {
+    color: var(--signal);
+  }
+
+  .archive-section {
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + var(--space-4));
+  }
+
+  .section-title {
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    margin-bottom: var(--space-5);
+  }
+
+  .empty {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    letter-spacing: 0.06em;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+</style>
+
+<script>
+  function initTabs() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.tabs a');
+
+    function sync() {
+      const hash = window.location.hash || '#photography';
+      links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === hash));
+    }
+
+    sync();
+    window.addEventListener('hashchange', sync);
+  }
+
+  initTabs();
+  document.addEventListener('astro:page-load', initTabs);
+</script>

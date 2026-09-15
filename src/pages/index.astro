@@ -1,13 +1,91 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseFileCard from '../components/CaseFileCard.astro';
+import PostCard from '../components/PostCard.astro';
+import ContactEmail from '../components/ContactEmail.astro';
+import Logo from '../components/Logo.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import { site } from '../config/site';
+
+const works = await getCollection('works');
+const featured = works
+  .filter((w) => w.data.featured)
+  .sort((a, b) => a.data.fileNo - b.data.fileNo);
+
+const archiveTeaser = (await getCollection('archive'))
+  .filter((a) => a.data.kind === 'photo' && a.data.image)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout>
   <section class="hero container">
     <p class="label">§ 00 — INDEX</p>
+    <Logo size="hero" />
     <h1 class="headline">{site.tagline}</h1>
     <p class="sub mono">CONTROL · ROBOTICS · SIMULATION — NIT TRICHY / EPFL</p>
+  </section>
+
+  <section class="container featured">
+    <h2 class="section-title">
+      Featured files
+      <a class="view-all mono" href="/works">ALL CASE FILES →</a>
+    </h2>
+    <div class="featured-grid">
+      {
+        featured.map((work) => (
+          <CaseFileCard
+            slug={work.id}
+            fileNo={work.data.fileNo}
+            codename={work.data.codename}
+            title={work.data.title}
+            org={work.data.org}
+            start={work.data.start}
+            end={work.data.end}
+            status={work.data.status}
+            kind={work.data.kind}
+            summary={work.data.summary}
+            tags={work.data.tags}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container archive-teaser">
+    <h2 class="section-title">
+      Archive
+      <a class="view-all mono" href="/archive">OPEN ARCHIVE →</a>
+    </h2>
+    <div class="strip">
+      {
+        archiveTeaser.map((entry) => (
+          <a href="/archive" class="thumb">
+            <Image src={entry.data.image!} alt={entry.data.alt ?? entry.data.title} width={400} height={400} />
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container log-teaser">
+    <h2 class="section-title">
+      Log
+      <a class="view-all mono" href="/log">ALL ENTRIES →</a>
+    </h2>
+    {latestLog.map((post) => <PostCard slug={post.id} title={post.data.title} date={post.data.date} description={post.data.description} tags={post.data.tags} />)}
+  </section>
+
+  <section class="container contact">
+    <h2 class="section-title">Contact</h2>
+    <p>
+      <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
+    </p>
   </section>
 </BaseLayout>
 
@@ -17,16 +95,81 @@ import { site } from '../config/site';
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    max-width: 48ch;
   }
 
   .headline {
     font-size: var(--text-2xl);
+    max-width: 16ch;
   }
 
   .sub {
     color: var(--fg-muted);
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
+  }
+
+  section {
+    padding-block: var(--space-7);
+  }
+
+  section + section {
+    border-top: 1px solid var(--line);
+  }
+
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-5);
+  }
+
+  .view-all {
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .view-all:hover {
+    color: var(--signal);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  .thumb {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) sepia(0.08);
+  }
+
+  @media (hover: hover) {
+    .thumb:hover :global(img) {
+      filter: none;
+    }
+  }
+
+  .log-teaser :global(.post-card:last-child) {
+    border-bottom: 0;
   }
 </style>

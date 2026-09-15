@@ -13,6 +13,17 @@ interface Props {
 const { title = site.title, description = site.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url);
 const ogImage = new URL('/og.png', site.url);
+const isHome = Astro.url.pathname === '/';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Joshua John L',
+  alternateName: site.name,
+  url: site.url,
+  sameAs: [site.socials.github, site.socials.linkedin],
+  jobTitle: 'Robotics & Control Systems Engineer',
+};
 ---
 
 <html lang="en">
@@ -50,6 +61,8 @@ const ogImage = new URL('/og.png', site.url);
         }
       })();
     </script>
+
+    {isHome && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
 
     <ClientRouter />
   </head>

@@ -12,6 +12,7 @@
     "check": "astro check",
     "test": "vitest run",
     "qa": "bash scripts/run-qa.sh",
+    "check-links": "node scripts/check-links.mjs",
     "astro": "astro"
   },
   "dependencies": {
