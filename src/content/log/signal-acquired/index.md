@@ -1,12 +1,9 @@
 ---
 title: Signal acquired
 date: 2026-09-15
-updated: ''
 description: "The first transmission from this site: what it is, why it looks the way it does, and what's coming."
 tags:
   - meta
-cover: ''
-coverAlt: ''
 draft: false
 attachments:
   - label: Transmission log (.txt)

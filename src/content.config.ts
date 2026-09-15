@@ -1,6 +1,14 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+/** Sveltia CMS writes '' for a cleared optional field instead of omitting the key. */
+function optional<S extends { optional(): unknown }>(schema: S): ReturnType<S['optional']> {
+  return z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    schema.optional() as never,
+  ) as ReturnType<S['optional']>;
+}
+
 const works = defineCollection({
   loader: glob({ pattern: '**/index.md', base: './src/content/works' }),
   schema: ({ image }) =>
@@ -13,13 +21,13 @@ const works = defineCollection({
       location: z.string(),
       supervisor: z.string().optional(),
       start: z.coerce.date(),
-      end: z.coerce.date().optional(),
+      end: optional(z.coerce.date()),
       status: z.enum(['ongoing', 'completed']),
       summary: z.string(),
       tags: z.array(z.string()),
       stack: z.array(z.string()),
       metrics: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
-      cover: image().optional(),
+      cover: optional(image()),
       coverAlt: z.string().optional(),
       figures: z
         .array(z.object({ src: image(), caption: z.string() }))
@@ -39,9 +47,9 @@ const archive = defineCollection({
         category: z.enum(['photography', 'music', 'misc']),
         date: z.coerce.date(),
         location: z.string().optional(),
-        image: image().optional(),
+        image: optional(image()),
         alt: z.string().optional(),
-        youtube: z.string().url().optional(),
+        youtube: optional(z.string().url()),
         caption: z.string().optional(),
         tags: z.array(z.string()),
       })
@@ -59,10 +67,10 @@ const log = defineCollection({
     z.object({
       title: z.string(),
       date: z.coerce.date(),
-      updated: z.coerce.date().optional(),
+      updated: optional(z.coerce.date()),
       description: z.string(),
       tags: z.array(z.string()),
-      cover: image().optional(),
+      cover: optional(image()),
       coverAlt: z.string().optional(),
       attachments: z
         .array(z.object({ label: z.string(), file: z.string() }))
