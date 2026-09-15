@@ -22,7 +22,7 @@ A summer internship with R2D2 / Thryv Mobility deriving the mathematical model b
 
 ## Problem
 
-Manual wheelchair push behavior varies with the user's physique and push style. Before any control (like cruise assistance) can be added, the system needs a state-space model calibrated against real strain-gauge readings — which first have to be cleaned of sensor bias, slope error, and noise.
+Manual wheelchair push behavior varies with the user's physique and push style. Before any control (like cruise assistance) can be added, the system needs a state-space model calibrated against real strain-gauge readings, which first have to be cleaned of sensor bias, slope error, and noise.
 
 ## Approach
 

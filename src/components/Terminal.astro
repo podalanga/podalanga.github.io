@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { site } from '../config/site';
 
-// Never put the email verbatim in HTML (per CLAUDE.md) — split it like ContactEmail.astro does;
+// Never put the email verbatim in HTML (per CLAUDE.md); split it like ContactEmail.astro does;
 // terminal.ts reassembles it before printing to the log.
 const [emailUser, emailDomain] = site.email.split('@');
 

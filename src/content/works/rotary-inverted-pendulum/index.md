@@ -27,7 +27,7 @@ figures:
   - src: ./pole-placement.png
     caption: "Pole-placement controller on hardware: setpoint tracking, tracking error, pendulum angle, and motor voltage."
   - src: ./gain-scheduled-lqr.png
-    caption: "Gain-scheduled LQR tracking a growing setpoint sweep out to ±45° — stable, at a cost of tracking accuracy."
+    caption: "Gain-scheduled LQR tracking a growing setpoint sweep out to ±45°: stable, at a cost of tracking accuracy."
 ---
 
 ## Brief
@@ -36,7 +36,7 @@ The rotary inverted pendulum is a classic underactuated-control benchmark: a sin
 
 ## Problem
 
-The system is inherently unstable — linearizing about the upright equilibrium gives eigenvalues with one at zero and one on the positive real axis. As the setpoint angle grows, the pendulum's deviation exceeds the range where the first-order Taylor linearization holds, so a single fixed controller either can't be pushed to larger sweeps or overshoots badly trying.
+The system is inherently unstable: linearizing about the upright equilibrium gives eigenvalues with one at zero and one on the positive real axis. As the setpoint angle grows, the pendulum's deviation exceeds the range where the first-order Taylor linearization holds, so a single fixed controller either can't be pushed to larger sweeps or overshoots badly trying.
 
 ## Approach
 

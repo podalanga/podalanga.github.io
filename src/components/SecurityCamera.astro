@@ -4,13 +4,13 @@
 // `.mount` (joint + arm + wall plate) never moves; `.head` (the housing) rotates in the page plane
 // around the joint via `transform-origin` + `rotate()`, driven by `--angle` from security-camera.ts.
 // A glowing red `.lens` dot rides along with the head. Static, unrotated, non-glowing under
-// prefers-reduced-motion or no-JS — the ASCII art itself needs no JS at all.
+// prefers-reduced-motion or no-JS: the ASCII art itself needs no JS at all.
 //
 // The art is laid out at RENDER_FONT_PX (a normal, readable size) and then shrunk to its real
 // on-screen size with `transform: scale(var(--camera-scale))` on `.camera-scale`, rather than
 // just declaring a tiny `font-size` directly. Browsers that enforce a "minimum font size"
 // (an accessibility setting some people have on, e.g. Chrome's chrome://settings/fonts) silently
-// floor any font-size below that threshold back up to it — which, for a `font-size: 3.6px` rule,
+// floor any font-size below that threshold back up to it, which, for a `font-size: 3.6px` rule,
 // blew the whole camera up to several times its intended size while leaving normal ~16px body
 // text untouched. `transform: scale()` operates on the already-laid-out box, not on font metrics,
 // so it isn't subject to that floor. Every other measurement here (container box, transform

@@ -1,5 +1,5 @@
 // Konami code (§7.5): ↑↑↓↓←→←→BA triggers a full-screen 1.5s flash of the 1984 slogan, red on
-// black, then fades. Session-global — registered once, not re-bound on soft navs.
+// black, then fades. Session-global: registered once, not re-bound on soft navs.
 import { prefersReducedMotion } from '../lib/reduced-motion';
 
 const CODE = [

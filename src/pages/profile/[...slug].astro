@@ -24,7 +24,7 @@ const { Content } = await render(work);
 const { data } = work;
 ---
 
-<BaseLayout title={`${data.title} — FILE ${String(data.fileNo).padStart(2, '0')}`} description={data.summary}>
+<BaseLayout title={`${data.title} · FILE ${String(data.fileNo).padStart(2, '0')}`} description={data.summary}>
   <article class="container case-file">
     <WorkMeta
       fileNo={data.fileNo}

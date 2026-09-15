@@ -25,7 +25,7 @@ figures:
 
 ## Brief
 
-A rebuilt filament extruder that turns discarded PLA — failed prints and the support structures 3D printers generate as waste — back into usable filament, closing the loop on plastic waste from the printing process.
+A rebuilt filament extruder that turns discarded PLA (failed prints and the support structures 3D printers generate as waste) back into usable filament, closing the loop on plastic waste from the printing process.
 
 ## Problem
 

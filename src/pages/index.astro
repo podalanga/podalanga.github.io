@@ -23,12 +23,12 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
 <BaseLayout>
   <section class="hero container">
     <div class="hero-text">
-      <p class="label">§ 00 — INDEX</p>
+      <p class="label">§ 00 // INDEX</p>
       <Logo size="hero" />
       <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
-      <p class="sub mono">CONTROL · ROBOTICS · SIMULATION — NIT TRICHY / EPFL</p>
+      <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / EPFL</p>
       <p class="clearance mono">
-        CLEARANCE <Redacted text="OBSERVER — LEVEL 3" />
+        CLEARANCE <Redacted text="OBSERVER: LEVEL 3" />
       </p>
       <Telemetry />
     </div>
@@ -48,7 +48,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
           <article class="dossier-entry">
             <p class="org">{e.data.institution}</p>
             <p class="degree">{e.data.degree}</p>
-            <p class="meta mono">{e.data.location} · {e.data.start} — {e.data.end} · {e.data.detail}</p>
+            <p class="meta mono">{e.data.location} · {e.data.start} to {e.data.end} · {e.data.detail}</p>
           </article>
         ))
       }

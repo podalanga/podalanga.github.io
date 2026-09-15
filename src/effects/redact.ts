@@ -1,6 +1,6 @@
 // Redaction reveal (§7.2): `[data-redact]` elements show a solid bar over decorative text by
 // default; hover/focus/tap scrambles the bar into the real text, then reverts on leave/blur.
-// The real text is always in the DOM (`aria-hidden="false"` text node) — the bar is purely visual.
+// The real text is always in the DOM (`aria-hidden="false"` text node); the bar is purely visual.
 import { scrambleFrame } from './scramble';
 import { prefersReducedMotion } from '../lib/reduced-motion';
 

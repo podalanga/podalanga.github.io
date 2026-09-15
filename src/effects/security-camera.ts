@@ -5,7 +5,7 @@
 // cursor sits over the drawn resting direction. Clamped to roughly -40..+35 degrees so the head
 // can't swing into the wall or floor. Updates are throttled to one per animation frame, paused via
 // IntersectionObserver while the footer is offscreen, and skipped entirely under
-// prefers-reduced-motion, where the camera just stays in its drawn pose — the ASCII art itself
+// prefers-reduced-motion, where the camera just stays in its drawn pose; the ASCII art itself
 // needs no JS at all, so no-JS visitors still see a static camera.
 import { prefersReducedMotion } from '../lib/reduced-motion';
 

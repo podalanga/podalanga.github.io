@@ -16,14 +16,14 @@ cover: ./full-arm.png
 coverAlt: "CAD render of the assembled 3R arm: turntable base, two link pairs, and end effector."
 figures:
   - src: ./full-arm.png
-    caption: "The assembled 3R arm — one yaw joint at the base, two planar revolute joints along the arm."
+    caption: "The assembled 3R arm: one yaw joint at the base, two planar revolute joints along the arm."
   - src: ./base-mount.png
     caption: "Exploded view of the anchored base: three-point anchoring with a wing to distribute lifting stress away from the two side anchors."
 ---
 
 ## Brief
 
-A 3R (three-revolute) robotic arm — one joint for base yaw, two more articulating within a single plane — built as a foundation exercise in sequential assembly, actuation, and moving frames. The arm has three degrees of freedom, one per joint.
+A 3R (three-revolute) robotic arm (one joint for base yaw, two more articulating within a single plane) built as a foundation exercise in sequential assembly, actuation, and moving frames. The arm has three degrees of freedom, one per joint.
 
 ## Problem
 
@@ -32,7 +32,7 @@ A 3R arm is straightforward to model in simulation, but physical assembly has to
 ## Approach
 
 - Fixed the base to a stable surface using three anchor points, with an extra wing added to distribute stress rather than loading only two anchors during lifting.
-- Used ST3215 servo motors with a stainless-steel flange shaft for the turntable drive — 3D-printed PLA was ruled out for this shaft because torsion breaks along the print layers.
+- Used ST3215 servo motors with a stainless-steel flange shaft for the turntable drive: 3D-printed PLA was ruled out for this shaft because torsion breaks along the print layers.
 - Assembled the turntable base, motor housings, and two link pairs in sequence: base → turntable → motor housing → first link pair → second link pair to the end effector, using Allen screws as rigid inter-link supports (again avoiding 3D-printed structural supports, which are layer-weak).
 - Generated the URDF from the CAD model using the `onshape-to-robot` extension and visualized/actuated it in RViz2.
 

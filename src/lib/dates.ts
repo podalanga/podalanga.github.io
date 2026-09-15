@@ -12,6 +12,6 @@ export function formatDateLong(date: Date): string {
 
 export function formatRange(start: Date, end: Date | undefined, status: 'ongoing' | 'completed'): string {
   const from = formatMonthYear(start);
-  if (!end || status === 'ongoing') return `${from} — PRESENT`;
-  return `${from} — ${formatMonthYear(end)}`;
+  if (!end || status === 'ongoing') return `${from} TO PRESENT`;
+  return `${from} TO ${formatMonthYear(end)}`;
 }

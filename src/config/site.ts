@@ -1,9 +1,9 @@
 export const site = {
   name: 'Podalanga',
-  title: 'Podalanga — Joshua John L',
+  title: 'Podalanga · Joshua John L',
   tagline: 'I build machines that balance, swim and see.',
   description:
-    'Robotics & control-systems engineer — NIT Trichy ICE + IIT Madras BS Data Science. Case files, archive and field log.',
+    'Robotics and control-systems engineer, NIT Trichy ICE and IIT Madras BS Data Science. Case files, archive and field log.',
   url: 'https://podalanga.github.io',
   email: 'joshuajohn.nitt@gmail.com',
   socials: {
@@ -16,7 +16,7 @@ export const site = {
     { label: 'ARCHIVE', index: '02', href: '/archive' },
     { label: 'BLOG', index: '03', href: '/blog' },
   ],
-  // epoch for the UPTIME telemetry counter — start of work history
+  // epoch for the UPTIME telemetry counter: start of work history
   epoch: '2023-08-01T00:00:00+05:30',
   telemetry: {
     coords: [

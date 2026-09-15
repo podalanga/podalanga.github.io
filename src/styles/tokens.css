@@ -1,5 +1,5 @@
 :root {
-  /* color — dark (default) */
+  /* color: dark (default) */
   --bg: #0a0a0a;
   --bg-raised: #121212;
   --fg: #e8e6e3;
@@ -26,7 +26,7 @@
   --text-2xl: clamp(2.6rem, 1.8rem + 3.6vw, 4.6rem);
   --text-3xl: clamp(3.2rem, 1.8rem + 6.5vw, 7.5rem);
 
-  /* spacing — 4px base */
+  /* spacing: 4px base */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

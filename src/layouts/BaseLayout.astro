@@ -102,7 +102,7 @@ const personSchema = {
       import { initConsoleSigil } from '../effects/console-sigil';
 
       // page-glitch, konami and the console sigil don't touch per-page DOM (or only ever touch
-      // `document`, which persists across soft navs) — this script itself doesn't re-execute on
+      // `document`, which persists across soft navs); this script itself doesn't re-execute on
       // navigation, so setting these up once here is enough for the whole session.
       initPageGlitch();
       initKonami();

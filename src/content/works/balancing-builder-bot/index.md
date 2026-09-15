@@ -25,7 +25,7 @@ figures:
 
 ## Brief
 
-Team BB#2091's entry for the e-Yantra Robotics Competition: a two-wheeled self-balancing robot fitted with a gripper, required to traverse a predefined path crossing obstacles while picking up and dropping foam boxes — all while staying balanced.
+Team BB#2091's entry for the e-Yantra Robotics Competition: a two-wheeled self-balancing robot fitted with a gripper, required to traverse a predefined path crossing obstacles while picking up and dropping foam boxes, all while staying balanced.
 
 ## Problem
 

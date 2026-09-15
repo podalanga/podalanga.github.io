@@ -32,15 +32,15 @@ export interface CommandResult {
 }
 
 const HELP_LINES = [
-  'help                 — list commands',
-  'whoami               — short bio',
-  'ls works             — list case files',
-  'cat <codename>       — show a case file summary',
-  'open <target>        — navigate (works | archive | log | a codename)',
-  'contact              — email / github / linkedin',
-  'theme [dark|light]   — switch theme',
-  'clear                — clear the screen',
-  'date                 — current date/time',
+  'help                 : list commands',
+  'whoami               : short bio',
+  'ls works             : list case files',
+  'cat <codename>       : show a case file summary',
+  'open <target>        : navigate (works | archive | log | a codename)',
+  'contact              : email / github / linkedin',
+  'theme [dark|light]   : switch theme',
+  'clear                : clear the screen',
+  'date                 : current date/time',
 ];
 
 function findWork(ctx: CommandContext, codename: string): WorkSummary | undefined {
@@ -49,7 +49,7 @@ function findWork(ctx: CommandContext, codename: string): WorkSummary | undefine
 }
 
 function yearRange(w: WorkSummary): string {
-  return w.status === 'ongoing' || !w.endYear ? `${w.startYear}–PRESENT` : `${w.startYear}–${w.endYear}`;
+  return w.status === 'ongoing' || !w.endYear ? `${w.startYear}-PRESENT` : `${w.startYear}-${w.endYear}`;
 }
 
 export function runCommand(raw: string, ctx: CommandContext): CommandResult {
@@ -75,7 +75,7 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
     case 'whoami':
       return {
         lines: [
-          'Joshua John L — robotics / control-systems engineer.',
+          'Joshua John L, robotics / control-systems engineer.',
           'NIT Trichy (Instrumentation & Control) + IIT Madras (BS Data Science).',
           'Building machines that balance, swim and see.',
         ],

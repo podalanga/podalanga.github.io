@@ -65,7 +65,7 @@ collections:
         widget: select
         options: [photography, music, misc]
       - { name: date, label: Date, widget: datetime, type: date, format: 'YYYY-MM-DD' }
-      - { name: location, label: Location, widget: string, required: false, hint: 'Leave empty if not known — do not guess.' }
+      - { name: location, label: Location, widget: string, required: false, hint: 'Leave empty if not known: do not guess.' }
       - { name: image, label: Image, widget: image, required: false, hint: 'Required when kind is "photo".' }
       - { name: alt, label: Alt text, widget: string, required: false }
       - { name: youtube, label: YouTube URL, widget: string, required: false, hint: 'Required when kind is "video".' }
@@ -123,7 +123,7 @@ collections:
         label: Classified phrases
         widget: list
         required: false
-        hint: 'Decorative redacted phrases shown under the title. No new facts — flavor text only.'
+        hint: 'Decorative redacted phrases shown under the title. No new facts: flavor text only.'
         field: { name: phrase, label: Phrase, widget: string }
       - { name: body, label: Body, widget: markdown }
 

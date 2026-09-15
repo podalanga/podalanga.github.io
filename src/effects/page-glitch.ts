@@ -1,6 +1,6 @@
 // Page transition glitch (§6.3): a short red glyph band sweeps top->bottom on `astro:before-swap`,
 // masking the ClientRouter DOM swap underneath. Disabled entirely under reduced motion (falls back
-// to the router's default instant swap). Registered once for the session (not per astro:page-load) —
+// to the router's default instant swap). Registered once for the session (not per astro:page-load):
 // there is only ever one `astro:before-swap` listener for the app's lifetime.
 import { buildGlyphAtlas, intensityToLevel } from './ascii/glyph-atlas';
 import { computeGrid } from './ascii/grid';

@@ -20,7 +20,7 @@ interface Timeline {
   dissolve: [number, number];
 }
 
-// Home page only — the extra time in `watch` gives the terminal-hint caption (shown for the
+// Home page only: the extra time in `watch` gives the terminal-hint caption (shown for the
 // loader's whole run) room to actually be read.
 const FULL: Timeline = {
   noise: [0, 0.6],

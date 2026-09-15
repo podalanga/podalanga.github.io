@@ -1,5 +1,5 @@
 // Header IST clock (§3.3). Kept in the same init-on-`astro:page-load` / teardown-on-`astro:before-swap`
-// lifecycle as the other per-page effects — a plain inline `<script>` in Header.astro only runs
+// lifecycle as the other per-page effects; a plain inline `<script>` in Header.astro only runs
 // once (Astro's router doesn't re-execute an unchanged script across soft navs), which used to
 // leave the clock frozen and blank after the first navigation.
 export function initHeaderClock(): () => void {

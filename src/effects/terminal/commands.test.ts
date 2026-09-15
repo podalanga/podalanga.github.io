@@ -18,14 +18,14 @@ function ctx(overrides: Partial<CommandContext> = {}): CommandContext {
   };
 }
 
-describe('runCommand — empty input', () => {
+describe('runCommand : empty input', () => {
   it('returns no lines and no action for blank/whitespace input', () => {
     expect(runCommand('', ctx())).toEqual({ lines: [] });
     expect(runCommand('   ', ctx())).toEqual({ lines: [] });
   });
 });
 
-describe('runCommand — help', () => {
+describe('runCommand : help', () => {
   it('lists commands', () => {
     const result = runCommand('help', ctx());
     expect(result.lines.length).toBeGreaterThan(0);
@@ -33,17 +33,17 @@ describe('runCommand — help', () => {
   });
 });
 
-describe('runCommand — whoami', () => {
+describe('runCommand : whoami', () => {
   it('gives a short bio', () => {
     const result = runCommand('whoami', ctx());
     expect(result.lines.join(' ')).toMatch(/robotics/i);
   });
 });
 
-describe('runCommand — ls works', () => {
+describe('runCommand : ls works', () => {
   it('lists codenames with year ranges', () => {
     const result = runCommand('ls works', ctx());
-    expect(result.lines).toEqual(['ZBOT             2026–2026', 'PENDULUM         2024–PRESENT']);
+    expect(result.lines).toEqual(['ZBOT             2026-2026', 'PENDULUM         2024-PRESENT']);
   });
 
   it('errors on unknown ls targets', () => {
@@ -52,7 +52,7 @@ describe('runCommand — ls works', () => {
   });
 });
 
-describe('runCommand — cat', () => {
+describe('runCommand : cat', () => {
   it('shows a case file summary and link, case-insensitively', () => {
     const result = runCommand('cat zbot', ctx());
     expect(result.lines).toEqual(['Ported a swimming robot sim.', '→ /profile/zbot']);
@@ -68,7 +68,7 @@ describe('runCommand — cat', () => {
   });
 });
 
-describe('runCommand — open', () => {
+describe('runCommand : open', () => {
   it('navigates to section routes', () => {
     const result = runCommand('open works', ctx());
     expect(result.action).toEqual({ type: 'navigate', href: '/profile' });
@@ -86,7 +86,7 @@ describe('runCommand — open', () => {
   });
 });
 
-describe('runCommand — contact', () => {
+describe('runCommand : contact', () => {
   it('lists email, github, linkedin', () => {
     const result = runCommand('contact', ctx());
     expect(result.lines).toEqual([
@@ -97,7 +97,7 @@ describe('runCommand — contact', () => {
   });
 });
 
-describe('runCommand — theme', () => {
+describe('runCommand : theme', () => {
   it('reports current theme with no argument', () => {
     const result = runCommand('theme', ctx());
     expect(result.lines[0]).toMatch(/current theme: dark/);
@@ -121,20 +121,20 @@ describe('runCommand — theme', () => {
   });
 });
 
-describe('runCommand — clear', () => {
+describe('runCommand : clear', () => {
   it('returns a clear action', () => {
     expect(runCommand('clear', ctx())).toEqual({ lines: [], action: { type: 'clear' } });
   });
 });
 
-describe('runCommand — date', () => {
+describe('runCommand : date', () => {
   it('echoes the injected now', () => {
     const result = runCommand('date', ctx());
     expect(result.lines[0]).toBe(ctx().now.toString());
   });
 });
 
-describe('runCommand — easter eggs', () => {
+describe('runCommand : easter eggs', () => {
   it('sudo is denied and reported', () => {
     const result = runCommand('sudo rm -rf /', ctx());
     expect(result.lines).toEqual(['PERMISSION DENIED. THIS INCIDENT WILL BE REPORTED.']);
@@ -146,7 +146,7 @@ describe('runCommand — easter eggs', () => {
   });
 });
 
-describe('runCommand — unknown', () => {
+describe('runCommand : unknown', () => {
   it('reports command not found', () => {
     const result = runCommand('frobnicate', ctx());
     expect(result.lines).toEqual(["command not found: frobnicate. try 'help'"]);

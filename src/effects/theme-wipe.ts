@@ -177,7 +177,7 @@ function runWipe(button: HTMLButtonElement, next: Theme, originX: number, origin
             const glyphIndex = Math.floor(Math.random() * signalAtlas.glyphs.length);
             signalAtlas.draw(ctx, glyphIndex, level, px - cellSize / 2, py - cellSize / 2);
           }
-          // else: fully revealed — cell left transparent, new theme shows through.
+          // else: fully revealed; cell left transparent, new theme shows through.
         }
       }
     }

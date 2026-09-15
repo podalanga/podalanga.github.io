@@ -111,7 +111,7 @@ export function initTerminal(): () => void {
       return;
     }
     if (e.key === 'Tab') {
-      // Only the close button and input are focusable inside the panel — trap between them.
+      // Only the close button and input are focusable inside the panel; trap between them.
       // DOM order is close button (in the top bar) then input (in the bottom row), so that's
       // also tab order: first = close button, last = input.
       const focusables = [closeButton, input].filter((el): el is HTMLElement => !!el);

@@ -23,11 +23,11 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
 ];
 ---
 
-<BaseLayout title={`Profile — ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
+<BaseLayout title={`Profile · ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
   <section class="container intro">
-    <p class="label">§ 01 — PROFILE</p>
+    <p class="label">§ 01 // PROFILE</p>
     <h1>Case files</h1>
-    <p class="dek">Internships, projects, and competitions — sorted by start date, newest first.</p>
+    <p class="dek">Internships, projects, and competitions, sorted by start date, newest first.</p>
   </section>
 
   <section class="container filters" aria-label="Filter case files by type">
@@ -76,7 +76,7 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
           <article class="dossier-entry">
             <p class="org">{e.data.institution}</p>
             <p class="degree">{e.data.degree}</p>
-            <p class="meta mono">{e.data.location} · {e.data.start} — {e.data.end} · {e.data.detail}</p>
+            <p class="meta mono">{e.data.location} · {e.data.start} to {e.data.end} · {e.data.detail}</p>
             <ul class="coursework mono">
               {e.data.coursework.map((c) => <li>{c}</li>)}
             </ul>
@@ -116,8 +116,8 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       {
         positions.map((p) => (
           <li>
-            <p class="org">{p.data.role} — {p.data.org}</p>
-            <p class="meta mono">{p.data.start} — {p.data.end}</p>
+            <p class="org">{p.data.role} at {p.data.org}</p>
+            <p class="meta mono">{p.data.start} to {p.data.end}</p>
             <p class="meta">{p.data.detail}</p>
           </li>
         ))

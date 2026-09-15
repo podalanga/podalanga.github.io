@@ -1,4 +1,4 @@
-// Pure intensity field for the ASCII Orwell Eye loader. No DOM/Math.random access —
+// Pure intensity field for the ASCII Orwell Eye loader. No DOM/Math.random access:
 // deterministic in (nx, ny, t, state) so it can be unit-tested. nx, ny are aspect-corrected,
 // viewport-centered coordinates roughly in [-1, 1].
 
@@ -19,7 +19,7 @@ function frac(n: number): number {
   return n - Math.floor(n);
 }
 
-/** Deterministic pseudo-noise in [0, 1) — no Math.random, so the field stays pure/testable. */
+/** Deterministic pseudo-noise in [0, 1), no Math.random, so the field stays pure/testable. */
 function noise2(x: number, y: number, t: number): number {
   return frac(Math.sin(x * 12.9898 + y * 78.233 + t * 0.37) * 43758.5453);
 }

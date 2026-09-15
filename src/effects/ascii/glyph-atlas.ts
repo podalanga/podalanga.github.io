@@ -1,5 +1,5 @@
 // Pre-rendered glyph atlas: N glyphs x M brightness levels x one color, rendered once to an
-// offscreen canvas, then blitted with drawImage — never fillText per cell per frame.
+// offscreen canvas, then blitted with drawImage; never fillText per cell per frame.
 
 export const GLYPHS = ' .·:-=+*<>/\\|[]{}01#%&$@'.split('');
 export const DEFAULT_LEVELS = 8;

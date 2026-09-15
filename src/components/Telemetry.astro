@@ -10,7 +10,7 @@ const coords = site.telemetry.coords.map((c) => c.value);
 ---
 
 <div class="telemetry mono" class:list={{ compact: variant === 'compact' }} data-telemetry data-telemetry-coords={JSON.stringify(coords)} aria-hidden="true">
-  <span class="field"><span class="telemetry-clock">—</span></span>
+  <span class="field"><span class="telemetry-clock">--:--</span></span>
   {
     variant === 'full' && (
       <>

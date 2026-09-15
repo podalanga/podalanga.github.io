@@ -22,12 +22,12 @@ figures:
   - src: ./madgwick-flowchart.png
     caption: "IMU signal-conditioning pipeline: the Madgwick filter fuses gyroscope and accelerometer readings into a drift-corrected orientation."
   - src: ./lidar-clutter.png
-    caption: "Clutter-suppression filter in action across four LiDAR frames — green crosses mark true targets, red squares mark clutter."
+    caption: "Clutter-suppression filter in action across four LiDAR frames: green crosses mark true targets, red squares mark clutter."
 ---
 
 ## Brief
 
-A barebone ROS2 differential-drive robot built to localize itself and map its surroundings — the standard first step toward autonomous navigation. The bot fuses IMU, motor-encoder, LiDAR, and depth-camera data to estimate its trajectory and build a spatial map in real time, entirely without GPS.
+A barebone ROS2 differential-drive robot built to localize itself and map its surroundings, the standard first step toward autonomous navigation. The bot fuses IMU, motor-encoder, LiDAR, and depth-camera data to estimate its trajectory and build a spatial map in real time, entirely without GPS.
 
 ## Problem
 
@@ -36,7 +36,7 @@ Each sensor stream arrives noisy and asynchronous: encoder counts jitter, LiDAR 
 ## Approach
 
 - Designed the bot's XACRO description with LiDAR and depth camera, configured with `ros2_control`, and simulated in Gazebo.
-- Built an IMU signal-conditioning pipeline: static/dynamic error calibration by curve fitting, then a **Madgwick filter** to fuse gyroscope and accelerometer readings — trusting the gyroscope for frame-to-frame orientation change, and correcting its drift against the accelerometer's gravity vector by gradient descent — followed by a low-pass filter to remove residual jitter.
+- Built an IMU signal-conditioning pipeline: static/dynamic error calibration by curve fitting, then a **Madgwick filter** to fuse gyroscope and accelerometer readings (trusting the gyroscope for frame-to-frame orientation change, and correcting its drift against the accelerometer's gravity vector by gradient descent), followed by a low-pass filter to remove residual jitter.
 - Built a LiDAR clutter-suppression filter: each return point is checked against range validity, intensity/SNR, spatial density (isolated points are likely dust or snow), and temporal stability across frames, before being kept as a valid target.
 - Built a real-time encoder signal pipeline: ISR-based quadrature decoding, Welford's online algorithm for numerically stable streaming mean/variance, a Hampel filter for outlier rejection, and recursive least-squares for online dynamic-error compensation.
 - Visualized the bot, pointcloud, and depth-camera output in RViz2, and drove the bot by joystick, mapping six joystick axes to differential-drive commands.

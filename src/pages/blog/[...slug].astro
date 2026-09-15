@@ -20,7 +20,7 @@ const { Content } = await render(post);
 const { data } = post;
 ---
 
-<BaseLayout title={`${data.title} — Blog`} description={data.description}>
+<BaseLayout title={`${data.title} · Blog`} description={data.description}>
   <article class="container post">
     <header class="post-header">
       <p class="date mono">{formatDateLong(data.date)}{data.updated && ` · UPDATED ${formatDateLong(data.updated)}`}</p>
