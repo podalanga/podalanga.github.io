@@ -31,21 +31,21 @@ const FULL: Timeline = {
 };
 
 const FAST: Timeline = {
-  noise: [0, 0.15],
-  resolve: [0.15, 0.4],
-  watch: [0.4, 1.2],
-  blink: [1.2, 1.35],
-  dissolve: [1.35, 1.6],
+  noise: [0, 0.33],
+  resolve: [0.33, 0.88],
+  watch: [0.88, 2.63],
+  blink: [2.63, 2.95],
+  dissolve: [2.95, 3.5],
 };
 
 // Non-home pages skip the terminal hint (already reachable via the header dot and footer link
 // there) and don't need the runway to read it, so they get an even quicker flash than FAST.
 const QUICK: Timeline = {
-  noise: [0, 0.08],
-  resolve: [0.08, 0.2],
-  watch: [0.2, 0.3],
-  blink: [0.3, 0.38],
-  dissolve: [0.38, 0.5],
+  noise: [0, 0.16],
+  resolve: [0.16, 0.4],
+  watch: [0.4, 0.6],
+  blink: [0.6, 0.76],
+  dissolve: [0.76, 1],
 };
 
 function phaseAt(t: number, timeline: Timeline): Phase {
