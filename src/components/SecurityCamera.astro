@@ -1,67 +1,93 @@
 ---
-// ASCII security camera (replaces the old rotating-ring "ouroboros" — it never actually read as
-// an ouroboros). A boxy 1984-style CCTV housing on a wall mount; the "." in its lens is overlaid
-// by a pupil glyph that swivels left/right to track the cursor, via a CSS custom property JS sets
-// on rAF (`--t`, -1..1) rather than JS-computed pixel offsets, so the swivel range stays locked to
-// the character grid regardless of font size. Static (centered, no tracking) under
-// prefers-reduced-motion or without JS — the ASCII art itself is plain text either way.
-const ART = [
-  '   ,-----------------.',
-  '  /  ,-------------.  \\',
-  ' |   |             |   |',
-  ' |   |      .      |   |>',
-  ' |   |             |   |',
-  '  \\  \'-------------\'  /',
-  '   \'--------+--------\'',
-  '            |',
-  '          --+--',
-].join('\n');
+// Small two-layer ASCII CCTV camera bolted into the footer's bottom-left corner, wall bracket
+// clipped by the page edge. Two `<pre>` layers share one character grid (see security-camera-art.ts):
+// `.mount` (joint + arm + wall plate) never moves; `.head` (the housing) rotates in the page plane
+// around the joint via `transform-origin` + `rotate()`, driven by `--angle` from security-camera.ts.
+// A glowing red `.lens` dot rides along with the head. Static, unrotated, non-glowing under
+// prefers-reduced-motion or no-JS — the ASCII art itself needs no JS at all.
+import { HEAD_ART, MOUNT_ART, HEAD_ROWS, PIVOT, LENS } from '../effects/security-camera-art';
+
+const MOUNT_ROWS = MOUNT_ART.split('\n').length;
+const TOTAL_ROWS = HEAD_ROWS + MOUNT_ROWS;
+const WIDTH_CH = Math.max(
+  ...HEAD_ART.split('\n').map((l) => l.length),
+  ...MOUNT_ART.split('\n').map((l) => l.length),
+);
 ---
 
-<div class="camera" data-security-camera aria-hidden="true">
-  <pre class="art">{ART}</pre>
-  <span class="led" aria-hidden="true"></span>
-  <span class="pupil" data-camera-pupil>o</span>
+<div
+  class="camera-mount"
+  data-security-camera
+  aria-hidden="true"
+  style={`width:${WIDTH_CH}ch; height:${TOTAL_ROWS}em;`}
+>
+  <pre class="mount" style={`top:${HEAD_ROWS}em;`}>{MOUNT_ART}</pre>
+  <div class="head" style={`transform-origin: ${PIVOT.col}ch ${PIVOT.row}em;`}>
+    <pre class="art">{HEAD_ART}</pre>
+    <span
+      class="lens"
+      data-camera-lens
+      style={`top:${LENS.row}em; left:${LENS.col}ch;`}
+    ></span>
+  </div>
+  <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${PIVOT.col}ch;`}></span>
 </div>
 
 <style>
-  .camera {
-    position: relative;
-    width: 25ch;
-    line-height: 1.35;
+  .camera-mount {
+    position: absolute;
+    left: -2ch;
+    bottom: 0;
+    z-index: 0;
+    font-family: var(--font-mono);
+    font-size: 3.6px;
+    line-height: 1em;
     color: var(--fg-muted);
-    user-select: none;
+    pointer-events: none;
   }
 
+  @media (max-width: 480px) {
+    .camera-mount {
+      font-size: 2.6px;
+    }
+  }
+
+  .mount,
   .art {
+    position: absolute;
+    top: 0;
+    left: 0;
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-family: inherit;
+    font-size: inherit;
     line-height: inherit;
     white-space: pre;
+    color: inherit;
   }
 
-  .led {
+  .head {
     position: absolute;
-    top: 0.1em;
-    left: 20ch;
-    width: 5px;
-    height: 5px;
+    top: 0;
+    left: 0;
+    transform: rotate(calc(var(--angle, 0) * 1deg));
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .lens {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
     border-radius: 50%;
     background: var(--signal);
+    box-shadow: 0 0 4px 1px var(--signal);
     animation: pulse 2.4s ease-in-out infinite;
   }
 
-  .pupil {
+  .pivot {
     position: absolute;
-    top: calc(3 * 1.35em);
-    left: 12ch;
-    transform: translate(-50%, 0) translateX(calc(var(--t, 0) * 6ch));
-    color: var(--signal);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    line-height: inherit;
-    transition: transform 0.4s var(--ease-out);
+    width: 0;
+    height: 0;
   }
 
   @keyframes pulse {
@@ -70,16 +96,16 @@ const ART = [
       opacity: 1;
     }
     50% {
-      opacity: 0.25;
+      opacity: 0.35;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .led {
-      animation: none;
-    }
-    .pupil {
+    .head {
       transition: none;
+    }
+    .lens {
+      animation: none;
     }
   }
 </style>
