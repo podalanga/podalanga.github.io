@@ -1,14 +1,16 @@
 ---
 import { site } from '../config/site';
-import Ouroboros from './Ouroboros.astro';
+import SecurityCamera from './SecurityCamera.astro';
+import WireMess from './WireMess.astro';
 import Telemetry from './Telemetry.astro';
 
 const startYear = new Date(site.epoch).getFullYear();
 ---
 
 <footer class="site-footer">
+  <WireMess />
   <div class="container grid">
-    <Ouroboros />
+    <SecurityCamera />
 
     <div class="links">
       <a href={site.socials.github} rel="me noopener noreferrer" target="_blank" class="mono">
@@ -30,8 +32,15 @@ const startYear = new Date(site.epoch).getFullYear();
 
 <style>
   .site-footer {
+    position: relative;
     border-top: 1px solid var(--line);
     padding-block: var(--space-6);
+    overflow: hidden;
+  }
+
+  .site-footer .container {
+    position: relative;
+    z-index: 1;
   }
 
   .grid {

@@ -1,0 +1,85 @@
+---
+// ASCII security camera (replaces the old rotating-ring "ouroboros" — it never actually read as
+// an ouroboros). A boxy 1984-style CCTV housing on a wall mount; the "." in its lens is overlaid
+// by a pupil glyph that swivels left/right to track the cursor, via a CSS custom property JS sets
+// on rAF (`--t`, -1..1) rather than JS-computed pixel offsets, so the swivel range stays locked to
+// the character grid regardless of font size. Static (centered, no tracking) under
+// prefers-reduced-motion or without JS — the ASCII art itself is plain text either way.
+const ART = [
+  '   ,-----------------.',
+  '  /  ,-------------.  \\',
+  ' |   |             |   |',
+  ' |   |      .      |   |>',
+  ' |   |             |   |',
+  '  \\  \'-------------\'  /',
+  '   \'--------+--------\'',
+  '            |',
+  '          --+--',
+].join('\n');
+---
+
+<div class="camera" data-security-camera aria-hidden="true">
+  <pre class="art">{ART}</pre>
+  <span class="led" aria-hidden="true"></span>
+  <span class="pupil" data-camera-pupil>o</span>
+</div>
+
+<style>
+  .camera {
+    position: relative;
+    width: 25ch;
+    line-height: 1.35;
+    color: var(--fg-muted);
+    user-select: none;
+  }
+
+  .art {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: inherit;
+    white-space: pre;
+  }
+
+  .led {
+    position: absolute;
+    top: 0.1em;
+    left: 20ch;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .pupil {
+    position: absolute;
+    top: calc(3 * 1.35em);
+    left: 12ch;
+    transform: translate(-50%, 0) translateX(calc(var(--t, 0) * 6ch));
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: inherit;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .led {
+      animation: none;
+    }
+    .pupil {
+      transition: none;
+    }
+  }
+</style>

@@ -8,7 +8,7 @@ const works = defineCollection({
       title: z.string(),
       codename: z.string(),
       fileNo: z.number(),
-      kind: z.enum(['internship', 'project', 'competition']),
+      kind: z.enum(['internship', 'project', 'competition', 'hobby']),
       org: z.string(),
       location: z.string(),
       supervisor: z.string().optional(),

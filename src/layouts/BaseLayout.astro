@@ -95,8 +95,10 @@ const personSchema = {
       import { initThemeWipe } from '../effects/theme-wipe';
       import { initRedacted } from '../effects/redact';
       import { initTelemetry } from '../effects/telemetry';
-      import { initOuroboros } from '../effects/ouroboros';
+      import { initHeaderClock } from '../effects/header-clock';
+      import { initSecurityCamera } from '../effects/security-camera';
       import { initTerminal } from '../effects/terminal/terminal';
+      import { initTerminalHint } from '../effects/terminal-hint';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -117,8 +119,10 @@ const personSchema = {
           initScramble(),
           initRedacted(),
           initTelemetry(),
-          initOuroboros(),
+          initHeaderClock(),
+          initSecurityCamera(),
           initTerminal(),
+          initTerminalHint(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });

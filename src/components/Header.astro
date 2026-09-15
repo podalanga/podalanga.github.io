@@ -153,26 +153,3 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     }
   }
 </style>
-
-<script>
-  const clock = document.getElementById('ist-clock');
-
-  function tick() {
-    if (!clock) return;
-    const now = new Date();
-    const ist = new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Asia/Kolkata',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    }).format(now);
-    clock.textContent = `${ist} IST`;
-    clock.setAttribute('datetime', now.toISOString());
-  }
-
-  tick();
-  const id = window.setInterval(tick, 1000);
-
-  document.addEventListener('astro:before-swap', () => window.clearInterval(id), { once: true });
-</script>

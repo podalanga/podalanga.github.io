@@ -1,0 +1,39 @@
+---
+// Purely decorative sagging power-line cables strung across the footer's top edge — static
+// inline SVG, no JS, so it costs nothing under reduced-motion or no-JS. Several overlapping
+// catenary-ish curves in the signal color; opacity is intentionally translucent so the strokes
+// visibly darken to a denser red wherever two or more cross, per the "chaotic overhead wires"
+// brief.
+---
+
+<svg class="wires" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M -20 10 Q 200 95 420 20 T 860 15 T 1220 40" />
+  <path d="M -30 30 Q 150 -10 380 55 T 760 10 T 1230 65" />
+  <path d="M -10 60 Q 260 100 500 35 T 940 70 T 1210 5" />
+  <path d="M -25 5 Q 320 60 620 8 T 1050 50 T 1225 20" />
+  <path d="M -15 75 Q 240 20 470 90 T 900 35 T 1215 55" />
+</svg>
+
+<style>
+  .wires {
+    position: absolute;
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: 64px;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .wires path {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 1.2;
+    opacity: 0.4;
+    mix-blend-mode: screen;
+  }
+
+  :global(html[data-theme='light']) .wires path {
+    mix-blend-mode: multiply;
+    opacity: 0.5;
+  }
+</style>

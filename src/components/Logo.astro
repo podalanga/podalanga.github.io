@@ -7,15 +7,27 @@ interface Props {
 const { size = 'header' } = Astro.props;
 ---
 
-<a href="/" class:list={['logo', size]} aria-label={`${site.name} — home`}>
-  <span class="wordmark">{site.name}</span><span class="dot" aria-hidden="true">.</span>
-</a>
+<span class:list={['logo', size]}>
+  <a href="/" class="wordmark" aria-label={`${site.name} — home`}>{site.name}</a><button
+    type="button"
+    class="dot"
+    data-terminal-open
+    aria-label="Open terminal"
+  >.</button>
+  {
+    size === 'header' && (
+      <span class="hint mono" data-terminal-hint hidden>
+        Big Brother wants you to try the terminal. Press <kbd>`</kbd> to open.
+      </span>
+    )
+  }
+</span>
 
 <style>
   .logo {
+    position: relative;
     display: inline-flex;
     align-items: baseline;
-    text-decoration: none;
     line-height: 1;
   }
 
@@ -25,12 +37,19 @@ const { size = 'header' } = Astro.props;
     font-weight: 900;
     color: var(--fg);
     letter-spacing: -0.01em;
+    text-decoration: none;
   }
 
   .dot {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
     color: var(--signal);
     font-family: var(--font-display);
     font-weight: 900;
+    animation: pulse 2.4s ease-in-out infinite;
   }
 
   .header .wordmark {
@@ -43,5 +62,45 @@ const { size = 'header' } = Astro.props;
 
   .hero .dot {
     font-size: var(--text-3xl);
+  }
+
+  .hint {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-raised);
+    border: 1px solid var(--signal);
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.02em;
+    width: max-content;
+    max-width: min(260px, calc(100vw - var(--space-5) * 2));
+    z-index: 50;
+  }
+
+  .hint kbd {
+    font-family: var(--font-mono);
+    border: 1px solid var(--line);
+    padding: 0 0.3em;
+    border-radius: 2px;
+    color: var(--fg);
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+    }
   }
 </style>

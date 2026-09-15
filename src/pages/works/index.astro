@@ -10,11 +10,12 @@ const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
 );
 
-const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competition' }[] = [
+const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competition' | 'hobby' }[] = [
   { label: 'ALL', value: 'all' },
   { label: 'INTERNSHIPS', value: 'internship' },
-  { label: 'PROJECTS', value: 'project' },
+  { label: 'PRIMARY PROJECTS', value: 'project' },
   { label: 'COMPETITION', value: 'competition' },
+  { label: 'HOBBY PROJECTS', value: 'hobby' },
 ];
 ---
 
@@ -58,6 +59,7 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
         </div>
       ))
     }
+    <p class="empty mono" data-empty-state hidden>NO FILES LOGGED YET</p>
   </section>
 
   <section class="container dossier">
@@ -188,6 +190,13 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     display: none;
   }
 
+  .empty {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    letter-spacing: 0.06em;
+    padding-top: var(--space-4);
+  }
+
   .dossier {
     border-top: 1px solid var(--line);
     display: flex;
@@ -292,15 +301,19 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   function initFilters() {
     const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
     const rows = document.querySelectorAll<HTMLElement>('.row');
+    const emptyState = document.querySelector<HTMLElement>('[data-empty-state]');
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
         chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        let visibleCount = 0;
         rows.forEach((row) => {
           const show = filter === 'all' || row.dataset.kind === filter;
           row.hidden = !show;
+          if (show) visibleCount += 1;
         });
+        if (emptyState) emptyState.hidden = visibleCount > 0;
       });
     });
   }

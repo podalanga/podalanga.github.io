@@ -22,6 +22,7 @@ export const site = {
     coords: [
       { label: 'NIT Trichy', value: '10.7589°N 78.8132°E' },
       { label: 'EPFL', value: '46.5191°N 6.5668°E' },
+      { label: 'IIT Madras', value: '12.9915°N 80.2336°E' },
     ],
   },
 } as const;

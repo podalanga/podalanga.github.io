@@ -89,7 +89,7 @@ collections:
       - name: kind
         label: Kind
         widget: select
-        options: [internship, project, competition]
+        options: [internship, project, competition, hobby]
       - { name: org, label: Organization, widget: string }
       - { name: location, label: Location, widget: string }
       - { name: supervisor, label: Supervisor, widget: string, required: false }
