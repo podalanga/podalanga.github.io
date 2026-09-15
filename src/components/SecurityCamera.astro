@@ -5,7 +5,19 @@
 // around the joint via `transform-origin` + `rotate()`, driven by `--angle` from security-camera.ts.
 // A glowing red `.lens` dot rides along with the head. Static, unrotated, non-glowing under
 // prefers-reduced-motion or no-JS — the ASCII art itself needs no JS at all.
+//
+// The container/pivot/lens geometry below is measured in a *fixed* em-per-column ratio
+// (CHAR_W_EM, JetBrains Mono's actual ~0.6em advance width) rather than the `ch` unit. `ch`
+// tracks whatever font is currently active, and `--font-mono` loads with `font-display: swap`
+// (see @fontsource-variable/jetbrains-mono) — so for the brief window before it swaps in, `ch`
+// resolves against the fallback system monospace font instead, whose glyphs can be far wider
+// relative to its em-box. Because only the width side of this layout used `ch`, that swap
+// visibly stretched the whole camera sideways for a frame. The `<pre>` text itself still lays
+// out with real glyph metrics either way (it's ordinary text), so this only affects the
+// container's own box and the pivot/lens marker positions — both tolerate the ~0.2% slop.
 import { HEAD_ART, MOUNT_ART, HEAD_ROWS, PIVOT, LENS } from '../effects/security-camera-art';
+
+const CHAR_W_EM = 0.6;
 
 const MOUNT_ROWS = MOUNT_ART.split('\n').length;
 const TOTAL_ROWS = HEAD_ROWS + MOUNT_ROWS;
@@ -13,30 +25,31 @@ const WIDTH_CH = Math.max(
   ...HEAD_ART.split('\n').map((l) => l.length),
   ...MOUNT_ART.split('\n').map((l) => l.length),
 );
+const toEm = (cols: number) => `${(cols * CHAR_W_EM).toFixed(3)}em`;
 ---
 
 <div
   class="camera-mount"
   data-security-camera
   aria-hidden="true"
-  style={`width:${WIDTH_CH}ch; height:${TOTAL_ROWS}em;`}
+  style={`width:${toEm(WIDTH_CH)}; height:${TOTAL_ROWS}em;`}
 >
   <pre class="mount" style={`top:${HEAD_ROWS}em;`}>{MOUNT_ART}</pre>
-  <div class="head" style={`transform-origin: ${PIVOT.col}ch ${PIVOT.row}em;`}>
+  <div class="head" style={`transform-origin: ${toEm(PIVOT.col)} ${PIVOT.row}em;`}>
     <pre class="art">{HEAD_ART}</pre>
     <span
       class="lens"
       data-camera-lens
-      style={`top:${LENS.row + 0.5}em; left:${LENS.col + 0.5}ch;`}
+      style={`top:${LENS.row + 0.5}em; left:${toEm(LENS.col + 0.5)};`}
     ></span>
   </div>
-  <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${PIVOT.col}ch;`}></span>
+  <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${toEm(PIVOT.col)};`}></span>
 </div>
 
 <style>
   .camera-mount {
     position: absolute;
-    left: -2ch;
+    left: -1.2em;
     bottom: 0;
     z-index: 0;
     font-family: var(--font-mono);
