@@ -65,9 +65,7 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
         <Image src={cover} alt={coverAlt ?? title} widths={[320, 640, 960]} sizes="(min-width: 780px) 40vw, 100vw" />
       </div>
     ) : (
-      <div class="thumb placeholder mono" aria-hidden="true">
-        <span>NO VISUAL ON FILE</span>
-      </div>
+      <div class="thumb placeholder" aria-hidden="true" />
     )
   }
 </a>
@@ -118,25 +116,7 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
   }
 
   .thumb.placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-4);
-    text-align: center;
-    background:
-      repeating-linear-gradient(
-        135deg,
-        var(--bg-raised),
-        var(--bg-raised) 10px,
-        var(--bg) 10px,
-        var(--bg) 20px
-      );
-  }
-
-  .thumb.placeholder span {
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-    color: var(--fg-muted);
+    border: 0;
   }
 
   @media (hover: hover) {
