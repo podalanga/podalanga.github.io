@@ -33,13 +33,35 @@ export function initTerminal(): () => void {
   let historyIndex = -1;
   let lastFocused: HTMLElement | null = null;
 
-  function print(lines: string[]): void {
+  function print(lines: string[], className?: string): void {
     for (const line of lines) {
       const p = document.createElement('p');
+      if (className) p.className = className;
       p.textContent = line;
       log!.appendChild(p);
     }
     log!.scrollTop = log!.scrollHeight;
+  }
+
+  function printInput(raw: string): void {
+    const p = document.createElement('p');
+    p.className = 'log-input';
+    const prompt = document.createElement('span');
+    prompt.className = 'log-prompt';
+    prompt.textContent = '> ';
+    p.append(prompt, document.createTextNode(raw));
+    log!.appendChild(p);
+    log!.scrollTop = log!.scrollHeight;
+  }
+
+  async function fetchVisitorIp(): Promise<string> {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      return typeof data?.ip === 'string' ? data.ip : 'UNKNOWN';
+    } catch {
+      return 'UNKNOWN';
+    }
   }
 
   function open(): void {
@@ -59,14 +81,14 @@ export function initTerminal(): () => void {
     return panel!.classList.contains('open');
   }
 
-  function submit(): void {
+  async function submit(): Promise<void> {
     const raw = input!.value;
     input!.value = '';
     if (raw.trim() !== '') {
       history.push(raw);
       historyIndex = history.length;
     }
-    print([`> ${raw}`]);
+    printInput(raw);
 
     const contextEl = document.getElementById('terminal-context') as HTMLElement | null;
     const emailUser = contextEl?.dataset.emailUser ?? '';
@@ -83,6 +105,12 @@ export function initTerminal(): () => void {
     const result = runCommand(raw, ctx);
     if (result.action?.type === 'clear') {
       log!.replaceChildren();
+    } else if (result.action?.type === 'exit') {
+      const ip = await fetchVisitorIp();
+      print(
+        [`There is no escape from this reality ${ip}`, 'Look Behind, Big Brother can see you.......'],
+        'log-danger',
+      );
     } else {
       print(result.lines);
     }

@@ -24,7 +24,8 @@ export interface CommandContext {
 export type CommandAction =
   | { type: 'navigate'; href: string }
   | { type: 'theme'; value: 'dark' | 'light' }
-  | { type: 'clear' };
+  | { type: 'clear' }
+  | { type: 'exit' };
 
 export interface CommandResult {
   lines: string[];
@@ -41,6 +42,7 @@ const HELP_LINES = [
   'theme [dark|light]   : switch theme',
   'clear                : clear the screen',
   'date                 : current date/time',
+  'exit                 : ?????',
 ];
 
 function findWork(ctx: CommandContext, codename: string): WorkSummary | undefined {
@@ -128,6 +130,9 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
 
     case 'date':
       return { lines: [ctx.now.toString()] };
+
+    case 'exit':
+      return { lines: [], action: { type: 'exit' } };
 
     default:
       return { lines: [`command not found: ${cmd}. try 'help'`] };

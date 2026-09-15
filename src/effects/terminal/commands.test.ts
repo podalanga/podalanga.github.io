@@ -146,6 +146,18 @@ describe('runCommand : easter eggs', () => {
   });
 });
 
+describe('runCommand : exit', () => {
+  it('triggers an exit action with no output lines', () => {
+    const result = runCommand('exit', ctx());
+    expect(result).toEqual({ lines: [], action: { type: 'exit' } });
+  });
+
+  it('is listed in help', () => {
+    const result = runCommand('help', ctx());
+    expect(result.lines.some((l) => l.includes('exit'))).toBe(true);
+  });
+});
+
 describe('runCommand : unknown', () => {
   it('reports command not found', () => {
     const result = runCommand('frobnicate', ctx());

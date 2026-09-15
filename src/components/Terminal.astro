@@ -110,6 +110,22 @@ const works = (await getCollection('works'))
     word-break: break-word;
   }
 
+  .log p.log-input {
+    margin-top: var(--space-3);
+  }
+
+  .log p.log-input:first-child {
+    margin-top: 0;
+  }
+
+  .log .log-prompt {
+    color: var(--fg);
+  }
+
+  .log p.log-danger {
+    color: var(--signal);
+  }
+
   .input-row {
     display: flex;
     align-items: center;
