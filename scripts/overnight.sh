@@ -5,7 +5,7 @@
 # Usage (from repo root):  tmux new -s overnight './scripts/overnight.sh'
 #   detach: Ctrl-b d      reattach: tmux attach -t overnight
 #   options: FIRST_PHASE=3 LAST_PHASE=10 MAX_ATTEMPTS=3 PHASE_TIMEOUT=4h MODEL=sonnet
-#            MAX_LIMIT_WAITS=12 LIMIT_POLL=1800  (usage limit: sleep until reset, retry free)
+#            MAX_LIMIT_WAITS=24 LIMIT_POLL=1800  (usage limit: sleep until reset, retry free)
 set -uo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -34,7 +34,7 @@ phase_done() {
     grep -Eq "^\|[[:space:]]*$1[[:space:]]*\|[[:space:]]*(DONE|BLOCKED-FALLBACK)" docs/PROGRESS.md
 }
 
-MAX_LIMIT_WAITS="${MAX_LIMIT_WAITS:-12}"
+MAX_LIMIT_WAITS="${MAX_LIMIT_WAITS:-24}"
 LIMIT_POLL="${LIMIT_POLL:-1800}"   # seconds to wait when the reset time can't be parsed
 limit_waits=0
 
@@ -51,10 +51,31 @@ hit_limit() {
   fi
 }
 
-# Sleep until the reset time if the log contains one ("...limit reached|<epoch>"), else LIMIT_POLL.
+# Parse the reset time from the error, e.g. "You've hit your session limit · resets 11:20am (Asia/Kolkata)"
+# or an older "...limit reached|<epoch>" form. Prints an epoch, or nothing.
+reset_epoch() {
+  local text when tz epoch now
+  text="$(grep '"type":"result"' "$1" | tail -1)"
+  [[ -z "$text" ]] && text="$(tail -n 5 "$1")"
+  epoch="$(grep -Eo 'limit reached\|[0-9]{10}' <<<"$text" | grep -Eo '[0-9]{10}' | tail -1)"
+  if [[ -z "$epoch" ]]; then
+    when="$(grep -Eo 'resets [^"(]+' <<<"$text" | head -1 | sed -E 's/^resets //; s/,//g; s/[[:space:]]+$//')"
+    tz="$(grep -Eo 'resets [^"]*\(([A-Za-z_]+/[A-Za-z_]+)\)' <<<"$text" | grep -Eo '[A-Za-z_]+/[A-Za-z_]+' | head -1)"
+    [[ -n "$when" ]] && epoch="$(TZ="${tz:-$(date +%Z)}" date -d "$when" +%s 2>/dev/null)"
+    now="$(date +%s)"
+    # "11:20am" with no date: if it passed within the last hour the limit has already reset (retry soon);
+    # otherwise it means that time tomorrow.
+    if [[ -n "$epoch" && "$epoch" -le "$now" ]]; then
+      if (( now - epoch < 3600 )); then epoch=$((now + 60)); else epoch=$((epoch + 86400)); fi
+    fi
+  fi
+  echo "$epoch"
+}
+
+# Sleep until the parsed reset time (+2 min), else LIMIT_POLL.
 wait_for_reset() {
   local epoch now secs
-  epoch="$(tail -n 5 "$1" | grep -Eo 'limit reached\|[0-9]{10}' | grep -Eo '[0-9]{10}' | tail -1)"
+  epoch="$(reset_epoch "$1")"
   now="$(date +%s)"
   if [[ -n "$epoch" && "$epoch" -gt "$now" ]]; then
     secs=$(( epoch - now + 120 ))
@@ -100,8 +121,10 @@ for (( n = FIRST_PHASE; n <= LAST_PHASE; n++ )); do
     continue
   fi
 
+  limit_waits=0   # the wait budget is per phase
   for (( attempt = 1; attempt <= MAX_ATTEMPTS; attempt++ )); do
     logfile="$LOG_DIR/phase-${n}-attempt-${attempt}.log"
+    [[ -s "$logfile" ]] && mv "$logfile" "${logfile%.log}.$(date +%H%M%S).log"   # keep logs from limit retries
     log "Phase $n — attempt $attempt (log: ${logfile#$REPO/})"
 
     timeout "$PHASE_TIMEOUT" claude -p \
