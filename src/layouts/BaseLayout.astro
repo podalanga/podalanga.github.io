@@ -80,7 +80,7 @@ const personSchema = {
     <ClientRouter />
   </head>
   <body>
-    <EyeLoader />
+    <EyeLoader isHome={isHome} />
     <div class="grain"></div>
     <div class="scanlines"></div>
     <Header />
@@ -98,7 +98,6 @@ const personSchema = {
       import { initHeaderClock } from '../effects/header-clock';
       import { initSecurityCamera } from '../effects/security-camera';
       import { initTerminal } from '../effects/terminal/terminal';
-      import { initTerminalHint } from '../effects/terminal-hint';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -122,7 +121,6 @@ const personSchema = {
           initHeaderClock(),
           initSecurityCamera(),
           initTerminal(),
-          initTerminalHint(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });

@@ -2,10 +2,18 @@
 // ASCII Orwell Eye boot loader — full sequence on first document load, fast on repeats.
 // Content lives in the rest of the HTML (see BaseLayout's noscript/eye-pending guard),
 // so this overlay is purely a progressive-enhancement veil, never a content gate.
+// On the home page it runs longer and surfaces the terminal hint (`#eye-hint`, replacing the old
+// header-logo popup) for the length of the sequence; on every other page it's a quick flash with
+// no hint, since the terminal is already reachable from the header dot and footer link there.
+interface Props {
+  isHome: boolean;
+}
+const { isHome } = Astro.props;
 ---
 
-<div id="eye-loader" aria-hidden="true">
+<div id="eye-loader" aria-hidden="true" data-home={isHome ? '1' : '0'}>
   <canvas id="eye-canvas"></canvas>
+  <p id="eye-hint" class="mono" hidden>PRESS <kbd>`</kbd> TO OPEN THE TERMINAL</p>
   <p id="eye-caption" class="mono"></p>
   <p id="eye-percent" class="mono"></p>
 </div>
@@ -25,13 +33,18 @@
   }
 
   #eye-caption,
-  #eye-percent {
+  #eye-percent,
+  #eye-hint {
     position: absolute;
-    bottom: var(--space-4);
     margin: 0;
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
     color: var(--signal);
+  }
+
+  #eye-caption,
+  #eye-percent {
+    bottom: var(--space-4);
   }
 
   #eye-caption {
@@ -40,6 +53,18 @@
 
   #eye-percent {
     right: var(--space-4);
+  }
+
+  #eye-hint {
+    top: var(--space-4);
+    left: var(--space-4);
+  }
+
+  #eye-hint kbd {
+    font-family: inherit;
+    border: 1px solid var(--signal);
+    padding: 0 0.3em;
+    border-radius: 2px;
   }
 </style>
 

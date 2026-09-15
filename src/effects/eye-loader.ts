@@ -1,5 +1,6 @@
-// Orchestrates the ASCII Orwell Eye boot loader: full sequence on first visit, fast on
-// repeats, instant skip on input, a static frame under reduced motion, and a hard failsafe.
+// Orchestrates the ASCII Orwell Eye boot loader: full sequence on first visit to the home page,
+// fast on repeats there, a quick hint-free flash on every other page, instant skip on input, a
+// static frame under reduced motion, and a hard failsafe.
 import { buildGlyphAtlas, intensityToGlyphIndex, intensityToLevel } from './ascii/glyph-atlas';
 import { computeGrid, setupResize, type GridConfig } from './ascii/grid';
 import { intensity, type EyeFieldState } from './eye-field';
@@ -33,6 +34,16 @@ const FAST: Timeline = {
   watch: [0.4, 0.55],
   blink: [0.55, 0.7],
   dissolve: [0.7, 0.9],
+};
+
+// Non-home pages skip the terminal hint (already reachable via the header dot and footer link
+// there) and don't need the runway to read it, so they get an even quicker flash than FAST.
+const QUICK: Timeline = {
+  noise: [0, 0.08],
+  resolve: [0.08, 0.2],
+  watch: [0.2, 0.3],
+  blink: [0.3, 0.38],
+  dissolve: [0.38, 0.5],
 };
 
 function phaseAt(t: number, timeline: Timeline): Phase {
@@ -82,10 +93,14 @@ function run(): void {
   const canvas = document.getElementById('eye-canvas') as HTMLCanvasElement | null;
   const caption = document.getElementById('eye-caption');
   const percent = document.getElementById('eye-percent');
+  const hint = document.getElementById('eye-hint');
   if (!root || !canvas) {
     hardFail();
     return;
   }
+
+  const isHome = root.dataset.home === '1';
+  if (isHome && hint) hint.hidden = false;
 
   // Hard failsafe: always unblock the page even if rendering throws mid-sequence.
   const failsafe = window.setTimeout(finish, FAILSAFE_MS);
@@ -116,7 +131,7 @@ function run(): void {
     return;
   }
 
-  const timeline = seen ? FAST : FULL;
+  const timeline = isHome ? (seen ? FAST : FULL) : QUICK;
   const subject = randomHex4();
 
   const ctx = canvas.getContext('2d');

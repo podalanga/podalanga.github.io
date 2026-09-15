@@ -39,6 +39,6 @@ export const HEAD_ROWS = 14;
 // 0-13, so row 14.5 is half a row into MOUNT_ART, the vertical center of the joint glyphs).
 export const PIVOT = { col: 23.5, row: 14.5 };
 
-// The lens' brightest `.` patch (HEAD_ART row 3, around col 41), where the glowing red "eye"
-// overlay sits.
-export const LENS = { col: 41, row: 3 };
+// The lens' brightest `.` patch (HEAD_ART row 4, the widest contiguous run of dots, cols 41-50),
+// where the glowing red "eye" overlay sits.
+export const LENS = { col: 44, row: 4 };
