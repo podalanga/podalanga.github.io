@@ -3,12 +3,13 @@ import { site } from '../config/site';
 
 interface Props {
   size?: 'header' | 'hero';
+  text?: string;
 }
-const { size = 'header' } = Astro.props;
+const { size = 'header', text = site.name } = Astro.props;
 ---
 
 <span class:list={['logo', size]}>
-  <a href="/" class="wordmark" aria-label={`${site.name} home`}>{site.name}</a><button
+  <a href="/" class="wordmark" aria-label={`${site.name} home`}>{text}</a><button
     type="button"
     class="dot"
     data-terminal-open

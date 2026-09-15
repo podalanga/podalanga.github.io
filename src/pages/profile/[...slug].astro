@@ -67,27 +67,34 @@ const { data } = work;
       )
     }
 
-    <div class="prose">
+    <div class="case-body">
+      <div class="prose">
+        <Content />
+      </div>
+
       {
-        data.cover && (
-          <Image src={data.cover} alt={data.coverAlt ?? data.title} class="cover" widths={[400, 800, 1200]} sizes="(min-width: 640px) 45vw, 100vw" />
+        (data.cover || (data.figures && data.figures.length > 0)) && (
+          <aside class="media">
+            {
+              data.cover && (
+                <figure class="cover-figure">
+                  <Image src={data.cover} alt={data.coverAlt ?? data.title} widths={[400, 800, 1200]} sizes="(min-width: 780px) 50vw, 100vw" />
+                </figure>
+              )
+            }
+            {
+              data.figures && data.figures.length > 0 && (
+                <Gallery
+                  id={`work-${work.id}`}
+                  variant="stack"
+                  figures={data.figures.map((f) => ({ src: f.src, alt: f.caption, caption: f.caption }))}
+                />
+              )
+            }
+          </aside>
         )
       }
-      <Content />
     </div>
-
-    {
-      data.figures && data.figures.length > 0 && (
-        <section class="figures">
-          <h2 class="section-title">Figures</h2>
-          <Gallery
-            id={`work-${work.id}`}
-            variant="paired"
-            figures={data.figures.map((f) => ({ src: f.src, alt: f.caption, caption: f.caption }))}
-          />
-        </section>
-      )
-    }
 
     <nav class="prev-next mono" aria-label="Other case files">
       {
@@ -155,28 +162,45 @@ const { data } = work;
     letter-spacing: 0.04em;
   }
 
-  .prose {
-    overflow: hidden;
+  .case-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
   }
 
-  .case-file :global(.cover) {
+  .media {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .cover-figure {
+    margin: 0;
+  }
+
+  .cover-figure :global(img) {
     display: block;
     width: 100%;
-    margin-bottom: var(--space-4);
     border: 1px solid var(--line);
   }
 
-  @media (min-width: 640px) {
-    .case-file :global(.cover) {
-      width: 45%;
-      float: right;
-      margin-left: var(--space-5);
+  @media (min-width: 780px) {
+    .case-body {
+      flex-direction: row;
+      align-items: flex-start;
     }
-  }
 
-  .section-title {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-4);
+    .prose {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .media {
+      width: 50%;
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--header-h, 64px) + var(--space-5));
+    }
   }
 
   .prev-next {

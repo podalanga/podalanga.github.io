@@ -68,7 +68,21 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     <p class="empty mono" data-empty-state hidden>NO FILES LOGGED YET</p>
   </section>
 
-  <section class="container dossier">
+  <section class="container awards">
+    <h2 class="section-title">Awards</h2>
+    <ul class="list-entries">
+      {
+        awards.map((a) => (
+          <li>
+            <p class="org">{a.data.title}</p>
+            <p class="meta">{a.data.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="container education">
     <h2 class="section-title">Education</h2>
     <div class="dossier-grid">
       {
@@ -84,33 +98,9 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
         ))
       }
     </div>
+  </section>
 
-    <h2 class="section-title">Skills</h2>
-    <div class="skills-grid">
-      {
-        skillGroups.map((g) => (
-          <div class="skill-group">
-            <p class="group-label mono">{g.data.label}</p>
-            <ul class="mono">
-              {g.data.items.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
-
-    <h2 class="section-title">Awards</h2>
-    <ul class="list-entries">
-      {
-        awards.map((a) => (
-          <li>
-            <p class="org">{a.data.title}</p>
-            <p class="meta">{a.data.detail}</p>
-          </li>
-        ))
-      }
-    </ul>
-
+  <section class="container positions">
     <h2 class="section-title">Positions</h2>
     <ul class="list-entries">
       {
@@ -131,15 +121,43 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
     </p>
   </section>
+
+  <section class="container skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      {
+        skillGroups.map((g) => (
+          <div class="skill-group">
+            <p class="group-label mono">{g.data.label}</p>
+            <ul class="mono">
+              {g.data.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   .intro,
   .filters,
   .timeline,
-  .dossier,
-  .contact {
+  .awards,
+  .education,
+  .positions,
+  .contact,
+  .skills {
     padding-block: var(--space-7);
+  }
+
+  .filters + .timeline,
+  .timeline + .awards,
+  .awards + .education,
+  .education + .positions,
+  .positions + .contact,
+  .contact + .skills {
+    border-top: 2px solid var(--signal);
   }
 
   .intro {
@@ -185,7 +203,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
 
   .timeline {
     padding-top: 0;
-    border-top: 1px solid var(--line);
   }
 
   .row {
@@ -201,13 +218,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     font-size: var(--text-sm);
     letter-spacing: 0.06em;
     padding-top: var(--space-4);
-  }
-
-  .dossier {
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
   }
 
   .section-title {
@@ -296,10 +306,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     color: var(--fg-muted);
     font-size: var(--text-sm);
     margin-top: var(--space-1);
-  }
-
-  .contact {
-    border-top: 1px solid var(--line);
   }
 </style>
 
