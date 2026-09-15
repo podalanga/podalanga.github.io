@@ -34,7 +34,7 @@ const {
 const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
 ---
 
-<a href={`/works/${slug}`} class:list={['case-card', variant]} data-kind={kind}>
+<a href={`/profile/${slug}`} class:list={['case-card', variant]} data-kind={kind}>
   <div class="top mono">
     <span class="file">{fileLabel} // {codename}</span>
     <span class="status" class:list={{ ongoing: status === 'ongoing' }}>

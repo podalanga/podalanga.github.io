@@ -18,11 +18,11 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 
-<BaseLayout title={`#${tag} — Log — ${site.name}`} description={`Log entries tagged ${tag}.`}>
+<BaseLayout title={`#${tag} — Blog — ${site.name}`} description={`Blog entries tagged ${tag}.`}>
   <section class="container intro">
-    <p class="label">§ 03 — LOG</p>
+    <p class="label">§ 03 — BLOG</p>
     <h1>#{tag}</h1>
-    <p class="dek"><a href="/log">← All entries</a></p>
+    <p class="dek"><a href="/blog">← All entries</a></p>
   </section>
 
   <section class="container posts">

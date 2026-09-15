@@ -15,7 +15,7 @@ const VIEWPORTS = [
 
 const THEMES = ['dark', 'light'];
 
-const ROUTES = ['/', '/works', '/works/zbot', '/archive', '/log', '/log/signal-acquired', '/404'];
+const ROUTES = ['/', '/profile', '/profile/zbot', '/archive', '/blog', '/blog/signal-acquired', '/404'];
 
 async function shootRoute(browser, route, viewport, theme) {
   const context = await browser.newContext({ viewport });
@@ -253,7 +253,7 @@ async function runThemeWipeChecks(browser) {
     await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
     await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
 
-    const cycle = ['/works', '/archive', '/log', '/'];
+    const cycle = ['/profile', '/archive', '/blog', '/'];
     for (let i = 0; i < 10; i++) {
       const href = cycle[i % cycle.length];
       await page.click(`nav a[href="${href}"], nav a[href="${href}/"]`);
@@ -299,7 +299,7 @@ async function runTerminalChecks(browser) {
       if (msg.type() === 'error') errors.push(msg.text());
     });
     await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
-    await page.goto(new URL('/works/zbot', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    await page.goto(new URL('/profile/zbot', BASE_URL).toString(), { waitUntil: 'networkidle' });
     await waitForEyeDone(page);
     await page.waitForTimeout(200);
 
@@ -322,7 +322,7 @@ async function runTerminalChecks(browser) {
     const logText = await page.evaluate(() => document.getElementById('terminal-log')?.textContent ?? '');
     if (!logText.includes('ZBOT')) problems.push("'ls works' output missing ZBOT codename");
     await run('cat zbot');
-    if (!(await page.evaluate(() => document.getElementById('terminal-log')?.textContent?.includes('/works/zbot'))))
+    if (!(await page.evaluate(() => document.getElementById('terminal-log')?.textContent?.includes('/profile/zbot'))))
       problems.push("'cat zbot' output missing the work link");
     await page.screenshot({ path: path.join(dir, 'after-commands.png') });
 

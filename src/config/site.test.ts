@@ -8,6 +8,6 @@ describe('site config', () => {
   });
 
   it('exposes exactly the 4 nav entries in order', () => {
-    expect(site.nav.map((n) => n.label)).toEqual(['INDEX', 'WORKS', 'ARCHIVE', 'LOG']);
+    expect(site.nav.map((n) => n.label)).toEqual(['INDEX', 'PROFILE', 'ARCHIVE', 'BLOG']);
   });
 });

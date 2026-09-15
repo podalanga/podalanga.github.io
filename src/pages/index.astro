@@ -40,7 +40,7 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
   <section class="container featured">
     <h2 class="section-title">
       Featured files
-      <a class="view-all mono" href="/works">ALL CASE FILES →</a>
+      <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
     </h2>
     <div class="featured-grid">
       {
@@ -82,7 +82,7 @@ const latestLog = (await getCollection('log', ({ data }) => (import.meta.env.PRO
   <section class="container log-teaser">
     <h2 class="section-title">
       Log
-      <a class="view-all mono" href="/log">ALL ENTRIES →</a>
+      <a class="view-all mono" href="/blog">ALL ENTRIES →</a>
     </h2>
     {latestLog.map((post) => <PostCard slug={post.id} title={post.data.title} date={post.data.date} description={post.data.description} tags={post.data.tags} />)}
   </section>

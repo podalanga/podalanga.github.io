@@ -93,18 +93,19 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
       if (!codename) return { lines: ["cat: missing operand. try 'cat <codename>'"] };
       const work = findWork(ctx, codename);
       if (!work) return { lines: [`cat: ${codename}: no such file`] };
-      return { lines: [work.summary, `→ /works/${work.slug}`] };
+      return { lines: [work.summary, `→ /profile/${work.slug}`] };
     }
 
     case 'open': {
       const target = rest[0]?.toLowerCase();
       if (!target) return { lines: ["open: missing operand. try 'open works'"] };
-      if (target === 'works' || target === 'archive' || target === 'log') {
-        return { lines: [`opening /${target}...`], action: { type: 'navigate', href: `/${target}` } };
+      const routes: Record<string, string> = { works: '/profile', archive: '/archive', log: '/blog' };
+      if (target in routes) {
+        return { lines: [`opening ${routes[target]}...`], action: { type: 'navigate', href: routes[target] } };
       }
       const work = findWork(ctx, target);
       if (work) {
-        return { lines: [`opening /works/${work.slug}...`], action: { type: 'navigate', href: `/works/${work.slug}` } };
+        return { lines: [`opening /profile/${work.slug}...`], action: { type: 'navigate', href: `/profile/${work.slug}` } };
       }
       return { lines: [`open: ${rest[0]}: not found`] };
     }
