@@ -1,0 +1,128 @@
+backend:
+  name: github
+  repo: podalanga/podalanga.github.io
+  branch: main
+  commit_messages:
+    create: 'cms: create {{collection}} "{{slug}}"'
+    update: 'cms: update {{collection}} "{{slug}}"'
+    delete: 'cms: delete {{collection}} "{{slug}}"'
+    uploadMedia: 'cms: upload "{{path}}"'
+    deleteMedia: 'cms: delete "{{path}}"'
+
+site_url: https://podalanga.github.io
+media_folder: /public/media
+public_folder: /media
+
+collections:
+  - name: log
+    label: Log (Blog)
+    label_singular: Log entry
+    folder: /src/content/log
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, type: date, format: 'YYYY-MM-DD' }
+      - { name: updated, label: Updated, widget: datetime, type: date, format: 'YYYY-MM-DD', required: false }
+      - { name: description, label: Description, widget: text }
+      - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string } }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: coverAlt, label: Cover alt text, widget: string, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - name: attachments
+        label: Attachments
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - name: file
+            label: File
+            widget: file
+            media_folder: /public/media/attachments
+            public_folder: /media/attachments
+      - { name: body, label: Body, widget: markdown }
+
+  - name: archive
+    label: Archive
+    label_singular: Archive entry
+    folder: /src/content/archive
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - name: kind
+        label: Kind
+        widget: select
+        options: [photo, video]
+      - name: category
+        label: Category
+        widget: select
+        options: [photography, music, misc]
+      - { name: date, label: Date, widget: datetime, type: date, format: 'YYYY-MM-DD' }
+      - { name: location, label: Location, widget: string, required: false, hint: 'Leave empty if not known — do not guess.' }
+      - { name: image, label: Image, widget: image, required: false, hint: 'Required when kind is "photo".' }
+      - { name: alt, label: Alt text, widget: string, required: false }
+      - { name: youtube, label: YouTube URL, widget: string, required: false, hint: 'Required when kind is "video".' }
+      - { name: caption, label: Caption, widget: text, required: false }
+      - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string } }
+
+  - name: works
+    label: Works
+    label_singular: Work
+    folder: /src/content/works
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    identifier_field: codename
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: codename, label: Codename, widget: string }
+      - { name: fileNo, label: File no., widget: number, value_type: int }
+      - name: kind
+        label: Kind
+        widget: select
+        options: [internship, project, competition]
+      - { name: org, label: Organization, widget: string }
+      - { name: location, label: Location, widget: string }
+      - { name: supervisor, label: Supervisor, widget: string, required: false }
+      - { name: start, label: Start date, widget: datetime, type: date, format: 'YYYY-MM-DD' }
+      - { name: end, label: End date, widget: datetime, type: date, format: 'YYYY-MM-DD', required: false }
+      - name: status
+        label: Status
+        widget: select
+        options: [ongoing, completed]
+      - { name: summary, label: Summary, widget: text }
+      - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string } }
+      - { name: stack, label: Stack, widget: list, field: { name: item, label: Item, widget: string } }
+      - name: metrics
+        label: Metrics
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: value, label: Value, widget: string }
+      - { name: cover, label: Cover image, widget: image, required: false }
+      - { name: coverAlt, label: Cover alt text, widget: string, required: false }
+      - name: figures
+        label: Figures
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: caption, label: Caption, widget: string }
+      - { name: featured, label: Featured, widget: boolean, default: false }
+      - name: classified
+        label: Classified phrases
+        widget: list
+        required: false
+        hint: 'Decorative redacted phrases shown under the title. No new facts — flavor text only.'
+        field: { name: phrase, label: Phrase, widget: string }
+      - { name: body, label: Body, widget: markdown }
