@@ -47,6 +47,10 @@ async function shootRoute(browser, route, viewport, theme) {
     }))
     .catch(() => {});
 
+  // give the header nav's scramble-in (§6.4, 600ms) time to resolve before capturing —
+  // otherwise fast pages (short scroll, quick networkidle) catch it mid-animation.
+  await page.waitForTimeout(700);
+
   // scroll through the full page first so native `loading="lazy"` images have
   // fired their network request before the full-page screenshot captures them
   await page.evaluate(async () => {
@@ -163,6 +167,117 @@ async function runEyeLoaderChecks(browser) {
   return problems;
 }
 
+async function runThemeWipeChecks(browser) {
+  const dir = path.join(OUT_DIR, 'theme-wipe');
+  await mkdir(dir, { recursive: true });
+  const problems = [];
+
+  // 1) Mid-flood + after screenshots, both directions; theme persists across reload.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e)));
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    await page.addInitScript(() => {
+      localStorage.setItem('pdl:eye-seen', '1');
+    });
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+
+    const before = await page.evaluate(() => document.documentElement.dataset.theme);
+    await page.click('#theme-toggle');
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.join(dir, 'mid-flood__dark-to-light.png') });
+    await page.waitForTimeout(1300);
+    await page.screenshot({ path: path.join(dir, 'after__dark-to-light.png') });
+    const after = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (after === before) problems.push('theme did not change after clicking #theme-toggle');
+
+    await page.reload({ waitUntil: 'networkidle' });
+    const persisted = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (persisted !== after) problems.push(`theme did not persist across reload (was ${after}, is ${persisted})`);
+
+    // toggle back (light -> dark), confirm the reverse direction also floods correctly.
+    await page.waitForFunction(() => !document.documentElement.classList.contains('eye-pending'), undefined, {
+      timeout: 5000,
+    });
+    await page.click('#theme-toggle');
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.join(dir, 'mid-flood__light-to-dark.png') });
+    await page.waitForTimeout(1300);
+    await page.screenshot({ path: path.join(dir, 'after__light-to-dark.png') });
+
+    if (errors.length) problems.push('theme wipe console errors: ' + errors.join(' | '));
+    await context.close();
+  }
+
+  // 2) Reduced motion: theme still changes, no long-running animation expected.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+    const before = await page.evaluate(() => document.documentElement.dataset.theme);
+    await page.click('#theme-toggle');
+    await page.waitForTimeout(400);
+    const after = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (after === before) problems.push('reduced-motion: theme did not change after toggle click');
+    await page.screenshot({ path: path.join(dir, 'reduced-motion__after.png') });
+    await context.close();
+  }
+
+  // 3) JS disabled: toggle is a plain button (no-op without JS), page must still render fine.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto(new URL('/', BASE_URL).toString());
+    const hasButton = await page.evaluate(() => !!document.getElementById('theme-toggle'));
+    if (!hasButton) problems.push('no-js: #theme-toggle button missing from HTML');
+    await page.screenshot({ path: path.join(dir, 'no-js.png') });
+    await context.close();
+  }
+
+  // 4) 10 soft navigations across pages: no leaked RAF/listeners manifesting as duplicate
+  //    overlay canvases, no console errors, toggle still works on the 10th page.
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e)));
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    await page.addInitScript(() => localStorage.setItem('pdl:eye-seen', '1'));
+    await page.goto(new URL('/', BASE_URL).toString(), { waitUntil: 'networkidle' });
+
+    const cycle = ['/works', '/archive', '/log', '/'];
+    for (let i = 0; i < 10; i++) {
+      const href = cycle[i % cycle.length];
+      await page.click(`nav a[href="${href}"], nav a[href="${href}/"]`);
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(100);
+    }
+
+    const canvasCount = await page.evaluate(() => document.querySelectorAll('canvas').length);
+    if (canvasCount > 1) problems.push(`expected at most 1 lingering canvas after 10 navs, found ${canvasCount}`);
+
+    await page.click('#theme-toggle');
+    await page.waitForTimeout(1500);
+    const themeAfter = await page.evaluate(() => document.documentElement.dataset.theme);
+    if (!themeAfter) problems.push('theme toggle did not respond after 10 navigations');
+
+    if (errors.length) problems.push('10-navigation console errors: ' + errors.join(' | '));
+    await context.close();
+  }
+
+  for (const p of problems) console.log(`[FAIL] theme-wipe: ${p}`);
+  console.log(`theme-wipe checks: ${problems.length ? problems.length + ' problem(s)' : 'ok'} -> ${dir}`);
+  return problems;
+}
+
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -177,6 +292,7 @@ async function main() {
   }
 
   const loaderProblems = await runEyeLoaderChecks(browser);
+  const themeWipeProblems = await runThemeWipeChecks(browser);
 
   await browser.close();
 
@@ -192,6 +308,7 @@ async function main() {
   }
 
   if (loaderProblems.length) failed = true;
+  if (themeWipeProblems.length) failed = true;
 
   if (failed) {
     process.exitCode = 1;

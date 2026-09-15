@@ -20,7 +20,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
               <li>
                 <a href={item.href} aria-current={active ? 'page' : undefined}>
                   {active && <span class="dot" aria-hidden="true">●</span>}
-                  <span class="mono">{item.label}</span>
+                  <span class="mono" data-scramble={item.label}>{item.label}</span>
                   <span class="index mono">/{item.index}</span>
                 </a>
               </li>

@@ -46,32 +46,3 @@
     }
   }
 </style>
-
-<script>
-  import { setItem } from '../lib/storage';
-
-  const button = document.getElementById('theme-toggle');
-  if (button) {
-    const sync = () => {
-      const isLight = document.documentElement.dataset.theme === 'light';
-      button.setAttribute('aria-pressed', String(isLight));
-      button.setAttribute(
-        'aria-label',
-        isLight ? 'Switch to dark theme' : 'Switch to light theme'
-      );
-      const icon = button.querySelector('.icon');
-      if (icon) icon.textContent = isLight ? '◎' : '◉';
-    };
-
-    sync();
-
-    button.addEventListener('click', () => {
-      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-      document.documentElement.dataset.theme = next;
-      setItem('pdl:theme', next);
-      sync();
-    });
-
-    document.addEventListener('astro:after-swap', sync);
-  }
-</script>

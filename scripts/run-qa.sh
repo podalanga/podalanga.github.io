@@ -24,4 +24,4 @@ for _ in $(seq 1 30); do
   sleep 0.5
 done
 
-QA_BASE_URL="$BASE_URL" QA_PHASE="${QA_PHASE:-phase5}" node scripts/qa.mjs
+QA_BASE_URL="$BASE_URL" QA_PHASE="${QA_PHASE:-phase6}" node scripts/qa.mjs

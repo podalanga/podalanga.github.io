@@ -87,5 +87,28 @@ const personSchema = {
       <slot />
     </main>
     <Footer />
+    <script>
+      import { initPageGlitch } from '../effects/page-glitch';
+      import { initScramble } from '../effects/scramble';
+      import { initThemeWipe } from '../effects/theme-wipe';
+
+      // page-glitch owns a single `astro:before-swap` listener for the whole session — it isn't
+      // tied to per-page DOM, so it's set up once rather than on every astro:page-load.
+      initPageGlitch();
+
+      // theme-wipe (button) and scramble ([data-scramble] elements) touch DOM nodes that get
+      // recreated on every soft nav, so they're re-initialized each `astro:page-load` and torn
+      // down on the following `astro:before-swap` (each effect exports init() -> destroy()).
+      let destroy: (() => void) | undefined;
+      document.addEventListener('astro:page-load', () => {
+        const destroyThemeWipe = initThemeWipe();
+        const destroyScramble = initScramble();
+        destroy = () => {
+          destroyThemeWipe();
+          destroyScramble();
+        };
+      });
+      document.addEventListener('astro:before-swap', () => destroy?.());
+    </script>
   </body>
 </html>
