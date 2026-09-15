@@ -6,3 +6,6 @@ dist/
 .env*
 qa-artifacts/
 overnight-logs/
+.claude/settings.local.json
+docs/
+CLAUDE.md
