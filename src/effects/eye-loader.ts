@@ -20,20 +20,22 @@ interface Timeline {
   dissolve: [number, number];
 }
 
+// Home page only — the extra time in `watch` gives the terminal-hint caption (shown for the
+// loader's whole run) room to actually be read.
 const FULL: Timeline = {
   noise: [0, 0.6],
   resolve: [0.6, 1.4],
-  watch: [1.4, 2.4],
-  blink: [2.4, 2.7],
-  dissolve: [2.7, 3.2],
+  watch: [1.4, 3.2],
+  blink: [3.2, 3.5],
+  dissolve: [3.5, 4],
 };
 
 const FAST: Timeline = {
   noise: [0, 0.15],
   resolve: [0.15, 0.4],
-  watch: [0.4, 0.55],
-  blink: [0.55, 0.7],
-  dissolve: [0.7, 0.9],
+  watch: [0.4, 1.2],
+  blink: [1.2, 1.35],
+  dissolve: [1.35, 1.6],
 };
 
 // Non-home pages skip the terminal hint (already reachable via the header dot and footer link
