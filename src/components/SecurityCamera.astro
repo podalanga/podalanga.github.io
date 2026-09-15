@@ -6,18 +6,20 @@
 // A glowing red `.lens` dot rides along with the head. Static, unrotated, non-glowing under
 // prefers-reduced-motion or no-JS — the ASCII art itself needs no JS at all.
 //
-// The container/pivot/lens geometry below is measured in a *fixed* em-per-column ratio
-// (CHAR_W_EM, JetBrains Mono's actual ~0.6em advance width) rather than the `ch` unit. `ch`
-// tracks whatever font is currently active, and `--font-mono` loads with `font-display: swap`
-// (see @fontsource-variable/jetbrains-mono) — so for the brief window before it swaps in, `ch`
-// resolves against the fallback system monospace font instead, whose glyphs can be far wider
-// relative to its em-box. Because only the width side of this layout used `ch`, that swap
-// visibly stretched the whole camera sideways for a frame. The `<pre>` text itself still lays
-// out with real glyph metrics either way (it's ordinary text), so this only affects the
-// container's own box and the pivot/lens marker positions — both tolerate the ~0.2% slop.
+// The art is laid out at RENDER_FONT_PX (a normal, readable size) and then shrunk to its real
+// on-screen size with `transform: scale(var(--camera-scale))` on `.camera-scale`, rather than
+// just declaring a tiny `font-size` directly. Browsers that enforce a "minimum font size"
+// (an accessibility setting some people have on, e.g. Chrome's chrome://settings/fonts) silently
+// floor any font-size below that threshold back up to it — which, for a `font-size: 3.6px` rule,
+// blew the whole camera up to several times its intended size while leaving normal ~16px body
+// text untouched. `transform: scale()` operates on the already-laid-out box, not on font metrics,
+// so it isn't subject to that floor. Every other measurement here (container box, transform
+// origin, lens/pivot markers) is plain px arithmetic from RENDER_FONT_PX, not `ch`/`em`, so none
+// of it depends on which font is active or how the browser sizes text either.
 import { HEAD_ART, MOUNT_ART, HEAD_ROWS, PIVOT, LENS } from '../effects/security-camera-art';
 
-const CHAR_W_EM = 0.6;
+const RENDER_FONT_PX = 16;
+const CHAR_W_EM = 0.6; // JetBrains Mono's measured advance width, in ems
 
 const MOUNT_ROWS = MOUNT_ART.split('\n').length;
 const TOTAL_ROWS = HEAD_ROWS + MOUNT_ROWS;
@@ -25,6 +27,10 @@ const WIDTH_CH = Math.max(
   ...HEAD_ART.split('\n').map((l) => l.length),
   ...MOUNT_ART.split('\n').map((l) => l.length),
 );
+
+const renderWidthPx = WIDTH_CH * CHAR_W_EM * RENDER_FONT_PX;
+const renderHeightPx = TOTAL_ROWS * RENDER_FONT_PX;
+const renderLeftPx = -2 * CHAR_W_EM * RENDER_FONT_PX;
 const toEm = (cols: number) => `${(cols * CHAR_W_EM).toFixed(3)}em`;
 ---
 
@@ -32,37 +38,47 @@ const toEm = (cols: number) => `${(cols * CHAR_W_EM).toFixed(3)}em`;
   class="camera-mount"
   data-security-camera
   aria-hidden="true"
-  style={`width:${toEm(WIDTH_CH)}; height:${TOTAL_ROWS}em;`}
+  style={`width:calc(${renderWidthPx}px * var(--camera-scale)); height:calc(${renderHeightPx}px * var(--camera-scale)); left:calc(${renderLeftPx}px * var(--camera-scale));`}
 >
-  <pre class="mount" style={`top:${HEAD_ROWS}em;`}>{MOUNT_ART}</pre>
-  <div class="head" style={`transform-origin: ${toEm(PIVOT.col)} ${PIVOT.row}em;`}>
-    <pre class="art">{HEAD_ART}</pre>
-    <span
-      class="lens"
-      data-camera-lens
-      style={`top:${LENS.row + 0.5}em; left:${toEm(LENS.col + 0.5)};`}
-    ></span>
+  <div class="camera-scale" style={`width:${renderWidthPx}px; height:${renderHeightPx}px;`}>
+    <pre class="mount" style={`top:${HEAD_ROWS}em;`}>{MOUNT_ART}</pre>
+    <div class="head" style={`transform-origin: ${toEm(PIVOT.col)} ${PIVOT.row}em;`}>
+      <pre class="art">{HEAD_ART}</pre>
+      <span
+        class="lens"
+        data-camera-lens
+        style={`top:${LENS.row + 0.5}em; left:${toEm(LENS.col + 0.5)};`}
+      ></span>
+    </div>
+    <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${toEm(PIVOT.col)};`}></span>
   </div>
-  <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${toEm(PIVOT.col)};`}></span>
 </div>
 
 <style>
   .camera-mount {
+    --camera-scale: 0.225; /* 3.6px visual / RENDER_FONT_PX */
     position: absolute;
-    left: -1.2em;
     bottom: 0;
     z-index: 0;
-    font-family: var(--font-mono);
-    font-size: 3.6px;
-    line-height: 1em;
-    color: var(--fg-muted);
     pointer-events: none;
   }
 
   @media (max-width: 480px) {
     .camera-mount {
-      font-size: 2.6px;
+      --camera-scale: 0.1625; /* 2.6px visual / RENDER_FONT_PX */
     }
+  }
+
+  .camera-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(var(--camera-scale));
+    transform-origin: top left;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    line-height: 1em;
+    color: var(--fg-muted);
   }
 
   .mount,
@@ -87,13 +103,14 @@ const toEm = (cols: number) => `${(cols * CHAR_W_EM).toFixed(3)}em`;
   }
 
   .lens {
+    /* Sized pre-scale so it comes out to a constant 4px regardless of --camera-scale. */
     position: absolute;
-    width: 4px;
-    height: 4px;
-    margin: -2px 0 0 -2px;
+    width: calc(4px / var(--camera-scale));
+    height: calc(4px / var(--camera-scale));
+    margin: calc(-2px / var(--camera-scale)) 0 0 calc(-2px / var(--camera-scale));
     border-radius: 50%;
     background: var(--signal);
-    box-shadow: 0 0 4px 1px var(--signal);
+    box-shadow: 0 0 calc(4px / var(--camera-scale)) calc(1px / var(--camera-scale)) var(--signal);
     animation: pulse 2.4s ease-in-out infinite;
   }
 
