@@ -28,7 +28,9 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
       <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
       <p class="clearance mono">
-        CLEARANCE <Redacted text="OBSERVER: LEVEL 3" />
+        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <Redacted text="UNAUTHORISED" /> TERMINAL,
+        BY PRESSING <kbd>`</kbd> OR <button type="button" data-terminal-open>CLICKING HERE</button>.
+        THOUGHTCRIME IS DEATH.
       </p>
       <Telemetry />
     </div>
@@ -198,13 +200,39 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     letter-spacing: 0.08em;
   }
 
+  /* A wrapping sentence now, not a two-item row, so plain inline flow rather than flex. */
   .clearance {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    max-width: 46ch;
     font-size: var(--text-xs);
+    line-height: 1.7;
     letter-spacing: 0.08em;
     color: var(--fg-muted);
+  }
+
+  .clearance kbd {
+    font-family: var(--font-mono);
+    font-size: inherit;
+    border: 1px solid var(--line);
+    padding: 0 0.3em;
+    border-radius: 2px;
+  }
+
+  /* A real <button> so the terminal stays reachable by keyboard, styled as inline text. */
+  .clearance button {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    color: var(--signal);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
+  .clearance button:hover {
+    opacity: 0.75;
   }
 
   section {

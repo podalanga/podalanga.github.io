@@ -4,36 +4,65 @@ import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const navItems = site.nav.map((item) => {
+  const itemPath = item.href.replace(/\/$/, '') || '/';
+  const active = itemPath === '/' ? path === '/' : path === itemPath || path.startsWith(`${itemPath}/`);
+  return { ...item, active };
+});
 ---
 
 <header class="site-header">
   <div class="container bar">
-    <Logo size="header" />
+    <div class="brand">
+      <Logo size="header" />
+      <a
+        class="wth mono"
+        href="https://en.wikipedia.org/wiki/Trichosanthes_cucumerina"
+        target="_blank"
+        rel="noopener noreferrer"
+      >WTH is Podalanga?</a>
+    </div>
 
-    <nav aria-label="Primary">
+    <nav class="nav-desktop" aria-label="Primary">
       <ul>
         {
-          site.nav.map((item) => {
-            const itemPath = item.href.replace(/\/$/, '') || '/';
-            const active = itemPath === '/' ? path === '/' : path === itemPath || path.startsWith(`${itemPath}/`);
-            return (
-              <li>
-                <a href={item.href} aria-current={active ? 'page' : undefined}>
-                  {active && <span class="dot" aria-hidden="true">●</span>}
-                  <span class="mono" data-scramble={item.label}>{item.label}</span>
-                  <span class="index mono">/{item.index}</span>
-                </a>
-              </li>
-            );
-          })
+          navItems.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.active ? 'page' : undefined}>
+                {item.active && <span class="dot" aria-hidden="true">●</span>}
+                <span class="mono" data-scramble={item.label}>{item.label}</span>
+                <span class="index mono">/{item.index}</span>
+              </a>
+            </li>
+          ))
         }
       </ul>
     </nav>
 
     <div class="tools">
-      <span class="rec mono" aria-hidden="true"><span class="dot" />REC</span>
       <time id="ist-clock" class="mono clock" datetime="">--:--</time>
       <ThemeToggle />
+      <details class="nav-mobile">
+        <summary aria-label="Menu">
+          <span class="mono">MENU</span>
+        </summary>
+        <div class="panel">
+          <ul>
+            {
+              navItems.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={item.active ? 'page' : undefined}>
+                    {item.active && <span class="dot" aria-hidden="true">●</span>}
+                    <span class="mono">{item.label}</span>
+                    <span class="index mono">/{item.index}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </details>
     </div>
   </div>
 </header>
@@ -59,11 +88,19 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--space-5);
   }
 
-  nav {
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .nav-desktop {
     display: none;
   }
 
-  nav ul {
+  .nav-desktop ul,
+  .nav-mobile ul {
     display: flex;
     gap: var(--space-6);
     list-style: none;
@@ -71,30 +108,104 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     padding: 0;
   }
 
-  nav a {
+  .nav-desktop a,
+  .nav-mobile a {
     display: inline-flex;
     align-items: baseline;
     gap: var(--space-1);
     text-decoration: none;
     font-size: var(--text-xs);
+    line-height: 1;
     letter-spacing: 0.08em;
     color: var(--fg-muted);
     transition: color 0.15s var(--ease-out);
   }
 
-  nav a:hover,
-  nav a[aria-current='page'] {
+  .nav-desktop a:hover,
+  .nav-desktop a[aria-current='page'],
+  .nav-mobile a:hover,
+  .nav-mobile a[aria-current='page'] {
     color: var(--fg);
   }
 
-  nav a .dot {
+  .nav-desktop a .dot,
+  .nav-mobile a .dot {
     color: var(--signal);
     font-size: 0.5em;
   }
 
-  nav a .index {
+  .nav-desktop a .index,
+  .nav-mobile a .index {
     color: var(--fg-muted);
     opacity: 0.7;
+  }
+
+  .nav-mobile {
+    position: relative;
+  }
+
+  .nav-mobile summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    cursor: pointer;
+    list-style: none;
+    padding: var(--space-2);
+    margin: calc(var(--space-2) * -1);
+    transition: color 0.15s var(--ease-out);
+  }
+
+  .nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-mobile summary::after {
+    content: '+';
+    color: var(--signal);
+    display: inline-block;
+    transition: transform 0.2s var(--ease-out);
+  }
+
+  .nav-mobile[open] summary::after {
+    content: '+';
+    transform: rotate(45deg);
+  }
+
+  .nav-mobile summary:hover,
+  .nav-mobile[open] summary {
+    color: var(--fg);
+  }
+
+  /* Native `<details>` hides non-summary children with `display: none` when closed, which can't
+     be transitioned. Keep `.panel` always laid out and animate it to zero height/opacity instead,
+     via the 0fr/1fr grid-track trick, so opening feels like a slide rather than a hard cut. */
+  .nav-mobile .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    position: absolute;
+    top: calc(100% + var(--space-3));
+    right: 0;
+    min-width: 11rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    opacity: 0;
+    transition: grid-template-rows 0.22s var(--ease-out), opacity 0.16s var(--ease-out);
+  }
+
+  .nav-mobile[open] .panel {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .nav-mobile .panel ul {
+    flex-direction: column;
+    gap: var(--space-4);
+    min-height: 0;
+    padding: var(--space-4);
+    overflow: hidden;
   }
 
   .tools {
@@ -103,21 +214,25 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--space-4);
   }
 
-  .rec {
+  /* `display: inline` gave this a tight small-font line box while the nav's `li` still carried
+     the body's `line-height: 1.5` strut at `--text-base`, so the two texts centred on different
+     optical lines. Both sides are now `inline-flex` with `line-height: 1`. */
+  .wth {
     display: none;
     align-items: center;
-    gap: var(--space-2);
     font-size: var(--text-xs);
-    color: var(--fg-muted);
+    line-height: 1;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s var(--ease-out);
   }
 
-  .rec .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: pulse 2.4s ease-in-out infinite;
+  .wth:hover,
+  .wth:focus-visible {
+    color: var(--signal);
   }
 
   .clock {
@@ -127,28 +242,22 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     font-variant-numeric: tabular-nums;
   }
 
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.25;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rec .dot {
-      animation: none;
-    }
-  }
-
   @media (min-width: 780px) {
-    nav {
+    .nav-desktop {
       display: block;
     }
-    .rec,
     .clock {
+      display: inline-flex;
+    }
+    .nav-mobile {
+      display: none;
+    }
+  }
+
+  /* The bar needs ~1045px before the wordmark, the aside, the four nav items, the clock and the
+     theme button all fit without crowding, so this one waits past the 780px nav breakpoint. */
+  @media (min-width: 1060px) {
+    .wth {
       display: inline-flex;
     }
   }
