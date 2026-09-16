@@ -15,10 +15,20 @@ const lastWord = words.pop() ?? text;
 const leading = words.length ? `${words.join(' ')} ` : '';
 ---
 
+{/* The hero wordmark is decoration on the page it names, not a link back to itself — only the
+   header wordmark navigates home. */}
 <span class:list={['logo', size]}>
   {leading && (
-    <a href="/" class="wordmark lead" aria-hidden="true" tabindex="-1">{leading}</a>
-  )}<span class="tail"><a href="/" class="wordmark" aria-label={`${site.name} home`}>{lastWord}</a><button
+    size === 'hero' ? (
+      <span class="wordmark lead" aria-hidden="true">{leading}</span>
+    ) : (
+      <a href="/" class="wordmark lead" aria-hidden="true" tabindex="-1">{leading}</a>
+    )
+  )}<span class="tail">{size === 'hero' ? (
+    <span class="wordmark">{lastWord}</span>
+  ) : (
+    <a href="/" class="wordmark" aria-label={`${site.name} home`}>{lastWord}</a>
+  )}<button
     type="button"
     class="dot"
     data-terminal-open

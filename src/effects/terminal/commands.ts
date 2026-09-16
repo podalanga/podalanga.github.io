@@ -32,6 +32,11 @@ export interface CommandResult {
   action?: CommandAction;
 }
 
+export interface CompletionResult {
+  candidates: string[];
+  newInput?: string;
+}
+
 const HELP_LINES = [
   'help                 : list commands',
   'whoami               : short bio',
@@ -52,6 +57,23 @@ function findWork(ctx: CommandContext, codename: string): WorkSummary | undefine
 
 function yearRange(w: WorkSummary): string {
   return w.status === 'ongoing' || !w.endYear ? `${w.startYear}-PRESENT` : `${w.startYear}-${w.endYear}`;
+}
+
+// Derived from HELP_LINES (not a separately maintained list) so hidden easter eggs like
+// `sudo`/`2+2` never appear as tab-completion candidates, without having to remember to
+// keep two lists in sync.
+const COMPLETABLE_COMMANDS = HELP_LINES.map((line) => line.trim().split(/\s+/)[0]);
+
+function longestCommonPrefix(strings: string[]): string {
+  if (strings.length === 0) return '';
+  let prefix = strings[0];
+  for (const s of strings.slice(1)) {
+    let i = 0;
+    while (i < prefix.length && i < s.length && prefix[i] === s[i]) i++;
+    prefix = prefix.slice(0, i);
+    if (prefix === '') break;
+  }
+  return prefix;
 }
 
 export function runCommand(raw: string, ctx: CommandContext): CommandResult {
@@ -137,4 +159,43 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
     default:
       return { lines: [`command not found: ${cmd}. try 'help'`] };
   }
+}
+
+export function getCompletions(raw: string, ctx: CommandContext): CompletionResult {
+  const trailingSpace = raw === '' || /\s$/.test(raw);
+  const trimmed = raw.trim();
+  const tokens = trimmed === '' ? [] : trimmed.split(/\s+/);
+
+  const priorTokens = trailingSpace ? tokens : tokens.slice(0, -1);
+  const activePrefix = trailingSpace ? '' : (tokens[tokens.length - 1] ?? '');
+  const activeIndex = priorTokens.length;
+
+  if (activeIndex >= 2) return { candidates: [] };
+
+  let pool: string[];
+  if (activeIndex === 0) {
+    pool = COMPLETABLE_COMMANDS;
+  } else {
+    const cmd = priorTokens[0].toLowerCase();
+    const codenames = ctx.works.map((w) => w.codename.toLowerCase());
+    if (cmd === 'ls') pool = ['works'];
+    else if (cmd === 'cat') pool = codenames;
+    else if (cmd === 'open') pool = ['works', 'archive', 'log', ...codenames];
+    else if (cmd === 'theme') pool = ['dark', 'light'];
+    else pool = [];
+  }
+
+  const needle = activePrefix.toLowerCase();
+  const matches = pool.filter((c) => c.startsWith(needle));
+  if (matches.length === 0) return { candidates: [] };
+
+  const prefixBase = priorTokens.length ? `${priorTokens.join(' ')} ` : '';
+
+  if (matches.length === 1) {
+    return { candidates: matches, newInput: `${prefixBase}${matches[0]} ` };
+  }
+
+  const lcp = longestCommonPrefix(matches);
+  const newInput = lcp.length > activePrefix.length ? `${prefixBase}${lcp}` : undefined;
+  return { candidates: matches, newInput };
 }

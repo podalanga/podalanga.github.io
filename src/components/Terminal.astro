@@ -58,6 +58,7 @@ const works = (await getCollection('works'))
     bottom: 0;
     z-index: 9990;
     max-height: 50vh;
+    max-height: 50dvh;
     display: flex;
     flex-direction: column;
     background: var(--bg-raised);
@@ -103,26 +104,31 @@ const works = (await getCollection('works'))
     color: var(--fg-muted);
   }
 
-  .log p {
+  .log :global(p) {
     margin: 0 0 var(--space-1);
     max-width: none;
     white-space: pre-wrap;
     word-break: break-word;
   }
 
-  .log p.log-input {
-    margin-top: var(--space-3);
+  .log :global(p.log-input) {
+    margin-top: var(--space-5);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
   }
 
-  .log p.log-input:first-child {
+  .log :global(p.log-input:first-child) {
     margin-top: 0;
+    padding-top: 0;
+    border-top: none;
   }
 
-  .log .log-prompt {
+  .log :global(.log-prompt) {
     color: var(--fg);
+    font-weight: 600;
   }
 
-  .log p.log-danger {
+  .log :global(p.log-danger) {
     color: var(--signal);
   }
 
@@ -144,7 +150,9 @@ const works = (await getCollection('works'))
     border: none;
     color: var(--fg);
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    /* iOS Safari auto-zooms the page on focusing any input under 16px; --text-sm tops out
+       below that, so floor it here rather than letting the whole page jump on tap. */
+    font-size: max(16px, var(--text-sm));
     outline: none;
   }
 </style>

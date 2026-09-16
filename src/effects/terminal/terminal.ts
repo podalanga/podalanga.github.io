@@ -1,7 +1,7 @@
 // Terminal wiring (§7.1): opens on `` ` ``/`~` (ignored while typing in a field) or the footer
 // hint button, closes on Esc or its own close button. Focus-trapped while open, restores focus
 // to whatever opened it. History via up/down. Delegates parsing to the pure `runCommand`.
-import { runCommand, type CommandContext, type WorkSummary } from './commands';
+import { runCommand, getCompletions, type CommandContext, type WorkSummary } from './commands';
 import { prefersReducedMotion } from '../../lib/reduced-motion';
 
 function isTypingTarget(el: EventTarget | null): boolean {
@@ -81,6 +81,20 @@ export function initTerminal(): () => void {
     return panel!.classList.contains('open');
   }
 
+  function buildContext(): CommandContext {
+    const contextEl = document.getElementById('terminal-context') as HTMLElement | null;
+    const emailUser = contextEl?.dataset.emailUser ?? '';
+    const emailDomain = contextEl?.dataset.emailDomain ?? '';
+    return {
+      works,
+      email: emailUser && emailDomain ? `${emailUser}@${emailDomain}` : '',
+      github: contextEl?.dataset.github ?? '',
+      linkedin: contextEl?.dataset.linkedin ?? '',
+      currentTheme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
+      now: new Date(),
+    };
+  }
+
   async function submit(): Promise<void> {
     const raw = input!.value;
     input!.value = '';
@@ -90,18 +104,7 @@ export function initTerminal(): () => void {
     }
     printInput(raw);
 
-    const contextEl = document.getElementById('terminal-context') as HTMLElement | null;
-    const emailUser = contextEl?.dataset.emailUser ?? '';
-    const emailDomain = contextEl?.dataset.emailDomain ?? '';
-    const ctx: CommandContext = {
-      works,
-      email: emailUser && emailDomain ? `${emailUser}@${emailDomain}` : '',
-      github: contextEl?.dataset.github ?? '',
-      linkedin: contextEl?.dataset.linkedin ?? '',
-      currentTheme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
-      now: new Date(),
-    };
-
+    const ctx: CommandContext = buildContext();
     const result = runCommand(raw, ctx);
     if (result.action?.type === 'clear') {
       log!.replaceChildren();
@@ -139,6 +142,13 @@ export function initTerminal(): () => void {
       return;
     }
     if (e.key === 'Tab') {
+      if (!e.shiftKey && document.activeElement === input) {
+        e.preventDefault();
+        const { candidates, newInput } = getCompletions(input!.value, buildContext());
+        if (newInput !== undefined) input!.value = newInput;
+        if (candidates.length > 1) print([candidates.join('   ')]);
+        return;
+      }
       // Only the close button and input are focusable inside the panel; trap between them.
       // DOM order is close button (in the top bar) then input (in the bottom row), so that's
       // also tab order: first = close button, last = input.

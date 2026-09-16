@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseFileCard from '../components/CaseFileCard.astro';
 import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
-import Redacted from '../components/Redacted.astro';
 import Telemetry from '../components/Telemetry.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -28,10 +27,13 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
       <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
       <p class="clearance mono">
-        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <Redacted
-          text="UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE."
-          openTerminal
-        /> THOUGHTCRIME IS DEATH.
+        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
+          class="terminal-cue mono"
+          role="button"
+          tabindex="0"
+          aria-label="Unauthorised terminal, by pressing ` or clicking here. Opens the terminal."
+          data-terminal-open
+        >UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE.</span> THOUGHTCRIME IS DEATH.
       </p>
       <Telemetry />
     </div>
@@ -208,6 +210,12 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     line-height: 1.7;
     letter-spacing: 0.08em;
     color: var(--fg-muted);
+  }
+
+  .terminal-cue {
+    display: inline;
+    color: var(--signal);
+    cursor: pointer;
   }
 
 

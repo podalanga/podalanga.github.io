@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { runCommand, type CommandContext, type WorkSummary } from './commands';
+import { runCommand, getCompletions, type CommandContext, type WorkSummary } from './commands';
 
 const works: WorkSummary[] = [
   { codename: 'ZBOT', slug: 'zbot', title: 'ZBot', summary: 'Ported a swimming robot sim.', startYear: 2026, endYear: 2026, status: 'completed' },
@@ -162,5 +162,87 @@ describe('runCommand : unknown', () => {
   it('reports command not found', () => {
     const result = runCommand('frobnicate', ctx());
     expect(result.lines).toEqual(["command not found: frobnicate. try 'help'"]);
+  });
+});
+
+describe('getCompletions : command name (first token)', () => {
+  it('completes a single unambiguous match with a trailing space', () => {
+    expect(getCompletions('o', ctx())).toEqual({ candidates: ['open'], newInput: 'open ' });
+    expect(getCompletions('who', ctx())).toEqual({ candidates: ['whoami'], newInput: 'whoami ' });
+  });
+
+  it('lists all commands sharing a prefix and does not extend past the shared letters', () => {
+    const result = getCompletions('c', ctx());
+    expect(result.candidates.sort()).toEqual(['cat', 'clear', 'contact']);
+    expect(result.newInput).toBeUndefined();
+  });
+
+  it('lists every completable command on an empty input', () => {
+    const result = getCompletions('', ctx());
+    expect(result.candidates.sort()).toEqual(
+      ['cat', 'clear', 'contact', 'date', 'exit', 'help', 'ls', 'open', 'theme', 'whoami'].sort(),
+    );
+    expect(result.newInput).toBeUndefined();
+  });
+
+  it('excludes hidden easter eggs (sudo, 2+2) from candidates', () => {
+    expect(getCompletions('s', ctx()).candidates).toEqual([]);
+    expect(getCompletions('2', ctx()).candidates).toEqual([]);
+  });
+
+  it('is a no-op with zero matches', () => {
+    expect(getCompletions('zzz', ctx())).toEqual({ candidates: [] });
+  });
+});
+
+describe('getCompletions : ls argument', () => {
+  it('completes "ls w" to "ls works "', () => {
+    expect(getCompletions('ls w', ctx())).toEqual({ candidates: ['works'], newInput: 'ls works ' });
+  });
+});
+
+describe('getCompletions : cat argument', () => {
+  it('completes a unique codename prefix, case-insensitively, lower-cased', () => {
+    expect(getCompletions('cat z', ctx())).toEqual({ candidates: ['zbot'], newInput: 'cat zbot ' });
+  });
+
+  it('lists both codenames on an empty argument without extending the input', () => {
+    const result = getCompletions('cat ', ctx());
+    expect(result.candidates.sort()).toEqual(['pendulum', 'zbot']);
+    expect(result.newInput).toBeUndefined();
+  });
+});
+
+describe('getCompletions : open argument', () => {
+  it('completes section targets', () => {
+    expect(getCompletions('open w', ctx())).toEqual({ candidates: ['works'], newInput: 'open works ' });
+    expect(getCompletions('open a', ctx())).toEqual({ candidates: ['archive'], newInput: 'open archive ' });
+  });
+
+  it('completes a codename target alongside section targets', () => {
+    expect(getCompletions('open z', ctx())).toEqual({ candidates: ['zbot'], newInput: 'open zbot ' });
+  });
+});
+
+describe('getCompletions : theme argument', () => {
+  it('completes a unique theme value', () => {
+    expect(getCompletions('theme d', ctx())).toEqual({ candidates: ['dark'], newInput: 'theme dark ' });
+  });
+
+  it('lists both theme values on an empty argument', () => {
+    const result = getCompletions('theme ', ctx());
+    expect(result.candidates.sort()).toEqual(['dark', 'light']);
+    expect(result.newInput).toBeUndefined();
+  });
+});
+
+describe('getCompletions : no-arg commands and out-of-range tokens', () => {
+  it('offers no candidates for a second token on a no-arg command', () => {
+    expect(getCompletions('whoami x', ctx())).toEqual({ candidates: [] });
+    expect(getCompletions('clear ', ctx())).toEqual({ candidates: [] });
+  });
+
+  it('offers no candidates for a third token', () => {
+    expect(getCompletions('cat zbot x', ctx())).toEqual({ candidates: [] });
   });
 });
