@@ -28,9 +28,10 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
       <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
       <p class="clearance mono">
-        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <Redacted text="UNAUTHORISED" /> TERMINAL,
-        BY PRESSING <kbd>`</kbd> OR <button type="button" data-terminal-open>CLICKING HERE</button>.
-        THOUGHTCRIME IS DEATH.
+        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <Redacted
+          text="UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE."
+          openTerminal
+        /> THOUGHTCRIME IS DEATH.
       </p>
       <Telemetry />
     </div>
@@ -209,31 +210,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     color: var(--fg-muted);
   }
 
-  .clearance kbd {
-    font-family: var(--font-mono);
-    font-size: inherit;
-    border: 1px solid var(--line);
-    padding: 0 0.3em;
-    border-radius: 2px;
-  }
 
-  /* A real <button> so the terminal stays reachable by keyboard, styled as inline text. */
-  .clearance button {
-    appearance: none;
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    letter-spacing: inherit;
-    color: var(--signal);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    cursor: pointer;
-  }
-
-  .clearance button:hover {
-    opacity: 0.75;
-  }
 
   section {
     padding-block: var(--space-7);

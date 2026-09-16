@@ -1,38 +1,44 @@
 ---
 interface Props {
   text: string;
+  /** Also opens the terminal when clicked (terminal.ts binds every `[data-terminal-open]`). */
+  openTerminal?: boolean;
 }
 
-const { text } = Astro.props;
+const { text, openTerminal = false } = Astro.props;
 ---
 
-<span class="redacted" tabindex="0" role="button" aria-label={text} data-redact={text}>
-  <span class="bar" aria-hidden="true"></span>
+<span
+  class="redacted"
+  tabindex="0"
+  role="button"
+  aria-label={openTerminal ? `${text} (opens the terminal)` : text}
+  data-redact={text}
+  data-terminal-open={openTerminal ? '' : undefined}
+>
   <span class="redact-text mono" aria-hidden="true">{text}</span>
 </span>
 
 <style>
+  /* The bar used to be an absolutely-positioned overlay on an `inline-block`, which cannot break
+     across lines: a redaction longer than the remaining space took a whole line to itself and left
+     the text before it orphaned. Painting it as the text's own background instead lets a long
+     redaction wrap inside the sentence like any other run of words, with `box-decoration-break`
+     keeping the bar solid on each line it covers. */
   .redacted {
-    position: relative;
-    display: inline-block;
+    display: inline;
     cursor: pointer;
   }
 
   .redact-text {
-    visibility: hidden;
+    background: var(--redact);
+    color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .redacted.revealed .redact-text {
-    visibility: visible;
-  }
-
-  .bar {
-    position: absolute;
-    inset: 0;
-    background: var(--redact);
-  }
-
-  .redacted.revealed .bar {
-    opacity: 0;
+    background: none;
+    color: inherit;
   }
 </style>
