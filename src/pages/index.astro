@@ -270,17 +270,22 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       align-items: stretch;
     }
 
+    /* No width cap here. Capping it while the row was justified space-between
+       opened a 300px+ hole between the text and the photo, and squeezed the
+       wordmark until "Joshua John." wrapped onto two lines. The column takes the
+       space the photo does not, and the headline keeps its own measure. */
     .hero-text {
-      justify-content: center;
-      flex: 0 1 auto;
-      max-width: 52rem;
+      justify-content: flex-start;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     /* Taken out of flow so the photo fills whatever height the row ends up being,
        instead of its own intrinsic size dictating that height. */
     .hero-portrait {
-      width: 36%;
-      max-width: 42rem;
+      flex: 0 0 auto;
+      width: 32%;
+      max-width: 44rem;
       aspect-ratio: auto;
       min-height: 0;
     }
@@ -379,7 +384,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
 
   .headline {
     font-size: var(--text-2xl);
-    max-width: 16ch;
+    max-width: 18ch;
   }
 
   .sub {
