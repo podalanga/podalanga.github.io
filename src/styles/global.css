@@ -11,6 +11,9 @@
 html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  /* The hero's scroll cue is a real `#education` anchor, so it works without JS; this makes it
+     glide instead of snapping. The reduced-motion block below forces it back to `auto`. */
+  scroll-behavior: smooth;
 }
 
 html[data-theme='light'] {

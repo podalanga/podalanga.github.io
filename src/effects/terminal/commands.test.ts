@@ -55,7 +55,7 @@ describe('runCommand : ls works', () => {
 describe('runCommand : cat', () => {
   it('shows a case file summary and link, case-insensitively', () => {
     const result = runCommand('cat zbot', ctx());
-    expect(result.lines).toEqual(['Ported a swimming robot sim.', '→ /profile/zbot']);
+    expect(result.lines).toEqual(['Ported a swimming robot sim.', '→ /projects/zbot']);
   });
 
   it('errors when the codename does not exist', () => {
@@ -71,12 +71,12 @@ describe('runCommand : cat', () => {
 describe('runCommand : open', () => {
   it('navigates to section routes', () => {
     const result = runCommand('open works', ctx());
-    expect(result.action).toEqual({ type: 'navigate', href: '/profile' });
+    expect(result.action).toEqual({ type: 'navigate', href: '/projects' });
   });
 
   it('navigates to a work by codename', () => {
     const result = runCommand('open PENDULUM', ctx());
-    expect(result.action).toEqual({ type: 'navigate', href: '/profile/rotary-inverted-pendulum' });
+    expect(result.action).toEqual({ type: 'navigate', href: '/projects/rotary-inverted-pendulum' });
   });
 
   it('errors on unknown targets', () => {

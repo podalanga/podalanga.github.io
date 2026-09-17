@@ -1,0 +1,241 @@
+---
+import { citationsFor, formatFileNo, type CitableWork } from '../lib/skill-citations';
+
+interface SkillItem {
+  name: string;
+  tier?: number;
+}
+
+interface Props {
+  groups: { data: { order: number; label: string; items: SkillItem[] } }[];
+  works: CitableWork[];
+}
+
+const { groups, works } = Astro.props;
+
+/** Every term on the record, flattened out of its group. The ramp ranks across groups, not inside them. */
+const terms = groups.flatMap((g) => g.data.items);
+
+const tier = (n: number) => terms.filter((t) => t.tier === n);
+const lead = tier(1);
+const core = tier(2);
+const working = tier(3);
+
+/** The index lists everything, alphabetically, with whatever case files evidence each term. */
+const index = [...terms]
+  .sort((a, b) => a.name.localeCompare(b.name))
+  .map((t) => ({ name: t.name, cites: citationsFor(t.name, works) }));
+---
+
+<div class="record">
+  {
+    lead.length > 0 && (
+      <ul class="lead">
+        {lead.map((t) => (
+          <li><span data-scramble={t.name}>{t.name}</span></li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    core.length > 0 && (
+      <ul class="core">
+        {core.map((t) => <li>{t.name}</li>)}
+      </ul>
+    )
+  }
+
+  {
+    working.length > 0 && (
+      <p class="working">
+        {working.map((t, i) => (
+          <>
+            {i > 0 && <span class="sep" aria-hidden="true"> · </span>}
+            {t.name}
+          </>
+        ))}
+      </p>
+    )
+  }
+
+  <details class="withheld">
+    <summary>
+      <span class="bar">{index.length} terms on file</span>
+    </summary>
+
+    <ul class="index mono">
+      {
+        index.map((entry) => (
+          <li>
+            <span class="term">{entry.name}</span>
+            <span class="leader" aria-hidden="true" />
+            {entry.cites.length > 0 && (
+              <span class="cites">
+                {entry.cites.map((c) => (
+                  <a href={`/projects/${c.slug}`} title={`Case file ${formatFileNo(c.fileNo)} — ${c.codename}`}>
+                    {formatFileNo(c.fileNo)}
+                  </a>
+                ))}
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </details>
+</div>
+
+<style>
+  .record {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .record ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* The ramp. Size alone carries the ranking, so nothing here needs a label to explain itself. */
+  .lead {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-stretch: var(--stretch-display);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    /* Long terms must not push the band wider than the page on a narrow screen. */
+    overflow-wrap: anywhere;
+  }
+
+  .core {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-stretch: var(--stretch-display);
+    font-weight: 500;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+  }
+
+  .working {
+    max-width: var(--measure);
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
+  }
+
+  .working .sep {
+    color: var(--fg-subtle);
+  }
+
+  /* The fold. A native <details> so the index stays in the HTML for scrapers, opens without JS,
+     and is keyboard-operable for free. */
+  .withheld {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-5);
+  }
+
+  .withheld summary {
+    display: inline-block;
+    cursor: pointer;
+    /* The marker is replaced by the bar's own state, below. */
+    list-style: none;
+  }
+
+  .withheld summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bar {
+    display: inline-block;
+    padding: 0.15em 0.6em;
+    background: var(--redact);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  /* Open, the bar has served its purpose as a seal: it steps back to a plain label. */
+  .withheld[open] .bar {
+    background: transparent;
+    color: var(--fg-subtle);
+    padding-inline: 0;
+  }
+
+  .withheld summary:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .index {
+    columns: 3;
+    column-gap: var(--space-7);
+    margin-top: var(--space-5);
+    font-size: var(--text-xs);
+    line-height: 2;
+    color: var(--fg-subtle);
+  }
+
+  .index li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    /* Keep a row from splitting across two columns. */
+    break-inside: avoid;
+  }
+
+  .index .term {
+    /* A long term wraps rather than shoving the citation out of the column. */
+    min-width: 0;
+  }
+
+  .index .leader {
+    flex: 1;
+    /* A term long enough to wrap would otherwise squeeze the leader to nothing and leave that one
+       row without dots. A floor keeps every row reading as an index entry. */
+    min-width: var(--space-5);
+    border-bottom: 1px dotted var(--line-strong);
+    transform: translateY(-0.25em);
+  }
+
+  .cites {
+    display: flex;
+    gap: var(--space-2);
+    white-space: nowrap;
+  }
+
+  .cites a {
+    color: var(--fg-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .cites a:hover,
+  .cites a:focus-visible {
+    color: var(--signal);
+    border-bottom-color: var(--signal);
+  }
+
+  @media (max-width: 900px) {
+    .index {
+      columns: 2;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .index {
+      columns: 1;
+    }
+  }
+</style>

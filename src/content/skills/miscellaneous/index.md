@@ -2,8 +2,8 @@
 order: 5
 label: "Miscellaneous"
 items:
-  - "Self-Hosting Local Servers"
-  - "Web Development"
-  - "Local LLM Hosting"
-  - "KVM GPU Pass-Through Without Virtualization"
+  - { name: "Self-Hosting Local Servers" }
+  - { name: "Web Development" }
+  - { name: "Local LLM Hosting" }
+  - { name: "KVM GPU Pass-Through Without Virtualization" }
 ---

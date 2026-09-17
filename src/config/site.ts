@@ -11,8 +11,8 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/joshuajohnl/',
   },
   nav: [
-    { label: 'INDEX', index: '00', href: '/' },
-    { label: 'PROFILE', index: '01', href: '/profile' },
+    { label: 'PROFILE', index: '00', href: '/' },
+    { label: 'PROJECTS', index: '01', href: '/projects' },
     { label: 'ARCHIVE', index: '02', href: '/archive' },
     { label: 'BLOG', index: '03', href: '/blog' },
   ],

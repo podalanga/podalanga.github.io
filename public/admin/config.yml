@@ -161,7 +161,23 @@ collections:
     fields:
       - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
       - { name: label, label: Group label, widget: string }
-      - { name: items, label: Items, widget: list, field: { name: item, label: Item, widget: string } }
+      - name: items
+        label: Items
+        label_singular: Item
+        widget: list
+        summary: '{{fields.name}} (tier {{fields.tier}})'
+        fields:
+          - { name: name, label: Name, widget: string }
+          - {
+              name: tier,
+              label: Tier,
+              widget: number,
+              value_type: int,
+              required: false,
+              min: 1,
+              max: 3,
+              hint: 'Size on the homepage record: 1 is largest, 3 smallest. Leave blank to list the term in the index only.',
+            }
 
   - name: positions
     label: Positions

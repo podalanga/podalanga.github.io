@@ -10,7 +10,6 @@ const works = (await getCollection('works')).sort(
 );
 
 const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
-const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
 const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.data.order);
 const positions = (await getCollection('positions')).sort((a, b) => a.data.order - b.data.order);
 
@@ -23,9 +22,9 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
 ];
 ---
 
-<BaseLayout title={`Profile · ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
+<BaseLayout title={`Projects · ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
   <section class="container intro">
-    <p class="label">§ 01 // PROFILE</p>
+    <p class="label">§ 01 // PROJECTS</p>
     <h1>Case files</h1>
     <p class="dek">Internships, projects, and competitions, sorted by start date, newest first.</p>
   </section>
@@ -136,21 +135,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     </ul>
   </section>
 
-  <section class="container skills">
-    <h2 class="section-title">Skills</h2>
-    <div class="skills-grid">
-      {
-        skillGroups.map((g) => (
-          <div class="skill-group">
-            <p class="group-label mono">{g.data.label}</p>
-            <ul class="mono">
-              {g.data.items.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -160,16 +144,14 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   .awards,
   .education,
   .positions,
-  .contact,
-  .skills {
+  .contact {
     padding-block: var(--space-7);
   }
 
   .timeline + .awards,
   .awards + .education,
   .education + .positions,
-  .positions + .contact,
-  .contact + .skills {
+  .positions + .contact {
     border-top: 1px solid var(--line);
   }
 
@@ -312,21 +294,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     color: var(--fg-muted);
   }
 
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--space-5);
-  }
-
-  .group-label {
-    padding-bottom: var(--space-2);
-    margin-bottom: var(--space-3);
-    border-bottom: 1px solid var(--line);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wide);
-    color: var(--fg);
-  }
-
   .contact-lead {
     max-width: var(--measure);
     color: var(--fg-muted);
@@ -369,16 +336,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     color: var(--signal);
   }
 
-  .skill-group ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    font-size: var(--text-sm);
-    color: var(--fg-muted);
-  }
 
   .list-entries {
     list-style: none;

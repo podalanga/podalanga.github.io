@@ -2,11 +2,11 @@
 order: 4
 label: "Hardware & Sensors"
 items:
-  - "Raspberry Pi"
-  - "NVIDIA Jetson"
-  - "Arduino"
-  - "ESP32"
-  - "Intel RealSense"
-  - "RPLIDAR"
-  - "3D Printing"
+  - { name: "Raspberry Pi", tier: 3 }
+  - { name: "Arduino", tier: 3 }
+  - { name: "NVIDIA Jetson" }
+  - { name: "ESP32" }
+  - { name: "Intel RealSense" }
+  - { name: "RPLIDAR" }
+  - { name: "3D Printing" }
 ---

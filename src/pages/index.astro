@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseFileCard from '../components/CaseFileCard.astro';
 import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
+import SkillRecord from '../components/SkillRecord.astro';
 import Telemetry from '../components/Telemetry.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -17,13 +18,24 @@ const projects = works.filter((w) => w.data.kind !== 'internship');
 
 const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
 const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
+
+/** Just the fields the skills record needs to cite a case file, in file-number order. */
+const citableWorks = works
+  .map((w) => ({
+    fileNo: w.data.fileNo,
+    slug: w.id,
+    codename: w.data.codename,
+    stack: w.data.stack,
+    tags: w.data.tags,
+  }))
+  .sort((a, b) => a.fileNo - b.fileNo);
 ---
 
 <BaseLayout>
-  <section class="hero band band--lead" data-section="00" data-section-label="INDEX">
+  <section class="hero band band--lead" data-section="00" data-section-label="PROFILE">
     <div class="container hero-inner">
       <div class="hero-text">
-        <p class="label">§ 00 // INDEX</p>
+        <p class="label">§ 00 // PROFILE</p>
         <Logo size="hero" text="Joshua John" />
         <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
         <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
@@ -76,7 +88,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       <div class="rail">
         <p class="rail-no mono">§ 02</p>
         <h2 class="rail-label">Internships</h2>
-        <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
+        <a class="view-all mono" href="/projects">ALL CASE FILES →</a>
       </div>
       <div class="body">
         <div class="case-grid">
@@ -110,7 +122,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       <div class="rail">
         <p class="rail-no mono">§ 03</p>
         <h2 class="rail-label">Projects</h2>
-        <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
+        <a class="view-all mono" href="/projects">ALL CASE FILES →</a>
       </div>
       <div class="body">
         <div class="case-grid">
@@ -146,18 +158,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
         <h2 class="rail-label">Skills</h2>
       </div>
       <div class="body">
-        <div class="skills-grid">
-          {
-            skillGroups.map((g) => (
-              <div class="skill-group">
-                <p class="group-label mono">{g.data.label}</p>
-                <ul class="mono">
-                  {g.data.items.map((item) => <li>{item}</li>)}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
+        <SkillRecord groups={skillGroups} works={citableWorks} />
       </div>
     </div>
   </section>
@@ -500,32 +501,6 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     font-size: var(--text-xs);
     line-height: var(--leading-relaxed);
     margin-top: var(--space-2);
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: var(--space-6) var(--space-5);
-  }
-
-  .group-label {
-    padding-bottom: var(--space-2);
-    margin-bottom: var(--space-3);
-    border-bottom: 1px solid var(--line);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wide);
-    color: var(--fg);
-  }
-
-  .skill-group ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--fg-muted);
   }
 
   /* ---- Contact ---- */

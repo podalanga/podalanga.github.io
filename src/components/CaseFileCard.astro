@@ -40,7 +40,7 @@ const {
 const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
 ---
 
-<a href={`/profile/${slug}`} class:list={['case-card', variant]} data-kind={kind}>
+<a href={`/projects/${slug}`} class:list={['case-card', variant]} data-kind={kind}>
   <div class="text">
     <div class="top mono">
       <span class="file" transition:name={`file-${slug}`}>{fileLabel} // {codename}</span>

@@ -16,12 +16,6 @@ const navItems = site.nav.map((item) => {
   <div class="container bar">
     <div class="brand">
       <Logo size="header" />
-      <a
-        class="wth mono"
-        href="https://en.wikipedia.org/wiki/Trichosanthes_cucumerina"
-        target="_blank"
-        rel="noopener noreferrer"
-      >WTH is Podalanga?</a>
     </div>
 
     <nav class="nav-desktop" aria-label="Primary">
@@ -260,27 +254,6 @@ const navItems = site.nav.map((item) => {
     gap: var(--space-4);
   }
 
-  /* `display: inline` gave this a tight small-font line box while the nav's `li` still carried
-     the body's `line-height: 1.5` strut at `--text-base`, so the two texts centred on different
-     optical lines. Both sides are now `inline-flex` with `line-height: 1`. */
-  .wth {
-    display: none;
-    align-items: center;
-    font-size: var(--text-xs);
-    line-height: 1;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color 0.15s var(--ease-out);
-  }
-
-  .wth:hover,
-  .wth:focus-visible {
-    color: var(--signal);
-  }
-
   .clock {
     display: none;
     font-size: var(--text-xs);
@@ -297,14 +270,6 @@ const navItems = site.nav.map((item) => {
     }
     .nav-mobile {
       display: none;
-    }
-  }
-
-  /* The bar needs ~1045px before the wordmark, the aside, the four nav items, the clock and the
-     theme button all fit without crowding, so this one waits past the 780px nav breakpoint. */
-  @media (min-width: 1060px) {
-    .wth {
-      display: inline-flex;
     }
   }
 </style>

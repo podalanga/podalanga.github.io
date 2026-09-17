@@ -98,7 +98,20 @@ const skills = defineCollection({
   schema: z.object({
     order: z.number(),
     label: z.string(),
-    items: z.array(z.string()),
+    /**
+     * A term on the record. `tier` drives the ramp at the top of the section: 1 is the largest,
+     * 3 the smallest, and an untiered term appears only in the index below the fold. Bare strings
+     * are still accepted so a CMS round-trip that drops `tier` cannot break the build.
+     */
+    items: z.array(
+      z.union([
+        z.string().transform((name) => ({ name, tier: undefined as number | undefined })),
+        z.object({
+          name: z.string(),
+          tier: optional(z.number().int().min(1).max(3)),
+        }),
+      ]),
+    ),
   }),
 });
 
