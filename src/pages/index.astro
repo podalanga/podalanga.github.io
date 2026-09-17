@@ -17,7 +17,9 @@ const internships = works.filter((w) => w.data.kind === 'internship');
 const projects = works.filter((w) => w.data.kind !== 'internship');
 
 const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
+const positions = (await getCollection('positions')).sort((a, b) => a.data.order - b.data.order);
 const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
+const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout>
@@ -75,10 +77,32 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     </div>
   </section>
 
-  <section class="band band--sunken" data-section="02" data-section-label="INTERNSHIPS">
+  <section class="band band--sunken" data-section="02" data-section-label="POSITIONS">
     <div class="container section-grid">
       <div class="rail">
         <p class="rail-no mono">§ 02</p>
+        <h2 class="rail-label">Positions</h2>
+      </div>
+      <div class="body">
+        <ul class="list-entries">
+          {
+            positions.map((p) => (
+              <li>
+                <p class="org">{p.data.role} at {p.data.org}</p>
+                <p class="meta mono">{p.data.start} to {p.data.end}</p>
+                <p class="meta">{p.data.detail}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" data-section="03" data-section-label="INTERNSHIPS">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 03</p>
         <h2 class="rail-label">Internships</h2>
         <a class="view-all mono" href="/projects">ALL CASE FILES →</a>
       </div>
@@ -109,10 +133,10 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     </div>
   </section>
 
-  <section class="band" data-section="03" data-section-label="PROJECTS">
+  <section class="band band--sunken" data-section="04" data-section-label="PROJECTS">
     <div class="container section-grid">
       <div class="rail">
-        <p class="rail-no mono">§ 03</p>
+        <p class="rail-no mono">§ 04</p>
         <h2 class="rail-label">Projects</h2>
         <a class="view-all mono" href="/projects">ALL CASE FILES →</a>
       </div>
@@ -143,14 +167,35 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     </div>
   </section>
 
-  <section class="band band--sunken" data-section="04" data-section-label="SKILLS">
+  <section class="band" data-section="05" data-section-label="SKILLS">
     <div class="container section-grid">
       <div class="rail">
-        <p class="rail-no mono">§ 04</p>
+        <p class="rail-no mono">§ 05</p>
         <h2 class="rail-label">Skills</h2>
       </div>
       <div class="body">
         <SkillRecord groups={skillGroups} />
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--sunken" data-section="06" data-section-label="AWARDS">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 06</p>
+        <h2 class="rail-label">Awards</h2>
+      </div>
+      <div class="body">
+        <ul class="list-entries">
+          {
+            awards.map((a) => (
+              <li>
+                <p class="org">{a.data.title}</p>
+                <p class="meta">{a.data.detail}</p>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
@@ -476,6 +521,40 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
   }
 
   .dossier-entry .meta {
+    color: var(--fg-subtle);
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    margin-top: var(--space-2);
+  }
+
+  .list-entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .list-entries li {
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .list-entries li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .list-entries .org {
+    font-size: var(--text-md);
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    font-weight: 800;
+    line-height: var(--leading-snug);
+  }
+
+  .list-entries .meta {
     color: var(--fg-subtle);
     font-size: var(--text-xs);
     line-height: var(--leading-relaxed);
