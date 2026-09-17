@@ -206,6 +206,10 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     gap: var(--space-3);
     align-self: center;
     width: min(60vw, 320px);
+    /* Lets the TV row size itself off the aside's own rendered width (cqw)
+       rather than the full viewport, so it tracks correctly at every one of
+       this element's own breakpoints below. */
+    container-type: inline-size;
   }
 
   .hero-portrait {
