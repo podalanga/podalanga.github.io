@@ -6,10 +6,13 @@ interface Props {
 }
 
 const { text, openTerminal = false } = Astro.props;
+/** Optional visible stamp painted over the bar (e.g. "REDACTED MOUSE") instead of leaving it blank. */
+const hasLabel = Astro.slots.has('label');
 ---
 
 <span
   class="redacted"
+  class:list={{ 'has-label': hasLabel }}
   tabindex="0"
   role="button"
   aria-label={openTerminal ? `${text} (opens the terminal)` : text}
@@ -17,6 +20,13 @@ const { text, openTerminal = false } = Astro.props;
   data-terminal-open={openTerminal ? '' : undefined}
 >
   <span class="redact-text mono" aria-hidden="true">{text}</span>
+  {
+    hasLabel && (
+      <span class="redact-label mono" aria-hidden="true">
+        <slot name="label" />
+      </span>
+    )
+  }
 </span>
 
 <style>
@@ -30,6 +40,11 @@ const { text, openTerminal = false } = Astro.props;
     cursor: pointer;
   }
 
+  .redacted.has-label {
+    display: inline-block;
+    position: relative;
+  }
+
   .redact-text {
     background: var(--redact);
     color: transparent;
@@ -40,5 +55,20 @@ const { text, openTerminal = false } = Astro.props;
   .redacted.revealed .redact-text {
     background: none;
     color: inherit;
+  }
+
+  .redact-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .redacted.revealed .redact-label {
+    opacity: 0;
   }
 </style>

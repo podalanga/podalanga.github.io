@@ -26,7 +26,9 @@ const slides = [
   ...(data.cover
     ? [{ src: data.cover, alt: data.coverAlt ?? data.title, caption: data.coverAlt ?? data.title }]
     : []),
-  ...(data.figures ?? []).map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
+  ...(data.figures ?? [])
+    .filter((f) => f.src.src !== data.cover?.src)
+    .map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
 ];
 ---
 

@@ -2,54 +2,56 @@
 import { site } from '../config/site';
 import Redacted from './Redacted.astro';
 import SecurityCamera from './SecurityCamera.astro';
-import Telemetry from './Telemetry.astro';
 import { LINKS } from './social-icons';
 
 const startYear = new Date(site.epoch).getFullYear();
 const [emailUser, emailDomain] = site.email.split('@');
+const obfuscatedEmail = site.email.replace('@', '[at]').replace(/\./g, '[dot]');
 ---
 
 <footer class="site-footer">
   <SecurityCamera />
 
   <div class="container grid">
-    <div class="links">
-      <ul class="icon-links">
-        {
-          LINKS.map((link) => (
-            <li>
-              <a
-                class="icon-link"
-                href={link.key === 'email' ? 'mailto:' : link.href}
-                data-user={link.key === 'email' ? emailUser : undefined}
-                data-domain={link.key === 'email' ? emailDomain : undefined}
-                rel={link.key === 'email' ? undefined : 'me noopener noreferrer'}
-                target={link.key === 'email' ? undefined : '_blank'}
-              >
-                <svg viewBox={link.icon.viewBox} aria-hidden="true" focusable="false">
-                  <path d={link.icon.d} />
-                </svg>
-                <span class="sr-only">{link.label}</span>
-              </a>
-              {link.key === 'email' && (
-                <noscript>
-                  <span class="email-fallback mono">
-                    {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}
-                  </span>
-                </noscript>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-      <span class="terminal-hint mono">
-        <Redacted text="THERE IS NO ESCAPE OR EXIT" openTerminal />
-      </span>
+    <span class="terminal-hint mono">
+      <Redacted text="THERE IS NO ESCAPE OR EXIT" openTerminal>
+        <Fragment slot="label">REDACTED <span class="mouse">MOUSE</span></Fragment>
+      </Redacted>
+    </span>
+
+    <ul class="icon-links">
+      {
+        LINKS.map((link) => (
+          <li>
+            <a
+              class="icon-link"
+              href={link.key === 'email' ? 'mailto:' : link.href}
+              data-user={link.key === 'email' ? emailUser : undefined}
+              data-domain={link.key === 'email' ? emailDomain : undefined}
+              rel={link.key === 'email' ? undefined : 'me noopener noreferrer'}
+              target={link.key === 'email' ? undefined : '_blank'}
+            >
+              <svg viewBox={link.icon.viewBox} aria-hidden="true" focusable="false">
+                <path d={link.icon.d} />
+              </svg>
+              <span class="sr-only">{link.label}</span>
+            </a>
+            {link.key === 'email' && (
+              <noscript>
+                <span class="email-fallback mono">
+                  {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}
+                </span>
+              </noscript>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="right-group">
+      <span class="footer-email mono">{obfuscatedEmail}</span>
+      <p class="copy mono">© {startYear}-∞ PODALANGA</p>
     </div>
-
-    <Telemetry variant="compact" />
-
-    <p class="copy mono">© {startYear}-∞ PODALANGA</p>
   </div>
 </footer>
 
@@ -63,7 +65,7 @@ const [emailUser, emailDomain] = site.email.split('@');
 
   .site-footer .container.grid {
     padding-block: var(--space-6);
-    padding-inline-start: max(var(--gutter), calc(130px + var(--space-4)));
+    padding-inline-start: max(var(--gutter), calc(130px + var(--space-6)));
   }
 
   .grid {
@@ -74,20 +76,22 @@ const [emailUser, emailDomain] = site.email.split('@');
     gap: var(--space-5);
   }
 
-  .links {
+  .icon-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1 1 auto;
+  }
+
+  .right-group {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-5);
-  }
-
-  .icon-links {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    list-style: none;
-    margin: 0;
-    padding: 0;
   }
 
   .sr-only {
@@ -108,7 +112,7 @@ const [emailUser, emailDomain] = site.email.split('@');
   }
 
   .icon-link svg {
-    width: 1.25rem;
+    width: 1.75rem;
     height: auto;
     fill: var(--fg);
     transition: fill var(--dur-fast) var(--ease-out);
@@ -135,6 +139,17 @@ const [emailUser, emailDomain] = site.email.split('@');
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-wider);
     color: var(--fg-muted);
+  }
+
+  .terminal-hint :global(.mouse) {
+    color: var(--signal);
+  }
+
+  .footer-email {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    user-select: text;
   }
 
   .copy {

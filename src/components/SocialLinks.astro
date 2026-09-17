@@ -91,7 +91,7 @@ const LINKS = SHARED_LINKS;
                 {row}
               </text>
             ))}
-            <svg x={ICON_POS.x} y={ICON_POS.y} width={ICON_BOX} height={ICON_BOX} viewBox={link.icon.viewBox} fill="#fff">
+            <svg x={ICON_POS.x} y={ICON_POS.y} width={ICON_BOX} height={ICON_BOX} viewBox={link.icon.viewBox} class="logo">
               <path d={link.icon.d} />
             </svg>
           </svg>
@@ -154,6 +154,10 @@ const LINKS = SHARED_LINKS;
   .social-link:hover .tv,
   .social-link:focus-visible .tv {
     filter: brightness(1.3);
+  }
+
+  .logo {
+    fill: var(--fg);
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
