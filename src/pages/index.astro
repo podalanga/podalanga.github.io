@@ -4,6 +4,7 @@ import CaseFileCard from '../components/CaseFileCard.astro';
 import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
 import SkillRecord from '../components/SkillRecord.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import Telemetry from '../components/Telemetry.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -18,17 +19,6 @@ const projects = works.filter((w) => w.data.kind !== 'internship');
 
 const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
 const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
-
-/** Just the fields the skills record needs to cite a case file, in file-number order. */
-const citableWorks = works
-  .map((w) => ({
-    fileNo: w.data.fileNo,
-    slug: w.id,
-    codename: w.data.codename,
-    stack: w.data.stack,
-    tags: w.data.tags,
-  }))
-  .sort((a, b) => a.fileNo - b.fileNo);
 ---
 
 <BaseLayout>
@@ -50,8 +40,11 @@ const citableWorks = works
         </p>
         <Telemetry />
       </div>
-      <div class="hero-portrait">
-        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
+      <div class="hero-aside">
+        <div class="hero-portrait">
+          <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
+        </div>
+        <SocialLinks />
       </div>
     </div>
 
@@ -158,7 +151,7 @@ const citableWorks = works
         <h2 class="rail-label">Skills</h2>
       </div>
       <div class="body">
-        <SkillRecord groups={skillGroups} works={citableWorks} />
+        <SkillRecord groups={skillGroups} />
       </div>
     </div>
   </section>
@@ -207,10 +200,17 @@ const citableWorks = works
     min-width: 0;
   }
 
-  .hero-portrait {
-    position: relative;
+  .hero-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
     align-self: center;
     width: min(60vw, 320px);
+  }
+
+  .hero-portrait {
+    position: relative;
+    width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 1px solid var(--line);
@@ -244,7 +244,7 @@ const citableWorks = works
       grid-column: 1;
     }
 
-    .hero-portrait {
+    .hero-aside {
       grid-column: 2;
       align-self: center;
       width: clamp(18rem, 26vw, 30rem);
@@ -287,11 +287,13 @@ const citableWorks = works
 
     /* Fixed 4:5 at every size: it scales, it never squashes. The second term is
        the height budget of one screen converted back into a width (4/5 of it), so
-       a short window shrinks the whole frame instead of cropping it flat. */
-    .hero-portrait {
+       a short window shrinks the whole frame instead of cropping it flat. The
+       extra --space-8 subtracted from the budget makes room for the icon row
+       under the photo, which now also lives inside this height budget. */
+    .hero-aside {
       width: min(
         clamp(20rem, 26vw, 30rem),
-        calc((100svh - var(--header-h) - var(--space-10)) * 0.8)
+        calc((100svh - var(--header-h) - var(--space-10) - var(--space-8)) * 0.8)
       );
     }
   }

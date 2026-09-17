@@ -1,6 +1,4 @@
 ---
-import { citationsFor, formatFileNo, type CitableWork } from '../lib/skill-citations';
-
 interface SkillItem {
   name: string;
   tier?: number;
@@ -8,10 +6,9 @@ interface SkillItem {
 
 interface Props {
   groups: { data: { order: number; label: string; items: SkillItem[] } }[];
-  works: CitableWork[];
 }
 
-const { groups, works } = Astro.props;
+const { groups } = Astro.props;
 
 /** Every term on the record, flattened out of its group. The ramp ranks across groups, not inside them. */
 const terms = groups.flatMap((g) => g.data.items);
@@ -21,10 +18,8 @@ const lead = tier(1);
 const core = tier(2);
 const working = tier(3);
 
-/** The index lists everything, alphabetically, with whatever case files evidence each term. */
-const index = [...terms]
-  .sort((a, b) => a.name.localeCompare(b.name))
-  .map((t) => ({ name: t.name, cites: citationsFor(t.name, works) }));
+/** The index lists everything, alphabetically. */
+const index = [...terms].map((t) => t.name).sort((a, b) => a.localeCompare(b));
 ---
 
 <div class="record">
@@ -66,20 +61,8 @@ const index = [...terms]
 
     <ul class="index mono">
       {
-        index.map((entry) => (
-          <li>
-            <span class="term">{entry.name}</span>
-            <span class="leader" aria-hidden="true" />
-            {entry.cites.length > 0 && (
-              <span class="cites">
-                {entry.cites.map((c) => (
-                  <a href={`/projects/${c.slug}`} title={`Case file ${formatFileNo(c.fileNo)} — ${c.codename}`}>
-                    {formatFileNo(c.fileNo)}
-                  </a>
-                ))}
-              </span>
-            )}
-          </li>
+        index.map((name) => (
+          <li>{name}</li>
         ))
       }
     </ul>
@@ -103,7 +86,6 @@ const index = [...terms]
   .lead {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
-    font-stretch: var(--stretch-display);
     font-weight: 600;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
@@ -118,7 +100,6 @@ const index = [...terms]
     gap: var(--space-2) var(--space-5);
     font-family: var(--font-display);
     font-size: var(--text-lg);
-    font-stretch: var(--stretch-display);
     font-weight: 500;
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
@@ -183,48 +164,13 @@ const index = [...terms]
     column-gap: var(--space-7);
     margin-top: var(--space-5);
     font-size: var(--text-xs);
-    line-height: 2;
+    line-height: var(--leading-snug);
     color: var(--fg-subtle);
   }
 
   .index li {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-2);
     /* Keep a row from splitting across two columns. */
     break-inside: avoid;
-  }
-
-  .index .term {
-    /* A long term wraps rather than shoving the citation out of the column. */
-    min-width: 0;
-  }
-
-  .index .leader {
-    flex: 1;
-    /* A term long enough to wrap would otherwise squeeze the leader to nothing and leave that one
-       row without dots. A floor keeps every row reading as an index entry. */
-    min-width: var(--space-5);
-    border-bottom: 1px dotted var(--line-strong);
-    transform: translateY(-0.25em);
-  }
-
-  .cites {
-    display: flex;
-    gap: var(--space-2);
-    white-space: nowrap;
-  }
-
-  .cites a {
-    color: var(--fg-muted);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-  }
-
-  .cites a:hover,
-  .cites a:focus-visible {
-    color: var(--signal);
-    border-bottom-color: var(--signal);
   }
 
   @media (max-width: 900px) {

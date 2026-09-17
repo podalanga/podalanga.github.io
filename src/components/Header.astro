@@ -35,7 +35,6 @@ const navItems = site.nav.map((item) => {
     </nav>
 
     <div class="tools">
-      <span class="section-readout mono" data-section-readout aria-hidden="true"></span>
       <time id="ist-clock" class="mono clock" datetime="">--:--</time>
       <ThemeToggle />
       <details class="nav-mobile">
@@ -87,38 +86,6 @@ const navItems = site.nav.map((item) => {
     background: var(--signal);
     transform: scaleX(0);
     transform-origin: 0 50%;
-  }
-
-  /* Position readout: hidden until there is room for it beside the wordmark. */
-  .section-readout {
-    display: none;
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wider);
-    color: var(--fg-subtle);
-    white-space: nowrap;
-  }
-
-  @media (min-width: 1280px) {
-    .section-readout {
-      display: inline;
-      padding-right: var(--space-4);
-      border-right: 1px solid var(--line);
-    }
-  }
-
-  .section-readout.is-ticking {
-    animation: readout-tick var(--dur) var(--ease-out);
-  }
-
-  @keyframes readout-tick {
-    from {
-      opacity: 0;
-      transform: translateY(-0.35em);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .bar {
