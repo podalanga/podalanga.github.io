@@ -109,19 +109,30 @@ function setupElement(el: HTMLElement): Controller {
 
       const cells: Array<HTMLSpanElement | null> = [];
       const frag = document.createDocumentFragment();
+      // Cells are inline-block, and the browser will happily break a line between any
+      // two of them -- which would split words mid-letter. Each word therefore goes in
+      // its own nowrap wrapper, leaving the spaces between words as the only break
+      // opportunities, exactly as in the final text.
+      let word: HTMLSpanElement | null = null;
       for (let i = 0; i < finalChars.length; i++) {
         if (finalChars[i] === ' ') {
           // Real spaces, so the browser still breaks lines at the same points.
           frag.appendChild(document.createTextNode(' '));
           cells.push(null);
+          word = null;
           continue;
+        }
+        if (!word) {
+          word = document.createElement('span');
+          word.style.whiteSpace = 'nowrap';
+          frag.appendChild(word);
         }
         const cell = document.createElement('span');
         cell.textContent = finalChars[i];
         cell.style.display = 'inline-block';
         cell.style.width = `${widths[i]}px`;
         cell.style.textAlign = 'center';
-        frag.appendChild(cell);
+        word.appendChild(cell);
         cells.push(cell);
       }
       track.textContent = '';

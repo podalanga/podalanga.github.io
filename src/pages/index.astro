@@ -238,12 +238,16 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     }
   }
 
-  /* The hero should own the first screen rather than share it with the next band. */
+  /* The hero should own the first screen rather than share it with the next band --
+     but only up to a point. Left uncapped this grows with the viewport while the
+     content stays a fixed ~600px tall, so on a large monitor the wordmark ends up
+     marooned in several hundred pixels of nothing. The cap keeps it filling a
+     laptop fold while letting the next band peek in on taller displays. */
   @media (min-width: 900px) {
     .hero {
       display: flex;
       align-items: center;
-      min-height: calc(100svh - var(--header-h));
+      min-height: min(calc(100svh - var(--header-h)), 52rem);
     }
 
     .hero-inner {
