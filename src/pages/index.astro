@@ -39,12 +39,17 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
         <Telemetry />
       </div>
       <div class="hero-portrait">
-        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640]} sizes="(min-width: 780px) 32vw, 60vw" />
+        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900]} sizes="(min-width: 900px) 34vw, 60vw" />
       </div>
     </div>
+
+    <a class="scroll-cue mono" href="#education">
+      <span class="scroll-cue-rule" aria-hidden="true"></span>
+      <span>SCROLL — § 01 EDUCATION</span>
+    </a>
   </section>
 
-  <section class="band" data-section="01" data-section-label="EDUCATION">
+  <section class="band" id="education" data-section="01" data-section-label="EDUCATION">
     <div class="container section-grid">
       <div class="rail">
         <p class="rail-no mono">§ 01</p>
@@ -202,6 +207,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
   }
 
   .hero-portrait {
+    position: relative;
     align-self: center;
     width: min(60vw, 320px);
     aspect-ratio: 4 / 5;
@@ -238,20 +244,136 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     }
   }
 
-  /* The hero should own the first screen rather than share it with the next band --
-     but only up to a point. Left uncapped this grows with the viewport while the
-     content stays a fixed ~600px tall, so on a large monitor the wordmark ends up
-     marooned in several hundred pixels of nothing. The cap keeps it filling a
-     laptop fold while letting the next band peek in on taller displays. */
+  /* The hero is the whole first screen. Rather than centring a fixed-height block
+     in a growing box -- which leaves the wordmark marooned in dead space on a large
+     display -- the inner row stretches to the full height: the portrait fills it,
+     and the text column centres itself against that. */
   @media (min-width: 900px) {
     .hero {
+      position: relative;
       display: flex;
-      align-items: center;
-      min-height: min(calc(100svh - var(--header-h)), 52rem);
+      align-items: stretch;
+      min-height: calc(100svh - var(--header-h));
+      padding-bottom: var(--space-9);
+
+      /* The global type scale keys off viewport WIDTH only. On a wide-but-short
+         laptop (1366x768) that makes the wordmark 235px tall on its own and pushes
+         the hero past the one screen it is supposed to be. Re-cap the two display
+         steps by height as well, scoped to the hero. Logo and the headline read
+         these tokens, so nothing else needs to know. */
+      --text-3xl: min(clamp(3.2rem, 1.8rem + 6.5vw, 7.5rem), 13vh);
+      --text-2xl: min(clamp(2.6rem, 1.8rem + 3.6vw, 4.6rem), 7.4vh);
     }
 
     .hero-inner {
       width: 100%;
+      align-items: stretch;
+    }
+
+    .hero-text {
+      justify-content: center;
+      flex: 0 1 auto;
+      max-width: 40rem;
+    }
+
+    /* Taken out of flow so the photo fills whatever height the row ends up being,
+       instead of its own intrinsic size dictating that height. */
+    .hero-portrait {
+      width: 34%;
+      max-width: 34rem;
+      aspect-ratio: auto;
+      min-height: 0;
+    }
+
+    .hero-portrait :global(img) {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  /* Short laptop screens: trim the hero's own padding and rhythm so it still fits. */
+  @media (min-width: 900px) and (max-height: 900px) {
+    .hero {
+      padding-block: var(--space-6) var(--space-7);
+    }
+
+    .hero-text {
+      gap: var(--space-4);
+    }
+  }
+
+  /* Tells people there is more below, and doubles as a real link to it. */
+  .scroll-cue {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      color: var(--fg-subtle);
+      text-decoration: none;
+      transition: color var(--dur) var(--ease-out);
+    }
+
+    .scroll-cue:hover,
+    .scroll-cue:focus-visible {
+      color: var(--signal);
+    }
+
+    /* A line that falls, once every few seconds: the smallest thing that reads as
+       "down" without an arrow glyph bolted onto the label. */
+    .scroll-cue-rule {
+      width: 1px;
+      height: var(--space-6);
+      background: linear-gradient(to bottom, transparent, var(--line-strong));
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scroll-cue-rule::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 45%;
+      background: var(--signal);
+      animation: scroll-cue-fall 2.6s var(--ease-in-out) infinite;
+    }
+
+    .scroll-cue:hover .scroll-cue-rule {
+      background: linear-gradient(to bottom, transparent, var(--signal));
+    }
+  }
+
+  @keyframes scroll-cue-fall {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    35%,
+    65% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(222%);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue-rule::after {
+      animation: none;
+      top: auto;
+      bottom: 0;
     }
   }
 
