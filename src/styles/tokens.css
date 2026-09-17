@@ -66,7 +66,10 @@
   --space-10: 8rem;
 
   /* layout */
-  --content-max: 1440px;
+  /* 1440 left a 2560px display with 600px of dead margin either side and shrank
+     the hero to half the screen. Wider, so large monitors are used rather than
+     letterboxed; long-form text is held to --measure separately. */
+  --content-max: 1920px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --header-h: 4.25rem;
   /* the dossier margin index: section number + label live here */

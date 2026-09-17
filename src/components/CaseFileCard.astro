@@ -134,8 +134,11 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
       transform var(--dur-slow) var(--ease-out);
   }
 
+  /* A file with no cover shows no frame at all. The placeholder still carried the
+     thumb's aspect-ratio, so it reserved an empty 16:9 box and left a visible void
+     under the card's text next to a neighbour that does have an image. */
   .thumb.placeholder {
-    border: 0;
+    display: none;
   }
 
   @media (hover: hover) {
@@ -224,6 +227,7 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
   .summary {
     color: var(--fg-muted);
     font-size: var(--text-sm);
+    max-width: var(--measure);
   }
 
   .tags {
