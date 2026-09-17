@@ -172,13 +172,20 @@ const categories: { label: string; value: 'photography' | 'music' | 'videos' | '
     const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
     const groups = document.querySelectorAll<HTMLElement>('.archive-group');
 
+    function applyFilter(filter: string | undefined) {
+      groups.forEach((group) => {
+        group.hidden = group.dataset.category !== filter;
+      });
+    }
+
+    const pressed = document.querySelector<HTMLButtonElement>('.chip[aria-pressed="true"]');
+    applyFilter(pressed?.dataset.filter);
+
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
         chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-        groups.forEach((group) => {
-          group.hidden = group.dataset.category !== filter;
-        });
+        applyFilter(filter);
       });
     });
   }
