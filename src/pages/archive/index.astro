@@ -10,6 +10,7 @@ const entries = await getCollection('archive');
 const byCategory = {
   photography: entries.filter((e) => e.data.category === 'photography').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
   music: entries.filter((e) => e.data.category === 'music').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+  videos: entries.filter((e) => e.data.category === 'videos').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
   misc: entries.filter((e) => e.data.category === 'misc').sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
 };
 
@@ -21,11 +22,12 @@ const photoFigures = byCategory.photography
     caption: `${e.data.title} · ${formatDateLong(e.data.date)}`,
   }));
 
-const tabs = [
-  { id: 'photography', label: 'PHOTOGRAPHY' },
-  { id: 'music', label: 'MUSIC' },
-  { id: 'misc', label: 'MISC' },
-] as const;
+const categories: { label: string; value: 'photography' | 'music' | 'videos' | 'misc' }[] = [
+  { label: 'PHOTOGRAPHY', value: 'photography' },
+  { label: 'MUSIC', value: 'music' },
+  { label: 'VIDEOS', value: 'videos' },
+  { label: 'MISCELLANEOUS', value: 'misc' },
+];
 ---
 
 <BaseLayout title={`Archive · ${site.name}`} description="A running archive of photography, music, and miscellaneous transmissions.">
@@ -35,45 +37,64 @@ const tabs = [
     <p class="dek">Photographs, audio, and things that don't fit a case file.</p>
   </section>
 
-  <nav class="container tabs mono" aria-label="Archive categories">
-    {tabs.map((tab) => <a href={`#${tab.id}`} data-tab={tab.id}>{tab.label}</a>)}
-  </nav>
-
-  <section id="photography" class="container archive-section">
-    <h2 class="section-title mono">PHOTOGRAPHY</h2>
-    {
-      photoFigures.length > 0 ? (
-        <Gallery id="archive-photography" figures={photoFigures} variant="masonry" />
-      ) : (
-        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
-      )
-    }
+  <section class="container filters" aria-label="Filter archive by category">
+    <div class="chips mono" role="group">
+      {
+        categories.map((c) => (
+          <button type="button" class="chip" data-filter={c.value} aria-pressed={c.value === 'photography'}>
+            {c.label}
+          </button>
+        ))
+      }
+    </div>
   </section>
 
-  <section id="music" class="container archive-section">
-    <h2 class="section-title mono">MUSIC</h2>
-    {
-      byCategory.music.length > 0 ? (
-        <div class="video-grid">
-          {byCategory.music.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
-        </div>
-      ) : (
-        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
-      )
-    }
-  </section>
+  <section class="container archive-groups">
+    <div class="archive-group" data-category="photography">
+      {
+        photoFigures.length > 0 ? (
+          <Gallery id="archive-photography" figures={photoFigures} variant="masonry" />
+        ) : (
+          <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+        )
+      }
+    </div>
 
-  <section id="misc" class="container archive-section">
-    <h2 class="section-title mono">MISC</h2>
-    {
-      byCategory.misc.length > 0 ? (
-        <div class="video-grid">
-          {byCategory.misc.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
-        </div>
-      ) : (
-        <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
-      )
-    }
+    <div class="archive-group" data-category="music">
+      {
+        byCategory.music.length > 0 ? (
+          <div class="video-grid">
+            {byCategory.music.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
+          </div>
+        ) : (
+          <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+        )
+      }
+    </div>
+
+    <div class="archive-group" data-category="videos">
+      {
+        byCategory.videos.length > 0 ? (
+          <div class="video-grid">
+            {byCategory.videos.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
+          </div>
+        ) : (
+          <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+        )
+      }
+    </div>
+
+    <div class="archive-group" data-category="misc">
+      {
+        byCategory.misc.length > 0 ? (
+          <div class="video-grid">
+            {byCategory.misc.map((e) => e.data.youtube && <YouTubeEmbed url={e.data.youtube} title={e.data.title} />)}
+          </div>
+        ) : (
+          <p class="empty mono">NO TRANSMISSIONS RECEIVED</p>
+        )
+      }
+    </div>
   </section>
 </BaseLayout>
 
@@ -90,36 +111,47 @@ const tabs = [
     max-width: 52ch;
   }
 
-  .tabs {
+  .filters {
+    padding-block: 0 var(--space-5);
+  }
+
+  .chips {
     display: flex;
-    gap: var(--space-5);
-    padding-bottom: var(--space-5);
-    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
-  .tabs a {
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
+  .chip {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    background: none;
     color: var(--fg-muted);
-    text-decoration: none;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
 
-  .tabs a:hover,
-  .tabs a.active {
+  .chip:hover {
+    color: var(--fg);
+    border-color: var(--line-strong);
+    background: var(--surface-hover);
+  }
+
+  .chip[aria-pressed='true'] {
+    border-color: var(--signal);
     color: var(--signal);
   }
 
-  .archive-section {
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--line);
-    scroll-margin-top: calc(var(--header-h) + var(--space-4));
+  .archive-groups {
+    padding-top: 0;
+    padding-bottom: var(--space-7);
   }
 
-  .section-title {
-    font-size: var(--text-sm);
-    letter-spacing: 0.08em;
-    color: var(--fg-muted);
-    margin-bottom: var(--space-5);
+  .archive-group[hidden] {
+    display: none;
   }
 
   .empty {
@@ -136,18 +168,21 @@ const tabs = [
 </style>
 
 <script>
-  function initTabs() {
-    const links = document.querySelectorAll<HTMLAnchorElement>('.tabs a');
+  function initFilters() {
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    const groups = document.querySelectorAll<HTMLElement>('.archive-group');
 
-    function sync() {
-      const hash = window.location.hash || '#photography';
-      links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === hash));
-    }
-
-    sync();
-    window.addEventListener('hashchange', sync);
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        groups.forEach((group) => {
+          group.hidden = group.dataset.category !== filter;
+        });
+      });
+    });
   }
 
-  initTabs();
-  document.addEventListener('astro:page-load', initTabs);
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
 </script>

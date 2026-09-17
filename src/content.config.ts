@@ -44,7 +44,7 @@ const archive = defineCollection({
       .object({
         title: z.string(),
         kind: z.enum(['photo', 'video']),
-        category: z.enum(['photography', 'music', 'misc']),
+        category: z.enum(['photography', 'music', 'videos', 'misc']),
         date: z.coerce.date(),
         location: z.string().optional(),
         image: optional(image()),
