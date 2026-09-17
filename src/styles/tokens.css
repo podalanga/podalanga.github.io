@@ -70,6 +70,10 @@
      the hero to half the screen. Wider, so large monitors are used rather than
      letterboxed; long-form text is held to --measure separately. */
   --content-max: 1920px;
+  /* The hero pairs a text column with a portrait; past this the pair drifts apart
+     and the gap between them becomes the dead space. Bands that want the whole
+     display still have --content-max. */
+  --hero-max: 88rem;
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --header-h: 4.25rem;
   /* the dossier margin index: section number + label live here */

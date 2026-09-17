@@ -39,13 +39,13 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
         <Telemetry />
       </div>
       <div class="hero-portrait">
-        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900]} sizes="(min-width: 900px) 34vw, 60vw" />
+        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
       </div>
     </div>
 
     <a class="scroll-cue mono" href="#education">
       <span class="scroll-cue-rule" aria-hidden="true"></span>
-      <span>SCROLL — § 01 EDUCATION</span>
+      <span>SCROLL. BIG BROTHER IS WATCHING.</span>
     </a>
   </section>
 
@@ -231,23 +231,28 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
 
   @media (min-width: 780px) {
     .hero-inner {
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      justify-content: space-between;
-      gap: var(--space-8);
+      column-gap: var(--space-8);
+    }
+
+    /* Source order is text then portrait; the column-reverse stack below 780px
+       puts the photo on top, so name the tracks explicitly here. */
+    .hero-text {
+      grid-column: 1;
     }
 
     .hero-portrait {
-      width: 32%;
-      align-self: stretch;
-      aspect-ratio: auto;
+      grid-column: 2;
+      align-self: center;
+      width: clamp(18rem, 26vw, 30rem);
     }
   }
 
-  /* The hero is the whole first screen. Rather than centring a fixed-height block
-     in a growing box -- which leaves the wordmark marooned in dead space on a large
-     display -- the inner row stretches to the full height: the portrait fills it,
-     and the text column centres itself against that. */
+  /* The hero is the whole first screen. The inner row is capped and centred: past
+     --hero-max the pair would otherwise keep drifting apart under a fluid layout
+     and all the surplus width would collect as a hole in the middle. */
   @media (min-width: 900px) {
     .hero {
       position: relative;
@@ -267,32 +272,26 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
 
     .hero-inner {
       width: 100%;
-      align-items: stretch;
+      max-width: var(--hero-max);
+      margin-inline: auto;
+      align-items: center;
     }
 
-    /* No width cap here. Capping it while the row was justified space-between
-       opened a 300px+ hole between the text and the photo, and squeezed the
-       wordmark until "Joshua John." wrapped onto two lines. The column takes the
-       space the photo does not, and the headline keeps its own measure. */
+    /* The text column absorbs the slack, so the gap to the photo is the same at
+       every width; the headline keeps its own measure inside it. */
     .hero-text {
-      justify-content: flex-start;
-      flex: 1 1 auto;
+      justify-content: center;
       min-width: 0;
     }
 
-    /* Taken out of flow so the photo fills whatever height the row ends up being,
-       instead of its own intrinsic size dictating that height. */
+    /* Fixed 4:5 at every size: it scales, it never squashes. The second term is
+       the height budget of one screen converted back into a width (4/5 of it), so
+       a short window shrinks the whole frame instead of cropping it flat. */
     .hero-portrait {
-      flex: 0 0 auto;
-      width: 32%;
-      max-width: 44rem;
-      aspect-ratio: auto;
-      min-height: 0;
-    }
-
-    .hero-portrait :global(img) {
-      position: absolute;
-      inset: 0;
+      width: min(
+        clamp(20rem, 26vw, 30rem),
+        calc((100svh - var(--header-h) - var(--space-10)) * 0.8)
+      );
     }
   }
 
@@ -450,7 +449,9 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     display: grid;
     gap: var(--space-4);
     grid-template-columns: minmax(0, 1fr);
-    align-items: start;
+    /* Cards in a row match heights; a file with no cover absorbs the difference
+       in its empty slot rather than ending short. */
+    align-items: stretch;
   }
 
   @media (min-width: 900px) {

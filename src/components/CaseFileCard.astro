@@ -72,6 +72,7 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
 
 <style>
   .case-card {
+    height: 100%;
     display: flex;
     flex-direction: column-reverse;
     gap: var(--space-4);
@@ -134,11 +135,14 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
       transform var(--dur-slow) var(--ease-out);
   }
 
-  /* A file with no cover shows no frame at all. The placeholder still carried the
-     thumb's aspect-ratio, so it reserved an empty 16:9 box and left a visible void
-     under the card's text next to a neighbour that does have an image. */
+  /* A file with no cover keeps the frame and leaves it empty -- a held slot in the
+     dossier, not a missing one. Hiding it instead left the card visibly stunted
+     beside a neighbour that does have an image. */
   .thumb.placeholder {
-    display: none;
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    min-height: var(--space-10);
+    background: var(--bg-sunken);
   }
 
   @media (hover: hover) {
