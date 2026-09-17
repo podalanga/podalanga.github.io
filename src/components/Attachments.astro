@@ -69,16 +69,19 @@ const items = attachments.map((a) => ({ ...a, size: sizeOf(a.file), ext: extOf(a
     text-decoration: none;
     color: var(--fg);
     font-size: var(--text-sm);
+    transition: border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
 
   .attachments a:hover {
     border-color: var(--signal);
+    background: var(--surface-hover);
   }
 
   .ext {
     color: var(--signal);
     font-size: var(--text-xs);
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-wide);
   }
 
   .label {

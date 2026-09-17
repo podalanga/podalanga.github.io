@@ -38,7 +38,7 @@ const { data } = work;
       stack={data.stack}
     />
 
-    <h1 class="title">{data.title}</h1>
+    <h1 class="title" transition:name={`title-${work.id}`}>{data.title}</h1>
 
     {
       data.classified && data.classified.length > 0 && (

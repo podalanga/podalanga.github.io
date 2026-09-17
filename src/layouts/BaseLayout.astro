@@ -6,6 +6,8 @@ import Footer from '../components/Footer.astro';
 import EyeLoader from '../components/EyeLoader.astro';
 import Terminal from '../components/Terminal.astro';
 import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import monoLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -31,11 +33,13 @@ const personSchema = {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonical} />
+    <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={monoLatin} crossorigin />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -83,8 +87,9 @@ const personSchema = {
     <EyeLoader isHome={isHome} />
     <div class="grain"></div>
     <div class="scanlines"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Header />
-    <main>
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <Footer />
@@ -98,6 +103,7 @@ const personSchema = {
       import { initHeaderClock } from '../effects/header-clock';
       import { initSecurityCamera } from '../effects/security-camera';
       import { initTerminal } from '../effects/terminal/terminal';
+      import { initSectionIndex } from '../effects/section-index';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -121,6 +127,7 @@ const personSchema = {
           initHeaderClock(),
           initSecurityCamera(),
           initTerminal(),
+          initSectionIndex(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });

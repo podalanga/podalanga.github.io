@@ -124,6 +124,7 @@ const restAngleDeg =
     border-radius: 50%;
     background: var(--signal);
     box-shadow: 0 0 calc(4px / var(--camera-scale)) calc(1px / var(--camera-scale)) var(--signal);
+    --pulse-trough: 0.35;
     animation: pulse 2.4s ease-in-out infinite;
   }
 
@@ -131,16 +132,6 @@ const restAngleDeg =
     position: absolute;
     width: 0;
     height: 0;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.35;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

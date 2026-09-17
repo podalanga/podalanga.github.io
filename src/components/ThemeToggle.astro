@@ -21,10 +21,12 @@
     border: 1px solid var(--line);
     padding: var(--space-2) var(--space-3);
     font-size: var(--text-xs);
-    letter-spacing: 0.08em;
+    letter-spacing: var(--tracking-wider);
     color: var(--fg-muted);
     cursor: pointer;
-    transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+    transition: border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
 
   .theme-toggle:hover {

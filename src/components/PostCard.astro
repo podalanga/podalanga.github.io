@@ -42,12 +42,13 @@ const { slug, title, date, description, tags } = Astro.props;
   .date {
     font-size: var(--text-xs);
     color: var(--fg-muted);
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-wide);
   }
 
   .title a {
     text-decoration: none;
     color: var(--fg);
+    transition: color var(--dur-fast) var(--ease-out);
   }
 
   .title a:hover {
@@ -56,6 +57,7 @@ const { slug, title, date, description, tags } = Astro.props;
 
   .description {
     color: var(--fg-muted);
+    max-width: var(--measure);
   }
 
   .tags {

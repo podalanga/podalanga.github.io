@@ -33,7 +33,7 @@ const leading = words.length ? `${words.join(' ')} ` : '';
     class="dot"
     data-terminal-open
     aria-label="Open terminal"
-  >.</button></span>
+  ></button></span>
 </span>
 
 <style>
@@ -56,38 +56,39 @@ const leading = words.length ? `${words.join(' ')} ` : '';
     text-decoration: none;
   }
 
+  /* The period is drawn, not typed: Archivo's full-weight full stop is a square,
+     and the motif is a circle. Sized in em so it tracks the wordmark at any scale. */
   .dot {
-    background: none;
-    border: none;
+    display: inline-block;
+    vertical-align: baseline;
+    width: 0.19em;
+    height: 0.19em;
+    margin-left: 0.06em;
     padding: 0;
-    margin: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--signal);
     cursor: pointer;
-    color: var(--signal);
-    font-family: var(--font-display);
-    font-weight: 900;
+    /* a shade above the trough the status dots use: this is the brand mark and
+       should never read as faded */
+    --pulse-trough: 0.55;
     animation: pulse 2.4s ease-in-out infinite;
+    transition: transform var(--dur) var(--ease-out);
   }
 
-  .header .wordmark {
+  .dot:hover,
+  .dot:focus-visible {
+    transform: scale(1.35);
+  }
+
+  .header .wordmark,
+  .header .dot {
     font-size: var(--text-md);
   }
 
-  .hero .wordmark {
-    font-size: var(--text-3xl);
-  }
-
+  .hero .wordmark,
   .hero .dot {
     font-size: var(--text-3xl);
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.4;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

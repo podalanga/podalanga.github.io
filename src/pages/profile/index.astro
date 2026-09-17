@@ -43,6 +43,7 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   </section>
 
   <section class="container timeline" aria-label="Case file timeline">
+    <div class="rows">
     {
       works.map((work) => (
         <div class="row" data-kind={work.data.kind}>
@@ -66,6 +67,7 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       ))
     }
     <p class="empty mono" data-empty-state hidden>NO FILES LOGGED YET</p>
+    </div>
   </section>
 
   <section class="container awards">
@@ -117,9 +119,21 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
 
   <section class="container contact">
     <h2 class="section-title">Contact</h2>
-    <p>
-      <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
-    </p>
+    <p class="contact-lead">Open to robotics and control-systems work. The fastest route is email.</p>
+    <ul class="contact-list">
+      <li>
+        <span class="contact-key mono">EMAIL</span>
+        <ContactEmail />
+      </li>
+      <li>
+        <span class="contact-key mono">GITHUB</span>
+        <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">github.com/podalanga</a>
+      </li>
+      <li>
+        <span class="contact-key mono">LINKEDIN</span>
+        <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">in/joshuajohnl</a>
+      </li>
+    </ul>
   </section>
 
   <section class="container skills">
@@ -151,13 +165,17 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     padding-block: var(--space-7);
   }
 
-  .filters + .timeline,
   .timeline + .awards,
   .awards + .education,
   .education + .positions,
   .positions + .contact,
   .contact + .skills {
-    border-top: 2px solid var(--signal);
+    border-top: 1px solid var(--line);
+  }
+
+  .awards,
+  .positions {
+    background: var(--bg-sunken);
   }
 
   .intro {
@@ -188,12 +206,17 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     background: none;
     color: var(--fg-muted);
     font-size: var(--text-xs);
-    letter-spacing: 0.08em;
+    letter-spacing: var(--tracking-wider);
     cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
 
   .chip:hover {
     color: var(--fg);
+    border-color: var(--line-strong);
+    background: var(--surface-hover);
   }
 
   .chip[aria-pressed='true'] {
@@ -209,6 +232,25 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     display: block;
   }
 
+  /* A spine, so the case files read as one continuous record rather than
+     eight unrelated rows. */
+  @media (min-width: 780px) {
+    .timeline .rows {
+      position: relative;
+      padding-left: var(--space-6);
+    }
+
+    .timeline .rows::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--line);
+    }
+  }
+
   .row[hidden] {
     display: none;
   }
@@ -216,18 +258,28 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   .empty {
     color: var(--fg-muted);
     font-size: var(--text-sm);
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-wide);
     padding-top: var(--space-4);
   }
 
   .section-title {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line);
   }
 
   .dossier-grid {
     display: grid;
     gap: var(--space-5);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .dossier-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
   }
 
   .dossier-entry .org {
@@ -267,10 +319,54 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   }
 
   .group-label {
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line);
     font-size: var(--text-xs);
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+  }
+
+  .contact-lead {
+    max-width: var(--measure);
+    color: var(--fg-muted);
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-md);
+  }
+
+  .contact-list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact-key {
+    flex: 0 0 6rem;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-subtle);
+  }
+
+  .contact-list a {
+    text-decoration: none;
+  }
+
+  .contact-list a:hover {
     color: var(--signal);
-    margin-bottom: var(--space-2);
   }
 
   .skill-group ul {

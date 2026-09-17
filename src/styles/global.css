@@ -32,8 +32,8 @@ body {
   font-variation-settings: 'wdth' var(--stretch-body);
   font-weight: 400;
   font-size: var(--text-base);
-  line-height: 1.5;
-  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+  line-height: var(--leading-normal);
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
 }
 
 img,
@@ -49,6 +49,8 @@ a {
   color: inherit;
   text-decoration-color: var(--signal-dim);
   text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out);
 }
 
 a:hover {
@@ -71,30 +73,111 @@ h4 {
   font-family: var(--font-display);
   font-variation-settings: 'wdth' var(--stretch-display);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
 }
 
 p {
   margin: 0;
-  max-width: 62ch;
+  text-wrap: pretty;
 }
 
 .mono {
   font-family: var(--font-mono);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-normal);
 }
 
 .label {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-wider);
   color: var(--fg-muted);
 }
 
-/* prose (log posts, work bodies) */
+/* Skip link: visible only once focused. */
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 9995;
+  padding: var(--space-2) var(--space-4);
+  background: var(--signal);
+  color: var(--on-signal);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---- Layout primitives ------------------------------------------------- */
+
+.container {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* A band is one document in the dossier. Separation comes from the surface
+   change, not from an accent rule — red is reserved for signal. */
+.band {
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--line);
+}
+
+.band--sunken {
+  background: var(--bg-sunken);
+}
+
+.band--lead {
+  padding-block: var(--space-9) var(--space-8);
+  border-top: 0;
+}
+
+/* The margin index: section number and label sit in the rail, content in the
+   body column. Collapses to a stack before the rail would squeeze the measure. */
+.section-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .section-grid {
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    gap: var(--space-6) var(--space-7);
+  }
+}
+
+.section-grid > .rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+@media (min-width: 900px) {
+  .section-grid > .rail {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+    align-self: start;
+  }
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ---- Prose ------------------------------------------------------------- */
+
 .prose {
-  max-width: 62ch;
+  max-width: var(--measure);
 }
 
 .prose > * + * {
@@ -106,12 +189,60 @@ p {
   margin-top: var(--space-7);
 }
 
+.prose h2 {
+  font-size: var(--text-md);
+}
+
+.prose h3 {
+  font-size: var(--text-base);
+}
+
+.prose a {
+  text-decoration-color: var(--signal);
+}
+
+.prose a:hover {
+  color: var(--signal);
+}
+
+.prose ul,
+.prose ol {
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose li::marker {
+  color: var(--signal);
+}
+
 .prose blockquote {
   margin: 0;
   padding-left: var(--space-4);
   border-left: 2px solid var(--signal);
   color: var(--fg-muted);
   font-style: normal;
+}
+
+.prose figure {
+  margin: 0;
+}
+
+.prose figcaption {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-muted);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: var(--space-6);
 }
 
 .prose code {
@@ -126,9 +257,34 @@ p {
   overflow-x: auto;
 }
 
+.prose pre code {
+  font-size: var(--text-sm);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.prose th {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+
 ::selection {
   background: var(--signal);
-  color: #0a0a0a;
+  color: var(--on-signal);
 }
 
 :focus-visible {
@@ -136,16 +292,20 @@ p {
   outline-offset: 2px;
 }
 
-.container {
-  max-width: var(--content-max);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+/* ---- Motion ------------------------------------------------------------ */
+
+/* One definition, three amplitudes: callers set --pulse-trough. */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: var(--pulse-trough, 0.4);
+  }
 }
 
-.hairline {
-  border: 0;
-  border-top: 1px solid var(--line);
-}
+/* ---- Texture ----------------------------------------------------------- */
 
 /* film grain texture: inert, decorative only */
 .grain {
@@ -187,5 +347,6 @@ html:not([data-theme='light']) .scanlines {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    view-transition-name: none !important;
   }
 }

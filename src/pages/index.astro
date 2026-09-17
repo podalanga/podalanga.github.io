@@ -20,129 +20,174 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
 ---
 
 <BaseLayout>
-  <section class="hero container">
-    <div class="hero-text">
-      <p class="label">§ 00 // INDEX</p>
-      <Logo size="hero" text="Joshua John" />
-      <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
-      <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
-      <p class="clearance mono">
-        FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
-          class="terminal-cue mono"
-          role="button"
-          tabindex="0"
-          aria-label="Unauthorised terminal, by pressing ` or clicking here. Opens the terminal."
-          data-terminal-open
-        >UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE.</span> THOUGHTCRIME IS DEATH.
-      </p>
-      <Telemetry />
-    </div>
-    <div class="hero-portrait">
-      <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640]} sizes="(min-width: 780px) 32vw, 60vw" />
-    </div>
-  </section>
-
-  <section class="container education">
-    <h2 class="section-title">
-      Education
-      <a class="view-all mono" href="/profile">FULL PROFILE →</a>
-    </h2>
-    <div class="dossier-grid">
-      {
-        education.map((e) => (
-          <article class="dossier-entry">
-            <p class="org">{e.data.institution}</p>
-            <p class="degree">{e.data.degree}</p>
-            <p class="meta mono">{e.data.location} · {e.data.start} to {e.data.end} · {e.data.detail}</p>
-          </article>
-        ))
-      }
+  <section class="hero band band--lead" data-section="00" data-section-label="INDEX">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="label">§ 00 // INDEX</p>
+        <Logo size="hero" text="Joshua John" />
+        <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
+        <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
+        <p class="clearance mono">
+          FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
+            class="terminal-cue mono"
+            role="button"
+            tabindex="0"
+            aria-label="Unauthorised terminal, by pressing ` or clicking here. Opens the terminal."
+            data-terminal-open
+          >UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE.</span> THOUGHTCRIME IS DEATH.
+        </p>
+        <Telemetry />
+      </div>
+      <div class="hero-portrait">
+        <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640]} sizes="(min-width: 780px) 32vw, 60vw" />
+      </div>
     </div>
   </section>
 
-  <section class="container internships">
-    <h2 class="section-title">
-      Internships
-      <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
-    </h2>
-    <div class="case-grid">
-      {
-        internships.map((work) => (
-          <CaseFileCard
-            slug={work.id}
-            fileNo={work.data.fileNo}
-            codename={work.data.codename}
-            title={work.data.title}
-            org={work.data.org}
-            start={work.data.start}
-            end={work.data.end}
-            status={work.data.status}
-            kind={work.data.kind}
-            summary={work.data.summary}
-            tags={work.data.tags}
-            cover={work.data.cover}
-            coverAlt={work.data.coverAlt}
-          />
-        ))
-      }
+  <section class="band" data-section="01" data-section-label="EDUCATION">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 01</p>
+        <h2 class="rail-label">Education</h2>
+      </div>
+      <div class="body">
+        <div class="dossier-grid">
+          {
+            education.map((e) => (
+              <article class="dossier-entry">
+                <p class="org">{e.data.institution}</p>
+                <p class="degree">{e.data.degree}</p>
+                <p class="meta mono">{e.data.location} · {e.data.start} to {e.data.end} · {e.data.detail}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="container projects">
-    <h2 class="section-title">
-      Projects
-      <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
-    </h2>
-    <div class="case-grid">
-      {
-        projects.map((work) => (
-          <CaseFileCard
-            slug={work.id}
-            fileNo={work.data.fileNo}
-            codename={work.data.codename}
-            title={work.data.title}
-            org={work.data.org}
-            start={work.data.start}
-            end={work.data.end}
-            status={work.data.status}
-            kind={work.data.kind}
-            summary={work.data.summary}
-            tags={work.data.tags}
-            cover={work.data.cover}
-            coverAlt={work.data.coverAlt}
-          />
-        ))
-      }
+  <section class="band band--sunken" data-section="02" data-section-label="INTERNSHIPS">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 02</p>
+        <h2 class="rail-label">Internships</h2>
+        <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
+      </div>
+      <div class="body">
+        <div class="case-grid">
+          {
+            internships.map((work, i) => (
+              <CaseFileCard
+                variant={i === 0 ? 'grid' : 'feature'}
+                slug={work.id}
+                fileNo={work.data.fileNo}
+                codename={work.data.codename}
+                title={work.data.title}
+                org={work.data.org}
+                start={work.data.start}
+                end={work.data.end}
+                status={work.data.status}
+                kind={work.data.kind}
+                summary={work.data.summary}
+                tags={work.data.tags}
+                cover={work.data.cover}
+                coverAlt={work.data.coverAlt}
+              />
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="container contact">
-    <h2 class="section-title">Contact</h2>
-    <p>
-      <ContactEmail /> · <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">GitHub</a> · <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a>
-    </p>
+  <section class="band" data-section="03" data-section-label="PROJECTS">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 03</p>
+        <h2 class="rail-label">Projects</h2>
+        <a class="view-all mono" href="/profile">ALL CASE FILES →</a>
+      </div>
+      <div class="body">
+        <div class="case-grid">
+          {
+            projects.map((work, i) => (
+              <CaseFileCard
+                variant={i === 0 ? 'grid' : 'feature'}
+                slug={work.id}
+                fileNo={work.data.fileNo}
+                codename={work.data.codename}
+                title={work.data.title}
+                org={work.data.org}
+                start={work.data.start}
+                end={work.data.end}
+                status={work.data.status}
+                kind={work.data.kind}
+                summary={work.data.summary}
+                tags={work.data.tags}
+                cover={work.data.cover}
+                coverAlt={work.data.coverAlt}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="container skills">
-    <h2 class="section-title">Skills</h2>
-    <div class="skills-grid">
-      {
-        skillGroups.map((g) => (
-          <div class="skill-group">
-            <p class="group-label mono">{g.data.label}</p>
-            <ul class="mono">
-              {g.data.items.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-        ))
-      }
+  <section class="band band--sunken" data-section="04" data-section-label="SKILLS">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 04</p>
+        <h2 class="rail-label">Skills</h2>
+      </div>
+      <div class="body">
+        <div class="skills-grid">
+          {
+            skillGroups.map((g) => (
+              <div class="skill-group">
+                <p class="group-label mono">{g.data.label}</p>
+                <ul class="mono">
+                  {g.data.items.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band contact" data-section="05" data-section-label="CONTACT">
+    <div class="container section-grid">
+      <div class="rail">
+        <p class="rail-no mono">§ 05</p>
+        <h2 class="rail-label">Contact</h2>
+      </div>
+      <div class="body">
+        <p class="contact-lead">Open to robotics and control-systems work. The fastest route is email.</p>
+        <ul class="contact-list">
+          <li>
+            <span class="contact-key mono">EMAIL</span>
+            <ContactEmail />
+          </li>
+          <li>
+            <span class="contact-key mono">GITHUB</span>
+            <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">github.com/podalanga</a>
+          </li>
+          <li>
+            <span class="contact-key mono">LINKEDIN</span>
+            <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">in/joshuajohnl</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-block: var(--space-9) var(--space-8);
+  /* ---- Hero ---- */
+
+  .hero-inner {
     display: flex;
     flex-direction: column-reverse;
     gap: var(--space-6);
@@ -163,7 +208,7 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     overflow: hidden;
     border: 1px solid var(--line);
     filter: saturate(0.85) sepia(0.08);
-    transition: filter 0.2s var(--ease-out);
+    transition: filter var(--dur-slow) var(--ease-out);
   }
 
   .hero-portrait :global(img) {
@@ -179,16 +224,30 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
   }
 
   @media (min-width: 780px) {
-    .hero {
+    .hero-inner {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-8);
     }
 
     .hero-portrait {
       width: 32%;
       align-self: stretch;
       aspect-ratio: auto;
+    }
+  }
+
+  /* The hero should own the first screen rather than share it with the next band. */
+  @media (min-width: 900px) {
+    .hero {
+      display: flex;
+      align-items: center;
+      min-height: calc(100svh - var(--header-h));
+    }
+
+    .hero-inner {
+      width: 100%;
     }
   }
 
@@ -200,47 +259,50 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
   .sub {
     color: var(--fg-muted);
     font-size: var(--text-xs);
-    letter-spacing: 0.08em;
+    letter-spacing: var(--tracking-wider);
   }
 
-  /* A wrapping sentence now, not a two-item row, so plain inline flow rather than flex. */
+  /* The cryptic layer earns its place by being quiet: set at reading size with
+     generous leading, it reads as a marginal note rather than a warning label. */
   .clearance {
-    max-width: 46ch;
+    max-width: var(--measure-narrow);
     font-size: var(--text-xs);
-    line-height: 1.7;
-    letter-spacing: 0.08em;
-    color: var(--fg-muted);
+    line-height: var(--leading-relaxed);
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-subtle);
   }
 
   .terminal-cue {
     display: inline;
     color: var(--signal);
     cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--signal-dim);
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out);
   }
 
-
-
-  section {
-    padding-block: var(--space-7);
+  .terminal-cue:hover,
+  .terminal-cue:focus-visible {
+    text-decoration-color: var(--signal);
   }
 
-  section + section {
-    border-top: 1px solid var(--signal);
+  /* ---- Margin index ---- */
+
+  .rail-no {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--signal);
   }
 
-  .section-title {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--space-3);
+  .rail-label {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-5);
   }
 
   .view-all {
+    margin-top: var(--space-2);
     font-size: var(--text-xs);
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-wide);
     color: var(--fg-muted);
     text-decoration: none;
   }
@@ -249,42 +311,78 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     color: var(--signal);
   }
 
+  /* ---- Section bodies ---- */
+
+  /* Asymmetric by design: the most recent file leads at full width, the rest
+     sit in a two-up beneath it. */
   .case-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .case-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .case-grid > :global(:first-child) {
+      grid-column: 1 / -1;
+    }
   }
 
   .dossier-grid {
     display: grid;
     gap: var(--space-5);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .dossier-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+  }
+
+  .dossier-entry {
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--line);
   }
 
   .dossier-entry .org {
     font-size: var(--text-md);
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    font-weight: 800;
+    line-height: var(--leading-snug);
   }
 
   .dossier-entry .degree {
     color: var(--fg-muted);
+    margin-top: var(--space-1);
   }
 
   .dossier-entry .meta {
-    color: var(--fg-muted);
+    color: var(--fg-subtle);
     font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
     margin-top: var(--space-2);
   }
 
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--space-6) var(--space-5);
   }
 
   .group-label {
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line);
     font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    color: var(--signal);
-    margin-bottom: var(--space-2);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
   }
 
   .skill-group ul {
@@ -293,8 +391,52 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: var(--space-2);
     font-size: var(--text-sm);
     color: var(--fg-muted);
+  }
+
+  /* ---- Contact ---- */
+
+  .contact-lead {
+    max-width: var(--measure);
+    color: var(--fg-muted);
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-md);
+  }
+
+  .contact-list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact-key {
+    flex: 0 0 6rem;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-subtle);
+  }
+
+  .contact-list a {
+    text-decoration: none;
+  }
+
+  .contact-list a:hover {
+    color: var(--signal);
   }
 </style>
