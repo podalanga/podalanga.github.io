@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseFileCard from '../../components/CaseFileCard.astro';
-import ContactEmail from '../../components/ContactEmail.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../../config/site';
 
@@ -115,26 +114,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
       }
     </ul>
   </section>
-
-  <section class="container contact">
-    <h2 class="section-title">Contact</h2>
-    <p class="contact-lead">Open to robotics and control-systems work. The fastest route is email.</p>
-    <ul class="contact-list">
-      <li>
-        <span class="contact-key mono">EMAIL</span>
-        <ContactEmail />
-      </li>
-      <li>
-        <span class="contact-key mono">GITHUB</span>
-        <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">github.com/podalanga</a>
-      </li>
-      <li>
-        <span class="contact-key mono">LINKEDIN</span>
-        <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">in/joshuajohnl</a>
-      </li>
-    </ul>
-  </section>
-
 </BaseLayout>
 
 <style>
@@ -143,15 +122,13 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   .timeline,
   .awards,
   .education,
-  .positions,
-  .contact {
+  .positions {
     padding-block: var(--space-7);
   }
 
   .timeline + .awards,
   .awards + .education,
-  .education + .positions,
-  .positions + .contact {
+  .education + .positions {
     border-top: 1px solid var(--line);
   }
 
@@ -293,49 +270,6 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
     padding: var(--space-1) var(--space-2);
     color: var(--fg-muted);
   }
-
-  .contact-lead {
-    max-width: var(--measure);
-    color: var(--fg-muted);
-  }
-
-  .contact-list {
-    list-style: none;
-    margin: var(--space-5) 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .contact-list li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-2) var(--space-5);
-    padding-block: var(--space-4);
-    border-top: 1px solid var(--line);
-    font-size: var(--text-md);
-  }
-
-  .contact-list li:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .contact-key {
-    flex: 0 0 6rem;
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wider);
-    color: var(--fg-subtle);
-  }
-
-  .contact-list a {
-    text-decoration: none;
-  }
-
-  .contact-list a:hover {
-    color: var(--signal);
-  }
-
 
   .list-entries {
     list-style: none;

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseFileCard from '../components/CaseFileCard.astro';
-import ContactEmail from '../components/ContactEmail.astro';
 import Logo from '../components/Logo.astro';
 import SkillRecord from '../components/SkillRecord.astro';
 import SocialLinks from '../components/SocialLinks.astro';
@@ -152,32 +151,6 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
       </div>
       <div class="body">
         <SkillRecord groups={skillGroups} />
-      </div>
-    </div>
-  </section>
-
-  <section class="band contact" data-section="05" data-section-label="CONTACT">
-    <div class="container section-grid">
-      <div class="rail">
-        <p class="rail-no mono">§ 05</p>
-        <h2 class="rail-label">Contact</h2>
-      </div>
-      <div class="body">
-        <p class="contact-lead">Open to robotics and control-systems work. The fastest route is email.</p>
-        <ul class="contact-list">
-          <li>
-            <span class="contact-key mono">EMAIL</span>
-            <ContactEmail />
-          </li>
-          <li>
-            <span class="contact-key mono">GITHUB</span>
-            <a href={site.socials.github} rel="me noopener noreferrer" target="_blank">github.com/podalanga</a>
-          </li>
-          <li>
-            <span class="contact-key mono">LINKEDIN</span>
-            <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank">in/joshuajohnl</a>
-          </li>
-        </ul>
       </div>
     </div>
   </section>
@@ -509,47 +482,4 @@ const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order 
     margin-top: var(--space-2);
   }
 
-  /* ---- Contact ---- */
-
-  .contact-lead {
-    max-width: var(--measure);
-    color: var(--fg-muted);
-  }
-
-  .contact-list {
-    list-style: none;
-    margin: var(--space-5) 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .contact-list li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-2) var(--space-5);
-    padding-block: var(--space-4);
-    border-top: 1px solid var(--line);
-    font-size: var(--text-md);
-  }
-
-  .contact-list li:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .contact-key {
-    flex: 0 0 6rem;
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wider);
-    color: var(--fg-subtle);
-  }
-
-  .contact-list a {
-    text-decoration: none;
-  }
-
-  .contact-list a:hover {
-    color: var(--signal);
-  }
 </style>

@@ -3,8 +3,10 @@ import { site } from '../config/site';
 import Redacted from './Redacted.astro';
 import SecurityCamera from './SecurityCamera.astro';
 import Telemetry from './Telemetry.astro';
+import { LINKS } from './social-icons';
 
 const startYear = new Date(site.epoch).getFullYear();
+const [emailUser, emailDomain] = site.email.split('@');
 ---
 
 <footer class="site-footer">
@@ -12,12 +14,34 @@ const startYear = new Date(site.epoch).getFullYear();
 
   <div class="container grid">
     <div class="links">
-      <a href={site.socials.github} rel="me noopener noreferrer" target="_blank" class="mono">
-        GITHUB
-      </a>
-      <a href={site.socials.linkedin} rel="me noopener noreferrer" target="_blank" class="mono">
-        LINKEDIN
-      </a>
+      <ul class="icon-links">
+        {
+          LINKS.map((link) => (
+            <li>
+              <a
+                class="icon-link"
+                href={link.key === 'email' ? 'mailto:' : link.href}
+                data-user={link.key === 'email' ? emailUser : undefined}
+                data-domain={link.key === 'email' ? emailDomain : undefined}
+                rel={link.key === 'email' ? undefined : 'me noopener noreferrer'}
+                target={link.key === 'email' ? undefined : '_blank'}
+              >
+                <svg viewBox={link.icon.viewBox} aria-hidden="true" focusable="false">
+                  <path d={link.icon.d} />
+                </svg>
+                <span class="sr-only">{link.label}</span>
+              </a>
+              {link.key === 'email' && (
+                <noscript>
+                  <span class="email-fallback mono">
+                    {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}
+                  </span>
+                </noscript>
+              )}
+            </li>
+          ))
+        }
+      </ul>
       <span class="terminal-hint mono">
         <Redacted text="THERE IS NO ESCAPE OR EXIT" openTerminal />
       </span>
@@ -57,16 +81,54 @@ const startYear = new Date(site.epoch).getFullYear();
     gap: var(--space-5);
   }
 
-  .links a {
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wider);
-    color: var(--fg-muted);
-    text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out);
+  .icon-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
-  .links a:hover {
-    color: var(--signal);
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .icon-link {
+    display: block;
+    line-height: 0;
+  }
+
+  .icon-link svg {
+    width: 1.25rem;
+    height: auto;
+    fill: var(--fg);
+    transition: fill var(--dur-fast) var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .icon-link:hover svg {
+      fill: var(--signal);
+    }
+  }
+
+  .icon-link:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .email-fallback {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
   }
 
   .terminal-hint {
@@ -81,3 +143,19 @@ const startYear = new Date(site.epoch).getFullYear();
     letter-spacing: var(--tracking-wide);
   }
 </style>
+
+<script>
+  function assemble(el: HTMLAnchorElement) {
+    const user = el.dataset.user;
+    const domain = el.dataset.domain;
+    if (!user || !domain) return;
+    el.href = `mailto:${user}@${domain}`;
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLAnchorElement>('.icon-link[data-user]').forEach(assemble);
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
