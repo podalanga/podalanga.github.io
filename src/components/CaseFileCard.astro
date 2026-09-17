@@ -135,14 +135,15 @@ const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
       transform var(--dur-slow) var(--ease-out);
   }
 
-  /* A file with no cover keeps the frame and leaves it empty -- a held slot in the
-     dossier, not a missing one. Hiding it instead left the card visibly stunted
-     beside a neighbour that does have an image. */
+  /* A file with no cover holds its space but draws nothing: no frame, no fill,
+     just the room the image would have taken. It still stretches, so the card
+     ends level with a neighbour that does have an image. */
   .thumb.placeholder {
     aspect-ratio: auto;
     flex: 1 1 auto;
     min-height: var(--space-10);
-    background: var(--bg-sunken);
+    border: 0;
+    background: none;
   }
 
   @media (hover: hover) {
