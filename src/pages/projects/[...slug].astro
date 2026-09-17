@@ -2,9 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkMeta from '../../components/WorkMeta.astro';
-import Gallery from '../../components/Gallery.astro';
+import Carousel from '../../components/Carousel.astro';
 import Redacted from '../../components/Redacted.astro';
-import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const works = await getCollection('works');
@@ -22,6 +21,13 @@ export async function getStaticPaths() {
 const { work, prev, next } = Astro.props;
 const { Content } = await render(work);
 const { data } = work;
+
+const slides = [
+  ...(data.cover
+    ? [{ src: data.cover, alt: data.coverAlt ?? data.title, caption: data.coverAlt ?? data.title }]
+    : []),
+  ...(data.figures ?? []).map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
+];
 ---
 
 <BaseLayout title={`${data.title} · FILE ${String(data.fileNo).padStart(2, '0')}`} description={data.summary}>
@@ -73,24 +79,9 @@ const { data } = work;
       </div>
 
       {
-        (data.cover || (data.figures && data.figures.length > 0)) && (
+        slides.length > 0 && (
           <aside class="media">
-            {
-              data.cover && (
-                <figure class="cover-figure">
-                  <Image src={data.cover} alt={data.coverAlt ?? data.title} widths={[400, 800, 1200]} sizes="(min-width: 780px) 50vw, 100vw" />
-                </figure>
-              )
-            }
-            {
-              data.figures && data.figures.length > 0 && (
-                <Gallery
-                  id={`work-${work.id}`}
-                  variant="stack"
-                  figures={data.figures.map((f) => ({ src: f.src, alt: f.caption, caption: f.caption }))}
-                />
-              )
-            }
+            <Carousel id={`work-${work.id}`} figures={slides} />
           </aside>
         )
       }
@@ -172,16 +163,9 @@ const { data } = work;
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-  }
-
-  .cover-figure {
-    margin: 0;
-  }
-
-  .cover-figure :global(img) {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--line);
+    /* Below 780px .case-body stacks in source order (prose, then media); put
+       the carousel first so images lead on narrow screens. */
+    order: -1;
   }
 
   @media (min-width: 780px) {
@@ -196,6 +180,7 @@ const { data } = work;
     }
 
     .media {
+      order: 0;
       width: 50%;
       flex-shrink: 0;
       position: sticky;
