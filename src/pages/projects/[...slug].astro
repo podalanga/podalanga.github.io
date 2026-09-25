@@ -152,14 +152,14 @@ const jsonLd = [
     <nav class="prev-next mono" aria-label="Other case files">
       {
         prev ? (
-          <a href={`/projects/${prev.id}`}>← FILE {String(prev.data.fileNo).padStart(2, '0')} // {prev.data.codename}</a>
+          <a href={`/projects/${prev.id}/`}>← FILE {String(prev.data.fileNo).padStart(2, '0')} // {prev.data.codename}</a>
         ) : (
           <span />
         )
       }
       {
         next && (
-          <a href={`/projects/${next.id}`}>FILE {String(next.data.fileNo).padStart(2, '0')} // {next.data.codename} →</a>
+          <a href={`/projects/${next.id}/`}>FILE {String(next.data.fileNo).padStart(2, '0')} // {next.data.codename} →</a>
         )
       }
     </nav>

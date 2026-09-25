@@ -4,9 +4,18 @@ import { site } from '../config/site';
 export const PERSON_ID = `${site.url}/#person`;
 export const WEBSITE_ID = `${site.url}/#website`;
 
+/**
+ * GitHub Pages serves every route from a folder (`/projects/zbot/`), so a link without the
+ * trailing slash costs a 301 before the real page. Files (`/rss.xml`), anchors and queries pass through.
+ */
+export function pagePath(path: string): string {
+  if (path.endsWith('/') || /[?#]/.test(path) || /\.[a-z0-9]+$/i.test(path)) return path;
+  return `${path}/`;
+}
+
 /** Absolute URL on the site for a root-relative path (or pass-through for an absolute one). */
 export function absoluteUrl(path: string): string {
-  return new URL(path, site.url).href;
+  return new URL(pagePath(path), site.url).href;
 }
 
 /** `<Page> · Joshua John L (Podalanga)`: the pattern every subpage title follows. */
