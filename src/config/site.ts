@@ -75,9 +75,9 @@ export const site = {
   ],
   nav: [
     { label: 'PROFILE', index: '00', href: '/' },
-    { label: 'PROJECTS', index: '01', href: '/projects' },
-    { label: 'ARCHIVE', index: '02', href: '/archive' },
-    { label: 'BLOG', index: '03', href: '/blog' },
+    { label: 'PROJECTS', index: '01', href: '/projects/' },
+    { label: 'ARCHIVE', index: '02', href: '/archive/' },
+    { label: 'BLOG', index: '03', href: '/blog/' },
   ],
   // epoch for the UPTIME telemetry counter: start of work history
   epoch: '2023-08-01T00:00:00+05:30',

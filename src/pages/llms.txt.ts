@@ -41,17 +41,17 @@ export async function GET(_context: APIContext) {
     '',
     ...works.map(
       (w) =>
-        `- [${w.data.title}](${site.url}/projects/${w.id}): ${w.data.summary} (${w.data.org}, ${formatRange(w.data.start, w.data.end, w.data.status).replace(' TO ', ' to ')}; ${w.data.stack.join(', ')})`,
+        `- [${w.data.title}](${site.url}/projects/${w.id}/): ${w.data.summary} (${w.data.org}, ${formatRange(w.data.start, w.data.end, w.data.status).replace(' TO ', ' to ')}; ${w.data.stack.join(', ')})`,
     ),
     '',
     '## Blog',
     '',
-    ...posts.map((post) => `- [${post.data.title}](${site.url}/blog/${post.id}): ${post.data.description}`),
+    ...posts.map((post) => `- [${post.data.title}](${site.url}/blog/${post.id}/): ${post.data.description}`),
     '',
     '## Optional',
     '',
     `- [Full text of every project write-up](${site.url}/llms-full.txt)`,
-    `- [Photography archive](${site.url}/archive)`,
+    `- [Photography archive](${site.url}/archive/)`,
     `- [RSS feed](${site.url}/rss.xml)`,
     '',
   ];

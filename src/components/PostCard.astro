@@ -15,14 +15,14 @@ const { slug, title, date, description, tags } = Astro.props;
 
 <article class="post-card">
   <p class="date mono">{formatDateLong(date)}</p>
-  <h3 class="title"><a href={`/blog/${slug}`}>{title}</a></h3>
+  <h3 class="title"><a href={`/blog/${slug}/`}>{title}</a></h3>
   <p class="description">{description}</p>
   {
     tags.length > 0 && (
       <ul class="tags">
         {tags.map((tag) => (
           <li>
-            <Tag label={tag} href={`/blog/tag/${tag}`} />
+            <Tag label={tag} href={`/blog/tag/${tag}/`} />
           </li>
         ))}
       </ul>
