@@ -47,10 +47,6 @@ const profilePage = {
         <Logo size="hero" text="Joshua John" as="h1" />
         <p class="headline" data-scramble={site.tagline}>{site.tagline}</p>
         <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
-        <p class="intro">
-          {site.person.name} ({site.name}), robotics and control-systems engineer working on optimal control,
-          ROS&nbsp;2 and robot simulation.
-        </p>
         <p class="clearance mono">
           FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
             class="terminal-cue mono"
@@ -436,13 +432,6 @@ const profilePage = {
     text-wrap: balance;
     font-size: var(--text-2xl);
     max-width: 18ch;
-  }
-
-  .intro {
-    max-width: var(--measure-narrow);
-    color: var(--fg-muted);
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
   }
 
   .sub {
