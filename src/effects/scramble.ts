@@ -177,9 +177,14 @@ export function initScramble(): () => void {
   // real face before any scramble runs. `fonts.ready` is already resolved on warm
   // loads, so this costs nothing there.
   const fontsReady: Promise<unknown> = document.fonts?.ready ?? Promise.resolve();
+  // The page is painted underneath the boot loader, so an observer would fire (and the
+  // scramble finish) out of sight. Hold it until the veil lifts.
+  const veilLifted: Promise<unknown> = document.documentElement.classList.contains('eye-pending')
+    ? new Promise((resolve) => window.addEventListener('eye:done', resolve, { once: true }))
+    : Promise.resolve();
 
   if (!reduced) {
-    void fontsReady.then(() => {
+    void Promise.all([fontsReady, veilLifted]).then(() => {
       if (cancelled) return;
       observer = new IntersectionObserver(
         (entries) => {

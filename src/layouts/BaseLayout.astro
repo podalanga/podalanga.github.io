@@ -1,6 +1,9 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { site } from '../config/site';
+import { getImage } from 'astro:assets';
+import portrait from '../assets/profile/portrait.jpg';
+import { absoluteUrl, personNode, websiteNode } from '../lib/seo';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import EyeLoader from '../components/EyeLoader.astro';
@@ -9,24 +12,46 @@ import '../styles/global.css';
 import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import monoLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 
+// A stable, square-ish rendition of the portrait for Person.image (knowledge panels, AI answers).
+const portraitCard = await getImage({ src: portrait, width: 800, format: 'jpg' });
+
 interface Props {
   title?: string;
   description?: string;
+  /** og:type. Blog posts are articles, the home page is a profile. */
+  type?: 'website' | 'article' | 'profile';
+  /** Absolute URL of a page-specific social card; falls back to /og.png. */
+  image?: string;
+  imageAlt?: string;
+  /** Extra JSON-LD nodes for this page, merged into the site-wide @graph. */
+  jsonLd?: Record<string, unknown>[];
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  /** Keep thin or utility pages (tag listings, 404) out of the index but let links be followed. */
+  noindex?: boolean;
+  keywords?: readonly string[];
 }
 
-const { title = site.title, description = site.description } = Astro.props;
+const {
+  title = site.title,
+  description = site.description,
+  type = 'website',
+  image,
+  imageAlt = `${site.person.name} (${site.name}), robotics and control-systems engineer`,
+  jsonLd = [],
+  publishedTime,
+  modifiedTime,
+  noindex = false,
+  keywords = [],
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url);
-const ogImage = new URL('/og.png', site.url);
+const ogImage = image ?? new URL('/og.png', site.url).href;
 const isHome = Astro.url.pathname === '/';
+const metaKeywords = [...new Set([site.person.name, site.name, ...keywords, ...site.keywords])].join(', ');
 
-const personSchema = {
+const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Joshua John L',
-  alternateName: site.name,
-  url: site.url,
-  sameAs: [site.socials.github, site.socials.linkedin],
-  jobTitle: 'Robotics & Control Systems Engineer',
+  '@graph': [websiteNode(), personNode(absoluteUrl(portraitCard.src)), ...jsonLd],
 };
 ---
 
@@ -43,13 +68,41 @@ const personSchema = {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.person.name} />
+    <meta name="keywords" content={metaKeywords} />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.person.name} · Blog`} href="/rss.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="author" href="/llms.txt" type="text/plain" />
+    <link rel="me" href={site.socials.github} />
+    <link rel="me" href={site.socials.linkedin} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={`${site.name} · ${site.person.name}`} />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt} />
+    {!image && <meta property="og:image:width" content="1200" />}
+    {!image && <meta property="og:image:height" content="630" />}
     <meta property="og:url" content={canonical} />
+    {type === 'profile' && <meta property="profile:first_name" content={site.person.givenName} />}
+    {type === 'profile' && <meta property="profile:username" content={site.name.toLowerCase()} />}
+    {type === 'article' && <meta property="article:author" content={`${site.url}/`} />}
+    {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {type === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")} />
 
     <script is:inline>
       (function () {
@@ -83,16 +136,14 @@ const personSchema = {
     </script>
     <noscript>
       <style>
-        html.eye-pending body > *:not(#eye-loader) {
-          display: revert !important;
+        html.eye-pending {
+          overflow: revert !important;
         }
         #eye-loader {
           display: none !important;
         }
       </style>
     </noscript>
-
-    {isHome && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
 
     <ClientRouter />
   </head>

@@ -50,7 +50,7 @@ const obfuscatedEmail = site.email.replace('@', '[at]').replace(/\./g, '[dot]');
 
     <div class="right-group">
       <span class="footer-email mono">{obfuscatedEmail}</span>
-      <p class="copy mono">© {startYear}-∞ PODALANGA</p>
+      <p class="copy mono">© {startYear}-∞ {site.person.name.toUpperCase()} · PODALANGA</p>
     </div>
   </div>
 </footer>
@@ -179,6 +179,15 @@ const obfuscatedEmail = site.email.replace('@', '[at]').replace(/\./g, '[dot]');
 
     .right-group {
       justify-content: center;
+      max-width: 100%;
+      min-width: 0;
+      text-align: center;
+    }
+
+    /* Narrow phones: the address and the credit line wrap rather than run off the edge. */
+    .footer-email,
+    .copy {
+      overflow-wrap: anywhere;
     }
   }
 </style>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseFileCard from '../../components/CaseFileCard.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../../config/site';
+import { PERSON_ID, WEBSITE_ID, absoluteUrl, breadcrumbNode, pageTitle } from '../../lib/seo';
 
 const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
@@ -15,9 +16,34 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   { label: 'COMPETITION', value: 'competition' },
   { label: 'HOBBY PROJECTS', value: 'hobby' },
 ];
+
+const description = `Robotics and control-systems projects by ${site.person.name} (${site.name}): EPFL ZBot, ROS 2 differential drive, inverted pendulum LQR, underwater ROV, robotic arm and more.`;
+const jsonLd = [
+  {
+    '@type': 'CollectionPage',
+    url: absoluteUrl('/projects'),
+    name: `Projects by ${site.person.name}`,
+    description,
+    isPartOf: { '@id': WEBSITE_ID },
+    author: { '@id': PERSON_ID },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: works.map((w, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: absoluteUrl(`/projects/${w.id}`),
+        name: w.data.title,
+      })),
+    },
+  },
+  breadcrumbNode([
+    { name: site.person.name, path: '/' },
+    { name: 'Projects', path: '/projects' },
+  ]),
+];
 ---
 
-<BaseLayout title={`Projects · ${site.name}`} description="Case files: robotics and control-systems internships, projects, and competitions.">
+<BaseLayout title={pageTitle('Robotics & Control Projects')} description={description} jsonLd={jsonLd}>
   <section class="container intro">
     <p class="label">§ 01 // PROJECTS</p>
     <h1>Case files</h1>

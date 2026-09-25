@@ -4,6 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkMeta from '../../components/WorkMeta.astro';
 import Carousel from '../../components/Carousel.astro';
 import Redacted from '../../components/Redacted.astro';
+import { getImage } from 'astro:assets';
+import { site } from '../../config/site';
+import { PERSON_ID, absoluteUrl, breadcrumbNode, isoDate, pageTitle } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const works = await getCollection('works');
@@ -30,9 +33,66 @@ const slides = [
     .filter((f) => f.src.src !== data.cover?.src)
     .map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
 ];
+
+const kindLabel = {
+  internship: 'Robotics Internship',
+  project: 'Robotics Project',
+  competition: 'Robotics Competition',
+  hobby: 'Hobby Project',
+}[data.kind];
+const title = pageTitle(`${data.title} · ${kindLabel}`);
+const url = absoluteUrl(`/projects/${work.id}`);
+
+// Social card + schema image: a 1200px JPEG rendition of the cover (or first figure).
+const coverSrc = data.cover ?? data.figures?.[0]?.src;
+const card = coverSrc ? await getImage({ src: coverSrc, width: 1200, format: 'jpg' }) : undefined;
+const cardUrl = card ? absoluteUrl(card.src) : undefined;
+const images = await Promise.all(
+  slides.map(async (s) => absoluteUrl((await getImage({ src: s.src, width: 1200, format: 'jpg' })).src)),
+);
+
+const jsonLd = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${url}#article`,
+    url,
+    mainEntityOfPage: url,
+    headline: data.title,
+    alternativeHeadline: `${data.codename}: ${kindLabel.toLowerCase()} by ${site.person.name}`,
+    description: data.summary,
+    author: { '@id': PERSON_ID },
+    creator: { '@id': PERSON_ID },
+    publisher: { '@id': PERSON_ID },
+    dateCreated: isoDate(data.start),
+    datePublished: isoDate(data.start),
+    ...(data.end && { dateModified: isoDate(data.end) }),
+    ...(images.length > 0 && { image: images }),
+    keywords: [...new Set([...data.tags, ...data.stack])].join(', '),
+    about: [...data.tags, ...data.stack].map((name) => ({ '@type': 'Thing', name })),
+    genre: kindLabel,
+    sourceOrganization: { '@type': 'Organization', name: data.org, address: data.location },
+    ...(data.supervisor && { contributor: { '@type': 'Person', name: data.supervisor } }),
+    inLanguage: 'en',
+  },
+  breadcrumbNode([
+    { name: site.person.name, path: '/' },
+    { name: 'Projects', path: '/projects' },
+    { name: data.title, path: `/projects/${work.id}` },
+  ]),
+];
 ---
 
-<BaseLayout title={`${data.title} · FILE ${String(data.fileNo).padStart(2, '0')}`} description={data.summary}>
+<BaseLayout
+  title={title}
+  description={data.summary}
+  type="article"
+  image={cardUrl}
+  imageAlt={data.coverAlt ?? data.title}
+  publishedTime={data.start}
+  modifiedTime={data.end}
+  keywords={[...data.tags, ...data.stack]}
+  jsonLd={jsonLd}
+>
   <article class="container case-file">
     <WorkMeta
       fileNo={data.fileNo}
