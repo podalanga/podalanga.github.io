@@ -9,6 +9,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { site } from '../config/site';
 import portrait from '../assets/profile/portrait.jpg';
+import { PERSON_ID, WEBSITE_ID, absoluteUrl } from '../lib/seo';
 
 const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
@@ -20,16 +21,36 @@ const education = (await getCollection('education')).sort((a, b) => a.data.order
 const positions = (await getCollection('positions')).sort((a, b) => a.data.order - b.data.order);
 const skillGroups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
 const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.data.order);
+
+const profilePage = {
+  '@type': 'ProfilePage',
+  '@id': `${site.url}/#profile`,
+  url: `${site.url}/`,
+  name: site.title,
+  description: site.description,
+  isPartOf: { '@id': WEBSITE_ID },
+  mainEntity: { '@id': PERSON_ID },
+  about: { '@id': PERSON_ID },
+  hasPart: works.map((w) => ({
+    '@type': 'CreativeWork',
+    name: w.data.title,
+    url: absoluteUrl(`/projects/${w.id}`),
+  })),
+};
 ---
 
-<BaseLayout>
+<BaseLayout type="profile" jsonLd={[profilePage]}>
   <section class="hero band band--lead" data-section="00" data-section-label="PROFILE">
     <div class="container hero-inner">
       <div class="hero-text">
         <p class="label">§ 00 // PROFILE</p>
-        <Logo size="hero" text="Joshua John" />
-        <h1 class="headline" data-scramble={site.tagline}>{site.tagline}</h1>
+        <Logo size="hero" text="Joshua John" as="h1" />
+        <p class="headline" data-scramble={site.tagline}>{site.tagline}</p>
         <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
+        <p class="intro">
+          {site.person.name} ({site.name}), robotics and control-systems engineer working on optimal control,
+          ROS&nbsp;2 and robot simulation.
+        </p>
         <p class="clearance mono">
           FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
             class="terminal-cue mono"
@@ -43,7 +64,7 @@ const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.d
       </div>
       <div class="hero-aside">
         <div class="hero-portrait">
-          <Image src={portrait} alt="Joshua John L" widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
+          <Image src={portrait} alt={`Portrait of ${site.person.name} (${site.name}), robotics and control-systems engineer`} widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
         </div>
         <SocialLinks />
       </div>
@@ -406,9 +427,22 @@ const awards = (await getCollection('awards')).sort((a, b) => a.data.order - b.d
     }
   }
 
+  /* Was the h1; the name took that role, so the tagline carries the heading face itself. */
   .headline {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
     font-size: var(--text-2xl);
     max-width: 18ch;
+  }
+
+  .intro {
+    max-width: var(--measure-narrow);
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
   }
 
   .sub {

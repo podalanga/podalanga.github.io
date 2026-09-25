@@ -4,8 +4,10 @@ import { site } from '../config/site';
 interface Props {
   size?: 'header' | 'hero';
   text?: string;
+  /** The hero wordmark is the page's h1 (the name is what people search for); the header's is not. */
+  as?: 'span' | 'h1';
 }
-const { size = 'header', text = site.name } = Astro.props;
+const { size = 'header', text = site.name, as: Tag = 'span' } = Astro.props;
 
 // The dot must always render immediately after the last word: split it off into its own
 // non-wrapping unit so it can never land on its own line, detached from the name, when the
@@ -17,10 +19,10 @@ const leading = words.length ? `${words.join(' ')} ` : '';
 
 {/* The hero wordmark is decoration on the page it names, not a link back to itself — only the
    header wordmark navigates home. */}
-<span class:list={['logo', size]}>
+<Tag class:list={['logo', size]}>
   {leading && (
     size === 'hero' ? (
-      <span class="wordmark lead" aria-hidden="true">{leading}</span>
+      <span class="wordmark lead">{leading}</span>
     ) : (
       <a href="/" class="wordmark lead" aria-hidden="true" tabindex="-1">{leading}</a>
     )
@@ -34,13 +36,22 @@ const leading = words.length ? `${words.join(' ')} ` : '';
     data-terminal-open
     aria-label="Open terminal"
   ></button></span>
-</span>
+</Tag>
 
 <style>
   .logo {
     position: relative;
     display: inline;
     line-height: 1;
+  }
+
+  /* As the h1, the wordmark must not pick up heading type or margins from global styles. */
+  h1.logo {
+    margin: 0;
+    font: inherit;
+    line-height: 1;
+    letter-spacing: inherit;
+    text-wrap: wrap;
   }
 
   .tail {

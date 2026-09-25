@@ -57,3 +57,23 @@ Never commit `resume_docs/` or `test_images/` (original PDFs/photos) — both ar
 ## Coexistence note
 
 `https://podalanga.github.io/farmsim_docs/` is a separate project site and must keep working once this repo becomes the GitHub Pages **user** site. Never add a top-level route or folder named `farmsim_docs` here.
+
+## SEO & discoverability
+
+Everything search engines and AI agents read is driven from `src/config/site.ts`:
+
+- `site.person`: name, alternate names ("Joshua John", "Podalanga"), role, schools. Feeds the `Person` JSON-LD on every page, `<meta name="author">`, RSS and `/llms.txt`.
+- `site.keywords`: topics you want to be associated with (e.g. *Convex Optimization*). They go into `Person.knowsAbout` (JSON-LD), `<meta name="keywords">` and `/llms.txt`. **Add a new topic here**; to also make it visible on the page, add it as an untiered item in `src/content/skills/*/index.md` (it then shows in the skills index under "terms on file"). Only list things you can back up: never hide keyword text in the page (`display:none`, off-screen, same colour as the background). Search engines treat that as spam and demote the whole site.
+
+What the build emits: a JSON-LD `@graph` per page (WebSite + Person, plus ProfilePage / TechArticle / BlogPosting / CollectionPage / BreadcrumbList as relevant), full Open Graph + Twitter tags, a sitemap with `lastmod`, `/llms.txt` and `/llms-full.txt` (plain-Markdown site summaries for AI agents), and a `robots.txt` that explicitly welcomes search and AI crawlers. Tag pages and the 404 are `noindex`.
+
+### Off-site steps (owner only; these matter most for ranking on your name)
+
+1. **Google Search Console** (already verified via `public/google94f329c520ac4286.html`): submit `https://podalanga.github.io/sitemap-index.xml`, then use *URL Inspection → Request indexing* on `/` and each project page.
+2. **Bing Webmaster Tools**: sign in and *Import from Google Search Console* (this also feeds DuckDuckGo, Yahoo and ChatGPT search).
+3. **Link back to the site** from every profile, using the same display name, "Joshua John L":
+   - GitHub: profile *Website* field, and a `podalanga/podalanga` profile README that links the site.
+   - LinkedIn: *Contact info → Website*, and a *Featured* link to the site.
+   - The `farmsim_docs` site, lab/club pages, Devpost, resumes and email signatures.
+4. Check the results with Google's [Rich Results Test](https://search.google.com/test/rich-results) and [schema.org validator](https://validator.schema.org/) on the live URL.
+5. Name searches take days to weeks to settle after indexing. Publishing new project write-ups and blog posts regularly helps.

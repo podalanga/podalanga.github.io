@@ -16,8 +16,8 @@ export function initSectionIndex(): () => void {
   function update() {
     frame = 0;
 
-    // While the loader veil is up, `body > *` is display:none and layout
-    // isn't real yet. Wait for the veil to lift before painting the hairline.
+    // While the loader veil is up, scrolling is locked and the page is hidden behind it.
+    // Wait for the veil to lift before painting the hairline.
     if (document.documentElement.classList.contains('eye-pending')) return;
 
     const doc = document.documentElement;

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
 import { site } from '../../../config/site';
+import { pageTitle } from '../../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true));
@@ -18,7 +19,7 @@ const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
 
-<BaseLayout title={`#${tag} · Blog · ${site.name}`} description={`Blog entries tagged ${tag}.`}>
+<BaseLayout title={pageTitle(`#${tag} · Blog`)} description={`Blog entries by ${site.person.name} tagged ${tag}.`} noindex>
   <section class="container intro">
     <p class="label">§ 03 // BLOG</p>
     <h1>#{tag}</h1>

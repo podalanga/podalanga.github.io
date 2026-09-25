@@ -20,10 +20,11 @@ html[data-theme='light'] {
   color-scheme: light;
 }
 
-/* Eye loader boot guard: hide everything except the loader itself until it finishes
-   (content stays in the HTML for SEO/no-JS; this is a paint-time veil, not a content gate). */
-html.eye-pending body > *:not(#eye-loader) {
-  display: none;
+/* Eye loader boot guard. The loader is an opaque fixed overlay, so the page underneath is
+   laid out and painted as normal (real content counts for LCP, crawlers see a rendered page);
+   only scrolling is held until the veil lifts. */
+html.eye-pending {
+  overflow: hidden;
 }
 
 body {

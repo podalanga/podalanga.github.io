@@ -1,4 +1,29 @@
+# Search engines and AI crawlers are all welcome: the whole public site is open to them.
 User-agent: *
+Allow: /
+Disallow: /admin/
+
+# Named explicitly so no default-deny list ever catches them.
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Applebot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: CCBot
+User-agent: Meta-ExternalAgent
+User-agent: cohere-ai
+Allow: /
 Disallow: /admin/
 
 Sitemap: https://podalanga.github.io/sitemap-index.xml
+
+# AI-readable summary of this site: https://podalanga.github.io/llms.txt

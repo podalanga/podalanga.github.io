@@ -5,6 +5,7 @@ import Gallery from '../../components/Gallery.astro';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 import { formatDateLong } from '../../lib/dates';
 import { site } from '../../config/site';
+import { pageTitle } from '../../lib/seo';
 
 const entries = await getCollection('archive');
 const byCategory = {
@@ -30,7 +31,7 @@ const categories: { label: string; value: 'photography' | 'music' | 'videos' | '
 ];
 ---
 
-<BaseLayout title={`Archive · ${site.name}`} description="A running archive of photography, music, and miscellaneous transmissions.">
+<BaseLayout title={pageTitle('Photography & Archive')} description={`Photography, music and miscellaneous transmissions from ${site.person.name} (${site.name}), off the robotics clock.`}>
   <section class="container intro">
     <p class="label">§ 02 // ARCHIVE</p>
     <h1>Archive</h1>

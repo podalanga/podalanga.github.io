@@ -8,7 +8,8 @@ import { getItem, setItem } from '../lib/storage';
 import { prefersReducedMotion } from '../lib/reduced-motion';
 
 const SEEN_KEY = 'pdl:eye-seen';
-const FAILSAFE_MS = 5000;
+// Just past the longest (FULL) timeline: never hold the veil longer than the sequence needs.
+const FAILSAFE_MS = 4500;
 
 type Phase = 'noise' | 'resolve' | 'watch' | 'blink' | 'dissolve' | 'done';
 

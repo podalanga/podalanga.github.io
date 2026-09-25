@@ -6,7 +6,7 @@ import { site } from '../config/site';
 export async function GET(context: APIContext) {
   const posts = await getCollection('log', ({ data }) => !data.draft);
   return rss({
-    title: site.title,
+    title: `${site.person.name} (${site.name}) · Blog`,
     description: site.description,
     site: context.site ?? site.url,
     items: posts
@@ -16,6 +16,9 @@ export async function GET(context: APIContext) {
         description: post.data.description,
         pubDate: post.data.date,
         link: `/blog/${post.id}`,
+        author: `${site.email} (${site.person.name})`,
+        categories: post.data.tags,
       })),
+    customData: '<language>en</language>',
   });
 }

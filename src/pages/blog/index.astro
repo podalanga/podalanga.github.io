@@ -3,13 +3,14 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { site } from '../../config/site';
+import { pageTitle } from '../../lib/seo';
 
 const posts = (await getCollection('log', ({ data }) => import.meta.env.PROD ? !data.draft : true)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 ---
 
-<BaseLayout title={`Blog · ${site.name}`} description="A working log of projects, builds, and stray thoughts.">
+<BaseLayout title={pageTitle('Blog')} description={`Blog of ${site.person.name} (${site.name}): a working log of robotics builds, control-systems projects and stray thoughts.`}>
   <section class="container intro">
     <p class="label">§ 03 // BLOG</p>
     <h1>Blog</h1>

@@ -11,3 +11,15 @@ describe('site config', () => {
     expect(site.nav.map((n) => n.label)).toEqual(['PROFILE', 'PROJECTS', 'ARCHIVE', 'BLOG']);
   });
 });
+
+describe('seo config', () => {
+  it('names the person in the default title and description', () => {
+    expect(site.title).toContain(site.person.name);
+    expect(site.description).toContain(site.person.name);
+    expect(site.description.length).toBeLessThanOrEqual(160);
+  });
+
+  it('has no duplicate keywords', () => {
+    expect(new Set(site.keywords).size).toBe(site.keywords.length);
+  });
+});

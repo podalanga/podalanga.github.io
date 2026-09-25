@@ -5,6 +5,9 @@ import Attachments from '../../components/Attachments.astro';
 import Tag from '../../components/Tag.astro';
 import { Image } from 'astro:assets';
 import { formatDateLong } from '../../lib/dates';
+import { getImage } from 'astro:assets';
+import { site } from '../../config/site';
+import { PERSON_ID, WEBSITE_ID, absoluteUrl, breadcrumbNode, pageTitle } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true));
@@ -18,9 +21,46 @@ export async function getStaticPaths() {
 const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
 const { data } = post;
+
+const url = absoluteUrl(`/blog/${post.id}`);
+const card = data.cover ? await getImage({ src: data.cover, width: 1200, format: 'jpg' }) : undefined;
+const cardUrl = card ? absoluteUrl(card.src) : undefined;
+const jsonLd = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    url,
+    mainEntityOfPage: url,
+    headline: data.title,
+    description: data.description,
+    datePublished: data.date.toISOString(),
+    dateModified: (data.updated ?? data.date).toISOString(),
+    author: { '@id': PERSON_ID },
+    publisher: { '@id': PERSON_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+    ...(cardUrl && { image: cardUrl }),
+    keywords: data.tags.join(', '),
+    inLanguage: 'en',
+  },
+  breadcrumbNode([
+    { name: site.person.name, path: '/' },
+    { name: 'Blog', path: '/blog' },
+    { name: data.title, path: `/blog/${post.id}` },
+  ]),
+];
 ---
 
-<BaseLayout title={`${data.title} · Blog`} description={data.description}>
+<BaseLayout
+  title={pageTitle(`${data.title} · Blog`)}
+  description={data.description}
+  type="article"
+  image={cardUrl}
+  imageAlt={data.coverAlt ?? data.title}
+  publishedTime={data.date}
+  modifiedTime={data.updated}
+  keywords={data.tags}
+  jsonLd={jsonLd}
+>
   <article class="container post">
     <header class="post-header">
       <p class="date mono">{formatDateLong(data.date)}{data.updated && ` · UPDATED ${formatDateLong(data.updated)}`}</p>
