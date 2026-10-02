@@ -66,6 +66,10 @@ function setupElement(el: HTMLElement): Controller {
   el.textContent = '';
   const track = document.createElement('span');
   track.setAttribute('aria-hidden', 'true');
+  // The track's children are rebuilt mid-animation (cells in, plain text back). If a press
+  // lands on a cell that is then removed before release, the browser drops the click, so a
+  // nav link hovered-then-clicked needed a second click. Let presses hit `el`, which persists.
+  track.style.pointerEvents = 'none';
   track.textContent = finalText;
   el.appendChild(track);
 
