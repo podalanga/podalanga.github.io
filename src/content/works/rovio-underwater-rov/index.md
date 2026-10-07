@@ -51,8 +51,8 @@ figures:
     caption: "CAD of the flange-seal geometry."
 documents:
   - label: "ROVIO: Simulation, Control and Vision-Based Autonomy for a Student-Built Underwater Vehicle"
-    kind: paper
-    file: /media/attachments/rovio-paper.pdf
+    kind: short-report
+    file: /media/attachments/rovio-short-report.pdf
     pages: 7
   - label: "ROVIO: Enclosure Sealing, Simulation, Control and Vision-Based Autonomy for an Underwater Vehicle"
     kind: report

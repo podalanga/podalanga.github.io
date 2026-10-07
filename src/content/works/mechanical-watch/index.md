@@ -50,8 +50,8 @@ videos:
     caption: "Close-up of the Swiss lever escapement in motion."
 documents:
   - label: "Design, Analysis and Simulation of a Mechanical Watch Going Train with a Swiss Lever Escapement"
-    kind: paper
-    file: /media/attachments/watch-paper.pdf
+    kind: short-report
+    file: /media/attachments/watch-short-report.pdf
     pages: 9
   - label: "Full technical report, with every calculation worked step by step in the appendices"
     kind: report
