@@ -33,7 +33,24 @@ const works = defineCollection({
         .array(z.object({ src: image(), caption: z.string() }))
         .optional(),
       featured: z.boolean(),
+      /** Position in the homepage Projects section (lowest first); unset keeps it off the homepage. */
+      homeOrder: optional(z.number().int()),
       classified: z.array(z.string()).optional(),
+      /** Papers, reports and other files under /public/media/attachments, offered for reading and download. */
+      documents: z
+        .array(
+          z.object({
+            label: z.string(),
+            kind: z.enum(['paper', 'report', 'other']).default('other'),
+            file: z.string(),
+            pages: optional(z.number().int().positive()),
+          }),
+        )
+        .optional(),
+      /** YouTube videos, shown in the media carousel after the images. */
+      videos: z
+        .array(z.object({ url: z.string().url(), caption: z.string() }))
+        .optional(),
     }),
 });
 
@@ -105,10 +122,16 @@ const skills = defineCollection({
      */
     items: z.array(
       z.union([
-        z.string().transform((name) => ({ name, tier: undefined as number | undefined })),
+        z.string().transform((name) => ({
+          name,
+          tier: undefined as number | undefined,
+          rank: undefined as number | undefined,
+        })),
         z.object({
           name: z.string(),
           tier: optional(z.number().int().min(1).max(3)),
+          /** Position inside its tier on the homepage record, lowest first; unranked terms follow in source order. */
+          rank: optional(z.number().int()),
         }),
       ]),
     ),

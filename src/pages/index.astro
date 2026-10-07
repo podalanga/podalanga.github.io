@@ -15,7 +15,10 @@ const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
 );
 const internships = works.filter((w) => w.data.kind === 'internship');
-const projects = works.filter((w) => w.data.kind !== 'internship');
+// The homepage shows a short list of projects, picked and ordered by `homeOrder` in the CMS.
+const projects = works
+  .filter((w) => w.data.kind !== 'internship' && w.data.homeOrder != null)
+  .sort((a, b) => a.data.homeOrder! - b.data.homeOrder!);
 
 const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order);
 const positions = (await getCollection('positions')).sort((a, b) => a.data.order - b.data.order);
@@ -142,6 +145,7 @@ const profilePage = {
                 tags={work.data.tags}
                 cover={work.data.cover}
                 coverAlt={work.data.coverAlt}
+                documentKinds={work.data.documents?.map((d) => d.kind)}
               />
             ))
           }
@@ -176,6 +180,7 @@ const profilePage = {
                 tags={work.data.tags}
                 cover={work.data.cover}
                 coverAlt={work.data.coverAlt}
+                documentKinds={work.data.documents?.map((d) => d.kind)}
               />
             ))
           }

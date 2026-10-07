@@ -17,7 +17,7 @@ const kinds: { label: string; value: 'all' | 'internship' | 'project' | 'competi
   { label: 'HOBBY PROJECTS', value: 'hobby' },
 ];
 
-const description = `Robotics and control-systems projects by ${site.person.name} (${site.name}): EPFL ZBot, ROS 2 differential drive, inverted pendulum LQR, underwater ROV, robotic arm and more.`;
+const description = `Robotics and control-systems projects by ${site.person.name} (${site.name}): EPFL ZBot, the ROVIO underwater vehicle, a mechanical watch movement, ROS 2 differential drive, inverted pendulum LQR, robotic arm and more.`;
 const jsonLd = [
   {
     '@type': 'CollectionPage',
@@ -81,6 +81,7 @@ const jsonLd = [
             tags={work.data.tags}
             cover={work.data.cover}
             coverAlt={work.data.coverAlt}
+            documentKinds={work.data.documents?.map((d) => d.kind)}
             variant="row"
           />
         </div>

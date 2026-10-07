@@ -37,7 +37,7 @@ Collections:
 
 | Collection | Path | Notes |
 |---|---|---|
-| `works` | `src/content/works/` | Case files — robotics/engineering projects. Co-located cover image + figures per entry. |
+| `works` | `src/content/works/` | Case files — robotics/engineering projects. Co-located cover image + figures per entry. Optional **Videos** (YouTube, shown in the media carousel), **Documents** (paper/report PDFs uploaded to `public/media/attachments/`, shown with Read and Download buttons and flagged on the card) and **Homepage position** (`homeOrder`: only projects with a value appear in the homepage Projects section, lowest first). |
 | `archive` | `src/content/archive/` | Photography (`kind: photo`) and video (`kind: video`, YouTube-only) entries. |
 | `log` | `src/content/log/` | Blog posts. Co-located cover image + optional attachment under `public/media/attachments/`. |
 

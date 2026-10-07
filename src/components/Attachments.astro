@@ -1,6 +1,5 @@
 ---
-import { statSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { extOf, sizeOf } from '../lib/files';
 
 interface Attachment {
   label: string;
@@ -12,26 +11,6 @@ interface Props {
 }
 
 const { attachments } = Astro.props;
-
-function formatSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function sizeOf(file: string): string | null {
-  try {
-    const path = fileURLToPath(new URL(`../../public${file}`, import.meta.url));
-    return formatSize(statSync(path).size);
-  } catch {
-    return null;
-  }
-}
-
-function extOf(file: string): string {
-  const match = file.match(/\.([a-z0-9]+)$/i);
-  return match ? match[1].toUpperCase() : 'FILE';
-}
 
 const items = attachments.map((a) => ({ ...a, size: sizeOf(a.file), ext: extOf(a.file) }));
 ---
