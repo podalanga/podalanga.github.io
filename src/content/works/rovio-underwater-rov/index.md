@@ -9,7 +9,7 @@ start: 2024-12-01
 status: ongoing
 summary: "RMI's eight-thruster, 6-DOF underwater vehicle: I sealed its enclosure, then built a simulated autonomy stack in Stonefish: thruster allocation, cascaded control, AprilTag localization and a monocular coral-mapping pipeline trained on auto-labelled images."
 tags: ["Underwater", "Control", "Perception", "Simulation"]
-stack: ["ROS2", "Stonefish", "YOLO", "AprilTag", "OpenCV", "SolidWorks", "Blender", "MeshLab"]
+stack: ["ROS2", "Stonefish", "Python", "YOLO", "AprilTag", "OpenCV", "SolidWorks", "Blender", "MeshLab"]
 featured: true
 homeOrder: 1
 classified: ["the motor-oil sealing idea that got dropped for legal reasons"]

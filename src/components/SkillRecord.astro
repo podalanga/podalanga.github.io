@@ -2,6 +2,7 @@
 interface SkillItem {
   name: string;
   tier?: number;
+  rank?: number;
 }
 
 interface Props {
@@ -13,7 +14,11 @@ const { groups } = Astro.props;
 /** Every term on the record, flattened out of its group. The ramp ranks across groups, not inside them. */
 const terms = groups.flatMap((g) => g.data.items);
 
-const tier = (n: number) => terms.filter((t) => t.tier === n);
+/** A tier's terms by `rank`; the sort is stable, so unranked terms keep their source order after the ranked ones. */
+const tier = (n: number) =>
+  terms
+    .filter((t) => t.tier === n)
+    .sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity));
 const lead = tier(1);
 const core = tier(2);
 const working = tier(3);

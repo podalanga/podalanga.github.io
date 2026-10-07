@@ -122,10 +122,16 @@ const skills = defineCollection({
      */
     items: z.array(
       z.union([
-        z.string().transform((name) => ({ name, tier: undefined as number | undefined })),
+        z.string().transform((name) => ({
+          name,
+          tier: undefined as number | undefined,
+          rank: undefined as number | undefined,
+        })),
         z.object({
           name: z.string(),
           tier: optional(z.number().int().min(1).max(3)),
+          /** Position inside its tier on the homepage record, lowest first; unranked terms follow in source order. */
+          rank: optional(z.number().int()),
         }),
       ]),
     ),
