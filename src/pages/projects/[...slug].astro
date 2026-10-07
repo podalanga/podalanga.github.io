@@ -2,7 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkMeta from '../../components/WorkMeta.astro';
-import Carousel from '../../components/Carousel.astro';
+import Carousel, { type CarouselFigure } from '../../components/Carousel.astro';
+import DocumentPanel from '../../components/DocumentPanel.astro';
 import Redacted from '../../components/Redacted.astro';
 import { getImage } from 'astro:assets';
 import { site } from '../../config/site';
@@ -25,7 +26,7 @@ const { work, prev, next } = Astro.props;
 const { Content } = await render(work);
 const { data } = work;
 
-const slides = [
+const imageSlides = [
   ...(data.cover
     ? [{ src: data.cover, alt: data.coverAlt ?? data.title, caption: data.coverAlt ?? data.title }]
     : []),
@@ -33,6 +34,11 @@ const slides = [
     .filter((f) => f.src.src !== data.cover?.src)
     .map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
 ];
+const slides: CarouselFigure[] = [
+  ...imageSlides,
+  ...(data.videos ?? []).map((v) => ({ video: v.url, caption: v.caption })),
+];
+const documents = data.documents ?? [];
 
 const kindLabel = {
   internship: 'Robotics Internship',
@@ -48,7 +54,7 @@ const coverSrc = data.cover ?? data.figures?.[0]?.src;
 const card = coverSrc ? await getImage({ src: coverSrc, width: 1200, format: 'jpg' }) : undefined;
 const cardUrl = card ? absoluteUrl(card.src) : undefined;
 const images = await Promise.all(
-  slides.map(async (s) => absoluteUrl((await getImage({ src: s.src, width: 1200, format: 'jpg' })).src)),
+  imageSlides.map(async (s) => absoluteUrl((await getImage({ src: s.src, width: 1200, format: 'jpg' })).src)),
 );
 
 const jsonLd = [
@@ -73,6 +79,19 @@ const jsonLd = [
     sourceOrganization: { '@type': 'Organization', name: data.org, address: data.location },
     ...(data.supervisor && { contributor: { '@type': 'Person', name: data.supervisor } }),
     inLanguage: 'en',
+    ...(documents.length > 0 && {
+      associatedMedia: documents.map((d) => ({
+        '@type': 'MediaObject',
+        name: d.label,
+        contentUrl: absoluteUrl(d.file),
+        encodingFormat: d.file.toLowerCase().endsWith('.pdf') ? 'application/pdf' : undefined,
+        author: { '@id': PERSON_ID },
+      })),
+    }),
+    ...(data.videos &&
+      data.videos.length > 0 && {
+        video: data.videos.map((v) => ({ '@type': 'VideoObject', name: v.caption, url: v.url })),
+      }),
   },
   breadcrumbNode([
     { name: site.person.name, path: '/' },
@@ -134,6 +153,8 @@ const jsonLd = [
         </dl>
       )
     }
+
+    {documents.length > 0 && <DocumentPanel documents={documents} />}
 
     <div class="case-body">
       <div class="prose">

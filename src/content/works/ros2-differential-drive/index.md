@@ -11,6 +11,7 @@ summary: "A ROS2 differential-drive bot fusing IMU, encoder, LiDAR, and depth-ca
 tags: ["ROS2", "SLAM", "Sensor Fusion"]
 stack: ["ROS2", "Gazebo", "RViz2", "Docker", "Raspberry Pi 4"]
 featured: true
+homeOrder: 3
 classified: ["how many nights were lost to the NED/ENU transform"]
 cover: ./rviz-pointcloud.png
 coverAlt: "RViz2 window showing a LiDAR/depth-camera pointcloud reconstruction of a room corner alongside the live camera feed."
