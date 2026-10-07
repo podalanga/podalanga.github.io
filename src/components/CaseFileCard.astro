@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { formatRange } from '../lib/dates';
+import { loopEmbedUrl, youtubeId } from '../lib/youtube';
 
 interface Props {
   slug: string;
@@ -20,6 +21,8 @@ interface Props {
   variant?: 'grid' | 'row' | 'feature';
   /** Kinds of documents on file; papers and reports are flagged on the card. */
   documentKinds?: ('paper' | 'report' | 'other')[];
+  /** A YouTube URL; when set it plays muted and looping in place of the cover. */
+  video?: string;
 }
 
 const {
@@ -38,7 +41,11 @@ const {
   coverAlt,
   variant = 'grid',
   documentKinds = [],
+  video,
 } = Astro.props;
+
+const videoId = video ? youtubeId(video) : null;
+const videoSrc = videoId ? loopEmbedUrl(videoId, { controls: false }) : null;
 
 const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
 const docFlags = (['paper', 'report'] as const)
@@ -75,9 +82,24 @@ const docFlags = (['paper', 'report'] as const)
   </div>
 
   {
-    cover ? (
+    cover || videoSrc ? (
       <div class="thumb">
-        <Image src={cover} alt={coverAlt ?? title} widths={[320, 640, 960]} sizes="(min-width: 780px) 40vw, 100vw" />
+        {cover && (
+          <Image src={cover} alt={coverAlt ?? title} widths={[320, 640, 960]} sizes="(min-width: 780px) 40vw, 100vw" />
+        )}
+        {videoSrc && (
+          // Decorative: the card stays one link, so the player takes no clicks or focus.
+          <iframe
+            class="thumb-video"
+            src={videoSrc}
+            title={`${title}: video`}
+            loading="lazy"
+            tabindex="-1"
+            aria-hidden="true"
+            allow="autoplay; encrypted-media"
+            referrerpolicy="strict-origin-when-cross-origin"
+          />
+        )}
       </div>
     ) : (
       <div class="thumb placeholder" aria-hidden="true" />
@@ -148,6 +170,30 @@ const docFlags = (['paper', 'report'] as const)
     filter: saturate(0.85) sepia(0.08);
     transition: filter var(--dur-slow) var(--ease-out),
       transform var(--dur-slow) var(--ease-out);
+  }
+
+  .thumb {
+    position: relative;
+  }
+
+  /* Covers the 16:10 frame like the image does: a 16:9 video at full height is 10/9 of the
+     frame's width, so it is centred and its sides are cropped. */
+  .thumb-video {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: calc(100% * 10 / 9);
+    height: 100%;
+    transform: translateX(-50%);
+    border: 0;
+    pointer-events: none;
+    background: var(--bg-sunken);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .thumb-video {
+      display: none;
+    }
   }
 
   /* A file with no cover holds its space but draws nothing: no frame, no fill,

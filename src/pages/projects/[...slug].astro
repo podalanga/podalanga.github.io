@@ -34,9 +34,10 @@ const imageSlides = [
     .filter((f) => f.src.src !== data.cover?.src)
     .map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
 ];
+// Videos lead the media: the first one plays on load and loops.
 const slides: CarouselFigure[] = [
-  ...imageSlides,
   ...(data.videos ?? []).map((v) => ({ video: v.url, caption: v.caption })),
+  ...imageSlides,
 ];
 const documents = data.documents ?? [];
 

@@ -1,4 +1,6 @@
 ---
+import { youtubeId } from '../lib/youtube';
+
 interface Props {
   url: string;
   title: string;
@@ -6,19 +8,7 @@ interface Props {
 
 const { url, title } = Astro.props;
 
-function extractId(youtubeUrl: string): string | null {
-  try {
-    const u = new URL(youtubeUrl);
-    if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
-    if (u.searchParams.has('v')) return u.searchParams.get('v');
-    const match = u.pathname.match(/\/embed\/([^/?]+)/);
-    return match ? match[1] : null;
-  } catch {
-    return null;
-  }
-}
-
-const videoId = extractId(url);
+const videoId = youtubeId(url);
 const thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : undefined;
 ---
 
