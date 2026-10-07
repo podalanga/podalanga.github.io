@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { formatRange } from '../lib/dates';
+import { DOCUMENT_KINDS, DOCUMENT_LABEL, type DocumentKind } from '../lib/documents';
 import { loopEmbedUrl, youtubeId } from '../lib/youtube';
 
 interface Props {
@@ -19,8 +20,8 @@ interface Props {
   cover?: ImageMetadata;
   coverAlt?: string;
   variant?: 'grid' | 'row' | 'feature';
-  /** Kinds of documents on file; papers and reports are flagged on the card. */
-  documentKinds?: ('paper' | 'report' | 'other')[];
+  /** Kinds of documents on file; reports and guides are flagged on the card. */
+  documentKinds?: DocumentKind[];
   /** A YouTube URL; when set it plays muted and looping in place of the cover. */
   video?: string;
 }
@@ -48,9 +49,9 @@ const videoId = video ? youtubeId(video) : null;
 const videoSrc = videoId ? loopEmbedUrl(videoId, { controls: false }) : null;
 
 const fileLabel = `FILE ${String(fileNo).padStart(2, '0')}`;
-const docFlags = (['paper', 'report'] as const)
-  .filter((k) => documentKinds.includes(k))
-  .map((k) => (k === 'paper' ? 'PAPER' : 'REPORT'));
+const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.includes(k)).map(
+  (k) => DOCUMENT_LABEL[k],
+);
 ---
 
 <a href={`/projects/${slug}/`} class:list={['case-card', variant]} data-kind={kind}>

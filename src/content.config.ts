@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { DOCUMENT_KINDS, normalizeKind } from './lib/documents';
 
 /** Sveltia CMS writes '' for a cleared optional field instead of omitting the key. */
 function optional<S extends { optional(): unknown }>(schema: S): ReturnType<S['optional']> {
@@ -36,14 +37,16 @@ const works = defineCollection({
       /** Position in the homepage Projects section (lowest first); unset keeps it off the homepage. */
       homeOrder: optional(z.number().int()),
       classified: z.array(z.string()).optional(),
-      /** Papers, reports and other files under /public/media/attachments, offered for reading and download. */
+      /** Short reports, reports and guides under /public/media/attachments, offered for reading and download. */
       documents: z
         .array(
           z.object({
             label: z.string(),
-            kind: z.enum(['paper', 'report', 'other']).default('other'),
+            kind: z.preprocess(normalizeKind, z.enum(DOCUMENT_KINDS).default('other')),
             file: z.string(),
             pages: optional(z.number().int().positive()),
+            /** Who the document is for; blank falls back to the default line for its kind. */
+            guide: optional(z.string()),
           }),
         )
         .optional(),

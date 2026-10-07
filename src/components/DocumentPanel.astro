@@ -1,11 +1,13 @@
 ---
+import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, type DocumentKind } from '../lib/documents';
 import { extOf, sizeOf } from '../lib/files';
 
 interface Document {
   label: string;
-  kind: 'paper' | 'report' | 'other';
+  kind: DocumentKind;
   file: string;
   pages?: number;
+  guide?: string;
 }
 
 interface Props {
@@ -14,13 +16,19 @@ interface Props {
 
 const { documents } = Astro.props;
 
-const kindLabel = { paper: 'PAPER', report: 'TECHNICAL REPORT', other: 'DOCUMENT' };
-
-const items = documents.map((doc) => {
-  const size = sizeOf(doc.file);
-  const facts = [extOf(doc.file), doc.pages ? `${doc.pages} PP` : null, size].filter(Boolean);
-  return { ...doc, facts, filename: doc.file.split('/').pop() };
-});
+// The quick read leads, so a skimming visitor meets it first.
+const items = [...documents]
+  .sort((a, b) => DOCUMENT_KINDS.indexOf(a.kind) - DOCUMENT_KINDS.indexOf(b.kind))
+  .map((doc) => {
+    const size = sizeOf(doc.file);
+    const facts = [extOf(doc.file), doc.pages ? `${doc.pages} PP` : null, size].filter(Boolean);
+    return {
+      ...doc,
+      facts,
+      guideLine: doc.guide ?? DEFAULT_GUIDE[doc.kind],
+      filename: doc.file.split('/').pop(),
+    };
+  });
 ---
 
 <section class="documents" aria-labelledby="documents-heading">
@@ -30,10 +38,11 @@ const items = documents.map((doc) => {
       items.map((doc) => (
         <li class="doc" data-kind={doc.kind}>
           <p class="kind mono">
-            <span class="stamp">{kindLabel[doc.kind]}</span>
+            <span class="stamp">{DOCUMENT_LABEL[doc.kind]}</span>
             <span class="facts">{doc.facts.join(' · ')}</span>
           </p>
           <p class="doc-title">{doc.label}</p>
+          {doc.guideLine && <p class="guide">{doc.guideLine}</p>}
           <div class="actions mono">
             <a href={doc.file} target="_blank" rel="noopener">
               READ <span aria-hidden="true">↗</span>
@@ -113,6 +122,13 @@ const items = documents.map((doc) => {
     font-weight: 600;
     line-height: var(--leading-snug);
     color: var(--fg);
+  }
+
+  .guide {
+    margin: calc(-1 * var(--space-1)) 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
   }
 
   .actions {

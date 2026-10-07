@@ -129,19 +129,30 @@ collections:
           - { name: url, label: YouTube URL, widget: string }
           - { name: caption, label: Caption, widget: string }
       - name: documents
-        label: Documents (paper / report)
+        label: Documents (reports and guides)
         label_singular: Document
         widget: list
         required: false
-        hint: 'PDFs readers can open or download. Papers and reports also get a badge on the project card.'
+        hint: 'PDFs readers can open or download. Short reports come first, then reports, then guides; each kind also gets a badge on the project card.'
         summary: '{{fields.kind}}: {{fields.label}}'
         fields:
-          - { name: label, label: Label, widget: string, hint: 'e.g. "Paper: Design, Analysis and Simulation of ..."' }
+          - { name: label, label: Label, widget: string, hint: 'The document title, e.g. "Design, Analysis and Simulation of ..."' }
           - name: kind
             label: Kind
             widget: select
-            default: paper
-            options: [paper, report, other]
+            default: short-report
+            options:
+              - { label: 'Short report (for skimming)', value: short-report }
+              - { label: 'Report (every detail)', value: report }
+              - { label: 'Guide', value: guide }
+              - { label: 'Other document', value: other }
+          - {
+              name: guide,
+              label: Guide line,
+              widget: string,
+              required: false,
+              hint: 'Who it is for, shown under the title. Leave blank for the default: "Recommended if you want to skim, e.g. recruiters." for a short report, "Recommended if you want to study every detail." for a report.',
+            }
           - name: file
             label: File
             widget: file
