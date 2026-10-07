@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Lightbox from './Lightbox.astro';
-import YouTubeEmbed from './YouTubeEmbed.astro';
+import { loopEmbedUrl, youtubeId } from '../lib/youtube';
 
 interface ImageFigure {
   src: ImageMetadata;
@@ -33,6 +33,12 @@ let imageCount = 0;
 const slides = figures.map((figure) =>
   isVideo(figure) ? { figure, imageIndex: -1 } : { figure, imageIndex: imageCount++ },
 );
+
+/** Embed URL of a video slide: muted, looping, with controls so a visitor can unmute. */
+const embedOf = (figure: VideoFigure) => {
+  const id = youtubeId(figure.video);
+  return id ? loopEmbedUrl(id) : null;
+};
 ---
 
 <section class="carousel" data-carousel id={id} aria-roledescription="carousel">
@@ -45,7 +51,16 @@ const slides = figures.map((figure) =>
       >
         <div class="frame">
           {isVideo(figure) ? (
-            <YouTubeEmbed url={figure.video} title={figure.caption} />
+            // The first slide plays on page load; later videos load when first shown.
+            <iframe
+              class="video"
+              src={i === 0 ? embedOf(figure) : undefined}
+              data-src={embedOf(figure)}
+              title={figure.caption}
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            />
           ) : (
             <Image
               src={figure.src}
@@ -125,8 +140,11 @@ const slides = figures.map((figure) =>
     align-items: center;
   }
 
-  .slide--video .frame :global(.youtube-facade) {
+  .video {
+    display: block;
     width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
   }
 
   /* Side zones on a video slide stay narrow so the player's own controls remain reachable. */
@@ -277,6 +295,18 @@ const slides = figures.map((figure) =>
   function initCarousel(root: HTMLElement) {
     const id = root.id;
     const slides = Array.from(root.querySelectorAll<HTMLElement>('.slide'));
+
+    // With reduced motion the videos still load, but wait for the visitor to press play.
+    const reduced = prefersReducedMotion();
+    if (reduced) {
+      root.querySelectorAll<HTMLIFrameElement>('iframe.video').forEach((frame) => {
+        const hold = (url: string) => url.replace('autoplay=1', 'autoplay=0');
+        if (frame.dataset.src) frame.dataset.src = hold(frame.dataset.src);
+        const src = frame.getAttribute('src');
+        if (src) frame.src = hold(src);
+      });
+    }
+
     if (slides.length <= 1) return;
 
     const live = root.querySelector<HTMLElement>('[data-live]');
@@ -285,7 +315,7 @@ const slides = figures.map((figure) =>
     let timer: number | undefined;
 
     function pauseVideos() {
-      root.querySelectorAll<HTMLIFrameElement>('.slide--video iframe').forEach((frame) => {
+      root.querySelectorAll<HTMLIFrameElement>('iframe.video').forEach((frame) => {
         frame.contentWindow?.postMessage(
           JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
           '*',
@@ -293,11 +323,27 @@ const slides = figures.map((figure) =>
       });
     }
 
+    /** Starts the current slide's video: loads it the first time, resumes it after that. */
+    function playCurrentVideo() {
+      const frame = slides[current].querySelector<HTMLIFrameElement>('iframe.video');
+      if (!frame) return;
+      if (!frame.getAttribute('src') && frame.dataset.src) {
+        frame.src = frame.dataset.src;
+        return;
+      }
+      if (reduced) return;
+      frame.contentWindow?.postMessage(
+        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+        '*',
+      );
+    }
+
     function render() {
       pauseVideos();
       slides.forEach((slide, i) => {
         slide.hidden = i !== current;
       });
+      playCurrentVideo();
       if (live) {
         const caption = slides[current].querySelector('.caption')?.textContent ?? '';
         live.textContent = `Slide ${current + 1} of ${slides.length}. ${caption}`;
@@ -318,7 +364,10 @@ const slides = figures.map((figure) =>
 
     function startAutoplay() {
       if (stopped || prefersReducedMotion() || timer) return;
-      timer = window.setInterval(() => go(1), 6000);
+      // A looping video holds the carousel; rotation only moves on from images.
+      timer = window.setInterval(() => {
+        if (!slides[current].classList.contains('slide--video')) go(1);
+      }, 6000);
     }
 
     root.querySelectorAll<HTMLButtonElement>('.zone').forEach((zone) => {
@@ -348,8 +397,6 @@ const slides = figures.map((figure) =>
     });
 
     root.addEventListener('focusin', stopAutoplay);
-    // Starting a video must hold the carousel on it.
-    root.querySelectorAll('.slide--video .play').forEach((play) => play.addEventListener('click', stopAutoplay));
 
     let touchStartX = 0;
     root.addEventListener('touchstart', (e) => {

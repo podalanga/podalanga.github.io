@@ -146,6 +146,7 @@ const profilePage = {
                 cover={work.data.cover}
                 coverAlt={work.data.coverAlt}
                 documentKinds={work.data.documents?.map((d) => d.kind)}
+                video={work.data.videos?.[0]?.url}
               />
             ))
           }
@@ -181,6 +182,7 @@ const profilePage = {
                 cover={work.data.cover}
                 coverAlt={work.data.coverAlt}
                 documentKinds={work.data.documents?.map((d) => d.kind)}
+                video={work.data.videos?.[0]?.url}
               />
             ))
           }
