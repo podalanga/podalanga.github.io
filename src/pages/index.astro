@@ -42,7 +42,7 @@ const profilePage = {
 };
 ---
 
-<BaseLayout type="profile" jsonLd={[profilePage]}>
+<BaseLayout type="profile" jsonLd={[profilePage]} hasVideo={[...internships, ...projects].some((w) => (w.data.videos?.length ?? 0) > 0)}>
   <section class="hero band band--lead" data-section="00" data-section-label="PROFILE">
     <div class="container hero-inner">
       <div class="hero-text">
@@ -63,7 +63,7 @@ const profilePage = {
       </div>
       <div class="hero-aside">
         <div class="hero-portrait">
-          <Image src={portrait} alt={`Portrait of ${site.person.name} (${site.name}), robotics and control-systems engineer`} widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" />
+          <Image src={portrait} alt={`Portrait of ${site.person.name} (${site.name}), robotics and control-systems engineer`} widths={[320, 480, 640, 900, 1200]} sizes="(min-width: 900px) 30rem, 60vw" loading="eager" fetchpriority="high" />
         </div>
         <SocialLinks />
       </div>

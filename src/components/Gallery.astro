@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { IMAGE_QUALITY } from '../lib/images';
 import type { ImageMetadata } from 'astro';
 import Lightbox from './Lightbox.astro';
 
@@ -23,7 +24,7 @@ const sizes = variant === 'stack' ? '(min-width: 780px) 50vw, 100vw' : '(min-wid
   {
     figures.map((figure, i) => (
       <button type="button" class="frame" data-index={i} aria-label={`Open ${figure.caption ?? figure.alt} in lightbox`}>
-        <Image src={figure.src} alt={figure.alt} widths={[400, 800, 1200]} sizes={sizes} />
+        <Image src={figure.src} alt={figure.alt} widths={[400, 800, 1200]} sizes={sizes} quality={IMAGE_QUALITY} />
         {figure.caption && <span class="caption mono">{figure.caption}</span>}
       </button>
     ))

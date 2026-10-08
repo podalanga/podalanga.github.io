@@ -28,3 +28,11 @@ export function loopEmbedUrl(id: string, { controls = true, autoplay = true } = 
   });
   return `https://www.youtube-nocookie.com/embed/${id}?${params}`;
 }
+
+/**
+ * Thumbnail of a video on YouTube's image CDN. `mq` (320 x 180, no letterbox bars) exists for
+ * every video; `maxres` (1280 x 720) only for HD uploads, so it is tried as an upgrade.
+ */
+export function youtubePoster(id: string, size: 'mq' | 'maxres' = 'mq'): string {
+  return `https://i.ytimg.com/vi/${id}/${size === 'maxres' ? 'maxresdefault' : 'mqdefault'}.jpg`;
+}

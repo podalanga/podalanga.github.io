@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { IMAGE_QUALITY } from '../../lib/images';
 import Attachments from '../../components/Attachments.astro';
 import Tag from '../../components/Tag.astro';
 import { Image } from 'astro:assets';
@@ -79,7 +80,7 @@ const jsonLd = [
       }
     </header>
 
-    {data.cover && <Image src={data.cover} alt={data.coverAlt ?? data.title} class="cover" widths={[640, 1200, 1800]} sizes="100vw" />}
+    {data.cover && <Image src={data.cover} alt={data.coverAlt ?? data.title} class="cover" widths={[640, 1200, 1800]} sizes="100vw" quality={IMAGE_QUALITY} />}
 
     <div class="prose">
       <Content />
