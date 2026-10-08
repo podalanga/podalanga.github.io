@@ -1,5 +1,7 @@
+import { readFile } from 'node:fs/promises';
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
+import { PDFDocument } from 'pdf-lib';
 
 export function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -20,4 +22,20 @@ export function sizeOf(file: string): string | null {
 export function extOf(file: string): string {
   const match = file.match(/\.([a-z0-9]+)$/i);
   return match ? match[1].toUpperCase() : 'FILE';
+}
+
+/** Number of pages in the PDF at an absolute path, or null if it is missing or unreadable. */
+export async function countPdfPages(path: string): Promise<number | null> {
+  try {
+    const pdf = await PDFDocument.load(await readFile(path), { ignoreEncryption: true, updateMetadata: false });
+    return pdf.getPageCount();
+  } catch {
+    return null;
+  }
+}
+
+/** Page count of a PDF served from /public, read from the file so it follows every upload. */
+export async function pageCountOf(file: string): Promise<number | null> {
+  if (extOf(file) !== 'PDF') return null;
+  return countPdfPages(join(process.cwd(), 'public', file));
 }

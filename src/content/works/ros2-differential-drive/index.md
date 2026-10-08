@@ -28,7 +28,6 @@ documents:
   - label: "ROS2-Based Mobile Robot"
     kind: presentation
     file: /media/attachments/ros2-bot-presentation.pdf
-    pages: 35
 ---
 
 ## Brief

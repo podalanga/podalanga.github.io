@@ -25,7 +25,6 @@ documents:
   - label: "Recycling and Reusing the Plastic Waste Produced During 3D Printing"
     kind: presentation
     file: /media/attachments/pla-extruder-presentation.pdf
-    pages: 22
 ---
 
 ## Brief

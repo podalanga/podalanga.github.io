@@ -23,7 +23,6 @@ documents:
   - label: "3R Robotic Arm: Project Report"
     kind: short-report
     file: /media/attachments/3r-arm-short-report.pdf
-    pages: 5
 ---
 
 ## Brief

@@ -159,7 +159,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
-          - { name: pages, label: Pages, widget: number, value_type: int, required: false, hint: 'Page count, or slide count for a presentation.' }
+          - { name: pages, label: Page count override, widget: number, value_type: int, required: false, hint: 'Counted automatically from the PDF (pages, or slides for a presentation). Fill in only to override.' }
       - { name: featured, label: Featured, widget: boolean, default: false }
       - {
           name: homeOrder,
