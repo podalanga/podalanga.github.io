@@ -29,6 +29,11 @@ figures:
     caption: "Per-face tetrahedral decomposition of a collision primitive, used to compute the true centre of buoyancy."
   - src: ./righting-moment.png
     caption: "Righting moment vs. roll angle: the new tetrahedron method (blue) produces a real restoring torque; the single-point model it replaced (red) is zero at every angle by construction."
+documents:
+  - label: "Zbots: Simulation Porting, FARMSIM Integration, and Fluid Dynamics for CPG-Driven Bout-and-Glide Swimming"
+    kind: report
+    file: /media/attachments/zbot-report.pdf
+    pages: 31
 ---
 
 ## Brief

@@ -21,6 +21,11 @@ figures:
     caption: "The complete rig: hopper feeding the heated barrel-screw extruder, wired to a PID temperature controller."
   - src: ./barrel-closeup.png
     caption: "Close-up of the barrel, screw, and nozzle with cooling fans, mid-assembly."
+documents:
+  - label: "Recycling and Reusing the Plastic Waste Produced During 3D Printing"
+    kind: presentation
+    file: /media/attachments/pla-extruder-presentation.pdf
+    pages: 22
 ---
 
 ## Brief

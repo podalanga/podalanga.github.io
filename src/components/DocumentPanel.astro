@@ -1,5 +1,5 @@
 ---
-import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, type DocumentKind } from '../lib/documents';
+import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, pageCount, type DocumentKind } from '../lib/documents';
 import { extOf, sizeOf } from '../lib/files';
 
 interface Document {
@@ -21,7 +21,7 @@ const items = [...documents]
   .sort((a, b) => DOCUMENT_KINDS.indexOf(a.kind) - DOCUMENT_KINDS.indexOf(b.kind))
   .map((doc) => {
     const size = sizeOf(doc.file);
-    const facts = [extOf(doc.file), doc.pages ? `${doc.pages} PP` : null, size].filter(Boolean);
+    const facts = [extOf(doc.file), doc.pages ? pageCount(doc.kind, doc.pages) : null, size].filter(Boolean);
     return {
       ...doc,
       facts,
@@ -33,7 +33,7 @@ const items = [...documents]
 
 <section class="documents" aria-labelledby="documents-heading">
   <p id="documents-heading" class="heading mono">DOCUMENTS ON FILE · {String(items.length).padStart(2, '0')}</p>
-  <ul class="doc-list">
+  <ul class="doc-list" data-count={Math.min(items.length, 4)}>
     {
       items.map((doc) => (
         <li class="doc" data-kind={doc.kind}>
@@ -73,13 +73,31 @@ const items = [...documents]
     color: var(--fg-muted);
   }
 
+  /* Columns follow the count, so a row never ends with one card left over. */
   .doc-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-3);
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  .doc-list[data-count='1'] {
+    max-width: 36rem;
+  }
+
+  @media (min-width: 40rem) {
+    .doc-list[data-count='2'],
+    .doc-list[data-count='4'] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .doc-list[data-count='3'] {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .doc {

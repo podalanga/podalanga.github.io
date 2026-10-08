@@ -75,8 +75,13 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
     {
       docFlags.length > 0 && (
         <p class="docs mono">
-          <span class="docs-mark" aria-hidden="true">▤</span>
-          {docFlags.join(' + ')} ON FILE
+          <span class="docs-lead">
+            <span class="docs-mark" aria-hidden="true">▤</span>
+            ON FILE<span class="sr-only">:</span>
+          </span>
+          {docFlags.map((flag) => (
+            <span class="docs-chip">{flag}</span>
+          ))}
         </p>
       )
     }
@@ -243,16 +248,38 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
   }
 
   .docs {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2);
-    align-self: flex-start;
     margin: 0;
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--signal-dim);
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-wider);
     color: var(--signal);
+  }
+
+  .docs-lead {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .docs-chip {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--signal-dim);
+    white-space: nowrap;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .status {
