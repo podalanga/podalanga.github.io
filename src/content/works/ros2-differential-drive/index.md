@@ -24,6 +24,11 @@ figures:
     caption: "IMU signal-conditioning pipeline: the Madgwick filter fuses gyroscope and accelerometer readings into a drift-corrected orientation."
   - src: ./lidar-clutter.png
     caption: "Clutter-suppression filter in action across four LiDAR frames: green crosses mark true targets, red squares mark clutter."
+documents:
+  - label: "ROS2-Based Mobile Robot"
+    kind: presentation
+    file: /media/attachments/ros2-bot-presentation.pdf
+    pages: 35
 ---
 
 ## Brief
