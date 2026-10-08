@@ -33,7 +33,6 @@ documents:
   - label: "Zbots: Simulation Porting, FARMSIM Integration, and Fluid Dynamics for CPG-Driven Bout-and-Glide Swimming"
     kind: report
     file: /media/attachments/zbot-report.pdf
-    pages: 31
 ---
 
 ## Brief

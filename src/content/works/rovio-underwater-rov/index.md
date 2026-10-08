@@ -53,11 +53,9 @@ documents:
   - label: "ROVIO: Simulation, Control and Vision-Based Autonomy for a Student-Built Underwater Vehicle"
     kind: short-report
     file: /media/attachments/rovio-short-report.pdf
-    pages: 7
   - label: "ROVIO: Enclosure Sealing, Simulation, Control and Vision-Based Autonomy for an Underwater Vehicle"
     kind: report
     file: /media/attachments/rovio-report.pdf
-    pages: 58
 ---
 
 ## Brief

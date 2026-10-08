@@ -1,6 +1,6 @@
 ---
 import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, pageCount, type DocumentKind } from '../lib/documents';
-import { extOf, sizeOf } from '../lib/files';
+import { extOf, pageCountOf, sizeOf } from '../lib/files';
 
 interface Document {
   label: string;
@@ -17,18 +17,21 @@ interface Props {
 const { documents } = Astro.props;
 
 // The quick read leads, so a skimming visitor meets it first.
-const items = [...documents]
-  .sort((a, b) => DOCUMENT_KINDS.indexOf(a.kind) - DOCUMENT_KINDS.indexOf(b.kind))
-  .map((doc) => {
+const sorted = [...documents].sort((a, b) => DOCUMENT_KINDS.indexOf(a.kind) - DOCUMENT_KINDS.indexOf(b.kind));
+const items = await Promise.all(
+  sorted.map(async (doc) => {
     const size = sizeOf(doc.file);
-    const facts = [extOf(doc.file), doc.pages ? pageCount(doc.kind, doc.pages) : null, size].filter(Boolean);
+    // Counted from the file itself; a number typed in the CMS overrides it.
+    const pages = doc.pages ?? (await pageCountOf(doc.file));
+    const facts = [extOf(doc.file), pages ? pageCount(doc.kind, pages) : null, size].filter(Boolean);
     return {
       ...doc,
       facts,
       guideLine: doc.guide ?? DEFAULT_GUIDE[doc.kind],
       filename: doc.file.split('/').pop(),
     };
-  });
+  }),
+);
 ---
 
 <section class="documents" aria-labelledby="documents-heading">

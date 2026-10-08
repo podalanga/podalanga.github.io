@@ -32,7 +32,6 @@ documents:
   - label: "Implementation of Linear Controllers on a Rotary Inverted Pendulum"
     kind: short-report
     file: /media/attachments/inverted-pendulum-short-report.pdf
-    pages: 12
 ---
 
 ## Brief
