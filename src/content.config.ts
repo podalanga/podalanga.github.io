@@ -50,9 +50,16 @@ const works = defineCollection({
           }),
         )
         .optional(),
-      /** YouTube videos, shown in the media carousel after the images. */
+      /** YouTube videos in the media carousel; each leads it unless `afterImages` places it later. */
       videos: z
-        .array(z.object({ url: z.string().url(), caption: z.string() }))
+        .array(
+          z.object({
+            url: z.string().url(),
+            caption: z.string(),
+            /** How many images come before this video in the carousel; blank puts it ahead of them. */
+            afterImages: optional(z.number().int().min(0)),
+          }),
+        )
         .optional(),
     }),
 });

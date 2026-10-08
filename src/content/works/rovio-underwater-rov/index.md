@@ -24,9 +24,11 @@ metrics:
     value: "50 / 53"
   - label: "unit tests, no simulator needed"
     value: "156"
-cover: ./cad-model.jpg
-coverAlt: "CAD model of ROVIO Version 3: an open frame around the electronics enclosure with eight thrusters."
+cover: ./sim-underwater.jpg
+coverAlt: "ROVIO in the simulator, seen from below in open water with sunlight overhead: the open frame, carry handles and thrusters."
 figures:
+  - src: ./cad-model.jpg
+    caption: "CAD model of ROVIO Version 3: an open frame around the electronics enclosure with eight thrusters."
   - src: ./reef-overview.jpg
     caption: "The vehicle above a coral reef produced by my generator: 33 procedural coral models of nine families, placed from a single layout file."
   - src: ./forward-camera.jpg
@@ -49,6 +51,12 @@ figures:
     caption: "Version 2 hardware test in a swimming pool."
   - src: ./flange-seal.png
     caption: "CAD of the flange-seal geometry."
+videos:
+  - url: https://youtu.be/EiiOJhAr6c4
+    caption: "ROVIO in action."
+  - url: https://youtu.be/lixFT3NZu_w
+    caption: "More of ROVIO in action."
+    afterImages: 1
 documents:
   - label: "ROVIO: Simulation, Control and Vision-Based Autonomy for a Student-Built Underwater Vehicle"
     kind: short-report
