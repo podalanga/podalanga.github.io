@@ -112,6 +112,7 @@ const jsonLd = [
   modifiedTime={data.end}
   keywords={[...data.tags, ...data.stack]}
   jsonLd={jsonLd}
+  hasVideo={(data.videos?.length ?? 0) > 0}
 >
   <article class="container case-file">
     <WorkMeta

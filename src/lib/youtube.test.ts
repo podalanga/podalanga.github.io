@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loopEmbedUrl, youtubeId } from './youtube';
+import { loopEmbedUrl, youtubeId, youtubePoster } from './youtube';
 
 describe('youtubeId', () => {
   it('reads watch, short and embed URLs', () => {
@@ -31,5 +31,15 @@ describe('loopEmbedUrl', () => {
     const url = new URL(loopEmbedUrl('abc123', { controls: false, autoplay: false }));
     expect(url.searchParams.get('controls')).toBe('0');
     expect(url.searchParams.get('autoplay')).toBe('0');
+  });
+});
+
+describe('youtubePoster', () => {
+  it('points at the always-present medium thumbnail by default', () => {
+    expect(youtubePoster('abc123')).toBe('https://i.ytimg.com/vi/abc123/mqdefault.jpg');
+  });
+
+  it('can ask for the HD thumbnail', () => {
+    expect(youtubePoster('abc123', 'maxres')).toBe('https://i.ytimg.com/vi/abc123/maxresdefault.jpg');
   });
 });

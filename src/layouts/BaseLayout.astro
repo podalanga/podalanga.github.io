@@ -30,12 +30,15 @@ interface Props {
   /** Keep thin or utility pages (tag listings, 404) out of the index but let links be followed. */
   noindex?: boolean;
   keywords?: readonly string[];
+  /** The page embeds YouTube: open its connections early, while the page itself loads. */
+  hasVideo?: boolean;
 }
 
 const {
   title = site.title,
   description = site.description,
   type = 'website',
+  hasVideo = false,
   image,
   imageAlt = `${site.person.name} (${site.name}), robotics and control-systems engineer`,
   jsonLd = [],
@@ -65,6 +68,8 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <link rel="preload" as="font" type="font/woff2" href={archivoLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={monoLatin} crossorigin />
+    {hasVideo && <link rel="preconnect" href="https://www.youtube-nocookie.com" />}
+    {hasVideo && <link rel="preconnect" href="https://i.ytimg.com" />}
 
     <title>{title}</title>
     <meta name="description" content={description} />

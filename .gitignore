@@ -3,6 +3,7 @@ test_images/
 node_modules/
 dist/
 .astro/
+.cache/
 .env*
 qa-artifacts/
 overnight-logs/

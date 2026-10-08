@@ -42,6 +42,9 @@ const buildDate = lastmod.size > 0 ? newest : new Date();
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
+  // Outside node_modules so the deploy workflow can keep encoded images between builds
+  // (npm ci wipes node_modules); only new or changed images are encoded again.
+  cacheDir: './.cache/astro',
   trailingSlash: 'ignore',
   integrations: [
     sitemap({

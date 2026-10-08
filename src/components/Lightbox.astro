@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
+import { IMAGE_QUALITY } from '../lib/images';
 import type { ImageMetadata } from 'astro';
 
 interface Figure {
@@ -16,7 +17,7 @@ interface Props {
 const { id, figures } = Astro.props;
 
 const fullSize = await Promise.all(
-  figures.map((figure) => getImage({ src: figure.src, width: 2000 }))
+  figures.map((figure) => getImage({ src: figure.src, width: 2000, quality: IMAGE_QUALITY }))
 );
 ---
 

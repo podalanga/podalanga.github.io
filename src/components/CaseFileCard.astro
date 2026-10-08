@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { formatRange } from '../lib/dates';
 import { DOCUMENT_KINDS, DOCUMENT_LABEL, type DocumentKind } from '../lib/documents';
-import { loopEmbedUrl, youtubeId } from '../lib/youtube';
+import { IMAGE_QUALITY } from '../lib/images';
+import { loopEmbedUrl, youtubeId, youtubePoster } from '../lib/youtube';
 
 interface Props {
   slug: string;
@@ -24,6 +25,8 @@ interface Props {
   documentKinds?: DocumentKind[];
   /** A YouTube URL; when set it plays muted and looping in place of the cover. */
   video?: string;
+  /** The first card on a page: its cover loads straight away instead of lazily. */
+  priority?: boolean;
 }
 
 const {
@@ -43,6 +46,7 @@ const {
   variant = 'grid',
   documentKinds = [],
   video,
+  priority = false,
 } = Astro.props;
 
 const videoId = video ? youtubeId(video) : null;
@@ -89,17 +93,28 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
 
   {
     cover || videoSrc ? (
-      <div class="thumb">
-        {cover && (
-          <Image src={cover} alt={coverAlt ?? title} widths={[320, 640, 960]} sizes="(min-width: 780px) 40vw, 100vw" />
+      <div class="thumb" data-video-host={videoSrc ? '' : undefined}>
+        {cover ? (
+          <Image
+            src={cover}
+            alt={coverAlt ?? title}
+            widths={[320, 640, 960]}
+            sizes="(min-width: 780px) 40vw, 100vw"
+            quality={IMAGE_QUALITY}
+            loading={priority ? 'eager' : 'lazy'}
+            fetchpriority={priority ? 'high' : undefined}
+          />
+        ) : (
+          videoId && <img class="thumb-poster" src={youtubePoster(videoId)} alt="" loading="lazy" decoding="async" />
         )}
         {videoSrc && (
-          // Decorative: the card stays one link, so the player takes no clicks or focus.
+          // Decorative: the card stays one link, so the player takes no clicks or focus. It loads
+          // after the page does (src/scripts/video-loop.ts) and fades in once it is playing.
           <iframe
             class="thumb-video"
-            src={videoSrc}
+            data-src={videoSrc}
+            data-card-video
             title={`${title}: video`}
-            loading="lazy"
             tabindex="-1"
             aria-hidden="true"
             allow="autoplay; encrypted-media"
@@ -193,7 +208,12 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
     transform: translateX(-50%);
     border: 0;
     pointer-events: none;
-    background: var(--bg-sunken);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+
+  .thumb.is-playing .thumb-video {
+    opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -353,3 +373,10 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
     padding: var(--space-1) var(--space-2);
   }
 </style>
+
+<script>
+  import { initCardVideos } from '../scripts/video-loop';
+
+  initCardVideos();
+  document.addEventListener('astro:page-load', initCardVideos);
+</script>

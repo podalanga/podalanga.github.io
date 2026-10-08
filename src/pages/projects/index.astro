@@ -43,7 +43,12 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={pageTitle('Robotics & Control Projects')} description={description} jsonLd={jsonLd}>
+<BaseLayout
+  title={pageTitle('Robotics & Control Projects')}
+  description={description}
+  jsonLd={jsonLd}
+  hasVideo={works.some((w) => (w.data.videos?.length ?? 0) > 0)}
+>
   <section class="container intro">
     <p class="label">§ 01 // PROJECTS</p>
     <h1>Case files</h1>
@@ -65,7 +70,7 @@ const jsonLd = [
   <section class="container timeline" aria-label="Case file timeline">
     <div class="rows">
     {
-      works.map((work) => (
+      works.map((work, i) => (
         <div class="row" data-kind={work.data.kind}>
           <CaseFileCard
             slug={work.id}
@@ -84,6 +89,7 @@ const jsonLd = [
             documentKinds={work.data.documents?.map((d) => d.kind)}
             video={work.data.videos?.[0]?.url}
             variant="row"
+            priority={i === 0}
           />
         </div>
       ))
