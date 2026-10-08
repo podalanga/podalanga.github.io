@@ -1,19 +1,33 @@
 ---
-title: "Data Collection and Mathematical Modeling of Wheelchair Dynamics"
-codename: "THRYV"
+title: Data Collection and Mathematical Modeling of Wheelchair Dynamics
+codename: WHEELCHAIR
 fileNo: 3
 kind: internship
-org: "R2D2 / Thryv Mobility, IIT Madras"
-location: "Chennai, India"
+org: R2D2 / Thryv Mobility, IIT Madras
+location: Chennai, India
+supervisor: ''
 start: 2025-05-01
 end: 2025-07-31
 status: completed
-summary: "Derived a state-space model of wheelchair push dynamics from strain-gauge data collected across 40 subjects, and implemented a cruise-control proof of concept."
-tags: ["Control", "Signal Processing", "Modeling"]
-stack: ["MATLAB", "Signal Processing"]
+summary: Derived a state-space model of wheelchair push dynamics from strain-gauge data collected across 40 subjects, and implemented a cruise-control proof of concept.
+tags:
+  - Control
+  - Signal Processing
+  - Modeling
+stack:
+  - MATLAB
+  - Signal Processing
 metrics:
-  - { label: "Subjects", value: "40" }
+  - label: Subjects
+    value: '40'
+cover: ''
+coverAlt: ''
+figures: []
+videos: []
+documents: []
 featured: false
+homeOrder: null
+classified: []
 ---
 
 ## Brief
