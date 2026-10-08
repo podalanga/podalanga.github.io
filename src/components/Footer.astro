@@ -163,7 +163,9 @@ const obfuscatedEmail = site.email.replace('@', '[at]').replace(/\./g, '[dot]');
     letter-spacing: var(--tracking-wide);
   }
 
-  @media (max-width: 640px) {
+  /* Three columns need room for the stamp, the icons and the address side by side; below
+     that the footer stacks rather than squeezing the stamp's column. */
+  @media (max-width: 900px) {
     .grid {
       grid-template-columns: 1fr;
       justify-items: center;

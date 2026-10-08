@@ -1,4 +1,4 @@
-// Konami code (§7.5): ↑↑↓↓←→←→BA triggers a full-screen 1.5s flash of the 1984 slogan, red on
+// Konami code (§7.5): ↑↑↓↓←→←→BA triggers a full-screen 4s flash of the 1984 slogan, red on
 // black, then fades. Session-global: registered once, not re-bound on soft navs. On a page that
 // carries `data-konami-exit` (the 404), the code is also the way out: it leads home afterwards.
 import { prefersReducedMotion } from '../lib/reduced-motion';
@@ -15,7 +15,7 @@ const CODE = [
   'KeyB',
   'KeyA',
 ];
-const FLASH_MS = 1500;
+const FLASH_MS = 4000;
 const FADE_MS = 300;
 
 let progress = 0;

@@ -38,13 +38,11 @@
     color: var(--signal);
   }
 
-  .text {
-    display: none;
-  }
-
-  @media (min-width: 640px) {
+  /* The dot alone does not say what the button does, so the word stays on phones too;
+     only the very narrowest screens, where the header has no room for it, drop it. */
+  @media (max-width: 359px) {
     .text {
-      display: inline;
+      display: none;
     }
   }
 </style>

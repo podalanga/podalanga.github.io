@@ -45,6 +45,12 @@ const hasLabel = Astro.slots.has('label');
     position: relative;
   }
 
+  /* A labelled bar is one stamp: if it wrapped in a narrow column it would become a stack of
+     short bars with the label spilling out over them. */
+  .redacted.has-label .redact-text {
+    white-space: nowrap;
+  }
+
   .redact-text {
     background: var(--redact);
     color: transparent;
