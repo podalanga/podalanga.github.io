@@ -336,11 +336,11 @@ async function runTerminalChecks(browser) {
     const afterTab2 = await page.evaluate(() => document.activeElement?.id);
     if (afterTab2 !== 'terminal-input') problems.push(`Tab from close button did not move to input (got ${afterTab2})`);
 
-    await run('open archive');
+    await run('cd archive');
     await page.waitForTimeout(500);
     await page.waitForLoadState('networkidle');
     const url = page.url();
-    if (!url.endsWith('/archive/') && !url.endsWith('/archive')) problems.push(`'open archive' did not navigate (at ${url})`);
+    if (!url.endsWith('/archive/') && !url.endsWith('/archive')) problems.push(`'cd archive' did not navigate (at ${url})`);
 
     if (errors.length) problems.push('terminal console errors: ' + errors.join(' | '));
     await context.close();

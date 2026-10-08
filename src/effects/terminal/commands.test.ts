@@ -30,6 +30,11 @@ describe('runCommand : help', () => {
     const result = runCommand('help', ctx());
     expect(result.lines.length).toBeGreaterThan(0);
     expect(result.lines.some((l) => l.includes('whoami'))).toBe(true);
+    expect(result.lines.some((l) => l.startsWith('cd '))).toBe(true);
+  });
+
+  it('ends with the Tab hint', () => {
+    expect(runCommand('help', ctx()).lines.at(-1)).toMatch(/press Tab/);
   });
 });
 
@@ -68,19 +73,25 @@ describe('runCommand : cat', () => {
   });
 });
 
-describe('runCommand : open', () => {
+describe('runCommand : cd', () => {
   it('navigates to section routes', () => {
-    const result = runCommand('open works', ctx());
+    const result = runCommand('cd works', ctx());
     expect(result.action).toEqual({ type: 'navigate', href: '/projects' });
   });
 
+  it('no longer answers to open', () => {
+    const result = runCommand('open works', ctx());
+    expect(result.action).toBeUndefined();
+    expect(result.lines[0]).toMatch(/command not found: open/);
+  });
+
   it('navigates to a work by codename', () => {
-    const result = runCommand('open PENDULUM', ctx());
+    const result = runCommand('cd PENDULUM', ctx());
     expect(result.action).toEqual({ type: 'navigate', href: '/projects/rotary-inverted-pendulum' });
   });
 
   it('errors on unknown targets', () => {
-    const result = runCommand('open nowhere', ctx());
+    const result = runCommand('cd nowhere', ctx());
     expect(result.action).toBeUndefined();
     expect(result.lines[0]).toMatch(/not found/);
   });
@@ -135,14 +146,13 @@ describe('runCommand : date', () => {
 });
 
 describe('runCommand : easter eggs', () => {
-  it('sudo is denied and reported', () => {
+  it('sudo is denied and reported, in red', () => {
     const result = runCommand('sudo rm -rf /', ctx());
-    expect(result.lines).toEqual(['PERMISSION DENIED. THIS INCIDENT WILL BE REPORTED.']);
+    expect(result).toEqual({ lines: ['Permission denied. This incident will be reported.'], tone: 'danger' });
   });
 
-  it('2+2 is 5', () => {
-    expect(runCommand('2+2', ctx()).lines).toEqual(['5']);
-    expect(runCommand('2 + 2', ctx()).lines).toEqual(['5']);
+  it('2+2 is no longer a command', () => {
+    expect(runCommand('2+2', ctx()).lines[0]).toMatch(/command not found/);
   });
 });
 
@@ -167,27 +177,27 @@ describe('runCommand : unknown', () => {
 
 describe('getCompletions : command name (first token)', () => {
   it('completes a single unambiguous match with a trailing space', () => {
-    expect(getCompletions('o', ctx())).toEqual({ candidates: ['open'], newInput: 'open ' });
+    expect(getCompletions('o', ctx())).toEqual({ candidates: [] });
     expect(getCompletions('who', ctx())).toEqual({ candidates: ['whoami'], newInput: 'whoami ' });
   });
 
   it('lists all commands sharing a prefix and does not extend past the shared letters', () => {
     const result = getCompletions('c', ctx());
-    expect(result.candidates.sort()).toEqual(['cat', 'clear', 'contact']);
+    expect(result.candidates.sort()).toEqual(['cat', 'cd', 'clear', 'contact']);
     expect(result.newInput).toBeUndefined();
   });
 
   it('lists every completable command on an empty input', () => {
     const result = getCompletions('', ctx());
     expect(result.candidates.sort()).toEqual(
-      ['cat', 'clear', 'contact', 'date', 'exit', 'help', 'ls', 'open', 'theme', 'whoami'].sort(),
+      ['cat', 'cd', 'clear', 'contact', 'date', 'exit', 'help', 'ls', 'theme', 'whoami'].sort(),
     );
     expect(result.newInput).toBeUndefined();
   });
 
-  it('excludes hidden easter eggs (sudo, 2+2) from candidates', () => {
+  it('excludes the hidden sudo and the Tab hint from candidates', () => {
     expect(getCompletions('s', ctx()).candidates).toEqual([]);
-    expect(getCompletions('2', ctx()).candidates).toEqual([]);
+    expect(getCompletions('T', ctx()).candidates).toEqual(['theme']);
   });
 
   it('is a no-op with zero matches', () => {
@@ -213,14 +223,14 @@ describe('getCompletions : cat argument', () => {
   });
 });
 
-describe('getCompletions : open argument', () => {
+describe('getCompletions : cd argument', () => {
   it('completes section targets', () => {
-    expect(getCompletions('open w', ctx())).toEqual({ candidates: ['works'], newInput: 'open works ' });
-    expect(getCompletions('open a', ctx())).toEqual({ candidates: ['archive'], newInput: 'open archive ' });
+    expect(getCompletions('cd w', ctx())).toEqual({ candidates: ['works'], newInput: 'cd works ' });
+    expect(getCompletions('cd a', ctx())).toEqual({ candidates: ['archive'], newInput: 'cd archive ' });
   });
 
   it('completes a codename target alongside section targets', () => {
-    expect(getCompletions('open z', ctx())).toEqual({ candidates: ['zbot'], newInput: 'open zbot ' });
+    expect(getCompletions('cd z', ctx())).toEqual({ candidates: ['zbot'], newInput: 'cd zbot ' });
   });
 });
 

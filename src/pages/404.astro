@@ -3,28 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 ---
 
-<BaseLayout title={`Unperson · ${site.name}`} description="This page has been vaporized. It never existed." noindex>
-  <section class="container unperson">
-    <pre class="eye mono" aria-hidden="true">
-     .-"""""-.
-   .'         '.
-  /   .-"""-.   \
- ;   /       \   ;
- |  |    ·    |  |
- ;   \       /   ;
-  \   '-...-'   /
-   '.         .'
-     '-.....-'
-</pre>
-    <p class="label">404 // UNPERSON</p>
-    <h1>This page has been vaporized.</h1>
-    <p class="sub">It never existed.</p>
+<BaseLayout title={`Memory hole · ${site.name}`} description="This entity has been vaporized." noindex>
+  <section class="container memory-hole" data-konami-exit>
+    <canvas class="eye" data-eye-inline aria-hidden="true"></canvas>
+    <p class="label">404 // MEMORY HOLE</p>
+    <h1>This entity has been <span class="vaporized">vaporized</span>.</h1>
+    <p class="sub">Maybe the Konami code can take you to the exit.</p>
+    <p class="keys mono" aria-label="Up, up, down, down, left, right, left, right, B, A">↑ ↑ ↓ ↓ ← → ← → B A</p>
     <a class="home mono" href="/">← RETURN TO PROFILE</a>
   </section>
 </BaseLayout>
 
 <style>
-  .unperson {
+  .memory-hole {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -33,11 +24,11 @@ import { site } from '../config/site';
     min-height: 60vh;
   }
 
+  /* The boot loader's eye at a fixed 9:4, the proportions of its almond plus a small margin. */
   .eye {
-    color: var(--signal);
-    font-size: var(--text-xs);
-    line-height: 1.3;
-    opacity: 0.8;
+    display: block;
+    width: min(100%, 26rem);
+    aspect-ratio: 9 / 4;
   }
 
   h1 {
@@ -45,8 +36,18 @@ import { site } from '../config/site';
     max-width: 20ch;
   }
 
+  .vaporized {
+    color: var(--signal);
+  }
+
   .sub {
     color: var(--fg-muted);
+  }
+
+  .keys {
+    color: var(--fg-subtle);
+    font-size: var(--text-sm);
+    letter-spacing: 0.06em;
   }
 
   .home {

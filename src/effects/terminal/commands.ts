@@ -29,6 +29,8 @@ export type CommandAction =
 
 export interface CommandResult {
   lines: string[];
+  /** 'danger' prints the lines in the signal red. */
+  tone?: 'danger';
   action?: CommandAction;
 }
 
@@ -42,13 +44,16 @@ const HELP_LINES = [
   'whoami               : short bio',
   'ls works             : list case files',
   'cat <codename>       : show a case file summary',
-  'open <target>        : navigate (works | archive | log | a codename)',
-  'contact              : email / github / linkedin',
+  'cd <target>          : go to works | archive | log | a codename',
+  'contact              : show contact methods',
   'theme [dark|light]   : switch theme',
   'clear                : clear the screen',
   'date                 : current date/time',
   'exit                 : ?????',
 ];
+
+// Shown after the list, and kept out of it: completion candidates are read from HELP_LINES.
+const HELP_TIP = 'Tip: press Tab to auto-complete a command or see suggestions.';
 
 function findWork(ctx: CommandContext, codename: string): WorkSummary | undefined {
   const needle = codename.toLowerCase();
@@ -60,7 +65,7 @@ function yearRange(w: WorkSummary): string {
 }
 
 // Derived from HELP_LINES (not a separately maintained list) so hidden easter eggs like
-// `sudo`/`2+2` never appear as tab-completion candidates, without having to remember to
+// `sudo` never appear as tab-completion candidates, without having to remember to
 // keep two lists in sync.
 const COMPLETABLE_COMMANDS = HELP_LINES.map((line) => line.trim().split(/\s+/)[0]);
 
@@ -85,16 +90,12 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
   const rest = parts.slice(1);
 
   if (cmd === 'sudo') {
-    return { lines: ['PERMISSION DENIED. THIS INCIDENT WILL BE REPORTED.'] };
-  }
-
-  if (input.replace(/\s+/g, '') === '2+2') {
-    return { lines: ['5'] };
+    return { lines: ['Permission denied. This incident will be reported.'], tone: 'danger' };
   }
 
   switch (cmd) {
     case 'help':
-      return { lines: HELP_LINES };
+      return { lines: [...HELP_LINES, '', HELP_TIP] };
 
     case 'whoami':
       return {
@@ -120,9 +121,9 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
       return { lines: [work.summary, `→ /projects/${work.slug}`] };
     }
 
-    case 'open': {
+    case 'cd': {
       const target = rest[0]?.toLowerCase();
-      if (!target) return { lines: ["open: missing operand. try 'open works'"] };
+      if (!target) return { lines: ["cd: missing operand. try 'cd works'"] };
       const routes: Record<string, string> = { works: '/projects', archive: '/archive', log: '/blog' };
       if (target in routes) {
         return { lines: [`opening ${routes[target]}...`], action: { type: 'navigate', href: routes[target] } };
@@ -131,7 +132,7 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
       if (work) {
         return { lines: [`opening /projects/${work.slug}...`], action: { type: 'navigate', href: `/projects/${work.slug}` } };
       }
-      return { lines: [`open: ${rest[0]}: not found`] };
+      return { lines: [`cd: ${rest[0]}: not found`] };
     }
 
     case 'contact':
@@ -180,7 +181,7 @@ export function getCompletions(raw: string, ctx: CommandContext): CompletionResu
     const codenames = ctx.works.map((w) => w.codename.toLowerCase());
     if (cmd === 'ls') pool = ['works'];
     else if (cmd === 'cat') pool = codenames;
-    else if (cmd === 'open') pool = ['works', 'archive', 'log', ...codenames];
+    else if (cmd === 'cd') pool = ['works', 'archive', 'log', ...codenames];
     else if (cmd === 'theme') pool = ['dark', 'light'];
     else pool = [];
   }

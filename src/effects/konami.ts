@@ -1,5 +1,6 @@
 // Konami code (§7.5): ↑↑↓↓←→←→BA triggers a full-screen 1.5s flash of the 1984 slogan, red on
-// black, then fades. Session-global: registered once, not re-bound on soft navs.
+// black, then fades. Session-global: registered once, not re-bound on soft navs. On a page that
+// carries `data-konami-exit` (the 404), the code is also the way out: it leads home afterwards.
 import { prefersReducedMotion } from '../lib/reduced-motion';
 
 const CODE = [
@@ -66,7 +67,13 @@ function trigger(): void {
 
   window.setTimeout(() => {
     overlay.style.opacity = '0';
-    window.setTimeout(() => overlay.remove(), prefersReducedMotion() ? 0 : FADE_MS);
+    window.setTimeout(
+      () => {
+        overlay.remove();
+        if (document.querySelector('[data-konami-exit]')) window.location.assign('/');
+      },
+      prefersReducedMotion() ? 0 : FADE_MS,
+    );
   }, FLASH_MS);
 }
 

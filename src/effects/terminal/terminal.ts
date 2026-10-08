@@ -37,7 +37,8 @@ export function initTerminal(): () => void {
     for (const line of lines) {
       const p = document.createElement('p');
       if (className) p.className = className;
-      p.textContent = line;
+      // An empty <p> has no height; a no-break space keeps blank lines as spacing.
+      p.textContent = line || '\u00a0';
       log!.appendChild(p);
     }
     log!.scrollTop = log!.scrollHeight;
@@ -115,7 +116,7 @@ export function initTerminal(): () => void {
         'log-danger',
       );
     } else {
-      print(result.lines);
+      print(result.lines, result.tone === 'danger' ? 'log-danger' : undefined);
     }
 
     if (result.action?.type === 'navigate') {
