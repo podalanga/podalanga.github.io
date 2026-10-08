@@ -2,10 +2,10 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { DOCUMENT_KINDS, normalizeKind } from './lib/documents';
 
-/** Sveltia CMS writes '' for a cleared optional field instead of omitting the key. */
+/** Sveltia CMS writes '' (or null, for a blank number) for a cleared optional field instead of omitting the key. */
 function optional<S extends { optional(): unknown }>(schema: S): ReturnType<S['optional']> {
   return z.preprocess(
-    (val) => (val === '' ? undefined : val),
+    (val) => (val === '' || val === null ? undefined : val),
     schema.optional() as never,
   ) as ReturnType<S['optional']>;
 }
