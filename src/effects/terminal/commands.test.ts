@@ -85,6 +85,12 @@ describe('runCommand : cd', () => {
     expect(result.lines[0]).toMatch(/command not found: open/);
   });
 
+  it('goes to the blog, and no longer knows log', () => {
+    expect(runCommand('cd blog', ctx()).action).toEqual({ type: 'navigate', href: '/blog' });
+    expect(runCommand('cd log', ctx()).lines[0]).toMatch(/not found/);
+    expect(getCompletions('cd b', ctx())).toEqual({ candidates: ['blog'], newInput: 'cd blog ' });
+  });
+
   it('navigates to a work by codename', () => {
     const result = runCommand('cd PENDULUM', ctx());
     expect(result.action).toEqual({ type: 'navigate', href: '/projects/rotary-inverted-pendulum' });

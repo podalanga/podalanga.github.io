@@ -44,7 +44,7 @@ const HELP_LINES = [
   'whoami               : short bio',
   'ls works             : list case files',
   'cat <codename>       : show a case file summary',
-  'cd <target>          : go to works, archive, log or a codename',
+  'cd <target>          : go to works | archive | blog | a <codename>',
   'contact              : show contact methods',
   'theme [dark|light]   : switch theme',
   'clear                : clear the screen',
@@ -124,7 +124,7 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
     case 'cd': {
       const target = rest[0]?.toLowerCase();
       if (!target) return { lines: ["cd: missing operand. try 'cd works'"] };
-      const routes: Record<string, string> = { works: '/projects', archive: '/archive', log: '/blog' };
+      const routes: Record<string, string> = { works: '/projects', archive: '/archive', blog: '/blog' };
       if (target in routes) {
         return { lines: [`opening ${routes[target]}...`], action: { type: 'navigate', href: routes[target] } };
       }
@@ -181,7 +181,7 @@ export function getCompletions(raw: string, ctx: CommandContext): CompletionResu
     const codenames = ctx.works.map((w) => w.codename.toLowerCase());
     if (cmd === 'ls') pool = ['works'];
     else if (cmd === 'cat') pool = codenames;
-    else if (cmd === 'cd') pool = ['works', 'archive', 'log', ...codenames];
+    else if (cmd === 'cd') pool = ['works', 'archive', 'blog', ...codenames];
     else if (cmd === 'theme') pool = ['dark', 'light'];
     else pool = [];
   }
