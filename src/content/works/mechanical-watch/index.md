@@ -1,65 +1,79 @@
 ---
-title: "Mechanical Watch: Going Train and Swiss Lever Escapement"
-codename: "ESCAPEMENT"
+title: 'Mechanical Watch: Going Train and Swiss Lever Escapement'
+codename: WATCH
 fileNo: 9
 kind: project
-org: "Independent"
-location: "Tiruchirappalli, India"
+org: Independent
+location: Tiruchirappalli, India
+supervisor: ''
 start: 2026-08-01
 end: 2026-09-30
 status: completed
-summary: "The basic mechanism of a mechanical watch, from mainspring barrel to balance, designed from first principles: thirteen parts driven by 393 linked equations, ogival NIHS 20-30 teeth, a Monte Carlo tolerance study, and a full contact simulation that ticks at 0.2498 s against a design value of 0.2500 s."
-tags: ["Mechanical Design", "Precision Mechanisms", "Simulation", "Tolerance Analysis"]
-stack: ["SolidWorks", "SolidWorks Motion"]
-featured: true
-homeOrder: 2
+summary: 'The basic mechanism of a mechanical watch, from mainspring barrel to balance, designed from first principles: thirteen parts driven by 393 linked equations, ogival NIHS 20-30 teeth, a Monte Carlo tolerance study, and a full contact simulation that ticks at 0.2498 s against a design value of 0.2500 s.'
+tags:
+  - Mechanical Design
+  - Precision Mechanisms
+  - Simulation
+  - Tolerance Analysis
+stack:
+  - SolidWorks
+  - SolidWorks Motion
 metrics:
-  - label: "beats per hour (4 Hz balance)"
-    value: "28 800"
-  - label: "simulated balance period vs 0.2500 s design"
-    value: "0.2498 s"
-  - label: "predicted amplitude at 40 h (limit 150°)"
-    value: "185°"
-  - label: "linked equations driving 13 parts"
-    value: "393"
+  - label: beats per hour (4 Hz balance)
+    value: 28 800
+  - label: simulated balance period vs 0.2500 s design
+    value: 0.2498 s
+  - label: predicted amplitude at 40 h (limit 150°)
+    value: 185°
+  - label: linked equations driving 13 parts
+    value: '393'
 cover: ./full-mechanism.jpg
-coverAlt: "The complete mechanism from the mainspring barrel on the left, through the going train and escapement, to the balance on the right: thirteen unique parts on one line of centres."
+coverAlt: 'The complete mechanism from the mainspring barrel on the left, through the going train and escapement, to the balance on the right: thirteen unique parts on one line of centres.'
 figures:
   - src: ./escapement-balance.jpg
-    caption: "The Swiss lever escapement and the balance as modelled."
+    caption: The Swiss lever escapement and the balance as modelled.
   - src: ./esc-layout.png
-    caption: "Layout of the escapement to scale (mm): 15-tooth escape wheel, pallet axis, banking pins and roller jewel."
+    caption: 'Layout of the escapement to scale (mm): 15-tooth escape wheel, pallet axis, banking pins and roller jewel.'
   - src: ./tooth-profile.png
-    caption: "An NIHS 20-30 ogival mesh. The constrained sketches reproduce the generated flanks to better than a nanometre."
+    caption: An NIHS 20-30 ogival mesh. The constrained sketches reproduce the generated flanks to better than a nanometre.
   - src: ./amplitude.png
-    caption: "Predicted barrel torque and balance amplitude over the run. The redesigned barrel stays above 150° for 56 hours."
+    caption: Predicted barrel torque and balance amplitude over the run. The redesigned barrel stays above 150° for 56 hours.
   - src: ./train-response.png
-    caption: "Rigid-body contact simulation of the complete train driven from the barrel: balance angle, escape wheel and fourth (seconds) wheel."
+    caption: 'Rigid-body contact simulation of the complete train driven from the barrel: balance angle, escape wheel and fourth (seconds) wheel.'
   - src: ./escape-wheel.jpg
-    caption: "Escape wheel and pinion."
+    caption: Escape wheel and pinion.
   - src: ./pallet-fork.jpg
-    caption: "Pallet fork with its two jewels."
+    caption: Pallet fork with its two jewels.
   - src: ./mainspring.jpg
-    caption: "Mainspring inside the barrel."
+    caption: Mainspring inside the barrel.
   - src: ./hairspring.jpg
-    caption: "Hairspring (Nivarox), sized to give the balance a 4 Hz frequency."
+    caption: Hairspring (Nivarox), sized to give the balance a 4 Hz frequency.
 videos:
-  - url: "https://www.youtube.com/watch?v=dhshj_wPEz8"
-    caption: "Complete going train running in simulation, driven from the barrel."
-  - url: "https://youtu.be/M3oqJB_sfAk"
-    caption: "Close-up of the Swiss lever escapement in motion."
+  - url: https://www.youtube.com/watch?v=dhshj_wPEz8
+    caption: Complete going train running in simulation, driven from the barrel.
+    afterImages: null
+  - url: https://youtu.be/M3oqJB_sfAk
+    caption: Close-up of the Swiss lever escapement in motion.
+    afterImages: null
 documents:
-  - label: "Design, Analysis and Simulation of a Mechanical Watch Going Train with a Swiss Lever Escapement"
+  - label: Design, Analysis and Simulation of a Mechanical Watch Going Train with a Swiss Lever Escapement
     kind: short-report
+    guide: ''
     file: /media/attachments/watch-short-report.pdf
-  - label: "Full technical report, with every calculation worked step by step in the appendices"
+    pages: null
+  - label: Full technical report, with every calculation worked step by step in the appendices
     kind: report
+    guide: ''
     file: /media/attachments/watch-report.pdf
+    pages: null
+featured: true
+homeOrder: 2
+classified: []
 ---
 
 ## Brief
 
-A mechanical watch stores about 0.15 J in a coiled spring and releases it over two days, through a mechanism that runs on about a microwatt. In this project I designed that mechanism from its requirements: the barrel and mainspring, a three-wheel going train, a Swiss lever escapement, and the balance with its hairspring. The aim was not a wearable movement but a design in which every dimension has a derivation, followed by a check that the result actually works. Bartosz Ciechanowski's illustrated article *Mechanical Watch* was my reading and design inspiration only. None of its geometry, models or code is reused, and every part was modelled from an empty file.
+A mechanical watch stores about 0.15 J in a coiled spring and releases it over two days, through a mechanism that runs on about a microwatt. In this project I designed that mechanism from its requirements: the barrel and mainspring, a three-wheel going train, a Swiss lever escapement, and the balance with its hairspring. The aim was not a wearable movement but a design in which every dimension has a derivation, followed by a check that the result actually works. Bartosz Ciechanowski's illustrated article _Mechanical Watch_ was my reading and design inspiration only. None of its geometry, models or code is reused, and every part was modelled from an empty file.
 
 ## Problem
 
