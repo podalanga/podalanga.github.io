@@ -101,7 +101,7 @@ export function runCommand(raw: string, ctx: CommandContext): CommandResult {
         lines: [
           'Joshua John L, robotics / control-systems engineer.',
           'NIT Trichy (Instrumentation & Control) + IIT Madras (BS Data Science).',
-          'Building machines that balance, swim and see.',
+          'Observing through sensors, controlling through censors, tames the chaos.',
         ],
       };
 

@@ -48,7 +48,15 @@ const profilePage = {
       <div class="hero-text">
         <p class="label">§ 00 // PROFILE</p>
         <Logo size="hero" text="Joshua John" as="h1" />
-        <p class="headline" data-scramble={site.tagline}>{site.tagline}</p>
+        <p class="headline">
+          {site.headline.map((line) => (
+            <span class="headline-line">
+              {line.map((seg) => (
+                <span class:list={{ 'headline-key': seg.signal }} data-scramble={seg.text}>{seg.text}</span>
+              ))}
+            </span>
+          ))}
+        </p>
         <p class="sub mono">CONTROL · ROBOTICS · SIMULATION // NIT TRICHY / IIT MADRAS / EPFL</p>
         <p class="clearance mono">
           FOR BROTHERHOOD? WHY DON'T YOU TRY USING THE <span
@@ -436,9 +444,21 @@ const profilePage = {
     font-weight: 800;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
+    /* Fallback size for browsers without container units; the lines below refine it. */
+    font-size: var(--text-xl);
+    container-type: inline-size;
+  }
+
+  /* Three lines of verse, each kept whole: the size follows the column so the longest
+     line (28 characters) still fits on one row, down to a phone. */
+  .headline-line {
+    display: block;
+    font-size: min(var(--text-2xl), 5.4cqi);
     text-wrap: balance;
-    font-size: var(--text-2xl);
-    max-width: 18ch;
+  }
+
+  .headline-key {
+    color: var(--signal);
   }
 
   .sub {

@@ -1,7 +1,16 @@
+/** The hero headline, one entry per line. `signal` segments are set in the signal red. */
+const headline: { text: string; signal?: boolean }[][] = [
+  [{ text: 'Observing', signal: true }, { text: ' Through Sensors,' }],
+  [{ text: 'Controlling', signal: true }, { text: ' Through Censors,' }],
+  [{ text: 'Tames the ' }, { text: 'Chaos', signal: true }, { text: '.' }],
+];
+
 export const site = {
   name: 'Podalanga',
   title: 'Joshua John L (Podalanga) · Robotics & Control Systems Engineer',
-  tagline: 'I build machines that balance, swim and see.',
+  headline,
+  /** The headline as one sentence, for llms.txt and anywhere else that needs plain text. */
+  tagline: headline.map((line) => line.map((seg) => seg.text).join('')).join(' '),
   description:
     'Joshua John L (Podalanga): robotics and control-systems engineer. EPFL BioRob intern, NIT Trichy ICE, IIT Madras BS Data Science. Projects: ROS 2, LQR, MuJoCo.',
   url: 'https://podalanga.github.io',
