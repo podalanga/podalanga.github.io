@@ -14,6 +14,11 @@ site_url: https://podalanga.github.io
 media_folder: /public/media
 public_folder: /media
 
+# Leave blank optional fields out of the front matter instead of saving '' or null,
+# which the Astro content schema would otherwise have to tolerate on every field.
+output:
+  omit_empty_optional_fields: true
+
 collections:
   - name: log
     label: Log (Blog)
@@ -69,7 +74,7 @@ collections:
       - { name: location, label: Location, widget: string, required: false, hint: 'Leave empty if not known: do not guess.' }
       - { name: image, label: Image, widget: image, required: false, hint: 'Required when kind is "photo".' }
       - { name: alt, label: Alt text, widget: string, required: false }
-      - { name: youtube, label: YouTube URL, widget: string, required: false, hint: 'Required when kind is "video".' }
+      - { name: youtube, label: YouTube URL, widget: string, type: url, required: false, hint: 'Required when kind is "video".' }
       - { name: caption, label: Caption, widget: text, required: false }
       - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string } }
 
@@ -126,7 +131,7 @@ collections:
         required: false
         hint: 'YouTube videos. They lead the media carousel, in list order, unless "After images" places one later.'
         fields:
-          - { name: url, label: YouTube URL, widget: string }
+          - { name: url, label: YouTube URL, widget: string, type: url }
           - { name: caption, label: Caption, widget: string }
           - { name: afterImages, label: After images, widget: number, value_type: int, min: 0, required: false, hint: 'How many images come before this video. Leave blank to put it ahead of the images.' }
       - name: documents
@@ -160,7 +165,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
-          - { name: pages, label: Page count override, widget: number, value_type: int, required: false, hint: 'Counted automatically from the PDF (pages, or slides for a presentation). Fill in only to override.' }
+          - { name: pages, label: Page count override, widget: number, value_type: int, min: 1, required: false, hint: 'Counted automatically from the PDF (pages, or slides for a presentation). Fill in only to override.' }
       - { name: featured, label: Featured, widget: boolean, default: false }
       - {
           name: homeOrder,

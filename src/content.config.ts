@@ -2,7 +2,10 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { DOCUMENT_KINDS, normalizeKind } from './lib/documents';
 
-/** Sveltia CMS writes '' (or null, for a blank number) for a cleared optional field instead of omitting the key. */
+/**
+ * Sveltia CMS writes '' (or null, for a blank number) for a cleared optional field instead of omitting
+ * the key. Every optional field goes through this, so a CMS save can never fail the build on a blank.
+ */
 function optional<S extends { optional(): unknown }>(schema: S): ReturnType<S['optional']> {
   return z.preprocess(
     (val) => (val === '' || val === null ? undefined : val),
@@ -20,26 +23,26 @@ const works = defineCollection({
       kind: z.enum(['internship', 'project', 'competition', 'hobby']),
       org: z.string(),
       location: z.string(),
-      supervisor: z.string().optional(),
+      supervisor: optional(z.string()),
       start: z.coerce.date(),
       end: optional(z.coerce.date()),
       status: z.enum(['ongoing', 'completed']),
       summary: z.string(),
       tags: z.array(z.string()),
       stack: z.array(z.string()),
-      metrics: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+      metrics: optional(z.array(z.object({ label: z.string(), value: z.string() }))),
       cover: optional(image()),
-      coverAlt: z.string().optional(),
-      figures: z
-        .array(z.object({ src: image(), caption: z.string() }))
-        .optional(),
+      coverAlt: optional(z.string()),
+      figures: optional(
+        z.array(z.object({ src: image(), caption: z.string() })),
+      ),
       featured: z.boolean(),
       /** Position in the homepage Projects section (lowest first); unset keeps it off the homepage. */
       homeOrder: optional(z.number().int()),
-      classified: z.array(z.string()).optional(),
+      classified: optional(z.array(z.string())),
       /** Short reports, reports and guides under /public/media/attachments, offered for reading and download. */
-      documents: z
-        .array(
+      documents: optional(
+        z.array(
           z.object({
             label: z.string(),
             kind: z.preprocess(normalizeKind, z.enum(DOCUMENT_KINDS).default('other')),
@@ -48,19 +51,19 @@ const works = defineCollection({
             /** Who the document is for; blank falls back to the default line for its kind. */
             guide: optional(z.string()),
           }),
-        )
-        .optional(),
+        ),
+      ),
       /** YouTube videos in the media carousel; each leads it unless `afterImages` places it later. */
-      videos: z
-        .array(
+      videos: optional(
+        z.array(
           z.object({
             url: z.string().url(),
             caption: z.string(),
             /** How many images come before this video in the carousel; blank puts it ahead of them. */
             afterImages: optional(z.number().int().min(0)),
           }),
-        )
-        .optional(),
+        ),
+      ),
     }),
 });
 
@@ -73,11 +76,11 @@ const archive = defineCollection({
         kind: z.enum(['photo', 'video']),
         category: z.enum(['photography', 'music', 'videos', 'misc']),
         date: z.coerce.date(),
-        location: z.string().optional(),
+        location: optional(z.string()),
         image: optional(image()),
-        alt: z.string().optional(),
+        alt: optional(z.string()),
         youtube: optional(z.string().url()),
-        caption: z.string().optional(),
+        caption: optional(z.string()),
         tags: z.array(z.string()),
       })
       .refine((entry) => (entry.kind === 'photo' ? !!entry.image : true), {
@@ -98,10 +101,10 @@ const log = defineCollection({
       description: z.string(),
       tags: z.array(z.string()),
       cover: optional(image()),
-      coverAlt: z.string().optional(),
-      attachments: z
-        .array(z.object({ label: z.string(), file: z.string() }))
-        .optional(),
+      coverAlt: optional(z.string()),
+      attachments: optional(
+        z.array(z.object({ label: z.string(), file: z.string() })),
+      ),
       draft: z.boolean().default(false),
     }),
 });
