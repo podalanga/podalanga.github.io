@@ -28,6 +28,9 @@ figures:
     caption: "Pole-placement controller on hardware: setpoint tracking, tracking error, pendulum angle, and motor voltage."
   - src: ./gain-scheduled-lqr.png
     caption: "Gain-scheduled LQR tracking a growing setpoint sweep out to ±45°: stable, at a cost of tracking accuracy."
+videos:
+  - url: https://youtu.be/j_csyJsBX9s
+    caption: "The rotary inverted pendulum under control on hardware."
 documents:
   - label: "Implementation of Linear Controllers on a Rotary Inverted Pendulum"
     kind: short-report

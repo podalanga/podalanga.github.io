@@ -124,10 +124,11 @@ collections:
         label_singular: Video
         widget: list
         required: false
-        hint: 'YouTube videos. They appear in the media carousel after the images.'
+        hint: 'YouTube videos. They lead the media carousel, in list order, unless "After images" places one later.'
         fields:
           - { name: url, label: YouTube URL, widget: string }
           - { name: caption, label: Caption, widget: string }
+          - { name: afterImages, label: After images, widget: number, value_type: int, min: 0, required: false, hint: 'How many images come before this video. Leave blank to put it ahead of the images.' }
       - name: documents
         label: Documents (reports and guides)
         label_singular: Document

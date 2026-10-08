@@ -7,6 +7,7 @@ import DocumentPanel from '../../components/DocumentPanel.astro';
 import Redacted from '../../components/Redacted.astro';
 import { getImage } from 'astro:assets';
 import { site } from '../../config/site';
+import { isExternal } from '../../lib/files';
 import { PERSON_ID, absoluteUrl, breadcrumbNode, isoDate, pageTitle } from '../../lib/seo';
 
 export async function getStaticPaths() {
@@ -34,11 +35,18 @@ const imageSlides = [
     .filter((f) => f.src.src !== data.cover?.src)
     .map((f) => ({ src: f.src, alt: f.caption, caption: f.caption })),
 ];
-// Videos lead the media: the first one plays on load and loops.
-const slides: CarouselFigure[] = [
-  ...(data.videos ?? []).map((v) => ({ video: v.url, caption: v.caption })),
-  ...imageSlides,
-];
+// Videos lead the media unless one asks to follow some images; the first slide plays on load and loops.
+const slides: CarouselFigure[] = [];
+const videos = data.videos ?? [];
+imageSlides.forEach((image, i) => {
+  slides.push(...videos.filter((v) => (v.afterImages ?? 0) === i).map((v) => ({ video: v.url, caption: v.caption })));
+  slides.push(image);
+});
+slides.push(
+  ...videos
+    .filter((v) => (v.afterImages ?? 0) >= imageSlides.length)
+    .map((v) => ({ video: v.url, caption: v.caption })),
+);
 const documents = data.documents ?? [];
 
 const kindLabel = {
@@ -84,7 +92,7 @@ const jsonLd = [
       associatedMedia: documents.map((d) => ({
         '@type': 'MediaObject',
         name: d.label,
-        contentUrl: absoluteUrl(d.file),
+        contentUrl: isExternal(d.file) ? d.file : absoluteUrl(d.file),
         encodingFormat: d.file.toLowerCase().endsWith('.pdf') ? 'application/pdf' : undefined,
         author: { '@id': PERSON_ID },
       })),

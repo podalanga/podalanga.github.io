@@ -19,6 +19,9 @@ figures:
     caption: "The assembled 3R arm: one yaw joint at the base, two planar revolute joints along the arm."
   - src: ./base-mount.png
     caption: "Exploded view of the anchored base: three-point anchoring with a wing to distribute lifting stress away from the two side anchors."
+videos:
+  - url: https://youtu.be/TZKshpF3N4g
+    caption: "The 3R arm in motion."
 documents:
   - label: "3R Robotic Arm: Project Report"
     kind: short-report

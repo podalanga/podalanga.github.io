@@ -1,6 +1,6 @@
 ---
 import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, pageCount, type DocumentKind } from '../lib/documents';
-import { extOf, pageCountOf, sizeOf } from '../lib/files';
+import { extOf, hostOf, isExternal, pageCountOf, sizeOf } from '../lib/files';
 
 interface Document {
   label: string;
@@ -23,9 +23,11 @@ const items = await Promise.all(
     const size = sizeOf(doc.file);
     // Counted from the file itself; a number typed in the CMS overrides it.
     const pages = doc.pages ?? (await pageCountOf(doc.file));
-    const facts = [extOf(doc.file), pages ? pageCount(doc.kind, pages) : null, size].filter(Boolean);
+    const external = isExternal(doc.file);
+    const facts = [external ? hostOf(doc.file) : extOf(doc.file), pages ? pageCount(doc.kind, pages) : null, size].filter(Boolean);
     return {
       ...doc,
+      external,
       facts,
       guideLine: doc.guide ?? DEFAULT_GUIDE[doc.kind],
       filename: doc.file.split('/').pop(),
@@ -51,10 +53,12 @@ const items = await Promise.all(
               READ <span aria-hidden="true">↗</span>
               <span class="sr-only">{doc.label} (opens in a new tab)</span>
             </a>
-            <a href={doc.file} download={doc.filename}>
-              DOWNLOAD <span aria-hidden="true">↓</span>
-              <span class="sr-only">{doc.label}</span>
-            </a>
+            {!doc.external && (
+              <a href={doc.file} download={doc.filename}>
+                DOWNLOAD <span aria-hidden="true">↓</span>
+                <span class="sr-only">{doc.label}</span>
+              </a>
+            )}
           </div>
         </li>
       ))

@@ -21,6 +21,9 @@ figures:
     caption: "The inverted-pendulum abstraction the balancing model was built from: pendulum length l, mass m, tilt θ."
   - src: ./path-traversal.png
     caption: "The bot's traversal path in CoppeliaSim, from start (green) to the pickup/drop point (red)."
+videos:
+  - url: https://youtu.be/qdwDRtxoMdc
+    caption: "The balancing builder bot in CoppeliaSim."
 documents:
   - label: "Balancing Builder Bot: e-Yantra Team BB#2091 Project Report"
     kind: short-report
