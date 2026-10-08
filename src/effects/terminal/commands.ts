@@ -44,7 +44,7 @@ const HELP_LINES = [
   'whoami               : short bio',
   'ls works             : list case files',
   'cat <codename>       : show a case file summary',
-  'cd <target>          : go to works | archive | log | a codename',
+  'cd <target>          : go to works, archive, log or a codename',
   'contact              : show contact methods',
   'theme [dark|light]   : switch theme',
   'clear                : clear the screen',

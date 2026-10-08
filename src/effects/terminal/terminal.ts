@@ -3,6 +3,12 @@
 // to whatever opened it. History via up/down. Delegates parsing to the pure `runCommand`.
 import { runCommand, getCompletions, type CommandContext, type WorkSummary } from './commands';
 import { prefersReducedMotion } from '../../lib/reduced-motion';
+import { getItem, setItem } from '../../lib/storage';
+
+const HEIGHT_KEY = 'pdl:terminal-h';
+const MIN_HEIGHT_PX = 160;
+const MAX_HEIGHT_RATIO = 0.9;
+const KEY_STEP_PX = 40;
 
 function isTypingTarget(el: EventTarget | null): boolean {
   if (!(el instanceof HTMLElement)) return false;
@@ -26,6 +32,7 @@ export function initTerminal(): () => void {
   const input = document.getElementById('terminal-input') as HTMLInputElement | null;
   const openButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-terminal-open]'));
   const closeButton = document.getElementById('terminal-close');
+  const resizeHandle = document.getElementById('terminal-resize');
   if (!panel || !log || !input) return () => {};
 
   const works = readWorks();
@@ -44,7 +51,7 @@ export function initTerminal(): () => void {
     log!.scrollTop = log!.scrollHeight;
   }
 
-  function printInput(raw: string): void {
+  function printInput(raw: string): HTMLElement {
     const p = document.createElement('p');
     p.className = 'log-input';
     const prompt = document.createElement('span');
@@ -53,6 +60,42 @@ export function initTerminal(): () => void {
     p.append(prompt, document.createTextNode(raw));
     log!.appendChild(p);
     log!.scrollTop = log!.scrollHeight;
+    return p;
+  }
+
+  /** Scroll to the end of the output, unless it is taller than the log: then show it from its
+   *  command line down, so a long listing (help) starts at its first row instead of its last. */
+  function revealOutput(inputLine: HTMLElement): void {
+    const commandTop = inputLine.offsetTop - log!.offsetTop;
+    log!.scrollTop = Math.min(commandTop, log!.scrollHeight - log!.clientHeight);
+  }
+
+  function setHeight(px: number, persist: boolean): void {
+    const max = Math.max(MIN_HEIGHT_PX, window.innerHeight * MAX_HEIGHT_RATIO);
+    const clamped = Math.round(Math.min(max, Math.max(MIN_HEIGHT_PX, px)));
+    panel!.style.setProperty('--terminal-h', `${clamped}px`);
+    if (persist) setItem(HEIGHT_KEY, String(clamped));
+  }
+
+  const storedHeight = Number(getItem(HEIGHT_KEY));
+  if (storedHeight > 0) setHeight(storedHeight, false);
+
+  function onResizeStart(e: PointerEvent): void {
+    e.preventDefault();
+    resizeHandle!.setPointerCapture(e.pointerId);
+    panel!.classList.add('resizing');
+  }
+
+  function onResizeMove(e: PointerEvent): void {
+    if (!panel!.classList.contains('resizing')) return;
+    // The panel is anchored to the bottom, so its height is the distance from the pointer down.
+    setHeight(window.innerHeight - e.clientY, false);
+  }
+
+  function onResizeEnd(): void {
+    if (!panel!.classList.contains('resizing')) return;
+    panel!.classList.remove('resizing');
+    setHeight(panel!.getBoundingClientRect().height, true);
   }
 
   async function fetchVisitorIp(): Promise<string> {
@@ -103,7 +146,7 @@ export function initTerminal(): () => void {
       history.push(raw);
       historyIndex = history.length;
     }
-    printInput(raw);
+    const inputLine = printInput(raw);
 
     const ctx: CommandContext = buildContext();
     const result = runCommand(raw, ctx);
@@ -118,6 +161,7 @@ export function initTerminal(): () => void {
     } else {
       print(result.lines, result.tone === 'danger' ? 'log-danger' : undefined);
     }
+    revealOutput(inputLine);
 
     if (result.action?.type === 'navigate') {
       const { href } = result.action;
@@ -165,6 +209,13 @@ export function initTerminal(): () => void {
       }
       return;
     }
+    // Keyboard counterpart of dragging the top edge.
+    if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      const delta = e.key === 'ArrowUp' ? KEY_STEP_PX : -KEY_STEP_PX;
+      setHeight(panel!.getBoundingClientRect().height + delta, true);
+      return;
+    }
     if (e.key === 'ArrowUp') {
       if (history.length === 0) return;
       e.preventDefault();
@@ -187,6 +238,10 @@ export function initTerminal(): () => void {
   panel.querySelector('form')?.addEventListener('submit', onFormSubmit);
   closeButton?.addEventListener('click', close);
   for (const btn of openButtons) btn.addEventListener('click', open);
+  resizeHandle?.addEventListener('pointerdown', onResizeStart);
+  resizeHandle?.addEventListener('pointermove', onResizeMove);
+  resizeHandle?.addEventListener('pointerup', onResizeEnd);
+  resizeHandle?.addEventListener('pointercancel', onResizeEnd);
 
   return () => {
     document.removeEventListener('keydown', onKeydownGlobal);
@@ -194,5 +249,9 @@ export function initTerminal(): () => void {
     panel.querySelector('form')?.removeEventListener('submit', onFormSubmit);
     closeButton?.removeEventListener('click', close);
     for (const btn of openButtons) btn.removeEventListener('click', open);
+    resizeHandle?.removeEventListener('pointerdown', onResizeStart);
+    resizeHandle?.removeEventListener('pointermove', onResizeMove);
+    resizeHandle?.removeEventListener('pointerup', onResizeEnd);
+    resizeHandle?.removeEventListener('pointercancel', onResizeEnd);
   };
 }
