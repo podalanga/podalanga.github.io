@@ -313,7 +313,8 @@ const posterOf = (figure: VideoFigure, size: 'mq' | 'maxres' = 'mq') => {
     bottom: 0;
     width: var(--space-8);
     pointer-events: none;
-    opacity: 0;
+    /* Always faintly shown, so a visitor sees there is more without hovering. */
+    opacity: 0.6;
     transition: opacity var(--dur-fast) var(--ease-out);
   }
 
