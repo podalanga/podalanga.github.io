@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { DOCUMENT_KINDS, normalizeKind } from './lib/documents';
+import { DOCUMENT_KINDS, PERMALINK_PATTERN, normalizeKind } from './lib/documents';
 
 /**
  * Sveltia CMS writes '' (or null, for a blank number) for a cleared optional field instead of omitting
@@ -47,6 +47,8 @@ const works = defineCollection({
             label: z.string(),
             kind: z.preprocess(normalizeKind, z.enum(DOCUMENT_KINDS).default('other')),
             file: z.string(),
+            /** Set once: the document is published at /docs/<permalink>.<ext> through every re-upload. */
+            permalink: optional(z.string().regex(PERMALINK_PATTERN)),
             pages: optional(z.number().int().positive()),
             /** Who the document is for; blank falls back to the default line for its kind. */
             guide: optional(z.string()),

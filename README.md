@@ -37,7 +37,7 @@ Collections:
 
 | Collection | Path | Notes |
 |---|---|---|
-| `works` | `src/content/works/` | Case files — robotics/engineering projects. Co-located cover image + figures per entry. Optional **Videos** (YouTube, shown in the media carousel), **Documents** (short report, report, presentation and guide PDFs uploaded to `public/media/attachments/`, each with an optional guide line saying who it is for; page counts and file sizes are read from the PDF itself, shown with Read and Download buttons and flagged on the card) and **Homepage position** (`homeOrder`: only projects with a value appear in the homepage Projects section, lowest first). |
+| `works` | `src/content/works/` | Case files — robotics/engineering projects. Co-located cover image + figures per entry. Optional **Videos** (YouTube, shown in the media carousel), **Documents** (short report, report, presentation and guide PDFs uploaded to `public/media/attachments/`, each with an optional guide line saying who it is for; page counts and file sizes are read from the PDF itself, shown with Read and Download buttons and flagged on the card; a document given a **Permanent link name** is published at `/docs/<name>.pdf` and keeps that address through every re-upload, and names listed in `src/config/permalinks.ts` fail the build if they ever stop resolving) and **Homepage position** (`homeOrder`: only projects with a value appear in the homepage Projects section, lowest first). |
 | `archive` | `src/content/archive/` | Photography (`kind: photo`) and video (`kind: video`, YouTube-only) entries. |
 | `log` | `src/content/log/` | Blog posts. Co-located cover image + optional attachment under `public/media/attachments/`. |
 

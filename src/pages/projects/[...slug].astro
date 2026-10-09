@@ -7,6 +7,7 @@ import DocumentPanel from '../../components/DocumentPanel.astro';
 import Redacted from '../../components/Redacted.astro';
 import { getImage } from 'astro:assets';
 import { site } from '../../config/site';
+import { documentHref } from '../../lib/documents';
 import { isExternal } from '../../lib/files';
 import { PERSON_ID, absoluteUrl, breadcrumbNode, isoDate, pageTitle } from '../../lib/seo';
 
@@ -92,7 +93,7 @@ const jsonLd = [
       associatedMedia: documents.map((d) => ({
         '@type': 'MediaObject',
         name: d.label,
-        contentUrl: isExternal(d.file) ? d.file : absoluteUrl(d.file),
+        contentUrl: isExternal(d.file) ? d.file : absoluteUrl(documentHref(d)),
         encodingFormat: d.file.toLowerCase().endsWith('.pdf') ? 'application/pdf' : undefined,
         author: { '@id': PERSON_ID },
       })),

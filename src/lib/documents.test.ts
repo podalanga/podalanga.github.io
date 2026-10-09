@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_GUIDE, DOCUMENT_KINDS, normalizeKind, pageCount } from './documents';
+import {
+  DEFAULT_GUIDE,
+  DOCUMENT_KINDS,
+  PERMALINK_PATTERN,
+  documentHref,
+  normalizeKind,
+  pageCount,
+  permalinkRoutes,
+} from './documents';
 
 describe('normalizeKind', () => {
   it('maps older and informal names onto current kinds', () => {
@@ -30,5 +38,51 @@ describe('document kinds', () => {
   it('counts slides for a presentation and pages otherwise', () => {
     expect(pageCount('presentation', 22)).toBe('22 SLIDES');
     expect(pageCount('report', 31)).toBe('31 PP');
+  });
+});
+
+describe('documentHref', () => {
+  it('publishes a named local document under /docs, whatever the upload is called', () => {
+    expect(documentHref({ file: '/media/attachments/Final v3 (2).PDF', permalink: 'rovio-report' })).toBe('/docs/rovio-report.pdf');
+  });
+
+  it('leaves unnamed and external documents at their own address', () => {
+    expect(documentHref({ file: '/media/attachments/rovio-report.pdf' })).toBe('/media/attachments/rovio-report.pdf');
+    expect(documentHref({ file: 'https://www.canva.com/design/x/edit', permalink: 'zbot-deck' })).toBe(
+      'https://www.canva.com/design/x/edit',
+    );
+  });
+});
+
+describe('permalinkRoutes', () => {
+  const docs = [
+    { file: '/media/attachments/a.pdf', permalink: 'rovio-report' },
+    { file: '/media/attachments/b.pdf' },
+    { file: 'https://example.com/deck', permalink: 'deck' },
+  ];
+
+  it('lists one route per named local document', () => {
+    expect(permalinkRoutes(docs)).toEqual([{ name: 'rovio-report.pdf', file: '/media/attachments/a.pdf' }]);
+  });
+
+  it('refuses two documents with the same name', () => {
+    expect(() => permalinkRoutes([...docs, { file: '/media/attachments/c.pdf', permalink: 'rovio-report' }])).toThrow(
+      /rovio-report/,
+    );
+  });
+
+  it('refuses to drop a name that is already in use elsewhere', () => {
+    expect(() => permalinkRoutes(docs, ['watch-report'])).toThrow(/watch-report/);
+    expect(permalinkRoutes(docs, ['rovio-report'])).toHaveLength(1);
+  });
+});
+
+describe('PERMALINK_PATTERN', () => {
+  it('accepts lowercase words joined by hyphens only', () => {
+    expect(PERMALINK_PATTERN.test('rovio-short-report')).toBe(true);
+    expect(PERMALINK_PATTERN.test('3r-arm')).toBe(true);
+    expect(PERMALINK_PATTERN.test('Rovio Report')).toBe(false);
+    expect(PERMALINK_PATTERN.test('rovio.pdf')).toBe(false);
+    expect(PERMALINK_PATTERN.test('')).toBe(false);
   });
 });

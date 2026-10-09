@@ -28,6 +28,7 @@ documents:
   - label: "Balancing Builder Bot: e-Yantra Team BB#2091 Project Report"
     kind: short-report
     file: /media/attachments/balancing-builder-short-report.pdf
+    permalink: balancing-builder-short-report
 ---
 
 ## Brief

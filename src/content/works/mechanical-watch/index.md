@@ -60,11 +60,13 @@ documents:
     kind: short-report
     guide: ''
     file: /media/attachments/watch-short-report.pdf
+    permalink: watch-short-report
     pages: null
   - label: Full technical report, with every calculation worked step by step in the appendices
     kind: report
     guide: ''
     file: /media/attachments/watch-report.pdf
+    permalink: watch-report
     pages: null
 featured: true
 homeOrder: 2

@@ -1,11 +1,12 @@
 ---
-import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, pageCount, type DocumentKind } from '../lib/documents';
+import { DEFAULT_GUIDE, DOCUMENT_KINDS, DOCUMENT_LABEL, documentHref, pageCount, type DocumentKind } from '../lib/documents';
 import { extOf, hostOf, isExternal, pageCountOf, sizeOf } from '../lib/files';
 
 interface Document {
   label: string;
   kind: DocumentKind;
   file: string;
+  permalink?: string;
   pages?: number;
   guide?: string;
 }
@@ -25,12 +26,15 @@ const items = await Promise.all(
     const pages = doc.pages ?? (await pageCountOf(doc.file));
     const external = isExternal(doc.file);
     const facts = [external ? hostOf(doc.file) : extOf(doc.file), pages ? pageCount(doc.kind, pages) : null, size].filter(Boolean);
+    // The permanent address when the document has one, so it is the only link anyone copies.
+    const href = documentHref(doc);
     return {
       ...doc,
       external,
       facts,
+      href,
       guideLine: doc.guide ?? DEFAULT_GUIDE[doc.kind],
-      filename: doc.file.split('/').pop(),
+      filename: href.split('/').pop(),
     };
   }),
 );
@@ -49,12 +53,12 @@ const items = await Promise.all(
           <p class="doc-title">{doc.label}</p>
           {doc.guideLine && <p class="guide">{doc.guideLine}</p>}
           <div class="actions mono">
-            <a href={doc.file} target="_blank" rel="noopener">
+            <a href={doc.href} target="_blank" rel="noopener">
               READ <span aria-hidden="true">↗</span>
               <span class="sr-only">{doc.label} (opens in a new tab)</span>
             </a>
             {!doc.external && (
-              <a href={doc.file} download={doc.filename}>
+              <a href={doc.href} download={doc.filename}>
                 DOWNLOAD <span aria-hidden="true">↓</span>
                 <span class="sr-only">{doc.label}</span>
               </a>
