@@ -48,7 +48,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/admin') && !page.includes('/blog/tag/'),
+      filter: (page) => !page.includes('/admin') && !page.includes('/blog/tag/') && !page.includes('/docs/'),
       serialize(item) {
         const path = item.url.replace(/\/$/, '');
         const date = lastmod.get(path) ?? buildDate;

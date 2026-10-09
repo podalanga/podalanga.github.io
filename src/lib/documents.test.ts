@@ -46,11 +46,13 @@ describe('documentHref', () => {
     expect(documentHref({ file: '/media/attachments/Final v3 (2).PDF', permalink: 'rovio-report' })).toBe('/docs/rovio-report.pdf');
   });
 
-  it('leaves unnamed and external documents at their own address', () => {
+  it('forwards a named external document from /docs', () => {
+    expect(documentHref({ file: 'https://www.canva.com/design/x/edit', permalink: 'zbot-deck' })).toBe('/docs/zbot-deck/');
+  });
+
+  it('leaves unnamed documents at their own address', () => {
     expect(documentHref({ file: '/media/attachments/rovio-report.pdf' })).toBe('/media/attachments/rovio-report.pdf');
-    expect(documentHref({ file: 'https://www.canva.com/design/x/edit', permalink: 'zbot-deck' })).toBe(
-      'https://www.canva.com/design/x/edit',
-    );
+    expect(documentHref({ file: 'https://www.canva.com/design/x/edit' })).toBe('https://www.canva.com/design/x/edit');
   });
 });
 
@@ -61,8 +63,15 @@ describe('permalinkRoutes', () => {
     { file: 'https://example.com/deck', permalink: 'deck' },
   ];
 
-  it('lists one route per named local document', () => {
-    expect(permalinkRoutes(docs)).toEqual([{ name: 'rovio-report.pdf', file: '/media/attachments/a.pdf' }]);
+  it('lists one route per named document, uploaded or external', () => {
+    expect(permalinkRoutes(docs)).toEqual([
+      { name: 'rovio-report.pdf', file: '/media/attachments/a.pdf', external: false },
+      { name: 'deck', file: 'https://example.com/deck', external: true },
+    ]);
+  });
+
+  it('refuses an upload and an external link sharing a name', () => {
+    expect(() => permalinkRoutes([...docs, { file: '/media/attachments/c.pdf', permalink: 'deck' }])).toThrow(/deck/);
   });
 
   it('refuses two documents with the same name', () => {
@@ -73,7 +82,7 @@ describe('permalinkRoutes', () => {
 
   it('refuses to drop a name that is already in use elsewhere', () => {
     expect(() => permalinkRoutes(docs, ['watch-report'])).toThrow(/watch-report/);
-    expect(permalinkRoutes(docs, ['rovio-report'])).toHaveLength(1);
+    expect(permalinkRoutes(docs, ['rovio-report', 'deck'])).toHaveLength(2);
   });
 });
 

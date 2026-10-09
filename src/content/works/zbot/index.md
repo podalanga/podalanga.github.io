@@ -40,6 +40,7 @@ documents:
   - label: "ZBot: Presentation"
     kind: presentation
     file: https://www.canva.com/design/DAHS6g9xccI/v667uuLBCI4UUcXBZEbupQ/edit
+    permalink: zbot-presentation
 ---
 
 ## Brief

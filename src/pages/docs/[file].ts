@@ -11,14 +11,13 @@ const CONTENT_TYPES: Record<string, string> = {
   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 };
 
-/** Every named document, published at /docs/<name>.<ext> whatever its uploaded file is called. */
+/** Every named upload, published at /docs/<name>.<ext> whatever its file is called. External ones are forwarded by [name].astro. */
 export async function getStaticPaths() {
   const works = await getCollection('works');
   const documents = works.flatMap((work) => work.data.documents ?? []);
-  return permalinkRoutes(documents, PUBLISHED_PERMALINKS).map((route) => ({
-    params: { file: route.name },
-    props: { source: route.file },
-  }));
+  return permalinkRoutes(documents, PUBLISHED_PERMALINKS)
+    .filter((route) => !route.external)
+    .map((route) => ({ params: { file: route.name }, props: { source: route.file } }));
 }
 
 export async function GET({ params, props }: APIContext<{ source: string }>) {

@@ -171,7 +171,7 @@ collections:
               widget: string,
               required: false,
               pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. rovio-report'],
-              hint: 'Set once and never change: the document is published at /docs/<name>.pdf, whatever file you upload. Safe to put on a resume. Must be unique across all projects.',
+              hint: 'Set once and never change: the document is published at /docs/<name>.pdf, whatever file you upload; an external link (e.g. Canva) is forwarded from /docs/<name>/ instead. Safe to put on a resume. Must be unique across all projects.',
             }
           - { name: pages, label: Page count override, widget: number, value_type: int, min: 1, required: false, hint: 'Counted automatically from the PDF (pages, or slides for a presentation). Fill in only to override.' }
       - { name: featured, label: Featured, widget: boolean, default: false }
