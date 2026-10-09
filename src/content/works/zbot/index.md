@@ -39,7 +39,7 @@ documents:
     permalink: zbot-report
   - label: "ZBot: Presentation"
     kind: presentation
-    file: https://www.canva.com/design/DAHS6g9xccI/v667uuLBCI4UUcXBZEbupQ/edit
+    file: https://canva.link/laj0iqdosifjtew
     permalink: zbot-presentation
 ---
 
