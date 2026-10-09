@@ -5,7 +5,6 @@ fileNo: 9
 kind: project
 org: Independent
 location: Tiruchirappalli, India
-supervisor: ''
 start: 2026-08-01
 end: 2026-09-30
 status: completed
@@ -51,26 +50,19 @@ figures:
 videos:
   - url: https://www.youtube.com/watch?v=dhshj_wPEz8
     caption: Complete going train running in simulation, driven from the barrel.
-    afterImages: null
   - url: https://youtu.be/M3oqJB_sfAk
     caption: Close-up of the Swiss lever escapement in motion.
-    afterImages: null
 documents:
   - label: Design, Analysis and Simulation of a Mechanical Watch Going Train with a Swiss Lever Escapement
     kind: short-report
-    guide: ''
     file: /media/attachments/watch-short-report.pdf
     permalink: watch-short-report
-    pages: null
   - label: Full technical report, with every calculation worked step by step in the appendices
     kind: report
-    guide: ''
     file: /media/attachments/watch-report.pdf
     permalink: watch-report
-    pages: null
 featured: true
 homeOrder: 2
-classified: []
 ---
 
 ## Brief
@@ -100,4 +92,4 @@ The requirements were 28 800 beats per hour (a 4 Hz balance) and at least 40 hou
 
 ## Status / Next
 
-Completed as a design study. Nothing has been built or measured yet. The frame and bearings are not designed, and the springs rest on beam theory. The next steps follow directly from the analysis: widen the barrel teeth to 0.70 mm, correct the stone positions to equalise the drop, and find the settled amplitude with friction applied. After that, both springs need finite-element analysis, and the frame needs jewelled bearings and shock settings.
+Completed as a design study. Nothing has been built or measured yet. The frame and bearings are not designed, and the springs rest on beam theory. The next steps follow directly from the analysis: widen the barrel teeth to 0.70 mm, correct the stone positions to equalise the drop, and find the settled amplitude with friction applied. After that, both springs need finite-element analysis, and the frame needs jeweled bearings and shock settings.
