@@ -84,6 +84,15 @@ describe('permalinkRoutes', () => {
     expect(() => permalinkRoutes(docs, ['watch-report'])).toThrow(/watch-report/);
     expect(permalinkRoutes(docs, ['rovio-report', 'deck'])).toHaveLength(2);
   });
+
+  it('routes certificate documents with permalinks', () => {
+    const certDocs = [
+      { file: '/media/attachments/cswa-certificate.pdf', permalink: 'cswa-certificate' },
+    ];
+    expect(permalinkRoutes(certDocs, ['cswa-certificate'])).toEqual([
+      { name: 'cswa-certificate.pdf', file: '/media/attachments/cswa-certificate.pdf', external: false },
+    ]);
+  });
 });
 
 describe('PERMALINK_PATTERN', () => {

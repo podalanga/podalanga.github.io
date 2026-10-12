@@ -171,6 +171,8 @@ const awards = defineCollection({
     order: z.number(),
     title: z.string(),
     detail: z.string(),
+    file: optional(z.string()),
+    permalink: optional(z.string().regex(PERMALINK_PATTERN)),
   }),
 });
 

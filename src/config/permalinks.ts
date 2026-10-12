@@ -3,4 +3,7 @@
  * The build fails if a name listed here stops resolving, so a CMS edit can never break those links.
  * Add a name, without its extension, when its /docs address goes out: e.g. 'rovio-report'.
  */
-export const PUBLISHED_PERMALINKS: readonly string[] = [];
+export const PUBLISHED_PERMALINKS: readonly string[] = [
+  'cswa-certificate',
+];
+

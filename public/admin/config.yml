@@ -282,3 +282,16 @@ collections:
       - { name: order, label: Order, widget: number, value_type: int, hint: 'Lower numbers appear first.' }
       - { name: title, label: Title, widget: string }
       - { name: detail, label: Detail, widget: string }
+      - name: file
+        label: Certificate file
+        widget: file
+        media_folder: /public/media/attachments
+        public_folder: /media/attachments
+        required: false
+      - name: permalink
+        label: Permanent link name
+        widget: string
+        required: false
+        pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. cswa-certificate']
+        hint: 'Set once and never change: the certificate is published at /docs/<name>.pdf (or forwarded to an external URL). Must be unique across all permanent links.'
+

@@ -14,7 +14,16 @@ const CONTENT_TYPES: Record<string, string> = {
 /** Every named upload, published at /docs/<name>.<ext> whatever its file is called. External ones are forwarded by [name].astro. */
 export async function getStaticPaths() {
   const works = await getCollection('works');
-  const documents = works.flatMap((work) => work.data.documents ?? []);
+  const awards = await getCollection('awards');
+  const documents = [
+    ...works.flatMap((work) => work.data.documents ?? []),
+    ...awards
+      .filter((award) => award.data.file)
+      .map((award) => ({
+        file: award.data.file!,
+        permalink: award.data.permalink,
+      })),
+  ];
   return permalinkRoutes(documents, PUBLISHED_PERMALINKS)
     .filter((route) => !route.external)
     .map((route) => ({ params: { file: route.name }, props: { source: route.file } }));

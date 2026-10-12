@@ -6,7 +6,16 @@ import { permalinkRoutes } from '../../lib/documents';
 /** Every named external document (e.g. a Canva deck): /docs/<name>/ forwards to wherever it lives now. */
 export async function getStaticPaths() {
   const works = await getCollection('works');
-  const documents = works.flatMap((work) => work.data.documents ?? []);
+  const awards = await getCollection('awards');
+  const documents = [
+    ...works.flatMap((work) => work.data.documents ?? []),
+    ...awards
+      .filter((award) => award.data.file)
+      .map((award) => ({
+        file: award.data.file!,
+        permalink: award.data.permalink,
+      })),
+  ];
   return permalinkRoutes(documents, PUBLISHED_PERMALINKS)
     .filter((route) => route.external)
     .map((route) => ({ params: { name: route.name }, props: { target: route.file } }));

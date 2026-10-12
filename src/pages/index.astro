@@ -10,6 +10,7 @@ import { getCollection } from 'astro:content';
 import { site } from '../config/site';
 import portrait from '../assets/profile/portrait.jpg';
 import { PERSON_ID, WEBSITE_ID, absoluteUrl } from '../lib/seo';
+import { documentHref } from '../lib/documents';
 
 const works = (await getCollection('works')).sort(
   (a, b) => b.data.start.getTime() - a.data.start.getTime()
@@ -222,7 +223,21 @@ const profilePage = {
           {
             awards.map((a) => (
               <li>
-                <p class="org">{a.data.title}</p>
+                <p class="org">
+                  {a.data.file ? (
+                    <a
+                      class="award-link"
+                      href={documentHref(a.data)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {a.data.title}
+                      <span class="award-arrow mono" aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    a.data.title
+                  )}
+                </p>
                 <p class="meta">{a.data.detail}</p>
               </li>
             ))
@@ -611,4 +626,22 @@ const profilePage = {
     margin-top: var(--space-2);
   }
 
+  .list-entries .award-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    color: var(--fg);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .list-entries .award-link:hover {
+    color: var(--signal);
+  }
+
+  .list-entries .award-link .award-arrow {
+    color: var(--signal);
+    font-size: var(--text-sm);
+    font-weight: 400;
+  }
 </style>
