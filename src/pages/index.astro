@@ -283,8 +283,9 @@ const profilePage = {
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 1px solid var(--line);
+    /* Image tint disabled to keep the original colour grading.
     filter: saturate(0.85) sepia(0.08);
-    transition: filter var(--dur-slow) var(--ease-out);
+    transition: filter var(--dur-slow) var(--ease-out); */
   }
 
   .hero-portrait :global(img) {
@@ -293,11 +294,11 @@ const profilePage = {
     object-fit: cover;
   }
 
-  @media (hover: hover) {
+  /* @media (hover: hover) {
     .hero-portrait:hover {
       filter: none;
     }
-  }
+  } */
 
   @media (min-width: 780px) {
     .hero-inner {

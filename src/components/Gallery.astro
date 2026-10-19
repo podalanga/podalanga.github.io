@@ -80,15 +80,16 @@ const sizes = variant === 'stack' ? '(min-width: 780px) 50vw, 100vw' : '(min-wid
   .frame :global(img) {
     width: 100%;
     height: auto;
+    /* Image tint disabled to keep the original colour grading.
     filter: saturate(0.85) sepia(0.08);
-    transition: filter var(--dur-slow) var(--ease-out);
+    transition: filter var(--dur-slow) var(--ease-out); */
   }
 
-  @media (hover: hover) {
+  /* @media (hover: hover) {
     .frame:hover :global(img) {
       filter: none;
     }
-  }
+  } */
 
   .caption {
     display: block;
