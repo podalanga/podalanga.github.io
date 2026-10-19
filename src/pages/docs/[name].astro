@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { PUBLISHED_PERMALINKS } from '../../config/permalinks';
+import locks from '../../config/locks.json';
 import { permalinkRoutes } from '../../lib/documents';
 
 /** Every named external document (e.g. a Canva deck): /docs/<name>/ forwards to wherever it lives now. */
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
         permalink: award.data.permalink,
       })),
   ];
-  return permalinkRoutes(documents, PUBLISHED_PERMALINKS)
+  return permalinkRoutes(documents, Object.keys(locks.docs))
     .filter((route) => route.external)
     .map((route) => ({ params: { name: route.name }, props: { target: route.file } }));
 }

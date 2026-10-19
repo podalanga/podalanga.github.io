@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
-import { PUBLISHED_PERMALINKS } from '../../config/permalinks';
+import locks from '../../config/locks.json';
 import { permalinkRoutes } from '../../lib/documents';
 
 const CONTENT_TYPES: Record<string, string> = {
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
         permalink: award.data.permalink,
       })),
   ];
-  return permalinkRoutes(documents, PUBLISHED_PERMALINKS)
+  return permalinkRoutes(documents, Object.keys(locks.docs))
     .filter((route) => !route.external)
     .map((route) => ({ params: { file: route.name }, props: { source: route.file } }));
 }

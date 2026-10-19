@@ -4,6 +4,8 @@ import { defineConfig } from 'astro/config';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import { blogArticlePlugin, mathBlocksAsCode } from './src/lib/blog-article.ts';
+import { collectPublished, findLockViolations, findMissingOutput, formatLockReport, readLocks } from './src/lib/locks.ts';
+import { fileURLToPath } from 'node:url';
 
 const SITE = 'https://podalanga.github.io';
 
@@ -41,6 +43,32 @@ const lastmod = contentDates();
 const newest = new Date(Math.max(...[...lastmod.values()].map((d) => d.getTime()), 0));
 const buildDate = lastmod.size > 0 ? newest : new Date();
 
+/**
+ * Published addresses must never change (src/config/locks.json, src/lib/locks.ts). The content is
+ * checked before anything is built and the output after: a build fails rather than ship a moved or
+ * missing locked link, so the live site keeps its last good version. The dev server only warns.
+ * @returns {import('astro').AstroIntegration}
+ */
+function lockedAddresses() {
+  const root = fileURLToPath(new URL('.', import.meta.url));
+  return {
+    name: 'locked-addresses',
+    hooks: {
+      'astro:config:setup': ({ command, logger }) => {
+        if (command === 'preview') return;
+        const problems = findLockViolations(readLocks(root), collectPublished(`${root}src/content`));
+        if (problems.length === 0) return;
+        if (command === 'dev') logger.warn(formatLockReport(problems));
+        else throw new Error(formatLockReport(problems));
+      },
+      'astro:build:done': ({ dir }) => {
+        const problems = findMissingOutput(readLocks(root), fileURLToPath(dir));
+        if (problems.length > 0) throw new Error(formatLockReport(problems));
+      },
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
@@ -54,6 +82,7 @@ export default defineConfig({
     processor: satteri({ features: { math: true }, mdastPlugins: [mathBlocksAsCode], hastPlugins: [blogArticlePlugin] }),
   },
   integrations: [
+    lockedAddresses(),
     sitemap({
       filter: (page) => !page.includes('/admin') && !page.includes('/blog/tag/') && !page.includes('/docs/'),
       serialize(item) {

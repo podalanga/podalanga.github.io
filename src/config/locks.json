@@ -1,0 +1,31 @@
+{
+  "$comment": "Published addresses that must never change. The build fails if the content renames, clears, moves or deletes one. New ones are added automatically after each deploy (scripts/lock.mjs). To retire one on purpose, delete its line in its own commit.",
+  "docs": {
+    "3r-arm-short-report": "works/3r-robotic-arm",
+    "balancing-builder-short-report": "works/balancing-builder-bot",
+    "cswa-certificate": "awards/cswa-certification",
+    "inverted-pendulum-short-report": "works/rotary-inverted-pendulum",
+    "pla-extruder-presentation": "works/pla-filament-extruder",
+    "rovio-report": "works/rovio-underwater-rov",
+    "rovio-short-report": "works/rovio-underwater-rov",
+    "trident-report": "works/trident-amr",
+    "trident-short-report": "works/trident-amr",
+    "watch-report": "works/mechanical-watch",
+    "watch-short-report": "works/mechanical-watch",
+    "zbot-presentation": "works/zbot",
+    "zbot-report": "works/zbot"
+  },
+  "pages": [
+    "/blog/fibre-optic-shm",
+    "/blog/lasers-in-manufacturing",
+    "/projects/3r-robotic-arm",
+    "/projects/balancing-builder-bot",
+    "/projects/mechanical-watch",
+    "/projects/pla-filament-extruder",
+    "/projects/rotary-inverted-pendulum",
+    "/projects/rovio-underwater-rov",
+    "/projects/trident-amr",
+    "/projects/wheelchair-dynamics",
+    "/projects/zbot"
+  ]
+}
