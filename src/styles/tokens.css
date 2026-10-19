@@ -16,7 +16,7 @@
   /* text colour that sits on a --signal fill (selection, stamps) */
   --on-signal: #0a0a0a;
   /* translucent page ground: sticky header, lightbox, terminal scrim */
-  --veil: color-mix(in srgb, var(--bg) 82%, transparent);
+  --veil: color-mix(in srgb, var(--bg) 90%, transparent);
   --scrim: color-mix(in srgb, var(--bg-sunken) 72%, transparent);
 
   /* type */

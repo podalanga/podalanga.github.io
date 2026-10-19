@@ -1,0 +1,393 @@
+---
+// The post's index rail. On wide screens it sits beside the text, sticky, with the eye at its head
+// watching the reader; on narrow screens it folds into a bar under the site header that opens into
+// the same list. reading-observer.ts lights the current section and fills the readouts.
+import type { TocEntry } from '../../lib/reading';
+
+interface Props {
+  toc: TocEntry[];
+}
+
+const { toc } = Astro.props;
+
+interface Chapter extends TocEntry {
+  sections: TocEntry[];
+}
+
+// h3s nest under the h2 before them; an h3 before any h2 stands on its own.
+const chapters: Chapter[] = [];
+for (const entry of toc) {
+  const last = chapters.at(-1);
+  if (entry.depth === 3 && last) last.sections.push(entry);
+  else chapters.push({ ...entry, sections: [] });
+}
+
+const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
+---
+
+<nav class="post-index" aria-label="Sections of this post">
+  <div class="watch" aria-hidden="true">
+    <canvas class="eye" data-eye-inline></canvas>
+  </div>
+
+  <dl class="readout mono" aria-hidden="true">
+    <div>
+      <dt>Reading</dt>
+      <dd class="readout-section" data-read-section>Opening</dd>
+    </div>
+    <div class="readout-pair">
+      <div>
+        <dt>Read</dt>
+        <dd data-read-percent>0%</dd>
+      </div>
+      <div>
+        <dt>Observed for</dt>
+        <dd data-read-clock>0:00</dd>
+      </div>
+    </div>
+  </dl>
+
+  <details class="index-sheet" open>
+    <summary class="sheet-bar">
+      <span class="rec" aria-hidden="true"></span>
+      <span class="sheet-current mono" data-read-section>Opening</span>
+      <span class="sheet-percent mono" data-read-percent aria-hidden="true">0%</span>
+      <span class="sheet-toggle mono">Index</span>
+      <span class="sheet-progress" data-read-progress aria-hidden="true"></span>
+    </summary>
+
+    <div class="index-list" data-read-progress>
+      <ol class="chapters">
+        {
+          chapters.map((c) => (
+            <li>
+              <a href={`#${c.id}`} data-index-link data-label={label(c)}>
+                {c.number && <span class="no mono">{c.number.padStart(2, '0')}</span>}
+                <span class="text">{c.text}</span>
+              </a>
+              {c.sections.length > 0 && (
+                <ol class="sections">
+                  {c.sections.map((s) => (
+                    <li>
+                      <a href={`#${s.id}`} data-index-link data-parent={c.id} data-label={label(s)}>
+                        {s.number && <span class="no mono">{s.number}</span>}
+                        <span class="text">{s.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </details>
+</nav>
+
+<script>
+  // The sheet starts open so the index is visible without JS; on narrow screens it folds away once
+  // scripts run, and following a link from it folds it again.
+  const mq = window.matchMedia('(max-width: 1099px)');
+  function setup(): void {
+    const sheet = document.querySelector<HTMLDetailsElement>('.index-sheet');
+    if (!sheet) return;
+    const sync = () => {
+      sheet.open = !mq.matches;
+    };
+    sync();
+    mq.addEventListener('change', sync);
+    sheet.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        if (mq.matches) sheet.open = false;
+      }),
+    );
+    // On wide screens the summary is hidden, so the sheet can never be closed by accident.
+    document.addEventListener('astro:before-swap', () => mq.removeEventListener('change', sync), { once: true });
+  }
+  document.addEventListener('astro:page-load', setup);
+</script>
+
+<style>
+  .post-index {
+    --rail-pad: var(--space-4);
+  }
+
+  /* ---- wide: a sticky rail beside the text ---------------------------- */
+
+  @media (min-width: 1100px) {
+    .post-index {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-5));
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      max-height: calc(100vh - var(--header-h) - var(--space-7));
+    }
+
+    .sheet-bar {
+      display: none;
+    }
+
+    .index-list {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-strong) transparent;
+    }
+  }
+
+  .watch {
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .watch {
+      display: block;
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  .eye {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 4;
+  }
+
+  .readout {
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .readout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin: 0;
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-normal);
+    }
+  }
+
+  .readout dt {
+    color: var(--fg-muted);
+  }
+
+  .readout dd {
+    margin: 0;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .readout-section {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .readout-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  /* ---- the list ------------------------------------------------------- */
+
+  .index-list {
+    position: relative;
+    padding-left: var(--space-4);
+  }
+
+  /* The left rule fills with red as the article is read. */
+  .index-list::before,
+  .index-list::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: var(--line);
+  }
+
+  .index-list::after {
+    background: var(--signal);
+    transform-origin: top;
+    transform: scaleY(var(--read, 0));
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chapters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  a {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.25em minmax(0, 1fr);
+    gap: var(--space-2);
+    padding-block: 0.3rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  a:hover {
+    color: var(--fg);
+  }
+
+  .no {
+    font-size: var(--text-xs);
+    padding-top: 0.15em;
+    color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The open chapter and the section being read. The dot is the recording light. */
+  li[data-open] > a {
+    color: var(--fg);
+  }
+
+  a[data-active] {
+    color: var(--fg);
+  }
+
+  a[data-active] .no {
+    color: var(--signal);
+  }
+
+  a[data-active]::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-4) - 3px);
+    top: 0.85em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 3px var(--bg);
+    animation: pulse 2.4s var(--ease-in-out) infinite;
+    --pulse-trough: 0.35;
+  }
+
+  .sections {
+    display: none;
+    padding: var(--space-1) 0 var(--space-2);
+  }
+
+  li[data-open] > .sections {
+    display: block;
+  }
+
+  .sections a {
+    grid-template-columns: 2.75em minmax(0, 1fr);
+    font-size: var(--text-xs);
+    padding-left: 2.25em;
+  }
+
+  /* Without JS nothing is marked open, so show every section rather than hide them all. */
+  .post-index:not(:has([data-active])) .sections {
+    display: block;
+  }
+
+  /* ---- narrow: a bar under the site header ----------------------------- */
+
+  /* The bar carries its own progress line; the header's would be a second one right above it. */
+  :global(body:has(.post-index) [data-scroll-progress]) {
+    display: none;
+  }
+
+  @media (max-width: 1099px) {
+    .post-index {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 20;
+      margin-inline: calc(-1 * var(--gutter));
+      background: var(--veil);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sheet-bar {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--gutter);
+      list-style: none;
+      cursor: pointer;
+      font-size: var(--text-xs);
+    }
+
+    .sheet-bar::-webkit-details-marker {
+      display: none;
+    }
+
+    .sheet-current {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--fg);
+    }
+
+    .sheet-percent {
+      color: var(--fg-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sheet-toggle {
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid var(--line-strong);
+      color: var(--fg-muted);
+    }
+
+    .index-sheet[open] .sheet-toggle {
+      color: var(--signal);
+      border-color: var(--signal);
+    }
+
+    .rec {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--signal);
+      animation: pulse 2.4s var(--ease-in-out) infinite;
+      --pulse-trough: 0.35;
+    }
+
+    .sheet-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: var(--signal);
+      transform-origin: left;
+      transform: scaleX(var(--read, 0));
+    }
+
+    .index-list {
+      max-height: min(65vh, 32rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      margin: 0 var(--gutter) var(--space-4) calc(var(--gutter) + 3px);
+    }
+
+    .index-list::after {
+      display: none;
+    }
+  }
+</style>

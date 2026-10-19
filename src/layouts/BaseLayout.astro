@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import EyeLoader from '../components/EyeLoader.astro';
 import Terminal from '../components/Terminal.astro';
+import WatchMargins from '../components/WatchMargins.astro';
 import '../styles/global.css';
 import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import monoLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
@@ -156,6 +157,7 @@ const structuredData = {
     <EyeLoader isHome={isHome} />
     <div class="grain"></div>
     <div class="scanlines"></div>
+    <WatchMargins />
     <a class="skip-link" href="#main">Skip to content</a>
     <Header />
     <main id="main" tabindex="-1">
@@ -174,6 +176,8 @@ const structuredData = {
       import { initInlineEye } from '../effects/eye-inline';
       import { initTerminal } from '../effects/terminal/terminal';
       import { initSectionIndex } from '../effects/section-index';
+      import { initReadingObserver } from '../effects/reading-observer';
+      import { initWatchMargins } from '../effects/watch-margins';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -199,6 +203,8 @@ const structuredData = {
           initInlineEye(),
           initTerminal(),
           initSectionIndex(),
+          initReadingObserver(),
+          initWatchMargins(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });

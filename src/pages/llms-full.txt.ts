@@ -1,5 +1,6 @@
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
+import { plainMarkdown } from '../lib/reading';
 import { site } from '../config/site';
 import { formatRange } from '../lib/dates';
 
@@ -44,10 +45,10 @@ export async function GET(_context: APIContext) {
       `# ${post.data.title}`,
       '',
       `- URL: ${site.url}/blog/${post.id}/`,
-      `- Author: ${p.name}`,
+      `- Author: ${post.data.authors?.join(', ') || p.name}`,
       `- Published: ${post.data.date.toISOString().slice(0, 10)}`,
       '',
-      (post.body ?? '').trim(),
+      plainMarkdown(post.body ?? '').trim(),
       '',
     ]),
   ];

@@ -18,11 +18,12 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v7
-      # Encoded AVIF/WebP images from earlier builds, so a deploy only encodes what changed.
+      # Encoded AVIF/WebP images from earlier builds, so a deploy only encodes what changed. Only the
+      # image folder: the rendered-Markdown store beside it would keep stale HTML after a plugin change.
       - name: Restore the image cache
         uses: actions/cache@v4
         with:
-          path: .cache/astro
+          path: .cache/astro/assets
           key: astro-images-${{ hashFiles('src/**/*.jpg', 'src/**/*.jpeg', 'src/**/*.png', 'src/**/*.webp', 'src/lib/images.ts') }}
           restore-keys: astro-images-
       - name: Install, build, and upload your site

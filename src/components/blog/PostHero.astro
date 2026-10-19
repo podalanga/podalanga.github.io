@@ -1,0 +1,147 @@
+---
+// The top of a post: type only, no cover image (the cover is the list thumbnail and social card,
+// and is usually one of the post's own figures, which then appears once, in context).
+import Tag from '../Tag.astro';
+import { formatDateLong } from '../../lib/dates';
+import type { ReadingStats } from '../../lib/reading';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  updated?: Date;
+  authors: string[];
+  context?: string;
+  series?: { title: string; part: number; total: number };
+  tags: string[];
+  stats: ReadingStats;
+}
+
+const { title, description, date, updated, authors, context, series, tags, stats } = Astro.props;
+const words = stats.words.toLocaleString('en-GB');
+const byline = authors.length > 1 ? `${authors.slice(0, -1).join(', ')} and ${authors.at(-1)}` : authors[0];
+---
+
+<header class="post-hero">
+  {
+    series && (
+      <p class="series mono">
+        {series.title}, part {series.part} of {series.total}
+      </p>
+    )
+  }
+  <h1 class="title">{title}</h1>
+  <p class="dek">{description}</p>
+
+  <dl class="facts">
+    <div>
+      <dt class="mono">Written by</dt>
+      <dd>{byline}</dd>
+    </div>
+    <div>
+      <dt class="mono">Published</dt>
+      <dd><time datetime={date.toISOString()}>{formatDateLong(date)}</time></dd>
+    </div>
+    {
+      updated && (
+        <div>
+          <dt class="mono">Updated</dt>
+          <dd><time datetime={updated.toISOString()}>{formatDateLong(updated)}</time></dd>
+        </div>
+      )
+    }
+    <div>
+      <dt class="mono">Reading time</dt>
+      <dd>{stats.minutes} min</dd>
+    </div>
+    <div>
+      <dt class="mono">Length</dt>
+      <dd>{words} words{stats.figures > 0 && `, ${stats.figures} figures`}</dd>
+    </div>
+  </dl>
+
+  {context && <p class="context">{context}</p>}
+
+  {
+    tags.length > 0 && (
+      <ul class="tags" aria-label="Tags">
+        {tags.map((tag) => (
+          <li>
+            <Tag label={tag} href={`/blog/tag/${tag}/`} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</header>
+
+<style>
+  .post-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-bottom: var(--space-7);
+  }
+
+  .series {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    color: var(--signal);
+  }
+
+  .title {
+    max-width: 18ch;
+    font-size: clamp(2.3rem, 1.5rem + 3.2vw, 4.4rem);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .dek {
+    max-width: 52ch;
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: var(--space-4) var(--space-5);
+    margin: var(--space-2) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .facts div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .facts dt {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  .facts dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .context {
+    max-width: 62ch;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>

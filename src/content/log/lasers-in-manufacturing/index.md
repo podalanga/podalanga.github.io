@@ -9,10 +9,14 @@ tags:
   - manufacturing
 cover: ./process-map.png
 coverAlt: "Log-log map of absorbed intensity against interaction time, with regions for transformation hardening, conduction welding, keyhole welding, cutting, drilling and ablation separated by the melting and boiling lines of iron."
+context: "Seminar for the Optical Instrumentation (OI) course. Presented by Kalidas J."
+series:
+  title: Optical Instrumentation seminar
+  part: 2
 draft: false
 ---
 
-This article is the written form of the second half of a seminar for our OI course, presented on 20 October 2026. This half, on the industrial applications of the laser in manufacturing, was presented by **Kalidas J**; the first half, on [fibre optic sensors for structural health monitoring](/blog/fibre-optic-shm), was mine. The two halves were designed around a single idea. The coherent light that lets a fibre sense a picometre of strain in a bridge is the same light that, focused by a lens, cuts steel and welds car bodies.
+This article is the written form of the second half of a seminar for our Optical Instrumentation (OI) course, presented on 20 October 2026. This half, on the industrial applications of the laser in manufacturing, was presented by **Kalidas J**; the first half, on [fibre optic sensors for structural health monitoring](/blog/fibre-optic-shm), was mine. The two halves were designed around a single idea. The coherent light that lets a fibre sense a picometre of strain in a bridge is the same light that, focused by a lens, cuts steel and welds car bodies.
 
 As with the first article, this one goes further than the seven-minute talk could. I have kept the worked examples and the reasoning behind each process.
 
@@ -72,10 +76,14 @@ _Figure 2. Focusing a laser beam of radius a with a lens of focal length f._
 
 For a beam of radius a focused by a lens of focal length f, the spot radius is approximately
 
+> [!EQUATION]
+>
 > **b ≈ λ f / a**
 
 and about 84% of the energy lies inside it. The intensity at the focus is the power divided by the spot area:
 
+> [!EQUATION]
+>
 > **I ≈ P / π b² = P a² / (π λ² f²)**
 
 Read the second form carefully, because it tells you how to design a processing head. Intensity rises with the _square_ of the beam radius and falls with the square of the focal length and of the wavelength. To get a smaller spot you can expand the beam before the lens (larger a), use a shorter focal length, or use a shorter wavelength. There is a price: the smaller the spot, the shorter the depth of focus.
@@ -84,6 +92,8 @@ Read the second form carefully, because it tells you how to design a processing 
 
 Thyagarajan and Ghatak give an example that is genuinely surprising the first time you meet it. Take a modest **1 W** Nd:YAG laser at λ = 1.06 µm, with a beam radius of a = 1 cm and a lens of focal length f = 2 cm.
 
+> [!CALC]
+>
 > b ≈ (1.06 × 10⁻⁴ cm × 2 cm) / 1 cm ≈ 2 µm
 >
 > I ≈ 1 W / (π × (2 × 10⁻⁴ cm)²) ≈ **7 × 10⁶ W/cm²**
@@ -94,17 +104,23 @@ Seven million watts per square centimetre, from one watt. For comparison, the su
 
 Real beams are not perfect. Their quality is described by the factor M², which equals 1 for an ideal Gaussian beam and is larger for worse beams. For a beam of diameter D, the focused diameter becomes
 
+> [!EQUATION]
+>
 > d_min = 4 f M² λ / (π D)
 
 so the spot grows in direct proportion to M². This is a large part of why fibre lasers, which emit close to M² = 1, cut so well.
 
-**Worked example: an industrial fibre laser.** A 2 kW fibre laser at 1.07 µm, with D = 10 mm, f = 100 mm and M² = 1.1, gives
-
-> d_min = 4 × 0.1 m × 1.1 × 1.07 × 10⁻⁶ m / (π × 0.01 m) ≈ 15 µm
+> [!EXAMPLE] Worked example: an industrial fibre laser
 >
-> I = 2000 W / (π × (7.5 × 10⁻⁴ cm)²) ≈ **1.1 × 10⁹ W/cm²**
-
-That is far above the roughly 10⁶ W/cm² needed for keyhole welding. In practice the beam is defocused or moved quickly so that the intensity suits the process. This idea, choosing intensity and time to choose the process, is developed in Section 5.
+> A 2 kW fibre laser at 1.07 µm, with D = 10 mm, f = 100 mm and M² = 1.1, gives
+>
+> > [!CALC]
+> >
+> > d_min = 4 × 0.1 m × 1.1 × 1.07 × 10⁻⁶ m / (π × 0.01 m) ≈ 15 µm
+> >
+> > I = 2000 W / (π × (7.5 × 10⁻⁴ cm)²) ≈ **1.1 × 10⁹ W/cm²**
+>
+> That is far above the roughly 10⁶ W/cm² needed for keyhole welding. In practice the beam is defocused or moved quickly so that the intensity suits the process. This idea, choosing intensity and time to choose the process, is developed in Section 5.
 
 ### 3.4 Advantages over conventional tools
 
@@ -224,6 +240,8 @@ When the energy per unit length is high enough to evaporate the metal, something
 
 How can we compare the heat economy of different welding processes? Steen and Mazumder define a **joining efficiency**,
 
+> [!EQUATION]
+>
 > joining efficiency = V t / P  (in mm²/kJ)
 
 where V is the traverse speed, t the thickness welded and P the power. It measures how much joint area is produced per unit of energy. A high value means less heat is wasted in the surrounding metal, so there is less distortion and a smaller HAZ.

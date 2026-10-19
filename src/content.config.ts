@@ -104,6 +104,12 @@ const log = defineCollection({
       tags: z.array(z.string()),
       cover: optional(image()),
       coverAlt: optional(z.string()),
+      /** Who wrote the post; blank means the site's owner. Shown in the post header and JSON-LD. */
+      authors: optional(z.array(z.string())),
+      /** Context line under the title, e.g. the course a seminar was given for. */
+      context: optional(z.string()),
+      /** Posts that belong together; the post page links to the rest of the series by `part`. */
+      series: optional(z.object({ title: z.string(), part: z.number().int().positive() })),
       attachments: optional(
         z.array(z.object({ label: z.string(), file: z.string() })),
       ),

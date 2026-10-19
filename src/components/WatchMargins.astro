@@ -1,0 +1,62 @@
+---
+// A glyph column down each edge of the screen that grows with scroll progress (watch-margins.ts).
+// Each column has a dim trail and a bright head, which is either the leading glyph or a phrase.
+---
+
+<div class="watch-margins" data-watch-margins aria-hidden="true">
+  <span class="column left" data-watch-column><span class="trail"></span><span class="head"></span></span>
+  <span class="column right" data-watch-column><span class="trail"></span><span class="head"></span></span>
+</div>
+
+<style>
+  .watch-margins {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .watch-margins {
+      display: block;
+    }
+  }
+
+  @media print {
+    .watch-margins {
+      display: none !important;
+    }
+  }
+
+  .column {
+    position: fixed;
+    z-index: 30;
+    top: calc(var(--header-h) + var(--space-3));
+    bottom: var(--space-3);
+    /* Centred in the outer gutter, clear of the content edge. */
+    --edge: calc(var(--gutter) / 2 - 0.5em);
+    overflow: hidden;
+    pointer-events: none;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: pre;
+    user-select: none;
+  }
+
+  .left {
+    left: var(--edge);
+  }
+
+  .right {
+    right: var(--edge);
+  }
+
+  .trail {
+    color: var(--signal);
+    opacity: 0.38;
+  }
+
+  .head {
+    color: var(--signal);
+  }
+</style>

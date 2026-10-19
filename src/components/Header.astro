@@ -24,7 +24,7 @@ const navItems = site.nav.map((item) => {
           navItems.map((item) => (
             <li>
               <a href={item.href} aria-current={item.active ? 'page' : undefined}>
-                {item.active && <span class="dot" aria-hidden="true">●</span>}
+                <span class="dot" aria-hidden="true">●</span>
                 <span class="mono" data-scramble={item.label}>{item.label}</span>
                 <span class="index mono">/{item.index}</span>
               </a>
@@ -47,7 +47,7 @@ const navItems = site.nav.map((item) => {
               navItems.map((item) => (
                 <li>
                   <a href={item.href} aria-current={item.active ? 'page' : undefined}>
-                    {item.active && <span class="dot" aria-hidden="true">●</span>}
+                    <span class="dot" aria-hidden="true">●</span>
                     <span class="mono">{item.label}</span>
                     <span class="index mono">/{item.index}</span>
                   </a>
@@ -86,6 +86,13 @@ const navItems = site.nav.map((item) => {
     background: var(--signal);
     transform: scaleX(0);
     transform-origin: 0 50%;
+  }
+
+  /* On wide screens the watch margins down each edge show progress instead. */
+  @media (min-width: 900px) {
+    .scroll-progress {
+      display: none;
+    }
   }
 
   .bar {
@@ -135,10 +142,18 @@ const navItems = site.nav.map((item) => {
     color: var(--fg);
   }
 
+  /* Every item keeps a slot for the dot, lit only on the current page, so moving between pages
+     never changes an item's width and the nav doesn't slide. */
   .nav-desktop a .dot,
   .nav-mobile a .dot {
     color: var(--signal);
     font-size: 0.5em;
+    visibility: hidden;
+  }
+
+  .nav-desktop a[aria-current='page'] .dot,
+  .nav-mobile a[aria-current='page'] .dot {
+    visibility: visible;
   }
 
   .nav-desktop a .index,
