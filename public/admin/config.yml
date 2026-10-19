@@ -64,6 +64,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
+            hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
       - name: body
         label: Body
         widget: markdown
@@ -192,6 +193,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
+            hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
           - {
               name: permalink,
               label: Permanent link name,
@@ -314,6 +316,7 @@ collections:
         widget: file
         media_folder: /public/media/attachments
         public_folder: /media/attachments
+        hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
         required: false
       - name: permalink
         label: Permanent link name

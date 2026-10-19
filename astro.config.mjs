@@ -5,6 +5,7 @@ import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import { blogArticlePlugin, mathBlocksAsCode } from './src/lib/blog-article.ts';
 import { collectPublished, findLockViolations, findMissingOutput, formatLockReport, readLocks } from './src/lib/locks.ts';
+import { findPhonesInSite } from './src/lib/privacy.ts';
 import { fileURLToPath } from 'node:url';
 
 const SITE = 'https://podalanga.github.io';
@@ -69,6 +70,26 @@ function lockedAddresses() {
   };
 }
 
+/**
+ * No phone number ships on a page: every page and text file the build writes is read as a visitor
+ * would see it, and any phone number or tel: link fails the build (the digits are masked in the
+ * message). PDFs are censored separately, in the CMS and again in the deploy.
+ * @returns {import('astro').AstroIntegration}
+ */
+function noPhoneNumbers() {
+  return {
+    name: 'no-phone-numbers',
+    hooks: {
+      'astro:build:done': ({ dir }) => {
+        const found = findPhonesInSite(fileURLToPath(dir));
+        if (found.length > 0) {
+          throw new Error(['A phone number would be published, so the site was not built:', ...found.map((f) => `  - ${f}`)].join('\n'));
+        }
+      },
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
@@ -83,6 +104,7 @@ export default defineConfig({
   },
   integrations: [
     lockedAddresses(),
+    noPhoneNumbers(),
     sitemap({
       filter: (page) => !page.includes('/admin') && !page.includes('/blog/tag/') && !page.includes('/docs/'),
       serialize(item) {
