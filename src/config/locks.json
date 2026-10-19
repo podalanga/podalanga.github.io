@@ -13,7 +13,8 @@
     "watch-report": "works/mechanical-watch",
     "watch-short-report": "works/mechanical-watch",
     "zbot-presentation": "works/zbot",
-    "zbot-report": "works/zbot"
+    "zbot-report": "works/zbot",
+    "resume": "hire/hire"
   },
   "pages": [
     "/blog/fibre-optic-shm",
@@ -26,6 +27,7 @@
     "/projects/rovio-underwater-rov",
     "/projects/trident-amr",
     "/projects/wheelchair-dynamics",
-    "/projects/zbot"
+    "/projects/zbot",
+    "/hire"
   ]
 }
