@@ -18,7 +18,7 @@
 // so it isn't subject to that floor. Every other measurement here (container box, transform
 // origin, lens/pivot markers) is plain px arithmetic from RENDER_FONT_PX, not `ch`/`em`, so none
 // of it depends on which font is active or how the browser sizes text either.
-import { HEAD_ART, MOUNT_ART, HEAD_ROWS, PIVOT, LENS } from '../effects/security-camera-art';
+import { HEAD_ART, MOUNT_ART, HEAD_ROWS, PIVOT, LENS, housingAxis, onAxis } from '../effects/security-camera-art';
 
 const RENDER_FONT_PX = 16;
 const CHAR_W_EM = 0.6; // JetBrains Mono's measured advance width, in ems
@@ -35,17 +35,17 @@ const renderHeightPx = TOTAL_ROWS * RENDER_FONT_PX;
 const renderLeftPx = -2 * CHAR_W_EM * RENDER_FONT_PX;
 const toEm = (cols: number) => `${(cols * CHAR_W_EM).toFixed(3)}em`;
 
-// The direction the art is *drawn* pointing, pivot -> lens, in degrees. security-camera.ts
-// subtracts it from the cursor's angle so `--angle` is 0 when the cursor sits over the resting
-// direction. It used to be measured from the two markers' `offsetTop/offsetLeft` at runtime, which
-// was both fragile (needed the boot veil and font loading to settle first) and wrong: `.lens`
-// carries a large negative centring margin that `offsetLeft/Top` include, skewing the measured
-// vector by several degrees. The art grid fully determines it, so compute it here instead — rows
-// are 1em tall (`line-height: 1em`) and columns CHAR_W_EM wide, and the +0.5 puts both markers at
-// their glyph's centre.
-const restAngleDeg =
-  (Math.atan2(LENS.row + 0.5 - PIVOT.row, (LENS.col + 0.5 - PIVOT.col) * CHAR_W_EM) * 180) /
-  Math.PI;
+// The direction the art is *drawn* pointing: the housing's centre line (see housingAxis), in
+// degrees, rows 1em tall and columns CHAR_W_EM wide. The lens dot sits on that line at the front
+// face, and `foot` is the point of the line nearest the joint: security-camera.ts measures the
+// pivot -> foot offset on screen and turns the head so the whole centre line, lens included, runs
+// through the cursor. Aiming the pivot -> lens direction instead left the body visibly off the
+// cursor, by up to 30 degrees, because the joint sits well below the housing.
+const axis = housingAxis(CHAR_W_EM);
+const restAngleDeg = axis.angle;
+const lens = onAxis(axis, (LENS.col + 0.5) * CHAR_W_EM, LENS.row + 0.5);
+const foot = onAxis(axis, PIVOT.col * CHAR_W_EM, PIVOT.row);
+const em = (v: number) => `${v.toFixed(3)}em`;
 ---
 
 <div
@@ -61,10 +61,11 @@ const restAngleDeg =
       <pre class="art">{HEAD_ART}</pre>
       <span
         class="lens"
-        style={`top:${LENS.row + 0.5}em; left:${toEm(LENS.col + 0.5)};`}
+        style={`top:${em(lens.y)}; left:${em(lens.x)};`}
       ></span>
     </div>
     <span class="pivot" data-camera-pivot style={`top:${PIVOT.row}em; left:${toEm(PIVOT.col)};`}></span>
+    <span class="pivot" data-camera-axis style={`top:${em(foot.y)}; left:${em(foot.x)};`}></span>
   </div>
 </div>
 

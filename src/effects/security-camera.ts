@@ -1,8 +1,8 @@
 // Footer security camera: turns the ASCII head toward the cursor by writing a single `--angle`
 // (degrees) custom property that drives the head layer's `rotate()` in SecurityCamera.astro. The
-// art is drawn pointing up-and-right, so the rest angle (computed from the art grid at build time
-// and handed over as `data-rest-angle`) is subtracted from the cursor's angle, keeping `--angle` at
-// 0 when the cursor sits over the drawn resting direction. The head chases the target angle on
+// rest angle (the direction of the housing's centre line as drawn, computed from the art grid at
+// build time and handed over as `data-rest-angle`) is subtracted from the aim, keeping `--angle`
+// at 0 when the cursor sits on the drawn centre line. The head chases the target angle on
 // every animation frame with a JS, delta-time-based ease rather than a CSS `transition` — a CSS
 // transition retargets from whatever was last painted, so under any jank it silently falls behind
 // or leaps ahead of where the cursor actually is; driving it from `now - lastFrameTime` each frame
@@ -12,19 +12,18 @@
 // needs no JS at all, so no-JS visitors still see a static camera.
 import { prefersReducedMotion } from '../lib/reduced-motion';
 
-// The head follows the cursor exactly: `--angle` is the cursor's direction from the pivot minus
-// the direction the art is drawn pointing. The camera sits in the footer's bottom-left corner, so
-// the cursor can be anywhere from straight up (about 52 degrees above the drawn direction) round
-// to below horizontal; every direction in that span is tracked 1:1, so the lens points right at
-// the cursor. An earlier version squashed every turn through `limit * tanh(delta / limit)` with
-// limits of -32/+38 degrees, which is only 1:1 for tiny turns: the head trailed the cursor by 5
-// degrees at 30 and by 15-20 near straight up.
+// The head turns so the housing's centre line runs through the cursor: the line a viewer reads as
+// where the camera points, with the lens dot on it. That line does not pass through the joint (the
+// housing sits above it), so aiming it is not just "rotate by the cursor's angle": the line keeps a
+// fixed perpendicular distance `offset` from the pivot as it turns, and it reaches a cursor at
+// distance r from the pivot when it is turned asin(offset / r) short of the cursor's direction.
 //
-// Past a knee at KNEE of each limit (directions the cursor can only reach far below the camera)
-// the turn eases toward the limit along a smooth tail, continuous in angle and slope with the 1:1
-// part. It is an asymptote, not a hard clamp, so the head never freezes in a dead zone.
-const MIN_ANGLE = -60;
-const MAX_ANGLE = 60;
+// The turn is bounded, as the bracket would bound a real camera: up to MIN_ANGLE above the drawn
+// pose and MAX_ANGLE below it. Inside the bounds the line hits the cursor exactly; past a knee at
+// KNEE of each bound the turn eases into it along a smooth tail, so the head slows into its stop
+// instead of hitting it, and stays within the bound however far the cursor goes.
+const MIN_ANGLE = -32;
+const MAX_ANGLE = 38;
 const KNEE = 0.9;
 const EASE_TAU_MS = 60; // ~3*TAU (180ms) to settle, matching the old CSS transition's feel
 const SETTLE_EPSILON = 0.01;
@@ -38,10 +37,15 @@ export function normalizeAngle(deg: number): number {
 
 /**
  * Head rotation, in degrees, for a cursor at (dx, dy) relative to the pivot (screen axes: +y down).
- * Pure — the unit tests drive this directly.
+ * `offset` is the centre line's signed perpendicular distance from the pivot, in the same units
+ * (positive when the line passes to the right of the pivot, looking along it). Pure: the unit
+ * tests drive this directly.
  */
-export function cameraAngle(restAngle: number, dx: number, dy: number): number {
-  const delta = normalizeAngle((Math.atan2(dy, dx) * 180) / Math.PI - restAngle);
+export function cameraAngle(restAngle: number, dx: number, dy: number, offset = 0): number {
+  const r = Math.hypot(dx, dy);
+  // A cursor closer to the pivot than the line itself can't be on it; aim as near as possible.
+  const lead = r > 0 ? Math.asin(Math.max(-1, Math.min(1, offset / r))) : 0;
+  const delta = normalizeAngle(((Math.atan2(dy, dx) - lead) * 180) / Math.PI - restAngle);
   const limit = delta < 0 ? -MIN_ANGLE : MAX_ANGLE;
   const knee = KNEE * limit;
   const size = Math.abs(delta);
@@ -56,6 +60,7 @@ export function cameraAngle(restAngle: number, dx: number, dy: number): number {
 interface Rig {
   camera: HTMLElement;
   pivot: HTMLElement;
+  axis: HTMLElement | null;
   restAngle: number;
   currentAngle: number;
 }
@@ -67,7 +72,8 @@ function buildRigs(cameras: HTMLElement[]): Rig[] {
       if (!pivot) return null;
       const restAngle = Number.parseFloat(camera.dataset.restAngle ?? '');
       if (!Number.isFinite(restAngle)) return null;
-      return { camera, pivot, restAngle, currentAngle: 0 };
+      const axis = camera.querySelector<HTMLElement>('[data-camera-axis]');
+      return { camera, pivot, axis, restAngle, currentAngle: 0 };
     })
     .filter((rig): rig is Rig => rig !== null);
 }
@@ -102,8 +108,16 @@ export function initSecurityCamera(): () => void {
 
   function targetAngle(rig: Rig): number {
     // The pivot marker is a 0x0 box, so its rect's top-left *is* its centre.
+    // The axis marker is the centre line's point nearest the pivot, in the unturned layer, so the
+    // pivot -> marker vector gives the line's offset in on-screen pixels at the current scale.
     const rect = rig.pivot.getBoundingClientRect();
-    return cameraAngle(rig.restAngle, clientX - rect.left, clientY - rect.top);
+    let offset = 0;
+    if (rig.axis) {
+      const foot = rig.axis.getBoundingClientRect();
+      const rest = (rig.restAngle * Math.PI) / 180;
+      offset = Math.cos(rest) * (foot.top - rect.top) - Math.sin(rest) * (foot.left - rect.left);
+    }
+    return cameraAngle(rig.restAngle, clientX - rect.left, clientY - rect.top, offset);
   }
 
   function tick(now: number): void {
