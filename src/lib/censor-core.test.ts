@@ -4,7 +4,6 @@
 import { readFileSync } from 'node:fs';
 import * as mupdf from 'mupdf';
 import { describe, expect, it } from 'vitest';
-// @ts-expect-error plain JS module served as-is to the admin page
 import { censorPdf, keySpans, phoneSpans } from '../../public/admin/censor-core.js';
 
 const KEY = '9876543210';
@@ -14,7 +13,7 @@ function read(bytes: Uint8Array) {
   const doc = mupdf.Document.openDocument(bytes, 'application/pdf');
   const pages = Array.from({ length: doc.countPages() }, (_, i) => doc.loadPage(i));
   return {
-    text: pages.map((p) => p.toStructuredText().asText()).join('\n'),
+    text: pages.map((p) => p.toStructuredText('preserve-whitespace').asText()).join('\n'),
     links: pages.flatMap((p) => p.getLinks().map((l) => l.getURI())),
     subject: doc.getMetaData('info:Subject') ?? '',
   };
