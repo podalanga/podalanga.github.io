@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ARROW, DECAY_MS, HOLD_MS, PHRASES, RESOLVE_MS, churn, columnFrame, linePhase, pickPhrase, visibleCells } from './watch-margins';
+import { MARKER, DECAY_MS, HOLD_MS, PHRASES, RESOLVE_MS, churn, columnFrame, linePhase, pickPhrase, visibleCells } from './watch-margins';
 
 const glyphs = 'abcdefghijklmnop'.split('');
 
@@ -8,17 +8,17 @@ describe('columnFrame', () => {
     expect(columnFrame(glyphs, 0)).toEqual({ before: '', said: '', after: '', head: '' });
   });
 
-  it('grows from the top and ends in the arrow', () => {
-    expect(columnFrame(glyphs, 1)).toEqual({ before: '', said: '', after: '', head: ARROW });
-    expect(columnFrame(glyphs, 4)).toEqual({ before: 'abc', said: '', after: '', head: ARROW });
+  it('grows from the top and ends in the dot', () => {
+    expect(columnFrame(glyphs, 1)).toEqual({ before: '', said: '', after: '', head: MARKER });
+    expect(columnFrame(glyphs, 4)).toEqual({ before: 'abc', said: '', after: '', head: MARKER });
   });
 
   it('places a line at its offset, with noise either side', () => {
-    expect(columnFrame(glyphs, 10, 'WAR', 2)).toEqual({ before: 'ab', said: 'WAR', after: 'fghi', head: ARROW });
+    expect(columnFrame(glyphs, 10, 'WAR', 2)).toEqual({ before: 'ab', said: 'WAR', after: 'fghi', head: MARKER });
   });
 
   it('drops a line that no longer fits once the column shrinks', () => {
-    expect(columnFrame(glyphs, 5, 'WAR', 2)).toEqual({ before: 'abcd', said: '', after: '', head: ARROW });
+    expect(columnFrame(glyphs, 5, 'WAR', 2)).toEqual({ before: 'abcd', said: '', after: '', head: MARKER });
   });
 });
 

@@ -1,9 +1,9 @@
 // Watch margins: a column of glyphs down each edge of the screen. Each column grows from nothing
-// at the top of the page, in step with scroll progress, ends in an arrow at the reader's place and
+// at the top of the page, in step with scroll progress, ends in a blinking dot at the reader's place and
 // stops short of the footer. The glyphs never settle: they churn while the page is still and
 // faster while it scrolls. Every few seconds each column spells out a line from Nineteen
-// Eighty-Four somewhere along its length; the line holds still (drawn inverted, see
-// WatchMargins.astro) while the noise around it keeps moving, then scrambles back into the noise.
+// Eighty-Four somewhere along its length, in the same red; the line holds still while the noise
+// around it keeps moving, then scrambles back into the noise.
 //
 // Purely decorative (`aria-hidden`), wide screens only (WatchMargins.astro hides it below 900px).
 // Under reduced motion the columns still follow the page and the footer, but nothing moves on its
@@ -25,8 +25,8 @@ export const PHRASES = [
   'WE ARE THE DEAD',
 ];
 
-/** The leading cell: where the reader is. */
-export const ARROW = '▼';
+/** The leading cell: a blinking recording dot where the reader is. */
+export const MARKER = '●';
 const TICK_MS = 45;
 /** Share of glyphs replaced per tick: a simmer when still, a boil while scrolling. */
 const CHURN_IDLE = 0.22;
@@ -88,7 +88,7 @@ export interface ColumnText {
 
 /**
  * The text of a column showing `filled` cells: noise, then `said` (the line, as far as it has
- * resolved) at `offset`, more noise, and the arrow in the last cell. A line that no longer fits
+ * resolved) at `offset`, more noise, and the dot in the last cell. A line that no longer fits
  * (the column shrank as the footer came in, or the reader scrolled back up) is left out.
  */
 export function columnFrame(glyphs: string[], filled: number, said = '', offset = 0): ColumnText {
@@ -96,13 +96,13 @@ export function columnFrame(glyphs: string[], filled: number, said = '', offset 
   if (n === 0) return { before: '', said: '', after: '', head: '' };
   const body = glyphs.slice(0, n - 1);
   if (!said || offset < 0 || offset + said.length > body.length) {
-    return { before: body.join(''), said: '', after: '', head: ARROW };
+    return { before: body.join(''), said: '', after: '', head: MARKER };
   }
   return {
     before: body.slice(0, offset).join(''),
     said,
     after: body.slice(offset + said.length).join(''),
-    head: ARROW,
+    head: MARKER,
   };
 }
 

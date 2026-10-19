@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { cameraAngle, normalizeAngle } from './security-camera';
 
 // Matches the asymptotes in security-camera.ts.
-const MIN_ANGLE = -32;
-const MAX_ANGLE = 38;
+const MIN_ANGLE = -60;
+const MAX_ANGLE = 60;
 
 // The rest direction the art is drawn in (pivot -> lens), from security-camera-art.ts:
 // PIVOT {col: 23.5, row: 14.5}, LENS {col: 44, row: 4}, CHAR_W_EM 0.6 -> up and to the right.
@@ -32,6 +32,15 @@ describe('normalizeAngle', () => {
 describe('cameraAngle', () => {
   it('is 0 when the cursor lies along the drawn resting direction', () => {
     expect(cameraAngle(REST, ...at(REST))).toBeCloseTo(0, 6);
+  });
+
+  it('points exactly at the cursor across every direction the cursor can take on screen', () => {
+    // From straight up (about -52 from rest, the camera being in the bottom-left corner) round to
+    // well below horizontal: no lag anywhere in that span.
+    for (let d = -53; d <= 53; d += 1) {
+      expect(cameraAngle(REST, ...at(REST + d))).toBeCloseTo(d, 6);
+    }
+    expect(cameraAngle(REST, ...at(-90))).toBeCloseTo(-90 - REST, 6);
   });
 
   it('turns the head up when the cursor is above the rest direction', () => {
