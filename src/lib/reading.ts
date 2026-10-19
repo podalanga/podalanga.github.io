@@ -20,6 +20,8 @@ export interface TocEntry {
 function proseOf(markdown: string): string {
   return markdown
     .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/\$\$[\s\S]*?\$\$/g, ' ') // display math: counted as nothing, like a figure
+    .replace(/\$[^$\n]+\$/g, ' x ') // inline math: one word
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images: the alt text is not read inline
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links keep their text
     .replace(/\[![A-Z]+\]/gi, ' ') // article markers such as [!EQUATION]

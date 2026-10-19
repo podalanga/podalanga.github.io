@@ -8,6 +8,7 @@ import PostEnd from '../../components/blog/PostEnd.astro';
 import FigureZoom from '../../components/blog/FigureZoom.astro';
 import { getImage } from 'astro:assets';
 import { readingStats, tableOfContents } from '../../lib/reading';
+import 'katex/dist/katex.min.css';
 import '../../styles/article.css';
 import { site } from '../../config/site';
 import { PERSON_ID, WEBSITE_ID, absoluteUrl, breadcrumbNode, pageTitle } from '../../lib/seo';

@@ -1,9 +1,9 @@
 import { markdownToHtml } from 'satteri';
 import { describe, expect, it } from 'vitest';
-import { blogArticlePlugin } from './blog-article';
+import { blogArticlePlugin, mathBlocksAsCode } from './blog-article';
 
 async function html(md: string, path = '/site/src/content/log/post/index.md'): Promise<string> {
-  const result = await markdownToHtml(md, { hastPlugins: [blogArticlePlugin], fileURL: new URL(`file://${path}`) });
+  const result = await markdownToHtml(md, { features: { math: true }, mdastPlugins: [mathBlocksAsCode], hastPlugins: [blogArticlePlugin], fileURL: new URL(`file://${path}`) });
   return result.html;
 }
 
@@ -47,6 +47,43 @@ describe('blogArticlePlugin', () => {
   it('sets plain-text subscripts, but not in code or ordinary words', async () => {
     const out = await html('Here Δλ_B and d_min, K_ε1, but not snake_case_name or `n_eff`.');
     expect(out).toContain('Δλ<sub>B</sub> and d<sub>min</sub>, K<sub>ε1</sub>, but not snake_case_name or <code>n_eff</code>.');
+  });
+
+  it('typesets inline and display math with KaTeX', async () => {
+    const out = await html('Inline $\\lambda_B$ here.\n\n$$\nz = \\frac{c\\,t}{2n}\n$$');
+    expect(out).toMatch(/<p>Inline <span class="katex">.*<\/span> here\.<\/p>/s);
+    expect(out).toContain('<div class="eq" id="eq-1"><div class="eq-body"><span class="katex-display">');
+    expect(out).toContain('<span class="eq-no">(1)</span>');
+    expect(out).toContain('<annotation encoding="application/x-tex">z = \\frac{c\\,t}{2n}</annotation>');
+    expect(out).not.toContain('language-math');
+  });
+
+  it('numbers top-level display math and [!EQUATION] blocks in one sequence', async () => {
+    const out = await html('$$\na\n$$\n\n> [!EQUATION]\n>\n> $$\n> b\n> $$\n\n$$\nc\n$$');
+    expect(out.match(/class="eq-no"/g)).toHaveLength(3);
+    expect(out).toContain('<span class="eq-no">(3)</span>');
+  });
+
+  it('leaves display math in an example unnumbered, as a working line', async () => {
+    const out = await html('> [!EXAMPLE] One watt\n>\n> Take a laser.\n>\n> $$\n> I = 7\\times10^6\n> $$');
+    expect(out).toContain('<div class="eq eq--calc"><div class="eq-body"><span class="katex-display">');
+    expect(out).not.toContain('eq-no');
+  });
+
+  it('lets \\tag replace the automatic number', async () => {
+    const out = await html('$$\nE = mc^2 \\tag{A}\n$$');
+    expect(out).toContain('class="eq eq--tagged"');
+    expect(out).not.toContain('eq-no');
+  });
+
+  it('renders aligned multi-line math', async () => {
+    const out = await html('$$\n\\begin{aligned} a &= b \\\\ c &= d \\end{aligned}\n$$');
+    expect(out).toContain('mtable');
+  });
+
+  it('shows broken TeX as source instead of failing', async () => {
+    const out = await html('$$\n\\frac{1}{\n$$');
+    expect(out).toContain('katex-error');
   });
 
   it('leaves Markdown outside the blog alone', async () => {

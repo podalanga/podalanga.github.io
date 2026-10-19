@@ -1,11 +1,12 @@
 ---
-// A glyph column down each edge of the screen that grows with scroll progress (watch-margins.ts).
-// Each column has a dim trail and a bright head, which is either the leading glyph or a phrase.
+// A glyph column down each edge of the screen that grows with scroll progress and stops above the
+// footer (watch-margins.ts). Dim noise, a line from 1984 when one is showing, more noise, and the
+// bright leading glyph.
 ---
 
 <div class="watch-margins" data-watch-margins aria-hidden="true">
-  <span class="column left" data-watch-column><span class="trail"></span><span class="head"></span></span>
-  <span class="column right" data-watch-column><span class="trail"></span><span class="head"></span></span>
+  <span class="column left" data-watch-column><span class="before"></span><span class="said"></span><span class="after"></span><span class="head"></span></span>
+  <span class="column right" data-watch-column><span class="before"></span><span class="said"></span><span class="after"></span><span class="head"></span></span>
 </div>
 
 <style>
@@ -30,8 +31,8 @@
     z-index: 30;
     top: calc(var(--header-h) + var(--space-3));
     bottom: var(--space-3);
-    /* Centred in the outer gutter, clear of the content edge. */
-    --edge: calc(var(--gutter) / 2 - 0.5em);
+    /* Hard against the edges of the window (the right one just inside the scrollbar). */
+    --edge: 4px;
     overflow: hidden;
     pointer-events: none;
     font-family: var(--font-mono);
@@ -51,12 +52,18 @@
     right: var(--edge);
   }
 
-  .trail {
+  .before,
+  .after {
     color: var(--signal);
     opacity: 0.38;
   }
 
-  .head {
+  .head,
+  .said {
     color: var(--signal);
+  }
+
+  .said {
+    text-shadow: 0 0 6px color-mix(in srgb, var(--signal) 55%, transparent);
   }
 </style>

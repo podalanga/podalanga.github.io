@@ -105,9 +105,9 @@ The UV light breaks germanium–oxygen bonds and raises the core index by roughl
 
 Why does a grating reflect only one wavelength? Consider what happens at each step in refractive index. Every step reflects a very small fraction of the light, as any change in index does. For most wavelengths these small reflections arrive back with random phases and cancel. But if the round-trip optical path between successive steps is exactly one wavelength, every reflection arrives in phase with the others, and they add up to a strong reflection. The round-trip path over one period Λ is 2 n_eff Λ, which gives the **Bragg condition**:
 
-> [!EQUATION]
->
-> **λ_B = 2 n_eff Λ**
+$$
+\lambda_B = 2\,n_{\text{eff}}\,\Lambda
+$$
 
 Here λ_B is the Bragg wavelength, n_eff is the effective refractive index of the guided mode in the core, and Λ is the grating period. For n_eff = 1.447 and λ_B = 1550 nm, the period is Λ = 1550 / (2 × 1.447) ≈ 535.6 nm, a little over half a micrometre.
 
@@ -121,17 +121,17 @@ For completeness: coupled-mode theory gives the peak reflectivity as R = tanh²(
 
 This is the heart of the sensor, so it is worth deriving carefully. Start from the Bragg condition and take a small change. Because λ_B is a product of n and Λ, its fractional change is the sum of their fractional changes:
 
-> [!EQUATION]
->
-> Δλ_B / λ_B = Δn / n + ΔΛ / Λ
+$$
+\frac{\Delta\lambda_B}{\lambda_B} = \frac{\Delta n}{n} + \frac{\Delta\Lambda}{\Lambda}
+$$
 
 Now ask what strain and temperature each do to these two terms.
 
 **Strain.** If the fibre is stretched by a strain ε, the grating period stretches with it, so ΔΛ/Λ = ε. At the same time, the photo-elastic effect slightly _lowers_ the refractive index: Δn/n = −p_e ε. The effective photo-elastic coefficient for silica is
 
-> [!EQUATION]
->
-> p_e = (n² / 2) [P₁₂ − ν (P₁₁ + P₁₂)] ≈ 0.22
+$$
+p_e = \frac{n^2}{2}\left[P_{12} - \nu\,(P_{11} + P_{12})\right] \approx 0.22
+$$
 
 where P₁₁ = 0.126 and P₁₂ = 0.274 are the Pockels coefficients and ν = 0.17 is Poisson's ratio. The two effects partly cancel, leaving (1 − p_e) ε ≈ 0.78 ε.
 
@@ -139,9 +139,9 @@ where P₁₁ = 0.126 and P₁₂ = 0.274 are the Pockels coefficients and ν = 
 
 Putting the two together gives the fundamental equation of FBG sensing:
 
-> [!EQUATION]
->
-> **Δλ_B / λ_B = (1 − p_e) ε + (α + ξ) ΔT**
+$$
+\frac{\Delta\lambda_B}{\lambda_B} = (1 - p_e)\,\varepsilon + (\alpha + \xi)\,\Delta T
+$$
 
 ![A grating stretched by strain, and its reflected peak moving from 1550 nm to about 1550.3 nm after 250 microstrain.](./fbg-shift.png)
 
@@ -166,9 +166,9 @@ It is one thing to state the equation and another to feel the numbers, so let us
 >
 > The bottom flange of a girder sees ε = 250 µε as a truck crosses. The shift is
 >
-> > [!CALC]
-> >
-> > Δλ = 1550 nm × 0.78 × 250 × 10⁻⁶ ≈ 0.30 nm
+> $$
+> \Delta\lambda = 1550\ \text{nm} \times 0.78 \times 250 \times 10^{-6} \approx \mathbf{0.30\ nm}
+> $$
 >
 > A shift of a third of a nanometre is easily measured.
 
@@ -192,17 +192,17 @@ _Figure 3. Temperature compensation with a strain-free reference grating._
 
 There is one subtlety. When the grating is bonded to a structure, the structure's own thermal expansion stretches the fibre and appears as strain. For a grating on steel, Chan et al. write
 
-> [!EQUATION]
->
-> Δλ_B / λ_B = (1 − p_e) ε + (1 − p_e) α_s ΔT + ξ ΔT
+$$
+\frac{\Delta\lambda_B}{\lambda_B} = (1 - p_e)\,\varepsilon + (1 - p_e)\,\alpha_s\,\Delta T + \xi\,\Delta T
+$$
 
 where α_s ≈ 12 × 10⁻⁶ K⁻¹ is the expansion coefficient of steel. Whether this "apparent strain" should be removed depends on whether you want the mechanical strain or the total strain.
 
 An alternative is to use two collocated sensors with _different_ sensitivities, such as an FBG paired with a long-period grating. Their responses form a 2 × 2 system,
 
-> [!EQUATION]
->
-> [Δλ₁ ; Δλ₂] = [K_ε1 K_T1 ; K_ε2 K_T2] [ε ; ΔT]
+$$
+\begin{bmatrix} \Delta\lambda_1 \\ \Delta\lambda_2 \end{bmatrix} = \begin{bmatrix} K_{\varepsilon 1} & K_{T1} \\ K_{\varepsilon 2} & K_{T2} \end{bmatrix} \begin{bmatrix} \varepsilon \\ \Delta T \end{bmatrix}
+$$
 
 which can be inverted provided the determinant is not zero. An FBG and long-period grating pair achieved errors of about 9 µε and 1.5 °C.
 
@@ -237,9 +237,9 @@ An FBG array measures at points, and between those points it is blind. A crack c
 
 The idea is borrowed from radar. A short laser pulse is launched into the fibre. As it travels, a small part of its light is scattered back from every point. Light scattered from further away takes longer to return, so the arrival time t gives the position z. Remembering that the light travels there and back:
 
-> [!EQUATION]
->
-> **z = c t / 2n** and **Δz = c τ / 2n**
+$$
+z = \frac{c\,t}{2n} \qquad \Delta z = \frac{c\,\tau}{2n}
+$$
 
 where n is the refractive index of the fibre and τ is the pulse width, which sets the spatial resolution Δz.
 
@@ -269,9 +269,9 @@ Lines shifted to lower frequency are called **Stokes** lines (the photon gives e
 
 The ratio of anti-Stokes to Stokes Raman intensity follows the thermal (Boltzmann) population of the vibrational levels:
 
-> [!EQUATION]
->
-> I_aS / I_S = (λ_S / λ_aS)⁴ exp(−ħω_M / k_B T)
+$$
+\frac{I_{aS}}{I_S} = \left(\frac{\lambda_S}{\lambda_{aS}}\right)^{4} \exp\!\left(-\frac{\hbar\,\omega_M}{k_B\,T}\right)
+$$
 
 This ratio changes by about 0.7% per degree near room temperature. Because it depends only on T, Raman sensing measures temperature and **cannot** measure strain. The signal is weak, so multimode fibre is used, and typical systems reach 8 to 10 km with 1 m resolution and 0.2 °C precision. Applications include fire detection in tunnels, leak detection in pipelines and seepage in dams.
 
@@ -279,17 +279,21 @@ This ratio changes by about 0.7% per degree near room temperature. Because it de
 
 Brillouin scattering is the one that matters most for structures. Thermally excited sound waves in the glass form a moving grating of density. Light diffracted by this moving grating is Doppler shifted by
 
-> [!EQUATION]
->
-> **ν_B = 2 n V_a / λ**
+$$
+\nu_B = \frac{2\,n\,V_a}{\lambda}
+$$
 
 where V_a is the acoustic velocity. With n = 1.45, V_a ≈ 5800 m/s and λ = 1550 nm, ν_B ≈ 10.85 GHz, close to the 10.861 GHz measured in standard SMF-28 fibre.
 
 The acoustic velocity depends on the density and elastic moduli of the glass, both of which change with strain and temperature. Therefore
 
-> [!EQUATION]
->
-> **Δν_B = C_ε Δε + C_T ΔT,** with C_ε = 0.056 MHz/µε and C_T = 1.26 MHz/°C
+$$
+\begin{aligned}
+\Delta\nu_B &= C_\varepsilon\,\Delta\varepsilon + C_T\,\Delta T \\
+C_\varepsilon &= 0.056\ \text{MHz}/\mu\varepsilon \\
+C_T &= 1.26\ \text{MHz}/{}^{\circ}\text{C}
+\end{aligned}
+$$
 
 So 1000 µε shifts the Brillouin frequency by 56 MHz, and 10 °C shifts it by 12.6 MHz.
 
@@ -351,9 +355,12 @@ _Figure 10. Curvature from a parallel pair of sensors._
 
 Two parallel sensors at a vertical distance h apart, one near the top and one near the bottom of a member, give its curvature:
 
-> [!EQUATION]
->
-> κ = 1/r = (ε_b − ε_t) / h, and the bending moment M = E I κ
+$$
+\begin{aligned}
+\kappa &= \frac{1}{r} = \frac{\varepsilon_b - \varepsilon_t}{h} \\
+M &= E\,I\,\kappa \quad \text{(bending moment)}
+\end{aligned}
+$$
 
 Integrating the curvature twice along the span gives the deflected shape. On the I-10 bridge in New Mexico, the camber computed this way was 82.5 mm against 85 mm measured directly, a very satisfying agreement.
 

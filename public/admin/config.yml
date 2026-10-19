@@ -23,6 +23,7 @@ collections:
   - name: log
     label: Log (Blog)
     label_singular: Log entry
+    description: 'Published posts are locked: deleting one or turning it back into a draft stops the site from building, so its address keeps working. To retire one, remove it from src/config/locks.json first.'
     folder: /src/content/log
     path: '{{slug}}/index'
     media_folder: ''
@@ -63,7 +64,18 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
-      - { name: body, label: Body, widget: markdown }
+      - name: body
+        label: Body
+        widget: markdown
+        # Plain Markdown only. The rich-text editor rewrites Markdown on save: it drops the
+        # backslashes in LaTeX (\, becomes , and \\ becomes \) and nests the blank lines of
+        # "> [!EXAMPLE]" quotes one level deeper, which breaks equations and worked examples.
+        modes: [raw]
+        hint: >-
+          Plain Markdown. Math: `$\lambda_B$` inline; a `$$ … $$` block on its own lines is a
+          numbered equation, and inside a `> [!EXAMPLE] Title` quote it is an unnumbered working
+          line. Figures: an image, then a line `_Figure N. Caption._`. The preview here shows math
+          as TeX; the site typesets it.
 
   - name: archive
     label: Archive
@@ -95,6 +107,7 @@ collections:
   - name: works
     label: Works
     label_singular: Work
+    description: 'Published projects are locked: deleting one stops the site from building, so its address keeps working. To retire one, remove it from src/config/locks.json first.'
     folder: /src/content/works
     path: '{{slug}}/index'
     media_folder: ''
@@ -185,7 +198,7 @@ collections:
               widget: string,
               required: false,
               pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. rovio-report'],
-              hint: 'Set once and never change: the document is published at /docs/<name>.pdf, whatever file you upload; an external link (e.g. Canva) is forwarded from /docs/<name>/ instead. Safe to put on a resume. Must be unique across all projects.',
+              hint: 'Published at /docs/<name>.pdf, whatever file you upload; an external link (e.g. Canva) is forwarded from /docs/<name>/ instead. Safe to put on a resume. Must be unique across all projects. Locked once published: after the next deploy, changing, clearing or moving this name stops the site from building. Choose it carefully; to retire one, remove it from src/config/locks.json.',
             }
           - { name: pages, label: Page count override, widget: number, value_type: int, min: 1, required: false, hint: 'Counted automatically from the PDF (pages, or slides for a presentation). Fill in only to override.' }
       - { name: featured, label: Featured, widget: boolean, default: false }
@@ -307,5 +320,5 @@ collections:
         widget: string
         required: false
         pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. cswa-certificate']
-        hint: 'Set once and never change: the certificate is published at /docs/<name>.pdf (or forwarded to an external URL). Must be unique across all permanent links.'
+        hint: 'Published at /docs/<name>.pdf (or forwarded to an external URL). Must be unique across all permanent links. Locked once published: after the next deploy, changing, clearing or moving this name stops the site from building. To retire one, remove it from src/config/locks.json.'
 

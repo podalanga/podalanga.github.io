@@ -76,15 +76,15 @@ _Figure 2. Focusing a laser beam of radius a with a lens of focal length f._
 
 For a beam of radius a focused by a lens of focal length f, the spot radius is approximately
 
-> [!EQUATION]
->
-> **b ≈ λ f / a**
+$$
+b \approx \frac{\lambda\,f}{a}
+$$
 
 and about 84% of the energy lies inside it. The intensity at the focus is the power divided by the spot area:
 
-> [!EQUATION]
->
-> **I ≈ P / π b² = P a² / (π λ² f²)**
+$$
+I \approx \frac{P}{\pi\,b^2} = \frac{P\,a^2}{\pi\,\lambda^2 f^2}
+$$
 
 Read the second form carefully, because it tells you how to design a processing head. Intensity rises with the _square_ of the beam radius and falls with the square of the focal length and of the wavelength. To get a smaller spot you can expand the beam before the lens (larger a), use a shorter focal length, or use a shorter wavelength. There is a price: the smaller the spot, the shorter the depth of focus.
 
@@ -94,9 +94,12 @@ Thyagarajan and Ghatak give an example that is genuinely surprising the first ti
 
 > [!CALC]
 >
-> b ≈ (1.06 × 10⁻⁴ cm × 2 cm) / 1 cm ≈ 2 µm
->
-> I ≈ 1 W / (π × (2 × 10⁻⁴ cm)²) ≈ **7 × 10⁶ W/cm²**
+> $$
+> \begin{aligned}
+> b &\approx \frac{1.06\times10^{-4}\ \text{cm} \times 2\ \text{cm}}{1\ \text{cm}} \approx 2\ \mu\text{m} \\
+> I &\approx \frac{1\ \text{W}}{\pi\,(2\times10^{-4}\ \text{cm})^2} \approx \mathbf{7\times10^{6}\ W/cm^2}
+> \end{aligned}
+> $$
 
 Seven million watts per square centimetre, from one watt. For comparison, the surface of the sun radiates about 6 kW/cm².
 
@@ -104,9 +107,9 @@ Seven million watts per square centimetre, from one watt. For comparison, the su
 
 Real beams are not perfect. Their quality is described by the factor M², which equals 1 for an ideal Gaussian beam and is larger for worse beams. For a beam of diameter D, the focused diameter becomes
 
-> [!EQUATION]
->
-> d_min = 4 f M² λ / (π D)
+$$
+d_{\min} = \frac{4\,f\,M^2\,\lambda}{\pi\,D}
+$$
 
 so the spot grows in direct proportion to M². This is a large part of why fibre lasers, which emit close to M² = 1, cut so well.
 
@@ -114,11 +117,12 @@ so the spot grows in direct proportion to M². This is a large part of why fibre
 >
 > A 2 kW fibre laser at 1.07 µm, with D = 10 mm, f = 100 mm and M² = 1.1, gives
 >
-> > [!CALC]
-> >
-> > d_min = 4 × 0.1 m × 1.1 × 1.07 × 10⁻⁶ m / (π × 0.01 m) ≈ 15 µm
-> >
-> > I = 2000 W / (π × (7.5 × 10⁻⁴ cm)²) ≈ **1.1 × 10⁹ W/cm²**
+> $$
+> \begin{aligned}
+> d_{\min} &= \frac{4 \times 0.1\ \text{m} \times 1.1 \times 1.07\times10^{-6}\ \text{m}}{\pi \times 0.01\ \text{m}} \approx 15\ \mu\text{m} \\
+> I &= \frac{2000\ \text{W}}{\pi\,(7.5\times10^{-4}\ \text{cm})^2} \approx \mathbf{1.1\times10^{9}\ W/cm^2}
+> \end{aligned}
+> $$
 >
 > That is far above the roughly 10⁶ W/cm² needed for keyhole welding. In practice the beam is defocused or moved quickly so that the intensity suits the process. This idea, choosing intensity and time to choose the process, is developed in Section 5.
 
@@ -240,9 +244,9 @@ When the energy per unit length is high enough to evaporate the metal, something
 
 How can we compare the heat economy of different welding processes? Steen and Mazumder define a **joining efficiency**,
 
-> [!EQUATION]
->
-> joining efficiency = V t / P  (in mm²/kJ)
+$$
+\text{joining efficiency} = \frac{V\,t}{P} \qquad (\text{mm}^2/\text{kJ})
+$$
 
 where V is the traverse speed, t the thickness welded and P the power. It measures how much joint area is produced per unit of energy. A high value means less heat is wasted in the surrounding metal, so there is less distortion and a smaller HAZ.
 

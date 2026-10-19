@@ -488,3 +488,56 @@ html[data-theme='light'] .fig-frame img {
   font-size: 0.72em;
   line-height: 0;
 }
+
+/* ---- Typeset math (KaTeX, rendered at build time) ------------------------ */
+
+.eq .katex-display {
+  margin: 0;
+  padding-block: 0.2em;
+  text-align: left;
+}
+
+/* On a phone a long formula scrolls sideways inside its box rather than widening the page. On
+   wider screens every formula fits, and KaTeX's own sub-pixel overhang would only add a stray
+   scrollbar, so it is left visible. */
+@media (max-width: 640px) {
+  .eq .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+}
+
+.eq .katex-display > .katex {
+  text-align: left;
+}
+
+.eq .katex {
+  font-size: 1.16em;
+  color: var(--fg);
+}
+
+.eq--calc .katex {
+  font-size: 1.04em;
+}
+
+/* The result of a working line, written `\mathbf{…}` in the TeX, is the figure that matters. */
+.eq--calc .mathbf {
+  color: var(--signal);
+}
+
+.article-body p .katex,
+.article-body li .katex {
+  font-size: 1.06em;
+}
+
+@media (max-width: 640px) {
+  .eq .katex {
+    font-size: 1em;
+  }
+
+  .eq--calc .katex {
+    font-size: 0.92em;
+  }
+}
