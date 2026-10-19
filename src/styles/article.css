@@ -1,0 +1,490 @@
+/* Long-form article typography for blog posts. The Markdown is shaped into these components by
+   src/lib/blog-article.ts: numbered headings, figures, equations, worked examples, table boxes. */
+
+.article-body {
+  --article-measure: 40rem;
+  /* Figures and tables may run past the text into the right-hand margin. */
+  --article-wide: min(100%, 54rem);
+  --article-size: clamp(1.0625rem, 1rem + 0.22vw, 1.1875rem);
+
+  font-size: var(--article-size);
+  line-height: 1.72;
+}
+
+.article-body > * {
+  max-width: var(--article-measure);
+  margin-block: 0;
+}
+
+.article-body > * + * {
+  margin-top: 1.15em;
+}
+
+/* The opening paragraph sets the tone: a size up, full contrast. */
+.article-body > p:first-child {
+  font-size: 1.16em;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+.article-body p,
+.article-body li {
+  hanging-punctuation: first;
+}
+
+.article-body strong {
+  font-weight: 650;
+  color: var(--fg);
+}
+
+.article-body em {
+  font-style: italic;
+}
+
+.article-body a {
+  color: var(--fg);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--signal) 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.article-body a:hover {
+  color: var(--signal);
+  text-decoration-color: var(--signal);
+}
+
+/* ---- Headings ----------------------------------------------------------- */
+
+.article-body h2,
+.article-body h3 {
+  position: relative;
+  scroll-margin-top: calc(var(--header-h) + var(--space-8));
+  text-wrap: balance;
+}
+
+.article-body h2 {
+  margin-top: var(--space-9);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.55rem, 1.25rem + 1.1vw, 2.15rem);
+  font-variation-settings: 'wdth' var(--stretch-display);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.article-body h2 + * {
+  margin-top: var(--space-5);
+}
+
+.article-body h3 {
+  margin-top: var(--space-7);
+  font-size: 1.15em;
+  font-weight: 750;
+  line-height: var(--leading-snug);
+}
+
+.article-body h3 + * {
+  margin-top: var(--space-3);
+}
+
+/* Section numbers: the chapter number sits above an h2 in signal red; an h3 keeps its number
+   inline, quiet, in mono. The trailing dot stays in the DOM (heading ids depend on it). */
+.article-body .sec-no {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-normal);
+  font-variant-numeric: tabular-nums;
+}
+
+.article-body .sec-dot {
+  display: none;
+}
+
+.article-body h2 .sec-no {
+  display: block;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--signal);
+  font-variation-settings: normal;
+}
+
+.article-body h3 .sec-no {
+  margin-right: 0.5em;
+  font-size: 0.78em;
+  color: var(--fg-muted);
+}
+
+/* References and the closing note after the rule. */
+.article-body hr {
+  max-width: var(--article-measure);
+  margin-top: var(--space-9);
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.article-body hr + h3 {
+  margin-top: var(--space-6);
+}
+
+/* ---- Lists -------------------------------------------------------------- */
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.4em;
+}
+
+.article-body li + li {
+  margin-top: 0.55em;
+}
+
+.article-body ul > li::marker {
+  content: '■  ';
+  font-size: 0.6em;
+  color: var(--signal);
+}
+
+.article-body ol > li::marker {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--fg-muted);
+}
+
+/* Reference lists: smaller, numbered in mono. */
+.article-body #references ~ ol {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--fg-muted);
+}
+
+.article-body #references ~ p:last-child {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+/* ---- Run-in heads ------------------------------------------------------- */
+
+.article-body p.runin > strong:first-child {
+  font-weight: 750;
+  font-variation-settings: 'wdth' 112;
+}
+
+/* ---- Figures ------------------------------------------------------------ */
+
+.article-body > .fig {
+  max-width: var(--article-wide);
+  margin-block: var(--space-7);
+}
+
+/* A viewfinder: the diagram mounted on a white plate inside four corner marks that turn red when
+   the figure can be opened. Diagrams are drawn on white, so the plate keeps them from glaring
+   against the dark page without tinting them. */
+.fig-frame {
+  --corner: var(--line-strong);
+  --arm: 14px;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--space-4);
+  border: 0;
+  background:
+    linear-gradient(var(--corner), var(--corner)) top left / var(--arm) 1px no-repeat,
+    linear-gradient(var(--corner), var(--corner)) top left / 1px var(--arm) no-repeat,
+    linear-gradient(var(--corner), var(--corner)) top right / var(--arm) 1px no-repeat,
+    linear-gradient(var(--corner), var(--corner)) top right / 1px var(--arm) no-repeat,
+    linear-gradient(var(--corner), var(--corner)) bottom left / var(--arm) 1px no-repeat,
+    linear-gradient(var(--corner), var(--corner)) bottom left / 1px var(--arm) no-repeat,
+    linear-gradient(var(--corner), var(--corner)) bottom right / var(--arm) 1px no-repeat,
+    linear-gradient(var(--corner), var(--corner)) bottom right / 1px var(--arm) no-repeat;
+  cursor: zoom-in;
+  transition: --corner var(--dur) var(--ease-out);
+}
+
+@property --corner {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3a3a3a;
+}
+
+.fig-frame:hover,
+.fig-frame:focus-visible {
+  --corner: var(--signal);
+}
+
+.fig-frame:focus-visible {
+  outline-offset: 4px;
+}
+
+.fig-frame img {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+html[data-theme='light'] .fig-frame img {
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.fig figcaption {
+  display: flex;
+  gap: var(--space-3);
+  max-width: var(--article-measure);
+  margin-top: var(--space-2);
+  padding-inline: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--fg-muted);
+}
+
+.fig-no {
+  flex: none;
+  padding-top: 0.12em;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+/* ---- Equations ---------------------------------------------------------- */
+
+.article-body > .eq {
+  margin-block: var(--space-6);
+}
+
+.eq {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-left: 2px solid var(--signal);
+  background: linear-gradient(to right, var(--signal-dim), transparent 70%);
+}
+
+.eq-body {
+  min-width: 0;
+  font-size: 1.12em;
+  font-weight: 550;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.eq-body > * + * {
+  margin-top: var(--space-2);
+}
+
+.eq-body strong {
+  font-weight: inherit;
+}
+
+.eq-no {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+/* Working lines: unnumbered, quieter, the arithmetic of an example. */
+.eq--calc {
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
+  border-left: 1px solid var(--line-strong);
+  background: none;
+}
+
+.eq--calc .eq-body {
+  font-size: 1em;
+  font-weight: 450;
+}
+
+.eq--calc .eq-body strong {
+  font-weight: 700;
+  color: var(--signal);
+}
+
+.article-body > .eq--calc {
+  margin-block: var(--space-5);
+}
+
+/* ---- Worked examples ---------------------------------------------------- */
+
+.article-body > .example {
+  margin-block: var(--space-6);
+}
+
+.example {
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+}
+
+.example > * + * {
+  margin-top: 0.9em;
+}
+
+.example-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-weight: 750;
+  font-variation-settings: 'wdth' 112;
+  line-height: var(--leading-snug);
+  color: var(--fg);
+}
+
+.example-title::before {
+  content: '';
+  flex: none;
+  width: 0.55em;
+  height: 0.55em;
+  border: 1px solid var(--signal);
+  transform: translateY(-0.05em);
+}
+
+/* Consecutive examples read as one set. */
+.article-body > .example + .example {
+  margin-top: calc(-1 * var(--space-6) + var(--space-3));
+}
+
+/* ---- Notes and key statements ------------------------------------------ */
+
+.note {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--line-strong);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.key {
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--line);
+  font-size: 1.2em;
+  font-weight: 650;
+  line-height: var(--leading-snug);
+  font-variation-settings: 'wdth' 112;
+}
+
+/* ---- Quotations --------------------------------------------------------- */
+
+.article-body blockquote {
+  margin-inline: 0;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--line-strong);
+  color: var(--fg-muted);
+}
+
+/* ---- Tables ------------------------------------------------------------- */
+
+.article-body > .table-wrap {
+  max-width: var(--article-wide);
+  margin-block: var(--space-6);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.table-wrap:focus-visible {
+  outline-offset: 4px;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  font-variant-numeric: tabular-nums;
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: 0.7rem var(--space-4) 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table-wrap th {
+  padding-top: 0;
+  border-bottom-color: var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: var(--tracking-normal);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.table-wrap td:first-child {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.table-wrap td {
+  color: var(--fg-muted);
+}
+
+.table-wrap tbody tr {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.table-wrap tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+@media (max-width: 640px) {
+  .table-wrap table {
+    min-width: 32rem;
+  }
+
+  .article-body > .fig {
+    margin-inline: calc(-1 * var(--space-4));
+    max-width: none;
+  }
+
+  .fig-frame {
+    padding: var(--space-3);
+  }
+
+  .example {
+    padding: var(--space-4);
+  }
+
+  .eq {
+    padding-inline: var(--space-4);
+  }
+}
+
+/* ---- Code --------------------------------------------------------------- */
+
+.article-body code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.1em 0.3em;
+  background: var(--bg-raised);
+}
+
+.article-body pre {
+  max-width: var(--article-wide);
+  padding: var(--space-4);
+  background: var(--bg-raised);
+  border-left: 2px solid var(--signal);
+  overflow-x: auto;
+}
+
+.article-body pre code {
+  padding: 0;
+  background: none;
+  font-size: var(--text-sm);
+}
+
+.article-body sub,
+.article-body sup {
+  font-size: 0.72em;
+  line-height: 0;
+}

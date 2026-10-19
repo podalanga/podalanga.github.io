@@ -1,48 +1,111 @@
 ---
+// A post in a list. `lead` is the large first entry on the blog index: cover beside the title.
+// Otherwise a row: text on the left, a small cover on the right.
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import Tag from './Tag.astro';
 import { formatDateLong } from '../lib/dates';
+import { IMAGE_QUALITY } from '../lib/images';
+import { readingStats } from '../lib/reading';
 
 interface Props {
-  slug: string;
-  title: string;
-  date: Date;
-  description: string;
-  tags: string[];
+  post: CollectionEntry<'log'>;
+  lead?: boolean;
 }
 
-const { slug, title, date, description, tags } = Astro.props;
+const { post, lead = false } = Astro.props;
+const { data } = post;
+const href = `/blog/${post.id}/`;
+const { minutes } = readingStats(post.body ?? '');
+const Heading = lead ? 'h2' : 'h3';
 ---
 
-<article class="post-card">
-  <p class="date mono">{formatDateLong(date)}</p>
-  <h3 class="title"><a href={`/blog/${slug}/`}>{title}</a></h3>
-  <p class="description">{description}</p>
+<article class="post-card" class:list={{ lead }}>
+  <div class="text">
+    {data.series && <p class="series mono">{data.series.title}, part {data.series.part}</p>}
+    <Heading class="title"><a href={href}>{data.title}</a></Heading>
+    <p class="description">{data.description}</p>
+    <p class="meta mono">
+      <time datetime={data.date.toISOString()}>{formatDateLong(data.date)}</time>
+      <span>{minutes} min read</span>
+    </p>
+    {
+      data.tags.length > 0 && (
+        <ul class="tags" aria-label="Tags">
+          {data.tags.map((tag) => (
+            <li>
+              <Tag label={tag} href={`/blog/tag/${tag}/`} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
   {
-    tags.length > 0 && (
-      <ul class="tags">
-        {tags.map((tag) => (
-          <li>
-            <Tag label={tag} href={`/blog/tag/${tag}/`} />
-          </li>
-        ))}
-      </ul>
+    data.cover && (
+      <a class="cover" href={href} tabindex="-1" aria-hidden="true">
+        <Image
+          src={data.cover}
+          alt=""
+          widths={lead ? [480, 800, 1200] : [320, 640]}
+          sizes={lead ? '(min-width: 1000px) 40vw, 100vw' : '(min-width: 720px) 14rem, 100vw'}
+          quality={IMAGE_QUALITY}
+          loading={lead ? 'eager' : 'lazy'}
+        />
+      </a>
     )
   }
 </article>
 
 <style>
   .post-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding-block: var(--space-5);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-6);
     border-bottom: 1px solid var(--line);
   }
 
-  .date {
+  @media (min-width: 720px) {
+    .post-card:not(.lead) {
+      grid-template-columns: minmax(0, 1fr) 14rem;
+      gap: var(--space-7);
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .post-card.lead {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: var(--space-8);
+      align-items: center;
+      padding-block: var(--space-7) var(--space-8);
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .series {
     font-size: var(--text-xs);
-    color: var(--fg-muted);
-    letter-spacing: var(--tracking-wide);
+    color: var(--signal);
+  }
+
+  .title {
+    font-size: var(--text-lg);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .lead .title {
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
   }
 
   .title a {
@@ -55,9 +118,39 @@ const { slug, title, date, description, tags } = Astro.props;
     color: var(--signal);
   }
 
+  /* The whole card is the title's link target. */
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .post-card {
+    position: relative;
+  }
+
+  .tags,
+  .cover {
+    position: relative;
+    z-index: 1;
+  }
+
   .description {
-    color: var(--fg-muted);
     max-width: var(--measure);
+    color: var(--fg-muted);
+  }
+
+  .lead .description {
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
   }
 
   .tags {
@@ -67,5 +160,28 @@ const { slug, title, date, description, tags } = Astro.props;
     list-style: none;
     margin: var(--space-1) 0 0;
     padding: 0;
+  }
+
+  /* The cover on a white plate, like the figures inside a post. */
+  .cover {
+    display: block;
+    padding: var(--space-2);
+    background: #fff;
+    outline: 1px solid var(--line);
+    outline-offset: 0;
+    transition: outline-color var(--dur-fast) var(--ease-out);
+  }
+
+  .lead .cover {
+    padding: var(--space-4);
+  }
+
+  .post-card:hover .cover {
+    outline-color: var(--signal);
+  }
+
+  .cover :global(img) {
+    width: 100%;
+    height: auto;
   }
 </style>

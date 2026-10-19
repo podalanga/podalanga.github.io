@@ -21,13 +21,12 @@ const { posts } = Astro.props;
 
 <BaseLayout title={pageTitle(`#${tag} · Blog`)} description={`Blog entries by ${site.person.name} tagged ${tag}.`} noindex>
   <section class="container intro">
-    <p class="label">§ 03 // BLOG</p>
-    <h1>#{tag}</h1>
-    <p class="dek"><a href="/blog/">← All entries</a></p>
+    <p class="dek"><a href="/blog/">All posts</a></p>
+    <h1>Posts tagged {tag}</h1>
   </section>
 
   <section class="container posts">
-    {posts.map((post) => <PostCard slug={post.id} title={post.data.title} date={post.data.date} description={post.data.description} tags={post.data.tags} />)}
+    {posts.map((post) => <PostCard post={post} />)}
   </section>
 </BaseLayout>
 
@@ -46,6 +45,11 @@ const { posts } = Astro.props;
 
   .dek a:hover {
     color: var(--signal);
+  }
+
+  .intro,
+  .posts {
+    max-width: 78rem;
   }
 
   .posts {

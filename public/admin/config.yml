@@ -37,6 +37,20 @@ collections:
       - { name: tags, label: Tags, widget: list, field: { name: tag, label: Tag, widget: string } }
       - { name: cover, label: Cover image, widget: image, required: false }
       - { name: coverAlt, label: Cover alt text, widget: string, required: false }
+      - name: authors
+        label: Authors
+        hint: Leave empty when you wrote it yourself.
+        widget: list
+        required: false
+        field: { name: author, label: Author, widget: string }
+      - { name: context, label: Context, hint: 'Shown under the title, e.g. "Seminar, Optical Instrumentation (OI)"', widget: string, required: false }
+      - name: series
+        label: Series
+        widget: object
+        required: false
+        fields:
+          - { name: title, label: Series title, widget: string }
+          - { name: part, label: Part number, widget: number, value_type: int }
       - { name: draft, label: Draft, widget: boolean, default: false }
       - name: attachments
         label: Attachments

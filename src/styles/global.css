@@ -10,6 +10,10 @@
 
 html {
   color-scheme: dark;
+  /* Reserve the scrollbar's width on every page. Without it, a short page (no scrollbar) and a long
+     one, or the loader's scroll lock, gave the viewport different widths and the centred header
+     jumped sideways between pages. */
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
   /* The hero's scroll cue is a real `#education` anchor, so it works without JS; this makes it
      glide instead of snapping. The reduced-motion block below forces it back to `auto`. */

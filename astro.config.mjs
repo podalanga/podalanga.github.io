@@ -2,6 +2,8 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
+import { satteri } from '@astrojs/markdown-satteri';
+import { blogArticlePlugin } from './src/lib/blog-article.ts';
 
 const SITE = 'https://podalanga.github.io';
 
@@ -46,6 +48,10 @@ export default defineConfig({
   // (npm ci wipes node_modules); only new or changed images are encoded again.
   cacheDir: './.cache/astro',
   trailingSlash: 'ignore',
+  markdown: {
+    // Blog posts get figures, numbered equations and worked-example panels (src/lib/blog-article.ts).
+    processor: satteri({ hastPlugins: [blogArticlePlugin] }),
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/admin') && !page.includes('/blog/tag/') && !page.includes('/docs/'),

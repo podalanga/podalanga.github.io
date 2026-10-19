@@ -5,20 +5,22 @@ import PostCard from '../../components/PostCard.astro';
 import { site } from '../../config/site';
 import { pageTitle } from '../../lib/seo';
 
-const posts = (await getCollection('log', ({ data }) => import.meta.env.PROD ? !data.draft : true)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+// Newest first; posts from the same day keep their series order.
+const posts = (await getCollection('log', ({ data }) => (import.meta.env.PROD ? !data.draft : true))).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime() || (a.data.series?.part ?? 0) - (b.data.series?.part ?? 0),
 );
+const [lead, ...rest] = posts;
 ---
 
 <BaseLayout title={pageTitle('Blog')} description={`Blog of ${site.person.name} (${site.name}): a working log of robotics builds, control-systems projects and stray thoughts.`}>
   <section class="container intro">
-    <p class="label">§ 03 // BLOG</p>
     <h1>Blog</h1>
-    <p class="dek">A working log. <a href="/rss.xml">RSS</a>.</p>
+    <p class="dek">A working log of builds, coursework and seminars. Follow it by <a href="/rss.xml">RSS</a>.</p>
   </section>
 
   <section class="container posts">
-    {posts.map((post) => <PostCard slug={post.id} title={post.data.title} date={post.data.date} description={post.data.description} tags={post.data.tags} />)}
+    {lead && <PostCard post={lead} lead />}
+    {rest.map((post) => <PostCard post={post} />)}
   </section>
 </BaseLayout>
 
@@ -27,10 +29,18 @@ const posts = (await getCollection('log', ({ data }) => import.meta.env.PROD ? !
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    padding-block: var(--space-7) var(--space-5);
+    max-width: 78rem;
+    padding-block: var(--space-8) var(--space-4);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-variation-settings: 'wdth' var(--stretch-display);
   }
 
   .dek {
+    max-width: var(--measure);
+    font-size: var(--text-md);
     color: var(--fg-muted);
   }
 
@@ -43,6 +53,7 @@ const posts = (await getCollection('log', ({ data }) => import.meta.env.PROD ? !
   }
 
   .posts {
-    padding-bottom: var(--space-8);
+    max-width: 78rem;
+    padding-bottom: var(--space-9);
   }
 </style>

@@ -9,10 +9,14 @@ tags:
   - shm
 cover: ./fbg-principle.png
 coverAlt: "A broadband source sends light through a coupler into a fibre Bragg grating; one narrow wavelength reflects back to a spectrometer while the rest passes through."
+context: "Seminar for the Optical Instrumentation (OI) course, given with Kalidas J."
+series:
+  title: Optical Instrumentation seminar
+  part: 1
 draft: false
 ---
 
-This article is the written form of my half of a seminar for our OI course, presented with Kalidas J on 20 October 2026. My topic was fibre optic sensors for structural health monitoring (SHM). Kalidas covered the industrial applications of the laser in manufacturing, which has [its own article](/blog/lasers-in-manufacturing). The two topics were chosen to sit together: every sensor described here is illuminated by a laser, and the same coherent light, concentrated by a lens, becomes one of the most versatile tools in a factory.
+This article is the written form of my half of a seminar for our Optical Instrumentation (OI) course, presented with Kalidas J on 20 October 2026. My topic was fibre optic sensors for structural health monitoring (SHM). Kalidas covered the industrial applications of the laser in manufacturing, which has [its own article](/blog/lasers-in-manufacturing). The two topics were chosen to sit together: every sensor described here is illuminated by a laser, and the same coherent light, concentrated by a lens, becomes one of the most versatile tools in a factory.
 
 The article is longer than the talk. I have kept the derivations and worked examples that did not fit into seven minutes, because they are what make the subject make sense.
 
@@ -101,6 +105,8 @@ The UV light breaks germanium–oxygen bonds and raises the core index by roughl
 
 Why does a grating reflect only one wavelength? Consider what happens at each step in refractive index. Every step reflects a very small fraction of the light, as any change in index does. For most wavelengths these small reflections arrive back with random phases and cancel. But if the round-trip optical path between successive steps is exactly one wavelength, every reflection arrives in phase with the others, and they add up to a strong reflection. The round-trip path over one period Λ is 2 n_eff Λ, which gives the **Bragg condition**:
 
+> [!EQUATION]
+>
 > **λ_B = 2 n_eff Λ**
 
 Here λ_B is the Bragg wavelength, n_eff is the effective refractive index of the guided mode in the core, and Λ is the grating period. For n_eff = 1.447 and λ_B = 1550 nm, the period is Λ = 1550 / (2 × 1.447) ≈ 535.6 nm, a little over half a micrometre.
@@ -115,12 +121,16 @@ For completeness: coupled-mode theory gives the peak reflectivity as R = tanh²(
 
 This is the heart of the sensor, so it is worth deriving carefully. Start from the Bragg condition and take a small change. Because λ_B is a product of n and Λ, its fractional change is the sum of their fractional changes:
 
+> [!EQUATION]
+>
 > Δλ_B / λ_B = Δn / n + ΔΛ / Λ
 
 Now ask what strain and temperature each do to these two terms.
 
 **Strain.** If the fibre is stretched by a strain ε, the grating period stretches with it, so ΔΛ/Λ = ε. At the same time, the photo-elastic effect slightly _lowers_ the refractive index: Δn/n = −p_e ε. The effective photo-elastic coefficient for silica is
 
+> [!EQUATION]
+>
 > p_e = (n² / 2) [P₁₂ − ν (P₁₁ + P₁₂)] ≈ 0.22
 
 where P₁₁ = 0.126 and P₁₂ = 0.274 are the Pockels coefficients and ν = 0.17 is Poisson's ratio. The two effects partly cancel, leaving (1 − p_e) ε ≈ 0.78 ε.
@@ -129,6 +139,8 @@ where P₁₁ = 0.126 and P₁₂ = 0.274 are the Pockels coefficients and ν = 
 
 Putting the two together gives the fundamental equation of FBG sensing:
 
+> [!EQUATION]
+>
 > **Δλ_B / λ_B = (1 − p_e) ε + (α + ξ) ΔT**
 
 ![A grating stretched by strain, and its reflected peak moving from 1550 nm to about 1550.3 nm after 250 microstrain.](./fbg-shift.png)
@@ -150,15 +162,23 @@ A rule of thumb follows that is worth committing to memory: **1 pm ≈ 1 µε �
 
 It is one thing to state the equation and another to feel the numbers, so let us work through three.
 
-**Example 1: a passing truck.** The bottom flange of a girder sees ε = 250 µε as a truck crosses. The shift is
+> [!EXAMPLE] Example 1: a passing truck
+>
+> The bottom flange of a girder sees ε = 250 µε as a truck crosses. The shift is
+>
+> > [!CALC]
+> >
+> > Δλ = 1550 nm × 0.78 × 250 × 10⁻⁶ ≈ 0.30 nm
+>
+> A shift of a third of a nanometre is easily measured.
 
-> Δλ = 1550 nm × 0.78 × 250 × 10⁻⁶ ≈ 0.30 nm
+> [!EXAMPLE] Example 2: the temperature trap
+>
+> Suppose the sun warms the same girder by 10 °C and we have made no correction. The shift is about 10 × 10.3 pm ≈ 0.10 nm. Dividing by 1.2 pm/µε, the interrogator would report about **85 µε of strain that does not exist**. This is a large error, a third of the real signal in Example 1, and it is why temperature compensation is not optional.
 
-A shift of a third of a nanometre is easily measured.
-
-**Example 2: the temperature trap.** Suppose the sun warms the same girder by 10 °C and we have made no correction. The shift is about 10 × 10.3 pm ≈ 0.10 nm. Dividing by 1.2 pm/µε, the interrogator would report about **85 µε of strain that does not exist**. This is a large error, a third of the real signal in Example 1, and it is why temperature compensation is not optional.
-
-**Example 3: how many gratings fit on one fibre?** A broadband source covers 40 nm. Each grating must be allowed to move over its full strain range, say ±2000 µε (±2.4 nm), plus a 1 nm guard band so that neighbours never overlap. That is 5.8 nm per grating, so only six or seven gratings fit. If the strain range can be limited to ±1000 µε, about eleven fit. This simple calculation explains why practical systems quote 20 to 40 gratings per fibre only when strain ranges are modest.
+> [!EXAMPLE] Example 3: how many gratings fit on one fibre?
+>
+> A broadband source covers 40 nm. Each grating must be allowed to move over its full strain range, say ±2000 µε (±2.4 nm), plus a 1 nm guard band so that neighbours never overlap. That is 5.8 nm per grating, so only six or seven gratings fit. If the strain range can be limited to ±1000 µε, about eleven fit. This simple calculation explains why practical systems quote 20 to 40 gratings per fibre only when strain ranges are modest.
 
 ### 5.5 Temperature compensation
 
@@ -172,12 +192,16 @@ _Figure 3. Temperature compensation with a strain-free reference grating._
 
 There is one subtlety. When the grating is bonded to a structure, the structure's own thermal expansion stretches the fibre and appears as strain. For a grating on steel, Chan et al. write
 
+> [!EQUATION]
+>
 > Δλ_B / λ_B = (1 − p_e) ε + (1 − p_e) α_s ΔT + ξ ΔT
 
 where α_s ≈ 12 × 10⁻⁶ K⁻¹ is the expansion coefficient of steel. Whether this "apparent strain" should be removed depends on whether you want the mechanical strain or the total strain.
 
 An alternative is to use two collocated sensors with _different_ sensitivities, such as an FBG paired with a long-period grating. Their responses form a 2 × 2 system,
 
+> [!EQUATION]
+>
 > [Δλ₁ ; Δλ₂] = [K_ε1 K_T1 ; K_ε2 K_T2] [ε ; ΔT]
 
 which can be inverted provided the determinant is not zero. An FBG and long-period grating pair achieved errors of about 9 µε and 1.5 °C.
@@ -213,6 +237,8 @@ An FBG array measures at points, and between those points it is blind. A crack c
 
 The idea is borrowed from radar. A short laser pulse is launched into the fibre. As it travels, a small part of its light is scattered back from every point. Light scattered from further away takes longer to return, so the arrival time t gives the position z. Remembering that the light travels there and back:
 
+> [!EQUATION]
+>
 > **z = c t / 2n** and **Δz = c τ / 2n**
 
 where n is the refractive index of the fibre and τ is the pulse width, which sets the spatial resolution Δz.
@@ -243,6 +269,8 @@ Lines shifted to lower frequency are called **Stokes** lines (the photon gives e
 
 The ratio of anti-Stokes to Stokes Raman intensity follows the thermal (Boltzmann) population of the vibrational levels:
 
+> [!EQUATION]
+>
 > I_aS / I_S = (λ_S / λ_aS)⁴ exp(−ħω_M / k_B T)
 
 This ratio changes by about 0.7% per degree near room temperature. Because it depends only on T, Raman sensing measures temperature and **cannot** measure strain. The signal is weak, so multimode fibre is used, and typical systems reach 8 to 10 km with 1 m resolution and 0.2 °C precision. Applications include fire detection in tunnels, leak detection in pipelines and seepage in dams.
@@ -251,12 +279,16 @@ This ratio changes by about 0.7% per degree near room temperature. Because it de
 
 Brillouin scattering is the one that matters most for structures. Thermally excited sound waves in the glass form a moving grating of density. Light diffracted by this moving grating is Doppler shifted by
 
+> [!EQUATION]
+>
 > **ν_B = 2 n V_a / λ**
 
 where V_a is the acoustic velocity. With n = 1.45, V_a ≈ 5800 m/s and λ = 1550 nm, ν_B ≈ 10.85 GHz, close to the 10.861 GHz measured in standard SMF-28 fibre.
 
 The acoustic velocity depends on the density and elastic moduli of the glass, both of which change with strain and temperature. Therefore
 
+> [!EQUATION]
+>
 > **Δν_B = C_ε Δε + C_T ΔT,** with C_ε = 0.056 MHz/µε and C_T = 1.26 MHz/°C
 
 So 1000 µε shifts the Brillouin frequency by 56 MHz, and 10 °C shifts it by 12.6 MHz.
@@ -319,6 +351,8 @@ _Figure 10. Curvature from a parallel pair of sensors._
 
 Two parallel sensors at a vertical distance h apart, one near the top and one near the bottom of a member, give its curvature:
 
+> [!EQUATION]
+>
 > κ = 1/r = (ε_b − ε_t) / h, and the bending moment M = E I κ
 
 Integrating the curvature twice along the span gives the deflected shape. On the I-10 bridge in New Mexico, the camber computed this way was 82.5 mm against 85 mm measured directly, a very satisfying agreement.
