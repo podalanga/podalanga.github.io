@@ -1,0 +1,390 @@
+---
+// /hire: for recruiters. The pitch, what is wanted, proof of work linked to the projects, the
+// toolkit, the resume and an email with the brief filled in. Every word comes from the `hire`
+// entry (the CMS's "Hire page"). The resume is published at /docs/<permalink>.pdf and is censored of
+// phone numbers before it is saved (public/admin/pdf-censor.js) and again on deploy; the email
+// address is assembled in the browser, as the site's other email links are.
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { documentHref } from '../lib/documents';
+import { pageCountOf, sizeOf } from '../lib/files';
+import { PERSON_ID, absoluteUrl, pageTitle } from '../lib/seo';
+
+const entry = await getEntry('hire', 'hire');
+if (!entry) throw new Error('src/content/hire/hire/index.md is missing: the /hire page has nothing to show.');
+const { headline, summary, availability, lookingFor, highlights, skills, resume, permalink } = entry.data;
+
+const resumeHref = resume ? documentHref({ file: resume, permalink }) : null;
+const resumePages = resume ? await pageCountOf(resume) : null;
+const resumeSize = resume ? sizeOf(resume) : null;
+const resumeMeta = [resumePages && `${resumePages} page${resumePages === 1 ? '' : 's'}`, resumeSize].filter(Boolean).join(' · ');
+
+const [emailUser, emailDomain] = site.email.split('@');
+const subject = `Hiring enquiry for ${site.person.name}`;
+const body = [`Hi ${site.person.givenName},`, '', 'Role:', 'Company:', 'Location / remote:', 'Start date:', ''].join('\n');
+const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const contactPage = {
+  '@type': 'ContactPage',
+  '@id': `${site.url}/hire/#page`,
+  url: absoluteUrl('/hire/'),
+  name: `Hire ${site.person.name}`,
+  description: summary,
+  about: { '@id': PERSON_ID },
+  mainEntity: { '@id': PERSON_ID },
+};
+---
+
+<BaseLayout title={pageTitle('Hire')} description={`Hire ${site.person.name}: ${summary}`} jsonLd={[contactPage]}>
+  <section class="container intro">
+    <p class="label mono">§ HIRE</p>
+    <h1>{headline}</h1>
+    <p class="summary">{summary}</p>
+    <p class="availability mono"><span class="dot" aria-hidden="true">●</span> {availability}</p>
+    <div class="actions">
+      <a class="action action--main mono" href="mailto:" data-hire-mail data-user={emailUser} data-domain={emailDomain} data-query={query}>
+        EMAIL ME <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      {
+        resumeHref && (
+          <a class="action mono" href={resumeHref} download>
+            DOWNLOAD RESUME <span class="meta">PDF{resumeMeta && ` · ${resumeMeta}`}</span>
+          </a>
+        )
+      }
+    </div>
+    <noscript>
+      <p class="fallback mono">Email: {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}</p>
+    </noscript>
+  </section>
+
+  {
+    lookingFor.length > 0 && (
+      <section class="container block">
+        <h2 class="block-title mono">What I'm looking for</h2>
+        <ul class="wants">
+          {lookingFor.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    highlights.length > 0 && (
+      <section class="container block">
+        <h2 class="block-title mono">Proof of work</h2>
+        <ul class="proof">
+          {highlights.map((h) => (
+            <li class="card">
+              <h3>{h.link ? <a href={h.link}>{h.title}</a> : h.title}</h3>
+              <p>{h.result}</p>
+              {h.link && <span class="card-more mono" aria-hidden="true">CASE FILE →</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    skills.length > 0 && (
+      <section class="container block">
+        <h2 class="block-title mono">Toolkit</h2>
+        <dl class="toolkit">
+          {skills.map((s) => (
+            <div class="toolkit-row">
+              <dt class="mono">{s.group}</dt>
+              <dd>
+                <ul class="chips">
+                  {s.items.map((item) => (
+                    <li class="chip mono">{item}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .intro,
+  .block {
+    max-width: 78rem;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-muted);
+  }
+
+  h1 {
+    max-width: 22ch;
+    font-size: var(--text-2xl);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .summary {
+    max-width: var(--measure);
+    font-size: var(--text-md);
+    color: var(--fg-muted);
+  }
+
+  .availability {
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--signal);
+  }
+
+  .dot {
+    --pulse-trough: 0.35;
+    animation: pulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  /* The same bordered button as Hire me on the profile page. */
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    padding: 0.75em 1.25em;
+    border: 1px solid var(--line-strong, var(--line));
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .action--main {
+    border-color: var(--signal);
+    font-size: var(--text-base);
+  }
+
+  .action .arrow {
+    color: var(--signal);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .action .meta {
+    font-weight: 400;
+    color: var(--fg-muted);
+  }
+
+  .action:hover,
+  .action:focus-visible {
+    color: var(--signal);
+    border-color: var(--signal);
+    background-color: color-mix(in srgb, var(--signal) 10%, transparent);
+  }
+
+  .action:hover .arrow,
+  .action:focus-visible .arrow {
+    transform: translateX(4px);
+  }
+
+  .action:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .fallback {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  .block {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .block-title {
+    margin-bottom: var(--space-5);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .wants {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--measure);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wants li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--text-md);
+  }
+
+  .wants li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--signal);
+  }
+
+  .proof {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--signal);
+  }
+
+  .card h3 {
+    font-size: var(--text-lg);
+    font-variation-settings: 'wdth' var(--stretch-display);
+    line-height: 1.15;
+  }
+
+  .card h3 a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  /* The whole card is the link. */
+  .card h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card h3 a:focus-visible {
+    outline: none;
+  }
+
+  .card:has(h3 a:focus-visible) {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .card p {
+    color: var(--fg-muted);
+  }
+
+  .card-more {
+    margin-top: auto;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--signal);
+  }
+
+  .toolkit {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .toolkit-row {
+    display: grid;
+    grid-template-columns: minmax(10rem, 14rem) 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+
+  .toolkit dt {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .toolkit dd {
+    margin: 0;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chip {
+    padding: 0.3em 0.7em;
+    border: 1px solid var(--line);
+    font-size: var(--text-xs);
+    color: var(--fg);
+  }
+
+  @media (max-width: 640px) {
+    .toolkit-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+    }
+
+    .action .arrow {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function init(): void {
+    document.querySelectorAll<HTMLAnchorElement>('[data-hire-mail]').forEach((link) => {
+      const { user, domain, query } = link.dataset;
+      if (user && domain) link.href = `mailto:${user}@${domain}${query ?? ''}`;
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

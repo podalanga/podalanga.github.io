@@ -7,6 +7,21 @@
     <title>Podalanga · CMS</title>
   </head>
   <body>
+    <!-- Censors phone numbers out of every PDF before a save leaves the browser (pdf-censor.js).
+         Loaded first, so it is in place before the CMS can save anything. MuPDF (AGPL-3.0,
+         https://mupdf.com) is pinned and its bytes checked against these hashes. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "mupdf": "https://cdn.jsdelivr.net/npm/mupdf@1.28.1/dist/mupdf.js"
+        },
+        "integrity": {
+          "https://cdn.jsdelivr.net/npm/mupdf@1.28.1/dist/mupdf.js": "sha384-71k4B3TsupnG9S07SGbCJQJAHD3cp7jFEnzAzgr+31fio+f3KHZoCJXUAsvT2HoY",
+          "https://cdn.jsdelivr.net/npm/mupdf@1.28.1/dist/mupdf-wasm.js": "sha384-rEJ8zHkkLXk/h9MHYnUcbyVEB6mpmR7aAv8a8wgt0sWvMTzYxPNd5tIro3WpCMhs"
+        }
+      }
+    </script>
+    <script src="./pdf-censor.js" type="module"></script>
     <script
       src="https://unpkg.com/@sveltia/cms@0.212.2/dist/sveltia-cms.js"
       type="module"

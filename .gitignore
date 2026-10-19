@@ -10,3 +10,6 @@ overnight-logs/
 .claude/settings.local.json
 /docs/
 CLAUDE.md
+
+# Python bytecode from scripts/
+__pycache__/

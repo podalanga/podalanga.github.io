@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseFileCard from '../components/CaseFileCard.astro';
+import HireButton from '../components/HireButton.astro';
 import Logo from '../components/Logo.astro';
 import SkillRecord from '../components/SkillRecord.astro';
 import SocialLinks from '../components/SocialLinks.astro';
@@ -69,6 +70,7 @@ const profilePage = {
           >UNAUTHORISED TERMINAL, BY PRESSING ` OR CLICKING HERE.</span> THOUGHTCRIME IS DEATH.
         </p>
         <Telemetry />
+        <HireButton />
       </div>
       <div class="hero-aside">
         <div class="hero-portrait">
@@ -78,9 +80,9 @@ const profilePage = {
       </div>
     </div>
 
-    <a class="scroll-cue mono" href="#education">
-      <span class="scroll-cue-rule" aria-hidden="true"></span>
-      <span>SCROLL. BIG BROTHER IS WATCHING.</span>
+    <a class="scroll-cue mono" href="#education" data-scroll-cue>
+      <span class="scroll-cue-chevrons" aria-hidden="true"><span>v</span><span>v</span><span>v</span></span>
+      <span class="scroll-cue-label"><span class="scroll-cue-word">SCROLL.</span> BIG BROTHER IS WATCHING.</span>
     </a>
   </section>
 
@@ -379,12 +381,14 @@ const profilePage = {
     }
   }
 
-  /* Tells people there is more below, and doubles as a real link to it. */
+  /* Tells people there is more below, and doubles as a real link to it. The word SCROLL sits in a
+     solid red box so it can't be missed, under three ASCII chevrons that light up in turn, chasing down.
+     It fades out once the reader has started scrolling (the script at the end of the page). */
   .scroll-cue {
     display: none;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 600px) {
     .scroll-cue {
       position: absolute;
       left: 50%;
@@ -396,61 +400,78 @@ const profilePage = {
       gap: var(--space-2);
       font-size: var(--text-xs);
       letter-spacing: var(--tracking-wider);
-      color: var(--fg-subtle);
       text-decoration: none;
-      transition: color var(--dur) var(--ease-out);
+      transition: opacity var(--dur) var(--ease-out);
     }
 
-    .scroll-cue:hover,
+    .scroll-cue.is-gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Only the instruction is highlighted; the rest of the line stays quiet. */
+    .scroll-cue-label {
+      color: var(--fg-subtle);
+      white-space: nowrap;
+    }
+
+    .scroll-cue-word {
+      padding: 0.35em 0.6em;
+      background: var(--signal);
+      color: var(--on-signal);
+      transition: filter var(--dur-fast) var(--ease-out);
+    }
+
+    .scroll-cue:hover .scroll-cue-word,
+    .scroll-cue:focus-visible .scroll-cue-word {
+      filter: brightness(0.85);
+    }
+
     .scroll-cue:focus-visible {
+      outline: none;
+    }
+
+    .scroll-cue:focus-visible .scroll-cue-label {
+      outline: 2px solid var(--signal);
+      outline-offset: 6px;
+    }
+
+    .scroll-cue-chevrons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 0.8;
+      font-size: var(--text-sm);
       color: var(--signal);
     }
 
-    /* A line that falls, once every few seconds: the smallest thing that reads as
-       "down" without an arrow glyph bolted onto the label. */
-    .scroll-cue-rule {
-      width: 1px;
-      height: var(--space-6);
-      background: linear-gradient(to bottom, transparent, var(--line-strong));
-      overflow: hidden;
-      position: relative;
+    .scroll-cue-chevrons span {
+      opacity: 0.25;
+      animation: scroll-cue-chase 1.8s steps(1, end) infinite;
     }
 
-    .scroll-cue-rule::after {
-      content: '';
-      position: absolute;
-      inset-inline: 0;
-      top: 0;
-      height: 45%;
-      background: var(--signal);
-      animation: scroll-cue-fall 2.6s var(--ease-in-out) infinite;
+    .scroll-cue-chevrons span:nth-child(2) {
+      animation-delay: 0.3s;
     }
 
-    .scroll-cue:hover .scroll-cue-rule {
-      background: linear-gradient(to bottom, transparent, var(--signal));
+    .scroll-cue-chevrons span:nth-child(3) {
+      animation-delay: 0.6s;
     }
   }
 
-  @keyframes scroll-cue-fall {
+  @keyframes scroll-cue-chase {
     0% {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    35%,
-    65% {
       opacity: 1;
     }
-    100% {
-      transform: translateY(222%);
-      opacity: 0;
+    17% {
+      opacity: 0.25;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .scroll-cue-rule::after {
+    .scroll-cue-chevrons span {
       animation: none;
-      top: auto;
-      bottom: 0;
+      opacity: 1;
     }
   }
 
@@ -646,3 +667,19 @@ const profilePage = {
     font-weight: 400;
   }
 </style>
+
+<script>
+  // The scroll cue has done its job once the reader is scrolling; it comes back at the top.
+  function initScrollCue(): void {
+    const cue = document.querySelector<HTMLElement>('[data-scroll-cue]');
+    if (!cue || cue.dataset.wired) return;
+    cue.dataset.wired = 'true';
+    const update = () => cue.classList.toggle('is-gone', window.scrollY > 80);
+    window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('astro:before-swap', () => window.removeEventListener('scroll', update), { once: true });
+    update();
+  }
+
+  initScrollCue();
+  document.addEventListener('astro:page-load', initScrollCue);
+</script>

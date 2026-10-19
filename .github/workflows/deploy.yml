@@ -26,10 +26,31 @@ jobs:
           path: .cache/astro/assets
           key: astro-images-${{ hashFiles('src/**/*.jpg', 'src/**/*.jpeg', 'src/**/*.png', 'src/**/*.webp', 'src/lib/images.ts') }}
           restore-keys: astro-images-
-      - name: Install, build, and upload your site
-        uses: withastro/action@v6
+      # What withastro/action did, in steps, so every PDF can be censored between the build and
+      # the upload. The CMS already strips phone numbers before it saves a PDF; this is the backstop
+      # for one that got in another way. If a PDF can't be cleaned, the deploy stops here and the
+      # live site stays as it was.
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install the PDF censor
+        run: pip install -r scripts/requirements.txt
+      - name: Test the PDF censor
+        run: python -m unittest discover -s scripts -p 'test_*.py'
+      - name: Censor phone numbers in published PDFs
+        run: python scripts/redact_phones.py dist
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
 
   deploy:
     needs: build
@@ -61,13 +82,28 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: Lock newly published addresses
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install the PDF censor
+        run: pip install -r scripts/requirements.txt
+      # A PDF with a phone number that reached the repository without going through the CMS (which
+      # censors before saving) is replaced by its censored copy, so the current files are clean
+      # too. The original stays in the git history: the error below says so, so it can be purged.
+      - name: Censor phone numbers in the repository's PDFs
+        run: |
+          python scripts/redact_phones.py public src | tee censor.log
+          if grep -q '^censored ' censor.log; then
+            echo "::error::A PDF with a phone number was committed without going through the CMS. The current copy is now censored, but the original is still in the git history; ask for a history purge to remove it."
+          fi
+          rm censor.log
+      - name: Lock newly published addresses and commit censored PDFs
         run: |
           npm run lock
-          if git diff --quiet -- src/config/locks.json; then exit 0; fi
+          git add src/config/locks.json public src
+          if git diff --cached --quiet; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
-          git add src/config/locks.json
-          git commit -m "locks: lock newly published addresses"
+          git commit -m "locks and privacy: lock new addresses, censor phone numbers in PDFs"
           git pull --rebase origin main
           git push origin HEAD:main

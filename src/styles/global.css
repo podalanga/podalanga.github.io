@@ -44,10 +44,12 @@ body {
   transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
 }
 
+/* Top-level SVGs only: an <svg> nested inside another (the logo inside each hero TV) is placed
+   and sized by its own x/y/width/height attributes, which height: auto would override. */
 img,
 picture,
 video,
-svg {
+svg:not(svg svg) {
   display: block;
   max-width: 100%;
   height: auto;

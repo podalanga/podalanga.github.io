@@ -182,4 +182,22 @@ const awards = defineCollection({
   }),
 });
 
-export const collections = { works, archive, log, education, skills, positions, awards };
+// The /hire page: one entry, edited in the CMS as "Hire page". The resume is published at
+// /docs/<permalink>.pdf like any other document, and censored of phone numbers on upload.
+const hire = defineCollection({
+  loader: glob({ pattern: '**/index.md', base: './src/content/hire' }),
+  schema: z.object({
+    headline: z.string(),
+    summary: z.string(),
+    availability: z.string(),
+    lookingFor: z.array(z.string()).default([]),
+    highlights: z
+      .array(z.object({ title: z.string(), result: z.string(), link: optional(z.string()) }))
+      .default([]),
+    skills: z.array(z.object({ group: z.string(), items: z.array(z.string()) })).default([]),
+    resume: optional(z.string()),
+    permalink: optional(z.string().regex(PERMALINK_PATTERN)),
+  }),
+});
+
+export const collections = { works, archive, log, education, skills, positions, awards, hire };

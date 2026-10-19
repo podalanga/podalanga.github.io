@@ -1,0 +1,67 @@
+---
+// "Hire me" on the profile hero: the THEME button's bordered style at a size that stands out, in
+// red, leading to /hire (the pitch, the resume and an email button).
+---
+
+<a class="hire mono" href="/hire/">
+  <span class="dot" aria-hidden="true">●</span>
+  <span>HIRE ME</span>
+  <span class="arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .hire {
+    display: inline-flex;
+    align-self: flex-start;
+    width: fit-content;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: var(--space-6);
+    padding: 0.75em 1.25em;
+    border: 1px solid var(--signal);
+    font-size: var(--text-base);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .dot {
+    font-size: 0.75em;
+    color: var(--signal);
+    --pulse-trough: 0.35;
+    animation: pulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  .arrow {
+    color: var(--signal);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .hire:hover,
+  .hire:focus-visible {
+    color: var(--signal);
+    background-color: color-mix(in srgb, var(--signal) 10%, transparent);
+  }
+
+  .hire:hover .arrow,
+  .hire:focus-visible .arrow {
+    transform: translateX(4px);
+  }
+
+  .hire:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+    }
+
+    .arrow {
+      transition: none;
+    }
+  }
+</style>

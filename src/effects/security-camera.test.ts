@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { cameraAngle, normalizeAngle } from './security-camera';
+import { LENS, PIVOT, housingAxis, onAxis } from './security-camera-art';
 
-// Matches the asymptotes in security-camera.ts.
-const MIN_ANGLE = -60;
-const MAX_ANGLE = 60;
+// Matches the bounds in security-camera.ts.
+const MIN_ANGLE = -32;
+const MAX_ANGLE = 38;
+const KNEE = 0.9;
 
-// The rest direction the art is drawn in (pivot -> lens), from security-camera-art.ts:
-// PIVOT {col: 23.5, row: 14.5}, LENS {col: 44, row: 4}, CHAR_W_EM 0.6 -> up and to the right.
-const REST = (Math.atan2(4.5 - 14.5, (44.5 - 23.5) * 0.6) * 180) / Math.PI;
+// The direction the housing is drawn pointing, as SecurityCamera.astro computes it.
+const AXIS = housingAxis(0.6);
+const REST = AXIS.angle;
 
 /** Cursor offset (screen axes, +y down) at `deg` from the pivot. */
 const at = (deg: number): [number, number] => [
@@ -34,13 +36,28 @@ describe('cameraAngle', () => {
     expect(cameraAngle(REST, ...at(REST))).toBeCloseTo(0, 6);
   });
 
-  it('points exactly at the cursor across every direction the cursor can take on screen', () => {
-    // From straight up (about -52 from rest, the camera being in the bottom-left corner) round to
-    // well below horizontal: no lag anywhere in that span.
-    for (let d = -53; d <= 53; d += 1) {
+  it('points exactly at the cursor everywhere inside its bounds', () => {
+    for (let d = Math.ceil(KNEE * MIN_ANGLE); d <= Math.floor(KNEE * MAX_ANGLE); d += 1) {
       expect(cameraAngle(REST, ...at(REST + d))).toBeCloseTo(d, 6);
     }
-    expect(cameraAngle(REST, ...at(-90))).toBeCloseTo(-90 - REST, 6);
+  });
+
+  it('runs the centre line, not the pivot direction, through the cursor', () => {
+    // The line sits `offset` from the pivot; after the turn the cursor must lie on it.
+    const offset = -40;
+    for (const [dx, dy] of [
+      [300, -200],
+      [500, -60],
+      [400, -250],
+      [120, -90],
+    ] as const) {
+      const turn = cameraAngle(REST, dx, dy, offset);
+      const a = ((REST + turn) * Math.PI) / 180;
+      const cross = Math.cos(a) * dy - Math.sin(a) * dx;
+      const along = Math.cos(a) * dx + Math.sin(a) * dy;
+      expect(cross).toBeCloseTo(offset, 6);
+      expect(along).toBeGreaterThan(0);
+    }
   });
 
   it('turns the head up when the cursor is above the rest direction', () => {
@@ -51,7 +68,7 @@ describe('cameraAngle', () => {
     expect(cameraAngle(REST, ...at(REST + 25))).toBeGreaterThan(0);
   });
 
-  it('stays inside the asymptotes for every cursor direction', () => {
+  it('stays inside its bounds for every cursor direction', () => {
     for (let deg = -180; deg <= 180; deg += 1) {
       const angle = cameraAngle(REST, ...at(deg));
       expect(angle).toBeGreaterThan(MIN_ANGLE);
@@ -89,5 +106,21 @@ describe('cameraAngle', () => {
     // Close to rest the mapping should barely compress, so the head reads as truly following.
     expect(cameraAngle(REST, ...at(REST + 5))).toBeCloseTo(5, 0);
     expect(cameraAngle(REST, ...at(REST - 5))).toBeCloseTo(-5, 0);
+  });
+});
+
+describe('housingAxis', () => {
+  it('runs along the housing, nearly level, not up the steep pivot -> lens line', () => {
+    const pivotToLens = (Math.atan2(LENS.row + 0.5 - PIVOT.row, (LENS.col + 0.5 - PIVOT.col) * 0.6) * 180) / Math.PI;
+    expect(AXIS.angle).toBeGreaterThan(-15);
+    expect(AXIS.angle).toBeLessThan(0);
+    expect(AXIS.angle - pivotToLens).toBeGreaterThan(20);
+  });
+
+  it('puts the lens on the centre line', () => {
+    const lens = onAxis(AXIS, (LENS.col + 0.5) * 0.6, LENS.row + 0.5);
+    const r = (AXIS.angle * Math.PI) / 180;
+    expect(Math.cos(r) * (lens.y - AXIS.y) - Math.sin(r) * (lens.x - AXIS.x)).toBeCloseTo(0, 9);
+    expect(Math.hypot(lens.x - (LENS.col + 0.5) * 0.6, lens.y - (LENS.row + 0.5))).toBeLessThan(1.5);
   });
 });

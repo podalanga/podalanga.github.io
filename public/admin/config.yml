@@ -64,6 +64,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
+            hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
       - name: body
         label: Body
         widget: markdown
@@ -192,6 +193,7 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
+            hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
           - {
               name: permalink,
               label: Permanent link name,
@@ -314,6 +316,7 @@ collections:
         widget: file
         media_folder: /public/media/attachments
         public_folder: /media/attachments
+        hint: 'PDFs are censored as they are saved: a phone number (any tel: link, or a number at the top of page 1) is deleted from the file before it leaves this browser. If that fails, the save is stopped.'
         required: false
       - name: permalink
         label: Permanent link name
@@ -322,3 +325,42 @@ collections:
         pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. cswa-certificate']
         hint: 'Published at /docs/<name>.pdf (or forwarded to an external URL). Must be unique across all permanent links. Locked once published: after the next deploy, changing, clearing or moving this name stops the site from building. To retire one, remove it from src/config/locks.json.'
 
+  # The /hire page for recruiters: a single entry. The resume is published at /docs/<permalink>.pdf.
+  - name: hire
+    label: Hire page
+    description: 'The /hire page recruiters land on from the Hire me button. A resume uploaded here has its phone number removed before it is saved.'
+    files:
+      - name: hire
+        label: Hire page
+        file: /src/content/hire/hire/index.md
+        fields:
+          - { name: headline, label: Headline, widget: string }
+          - { name: summary, label: Summary, widget: text }
+          - { name: availability, label: Availability, widget: string, hint: 'One line, e.g. "Graduating May 2027 · open to full-time roles from mid-2027".' }
+          - { name: lookingFor, label: What I'm looking for, widget: list, field: { name: item, label: Item, widget: string } }
+          - name: highlights
+            label: Proof of work
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: result, label: Result, widget: text }
+              - { name: link, label: Link, widget: string, required: false, hint: 'A project page, e.g. /projects/zbot/' }
+          - name: skills
+            label: Toolkit
+            widget: list
+            fields:
+              - { name: group, label: Group, widget: string }
+              - { name: items, label: Items, widget: list }
+          - name: resume
+            label: Resume (PDF)
+            widget: file
+            media_folder: /public/media/attachments
+            public_folder: /media/attachments
+            required: false
+            hint: 'Your phone number is removed from the PDF (the tel: link and the number at the top of page 1, wherever else it repeats) before it is saved. If that fails, the save is stopped.'
+          - name: permalink
+            label: Resume link name
+            widget: string
+            required: false
+            pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only, e.g. resume']
+            hint: 'Published at /docs/<name>.pdf. Locked once published: after the next deploy, changing or clearing it stops the site from building.'
