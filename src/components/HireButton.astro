@@ -1,28 +1,12 @@
 ---
-// "Hire me" on the profile hero: a red ASCII-framed transmitter, drawn the same way as the TVs in
-// SocialLinks.astro (real monospace text in an SVG, so the glyphs keep their proportions), with
-// the label as real text on top. It opens an email to the site's address with the subject and a
-// short brief filled in. The address is put together in the browser from two halves, as the other
-// email links are, and a resume is only ever sent by reply: nothing here can carry a phone number.
+// "Hire me" on the profile hero: a small chip in the same language as the header's THEME button
+// (mono, thin rule, a blinking red dot), sitting with the hero's other mono lines rather than
+// competing with the name. It opens an email to the site's address with the subject and a short
+// brief filled in. The address is put together in the browser from two halves, as the other email
+// links are, and a resume is only ever sent by reply: nothing here can carry a phone number.
 import { site } from '../config/site';
 
 const [emailUser, emailDomain] = site.email.split('@');
-
-// Fine glyphs, like the TVs': at this density the frame reads as a texture, not as letters.
-const COLS = 92;
-const ROWS = 14;
-const CHAR_ASPECT = 0.6; // the mono face's advance : font-size, as in SocialLinks.astro
-const BORDER_ROWS = 2;
-const BORDER_COLS = 4;
-const edge = (inset: number) => ' '.repeat(inset) + '@'.repeat(COLS - 2 * inset) + ' '.repeat(inset);
-const side = '@'.repeat(BORDER_COLS) + ' '.repeat(COLS - 2 * BORDER_COLS) + '@'.repeat(BORDER_COLS);
-const FRAME = [
-  edge(2),
-  edge(0),
-  ...Array.from({ length: ROWS - 2 * BORDER_ROWS }, () => side),
-  edge(0),
-  edge(2),
-];
 
 const subject = `Hiring enquiry for ${site.person.name}`;
 const body = [
@@ -38,23 +22,10 @@ const body = [
 const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 ---
 
-<a
-  class="hire"
-  href="mailto:"
-  data-hire
-  data-user={emailUser}
-  data-domain={emailDomain}
-  data-query={query}
->
-  <svg class="frame" viewBox={`0 0 ${COLS * CHAR_ASPECT} ${ROWS}`} aria-hidden="true" focusable="false">
-    {FRAME.map((row, i) => (
-      <text x="0" y={i} font-size="1" dominant-baseline="hanging" xml:space="preserve" data-frame-row>{row}</text>
-    ))}
-  </svg>
-  <span class="face">
-    <span class="title"><span class="dot" aria-hidden="true">●</span> Hire me <span class="arrow" aria-hidden="true">→</span></span>
-    <span class="note mono">Opens an email · resume on request</span>
-  </span>
+<a class="hire mono" href="mailto:" data-hire data-user={emailUser} data-domain={emailDomain} data-query={query}>
+  <span class="dot" aria-hidden="true">●</span>
+  <span>HIRE ME</span>
+  <span class="arrow" aria-hidden="true">→</span>
 </a>
 <noscript>
   <p class="hire-fallback mono">Hire me: {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}</p>
@@ -62,48 +33,22 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
 
 <style>
   .hire {
-    position: relative;
-    display: block;
-    width: min(100%, 24rem);
-    margin-top: var(--space-6);
+    display: inline-flex;
+    align-self: flex-start;
+    width: fit-content;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
     color: var(--fg);
     text-decoration: none;
-  }
-
-  .frame {
-    display: block;
-    width: 100%;
-    height: auto;
-    fill: var(--signal);
-    font-family: var(--font-mono);
-    user-select: none;
-  }
-
-  /* The label sits in the frame's hollow, inside the border rows and columns. */
-  .face {
-    position: absolute;
-    inset: calc(200% / 14) calc(400% / 92);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-1);
-    padding-inline: var(--space-3);
-  }
-
-  .title {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(1.4rem, 1rem + 1.5vw, 1.9rem);
-    line-height: 1;
-    letter-spacing: -0.01em;
-    transition: color var(--dur-fast) var(--ease-out);
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
 
   .dot {
-    font-size: 0.45em;
     color: var(--signal);
     --pulse-trough: 0.35;
     animation: pulse 2.4s var(--ease-in-out) infinite;
@@ -114,35 +59,24 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
     transition: transform var(--dur-fast) var(--ease-out);
   }
 
-  .note {
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
-    color: var(--fg-muted);
-  }
-
-  .hire:hover .title,
-  .hire:focus-visible .title {
+  .hire:hover,
+  .hire:focus-visible {
+    border-color: var(--signal);
     color: var(--signal);
   }
 
   .hire:hover .arrow,
   .hire:focus-visible .arrow {
-    transform: translateX(4px);
-  }
-
-  .hire:hover .frame,
-  .hire:focus-visible .frame {
-    filter: brightness(1.3);
+    transform: translateX(3px);
   }
 
   .hire:focus-visible {
     outline: 2px solid var(--signal);
-    outline-offset: 3px;
+    outline-offset: 2px;
   }
 
   .hire-fallback {
-    margin-top: var(--space-6);
+    margin-top: var(--space-5);
     font-size: var(--text-xs);
     color: var(--fg-muted);
   }
@@ -159,45 +93,10 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
 </style>
 
 <script>
-  import { prefersReducedMotion } from '../lib/reduced-motion';
-
-  const NOISE = '#%&*+=/\\<>[]{}?!$';
-  const FRAMES = 9;
-  const FRAME_MS = 45;
-
-  /** A brief burst of noise through the frame, then back to its drawn glyphs. */
-  function crackle(rows: SVGTextElement[]): void {
-    const drawn = rows.map((r) => r.textContent ?? '');
-    let frame = 0;
-    const tick = () => {
-      frame++;
-      const share = frame < FRAMES ? 0.35 * (1 - frame / FRAMES) : 0;
-      rows.forEach((row, i) => {
-        row.textContent = drawn[i].replace(/@/g, (c) =>
-          Math.random() < share ? NOISE[Math.floor(Math.random() * NOISE.length)] : c,
-        );
-      });
-      if (frame < FRAMES) setTimeout(tick, FRAME_MS);
-    };
-    tick();
-  }
-
   function init(): void {
     document.querySelectorAll<HTMLAnchorElement>('[data-hire]').forEach((link) => {
       const { user, domain, query } = link.dataset;
       if (user && domain) link.href = `mailto:${user}@${domain}${query ?? ''}`;
-      if (prefersReducedMotion() || link.dataset.wired) return;
-      link.dataset.wired = 'true';
-      const rows = Array.from(link.querySelectorAll<SVGTextElement>('[data-frame-row]'));
-      let busy = false;
-      const go = () => {
-        if (busy) return;
-        busy = true;
-        crackle(rows);
-        setTimeout(() => (busy = false), FRAMES * FRAME_MS + 50);
-      };
-      link.addEventListener('pointerenter', go);
-      link.addEventListener('focus', go);
     });
   }
 

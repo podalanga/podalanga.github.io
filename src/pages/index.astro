@@ -82,7 +82,7 @@ const profilePage = {
 
     <a class="scroll-cue mono" href="#education" data-scroll-cue>
       <span class="scroll-cue-chevrons" aria-hidden="true"><span>v</span><span>v</span><span>v</span></span>
-      <span class="scroll-cue-label">SCROLL. BIG BROTHER IS WATCHING.</span>
+      <span class="scroll-cue-label"><span class="scroll-cue-word">SCROLL.</span> BIG BROTHER IS WATCHING.</span>
     </a>
   </section>
 
@@ -381,8 +381,8 @@ const profilePage = {
     }
   }
 
-  /* Tells people there is more below, and doubles as a real link to it. The label sits in a solid
-     red box so it can't be missed, under three ASCII chevrons that light up in turn, chasing down.
+  /* Tells people there is more below, and doubles as a real link to it. The word SCROLL sits in a
+     solid red box so it can't be missed, under three ASCII chevrons that light up in turn, chasing down.
      It fades out once the reader has started scrolling (the script at the end of the page). */
   .scroll-cue {
     display: none;
@@ -409,16 +409,21 @@ const profilePage = {
       pointer-events: none;
     }
 
+    /* Only the instruction is highlighted; the rest of the line stays quiet. */
     .scroll-cue-label {
-      padding: 0.35em 0.8em;
+      color: var(--fg-subtle);
+      white-space: nowrap;
+    }
+
+    .scroll-cue-word {
+      padding: 0.35em 0.6em;
       background: var(--signal);
       color: var(--on-signal);
-      white-space: nowrap;
       transition: filter var(--dur-fast) var(--ease-out);
     }
 
-    .scroll-cue:hover .scroll-cue-label,
-    .scroll-cue:focus-visible .scroll-cue-label {
+    .scroll-cue:hover .scroll-cue-word,
+    .scroll-cue:focus-visible .scroll-cue-word {
       filter: brightness(0.85);
     }
 
@@ -428,7 +433,7 @@ const profilePage = {
 
     .scroll-cue:focus-visible .scroll-cue-label {
       outline: 2px solid var(--signal);
-      outline-offset: 3px;
+      outline-offset: 6px;
     }
 
     .scroll-cue-chevrons {
