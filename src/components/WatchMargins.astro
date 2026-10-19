@@ -1,7 +1,7 @@
 ---
 // A glyph column down each edge of the screen that grows with scroll progress and stops above the
-// footer (watch-margins.ts). Dim noise, a line from 1984 when one is showing, more noise, and the
-// bright leading glyph.
+// footer (watch-margins.ts): noise, a line from 1984 when one is showing, more noise, and a blinking
+// dot at the reader's place.
 ---
 
 <div class="watch-margins" data-watch-margins aria-hidden="true">
@@ -52,18 +52,24 @@
     right: var(--edge);
   }
 
+  /* Noise, a line from 1984 and the dot are all the same red; a line stands out only by holding
+     still while the noise around it churns. */
   .before,
-  .after {
-    color: var(--signal);
-    opacity: 0.38;
-  }
-
-  .head,
-  .said {
+  .said,
+  .after,
+  .head {
     color: var(--signal);
   }
 
-  .said {
-    text-shadow: 0 0 6px color-mix(in srgb, var(--signal) 55%, transparent);
+  /* The blinking dot marks the reader's place. */
+  .head {
+    animation: pulse 2.4s var(--ease-in-out) infinite;
+    --pulse-trough: 0.35;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .head {
+      animation: none;
+    }
   }
 </style>

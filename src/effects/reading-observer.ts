@@ -1,8 +1,9 @@
 // The blog post's reading observer. The post index rail (PostIndex.astro) reports where the reader
 // is: the current section, how far through the article they are and how long they have been on the
 // page. The clock only runs while the tab is visible; leaving the tab retitles it until the reader
-// returns, and reaching the end fills in the closing line with the time spent. Nothing is stored or
-// sent anywhere: every figure lives in this page's memory and is gone on the next navigation.
+// returns, and every arrival at the end fills in the closing line with the time spent so far.
+// Nothing is stored or sent anywhere: every figure lives in this page's memory and is gone on the
+// next navigation.
 //
 // Progressive enhancement: without JS the rail is a plain list of links and the readouts stay blank.
 
@@ -66,7 +67,6 @@ export function initReadingObserver(): () => void {
   let accumulated = 0;
   let current = -2;
   let frame = 0;
-  let closed = false;
 
   const elapsed = () => accumulated + (visibleSince ? performance.now() - visibleSince : 0);
 
@@ -131,8 +131,9 @@ export function initReadingObserver(): () => void {
   const endObserver =
     end && closing
       ? new IntersectionObserver((entries) => {
-          if (closed || !entries.some((e) => e.isIntersecting)) return;
-          closed = true;
+          // Every arrival at the end rewrites the line, so scrolling back up and down again
+          // reports the time spent so far, not the time of the first visit.
+          if (!entries.some((e) => e.isIntersecting)) return;
           closing.textContent = `You read this in ${formatDuration(elapsed())}. Noted.`;
           closing.hidden = false;
         })

@@ -12,19 +12,20 @@
 // needs no JS at all, so no-JS visitors still see a static camera.
 import { prefersReducedMotion } from '../lib/reduced-motion';
 
-// The head art is a long diagonal wedge from the pivot, not a compact blob: swinging it far toward
-// the negative end stretches that long axis into an unrecognizable streak, while the positive side
-// stays compact and clean. Hence the asymmetric limits.
+// The head follows the cursor exactly: `--angle` is the cursor's direction from the pivot minus
+// the direction the art is drawn pointing. The camera sits in the footer's bottom-left corner, so
+// the cursor can be anywhere from straight up (about 52 degrees above the drawn direction) round
+// to below horizontal; every direction in that span is tracked 1:1, so the lens points right at
+// the cursor. An earlier version squashed every turn through `limit * tanh(delta / limit)` with
+// limits of -32/+38 degrees, which is only 1:1 for tiny turns: the head trailed the cursor by 5
+// degrees at 30 and by 15-20 near straight up.
 //
-// These are *asymptotes*, not a hard clamp. The camera sits in the footer's bottom-left corner, so
-// following the cursor across a full viewport spans well over 90 degrees of direction — far more
-// than the range the art can actually rotate through. A hard clamp turned most of the screen into a
-// dead zone where the head sat frozen at a limit while the cursor kept moving, which is exactly
-// what "the camera doesn't follow the pointer" looked like. Squashing the delta through `tanh`
-// instead keeps the mapping strictly monotonic: every cursor direction maps to a distinct angle, so
-// the head always visibly responds, while never quite reaching the angle where the wedge breaks.
-const MIN_ANGLE = -32;
-const MAX_ANGLE = 38;
+// Past a knee at KNEE of each limit (directions the cursor can only reach far below the camera)
+// the turn eases toward the limit along a smooth tail, continuous in angle and slope with the 1:1
+// part. It is an asymptote, not a hard clamp, so the head never freezes in a dead zone.
+const MIN_ANGLE = -60;
+const MAX_ANGLE = 60;
+const KNEE = 0.9;
 const EASE_TAU_MS = 60; // ~3*TAU (180ms) to settle, matching the old CSS transition's feel
 const SETTLE_EPSILON = 0.01;
 
@@ -42,7 +43,14 @@ export function normalizeAngle(deg: number): number {
 export function cameraAngle(restAngle: number, dx: number, dy: number): number {
   const delta = normalizeAngle((Math.atan2(dy, dx) * 180) / Math.PI - restAngle);
   const limit = delta < 0 ? -MIN_ANGLE : MAX_ANGLE;
-  return Math.sign(delta) * limit * Math.tanh(Math.abs(delta) / limit);
+  const knee = KNEE * limit;
+  const size = Math.abs(delta);
+  if (size <= knee) return delta;
+  // x / (1 + x): slope 1 where it meets the 1:1 part, and short of the limit for any finite turn
+  // (tanh saturates to exactly 1 in floating point, which would bring the dead zone back).
+  const room = limit - knee;
+  const x = (size - knee) / room;
+  return Math.sign(delta) * (knee + (room * x) / (1 + x));
 }
 
 interface Rig {

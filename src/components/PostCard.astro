@@ -1,6 +1,6 @@
 ---
-// A post in a list. `lead` is the large first entry on the blog index: cover beside the title.
-// Otherwise a row: text on the left, a small cover on the right.
+// A post in a list. Every post gets the same card: the cover in a fixed 16:9 frame, then the
+// series, title, summary, date and reading time, and tags. The whole card is the link.
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Tag from './Tag.astro';
@@ -10,20 +10,36 @@ import { readingStats } from '../lib/reading';
 
 interface Props {
   post: CollectionEntry<'log'>;
-  lead?: boolean;
+  /** Load the cover eagerly: set on the first cards, which are on screen at load. */
+  eager?: boolean;
 }
 
-const { post, lead = false } = Astro.props;
+const { post, eager = false } = Astro.props;
 const { data } = post;
 const href = `/blog/${post.id}/`;
 const { minutes } = readingStats(post.body ?? '');
-const Heading = lead ? 'h2' : 'h3';
 ---
 
-<article class="post-card" class:list={{ lead }}>
+<article class="post-card">
+  <a class="cover" href={href} tabindex="-1" aria-hidden="true">
+    {
+      data.cover ? (
+        <Image
+          src={data.cover}
+          alt=""
+          widths={[400, 640, 960]}
+          sizes="(min-width: 900px) 40vw, 100vw"
+          quality={IMAGE_QUALITY}
+          loading={eager ? 'eager' : 'lazy'}
+        />
+      ) : (
+        <span class="no-cover mono">podalanga</span>
+      )
+    }
+  </a>
   <div class="text">
     {data.series && <p class="series mono">{data.series.title}, part {data.series.part}</p>}
-    <Heading class="title"><a href={href}>{data.title}</a></Heading>
+    <h2 class="title"><a href={href}>{data.title}</a></h2>
     <p class="description">{data.description}</p>
     <p class="meta mono">
       <time datetime={data.date.toISOString()}>{formatDateLong(data.date)}</time>
@@ -41,53 +57,56 @@ const Heading = lead ? 'h2' : 'h3';
       )
     }
   </div>
-  {
-    data.cover && (
-      <a class="cover" href={href} tabindex="-1" aria-hidden="true">
-        <Image
-          src={data.cover}
-          alt=""
-          widths={lead ? [480, 800, 1200] : [320, 640]}
-          sizes={lead ? '(min-width: 1000px) 40vw, 100vw' : '(min-width: 720px) 14rem, 100vw'}
-          quality={IMAGE_QUALITY}
-          loading={lead ? 'eager' : 'lazy'}
-        />
-      </a>
-    )
-  }
 </article>
 
 <style>
   .post-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .post-card:hover,
+  .post-card:focus-within {
+    border-color: var(--signal);
+  }
+
+  /* The cover on a white plate in a fixed frame, so every card is the same shape whatever the
+     image's proportions; diagrams are contained, never cropped. */
+  .cover {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
-    padding-block: var(--space-6);
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    background: #fff;
     border-bottom: 1px solid var(--line);
   }
 
-  @media (min-width: 720px) {
-    .post-card:not(.lead) {
-      grid-template-columns: minmax(0, 1fr) 14rem;
-      gap: var(--space-7);
-      align-items: start;
-    }
+  /* Taken out of flow, so the frame's 16:9 decides its height, never the image's proportions. */
+  .cover :global(img) {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    width: calc(100% - 2 * var(--space-3));
+    height: calc(100% - 2 * var(--space-3));
+    object-fit: contain;
   }
 
-  @media (min-width: 1000px) {
-    .post-card.lead {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-      gap: var(--space-8);
-      align-items: center;
-      padding-block: var(--space-7) var(--space-8);
-    }
+  .no-cover {
+    font-size: var(--text-sm);
+    color: #8a8783;
   }
 
   .text {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    min-width: 0;
+    flex: 1;
+    padding: var(--space-5);
   }
 
   .series {
@@ -98,24 +117,13 @@ const Heading = lead ? 'h2' : 'h3';
   .title {
     font-size: var(--text-lg);
     font-variation-settings: 'wdth' var(--stretch-display);
-    line-height: 1.08;
+    line-height: 1.1;
     text-wrap: balance;
   }
 
-  .lead .title {
-    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
   .title a {
-    text-decoration: none;
     color: var(--fg);
-    transition: color var(--dur-fast) var(--ease-out);
-  }
-
-  .title a:hover {
-    color: var(--signal);
+    text-decoration: none;
   }
 
   /* The whole card is the title's link target. */
@@ -125,63 +133,41 @@ const Heading = lead ? 'h2' : 'h3';
     inset: 0;
   }
 
-  .post-card {
-    position: relative;
+  .title a:focus-visible {
+    outline: none;
   }
 
-  .tags,
-  .cover {
-    position: relative;
-    z-index: 1;
+  .post-card:has(.title a:focus-visible) {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
   }
 
   .description {
-    max-width: var(--measure);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     color: var(--fg-muted);
-  }
-
-  .lead .description {
-    font-size: var(--text-md);
-    line-height: var(--leading-snug);
   }
 
   .meta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4);
+    margin-top: auto;
+    padding-top: var(--space-2);
     font-size: var(--text-xs);
     color: var(--fg-muted);
   }
 
   .tags {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
-    margin: var(--space-1) 0 0;
+    margin: 0;
     padding: 0;
-  }
-
-  /* The cover on a white plate, like the figures inside a post. */
-  .cover {
-    display: block;
-    padding: var(--space-2);
-    background: #fff;
-    outline: 1px solid var(--line);
-    outline-offset: 0;
-    transition: outline-color var(--dur-fast) var(--ease-out);
-  }
-
-  .lead .cover {
-    padding: var(--space-4);
-  }
-
-  .post-card:hover .cover {
-    outline-color: var(--signal);
-  }
-
-  .cover :global(img) {
-    width: 100%;
-    height: auto;
   }
 </style>
