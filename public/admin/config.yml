@@ -66,7 +66,15 @@ collections:
       - name: body
         label: Body
         widget: markdown
-        hint: 'Math: $\lambda_B$ inline; a $$ … $$ block on its own lines is a numbered equation (inside a "> [!EXAMPLE] Title" quote it is an unnumbered working line). Figures: an image followed by a line "_Figure N. Caption._".'
+        # Plain Markdown only. The rich-text editor rewrites Markdown on save: it drops the
+        # backslashes in LaTeX (\, becomes , and \\ becomes \) and nests the blank lines of
+        # "> [!EXAMPLE]" quotes one level deeper, which breaks equations and worked examples.
+        modes: [raw]
+        hint: >-
+          Plain Markdown. Math: `$\lambda_B$` inline; a `$$ … $$` block on its own lines is a
+          numbered equation, and inside a `> [!EXAMPLE] Title` quote it is an unnumbered working
+          line. Figures: an image, then a line `_Figure N. Caption._`. The preview here shows math
+          as TeX; the site typesets it.
 
   - name: archive
     label: Archive
