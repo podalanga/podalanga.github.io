@@ -26,7 +26,7 @@ const { posts } = Astro.props;
   </section>
 
   <section class="container posts">
-    {posts.map((post) => <PostCard post={post} />)}
+    {posts.map((post, i) => <PostCard post={post} eager={i < 2} />)}
   </section>
 </BaseLayout>
 
@@ -53,6 +53,10 @@ const { posts } = Astro.props;
   }
 
   .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+    grid-auto-rows: 1fr;
+    gap: var(--space-5);
     padding-bottom: var(--space-8);
   }
 </style>

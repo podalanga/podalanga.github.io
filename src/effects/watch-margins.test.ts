@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DECAY_MS, HOLD_MS, MIN_CELLS, PHRASES, RESOLVE_MS, churn, columnFrame, linePhase, pickPhrase, visibleCells } from './watch-margins';
+import { ARROW, DECAY_MS, HOLD_MS, PHRASES, RESOLVE_MS, churn, columnFrame, linePhase, pickPhrase, visibleCells } from './watch-margins';
 
 const glyphs = 'abcdefghijklmnop'.split('');
 
@@ -8,25 +8,26 @@ describe('columnFrame', () => {
     expect(columnFrame(glyphs, 0)).toEqual({ before: '', said: '', after: '', head: '' });
   });
 
-  it('grows from the top, with the last cell as the head', () => {
-    expect(columnFrame(glyphs, 4)).toEqual({ before: 'abc', said: '', after: '', head: 'd' });
+  it('grows from the top and ends in the arrow', () => {
+    expect(columnFrame(glyphs, 1)).toEqual({ before: '', said: '', after: '', head: ARROW });
+    expect(columnFrame(glyphs, 4)).toEqual({ before: 'abc', said: '', after: '', head: ARROW });
   });
 
   it('places a line at its offset, with noise either side', () => {
-    expect(columnFrame(glyphs, 10, 'WAR', 2)).toEqual({ before: 'ab', said: 'WAR', after: 'fghi', head: 'j' });
+    expect(columnFrame(glyphs, 10, 'WAR', 2)).toEqual({ before: 'ab', said: 'WAR', after: 'fghi', head: ARROW });
   });
 
   it('drops a line that no longer fits once the column shrinks', () => {
-    expect(columnFrame(glyphs, 5, 'WAR', 2)).toEqual({ before: 'abcd', said: '', after: '', head: 'e' });
+    expect(columnFrame(glyphs, 5, 'WAR', 2)).toEqual({ before: 'abcd', said: '', after: '', head: ARROW });
   });
 });
 
 describe('visibleCells', () => {
-  it('shows a minimum from the first screen, then follows the page', () => {
-    expect(visibleCells(0, 60)).toBe(MIN_CELLS);
+  it('starts empty at the top of the page and follows it to the end', () => {
+    expect(visibleCells(0, 60)).toBe(0);
+    expect(visibleCells(0.01, 60)).toBe(1);
     expect(visibleCells(0.5, 60)).toBe(30);
     expect(visibleCells(1, 60)).toBe(60);
-    expect(visibleCells(0, 8)).toBe(8);
   });
 });
 
@@ -35,6 +36,11 @@ describe('pickPhrase', () => {
     expect(pickPhrase(11, () => 0)).toBe('DOUBLETHINK');
     expect(pickPhrase(5)).toBeUndefined();
     for (let i = 0; i < 20; i++) expect(pickPhrase(18)!.length).toBeLessThanOrEqual(18);
+  });
+
+  it('never gives a column the line the other column is showing', () => {
+    for (let i = 0; i < 20; i++) expect(pickPhrase(11, Math.random, 'DOUBLETHINK')).toBeUndefined();
+    for (let i = 0; i < 50; i++) expect(pickPhrase(99, Math.random, 'WAR IS PEACE')).not.toBe('WAR IS PEACE');
   });
 
   it('includes the line the user asked for', () => {

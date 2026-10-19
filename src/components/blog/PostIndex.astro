@@ -56,7 +56,7 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
       <span class="sheet-progress" data-read-progress aria-hidden="true"></span>
     </summary>
 
-    <div class="index-list" data-read-progress>
+    <div class="index-list">
       <ol class="chapters">
         {
           chapters.map((c) => (
@@ -189,8 +189,13 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
 
   .readout-pair {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: var(--space-3) var(--space-6);
+  }
+
+  .readout-pair dt {
+    white-space: nowrap;
   }
 
   /* ---- the list ------------------------------------------------------- */
@@ -200,9 +205,8 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
     padding-left: var(--space-4);
   }
 
-  /* The left rule fills with red as the article is read. */
-  .index-list::before,
-  .index-list::after {
+  /* A plain rule; progress through the page is the watch margins' job on wide screens. */
+  .index-list::before {
     content: '';
     position: absolute;
     left: 0;
@@ -210,12 +214,6 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
     width: 1px;
     height: 100%;
     background: var(--line);
-  }
-
-  .index-list::after {
-    background: var(--signal);
-    transform-origin: top;
-    transform: scaleY(var(--read, 0));
   }
 
   ol {
@@ -386,7 +384,11 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
       margin: 0 var(--gutter) var(--space-4) calc(var(--gutter) + 3px);
     }
 
-    .index-list::after {
+  }
+
+  /* Where the watch margins show (900px and up) they are the only progress line. */
+  @media (min-width: 900px) {
+    .sheet-progress {
       display: none;
     }
   }
