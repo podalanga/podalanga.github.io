@@ -1,9 +1,9 @@
-// Locks on published addresses: document links (/docs/<name>) and page addresses (/blog/<slug>,
-// /projects/<slug>) that have gone out into the world (a resume, a paper, a shared link) and so
-// must never change. The CMS can edit every field, so the guard is the build: src/config/locks.json
-// records each locked address and, for a document link, the entry it belongs to. A build whose
-// content renames, clears, moves or deletes one fails with a message saying what changed, and the
-// live site stays as it was.
+// Locks on published addresses: document links (/docs/<name>, the resume included) and page
+// addresses (/blog/<slug>, /projects/<slug>, /hire) that have gone out into the world (a resume, a
+// paper, a shared link) and so must never change. The CMS can edit every field, so the guard is the
+// build: src/config/locks.json records each locked address and, for a document link, the entry it
+// belongs to. A build whose content renames, clears, moves or deletes one fails with a message
+// saying what changed, and the live site stays as it was.
 //
 // Read by astro.config.mjs (the check), scripts/lock.mjs (adding newly published addresses) and the
 // docs route (every locked name must resolve). Plain Node: no Astro APIs, so it runs before the
@@ -59,6 +59,11 @@ export function collectPublished(contentDir: string): Published {
   for (const { slug, data } of entries(contentDir, 'awards')) {
     if (typeof data.permalink === 'string' && data.permalink) docs.set(data.permalink, `awards/${slug}`);
   }
+  // The /hire page's resume, and the page itself.
+  for (const { slug, data } of entries(contentDir, 'hire')) {
+    if (typeof data.permalink === 'string' && data.permalink && data.resume) docs.set(data.permalink, `hire/${slug}`);
+    pages.add('/hire');
+  }
   // A draft is not built, so it publishes no page.
   for (const { slug, data } of entries(contentDir, 'log')) {
     if (data.draft !== true) pages.add(`/blog/${slug}`);
@@ -69,7 +74,7 @@ export function collectPublished(contentDir: string): Published {
 /** What a locked address's owner is called in a message: "project mechanical-watch". */
 function owner(entry: string): string {
   const [collection, slug] = entry.split('/');
-  return `${collection === 'awards' ? 'award' : collection === 'works' ? 'project' : collection} "${slug}"`;
+  return `${collection === 'awards' ? 'award' : collection === 'works' ? 'project' : collection === 'hire' ? 'hire page' : collection} "${slug}"`;
 }
 
 /** One plain sentence per locked address that the content no longer honours. */

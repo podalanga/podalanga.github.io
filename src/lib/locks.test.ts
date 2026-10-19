@@ -87,3 +87,11 @@ describe('findMissingOutput', () => {
     ]);
   });
 });
+
+describe('the /hire page', () => {
+  it('publishes the resume link and the page, so both lock after a deploy', () => {
+    const published = collectPublished('src/content');
+    expect(published.docs.get('resume')).toBe('hire/hire');
+    expect(published.pages.has('/hire')).toBe(true);
+  });
+});

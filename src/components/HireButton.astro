@@ -1,35 +1,13 @@
 ---
-// "Hire me" on the profile hero: a small chip in the same language as the header's THEME button
-// (mono, thin rule, a blinking red dot), sitting with the hero's other mono lines rather than
-// competing with the name. It opens an email to the site's address with the subject and a short
-// brief filled in. The address is put together in the browser from two halves, as the other email
-// links are, and a resume is only ever sent by reply: nothing here can carry a phone number.
-import { site } from '../config/site';
-
-const [emailUser, emailDomain] = site.email.split('@');
-
-const subject = `Hiring enquiry for ${site.person.name}`;
-const body = [
-  `Hi ${site.person.givenName},`,
-  '',
-  'Role:',
-  'Company:',
-  'Location / remote:',
-  'Start date:',
-  '',
-  'Could you send over your resume?',
-].join('\n');
-const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+// "Hire me" on the profile hero: the THEME button's bordered style at a size that stands out, in
+// red, leading to /hire (the pitch, the resume and an email button).
 ---
 
-<a class="hire mono" href="mailto:" data-hire data-user={emailUser} data-domain={emailDomain} data-query={query}>
+<a class="hire mono" href="/hire/">
   <span class="dot" aria-hidden="true">●</span>
   <span>HIRE ME</span>
   <span class="arrow" aria-hidden="true">→</span>
 </a>
-<noscript>
-  <p class="hire-fallback mono">Hire me: {emailUser} [at] {emailDomain.replace('.', ' [dot] ')}</p>
-</noscript>
 
 <style>
   .hire {
@@ -37,18 +15,20 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
     align-self: flex-start;
     width: fit-content;
     align-items: center;
-    gap: var(--space-2);
-    margin-top: var(--space-5);
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--line);
-    font-size: var(--text-xs);
+    gap: 0.7em;
+    margin-top: var(--space-6);
+    padding: 0.75em 1.25em;
+    border: 1px solid var(--signal);
+    font-size: var(--text-base);
+    font-weight: 700;
     letter-spacing: var(--tracking-wider);
     color: var(--fg);
     text-decoration: none;
-    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
   }
 
   .dot {
+    font-size: 0.75em;
     color: var(--signal);
     --pulse-trough: 0.35;
     animation: pulse 2.4s var(--ease-in-out) infinite;
@@ -61,24 +41,18 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
 
   .hire:hover,
   .hire:focus-visible {
-    border-color: var(--signal);
     color: var(--signal);
+    background-color: color-mix(in srgb, var(--signal) 10%, transparent);
   }
 
   .hire:hover .arrow,
   .hire:focus-visible .arrow {
-    transform: translateX(3px);
+    transform: translateX(4px);
   }
 
   .hire:focus-visible {
     outline: 2px solid var(--signal);
-    outline-offset: 2px;
-  }
-
-  .hire-fallback {
-    margin-top: var(--space-5);
-    font-size: var(--text-xs);
-    color: var(--fg-muted);
+    outline-offset: 3px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -91,15 +65,3 @@ const query = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent
     }
   }
 </style>
-
-<script>
-  function init(): void {
-    document.querySelectorAll<HTMLAnchorElement>('[data-hire]').forEach((link) => {
-      const { user, domain, query } = link.dataset;
-      if (user && domain) link.href = `mailto:${user}@${domain}${query ?? ''}`;
-    });
-  }
-
-  init();
-  document.addEventListener('astro:page-load', init);
-</script>

@@ -15,6 +15,7 @@ const CONTENT_TYPES: Record<string, string> = {
 export async function getStaticPaths() {
   const works = await getCollection('works');
   const awards = await getCollection('awards');
+  const hire = await getCollection('hire');
   const documents = [
     ...works.flatMap((work) => work.data.documents ?? []),
     ...awards
@@ -23,6 +24,7 @@ export async function getStaticPaths() {
         file: award.data.file!,
         permalink: award.data.permalink,
       })),
+    ...hire.filter((h) => h.data.resume).map((h) => ({ file: h.data.resume!, permalink: h.data.permalink })),
   ];
   return permalinkRoutes(documents, Object.keys(locks.docs))
     .filter((route) => !route.external)

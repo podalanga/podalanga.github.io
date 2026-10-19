@@ -32,6 +32,7 @@ export async function GET(_context: APIContext) {
     `- Website: ${site.url}/`,
     `- GitHub: ${site.socials.github}`,
     `- LinkedIn: ${site.socials.linkedin}`,
+    `- Hiring: ${site.url}/hire/ (availability, resume, contact)`,
     '',
     '## Areas of expertise',
     '',
