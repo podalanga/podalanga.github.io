@@ -10,9 +10,13 @@
 //   <table>                                    ->  wrapped in a scroll box for narrow screens
 //   **Lead.** run-in paragraph                 ->  class `runin`
 //   λ_B, n_eff, d_min                          ->  λ<sub>B</sub>, n<sub>eff</sub>, d<sub>min</sub>
+//   $x$, and $$…$$ on its own lines            ->  KaTeX, typeset at build time; a top-level display
+//                                                  block is a numbered equation, one inside an
+//                                                  example or [!CALC] is an unnumbered working line
 //
 // Only files under content/log are touched, so project pages keep their plain prose.
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
+import katex from 'katex';
 
 type Parent = Root | Element;
 
@@ -104,6 +108,41 @@ function figures(parent: Parent): void {
   parent.children = out as typeof parent.children;
 }
 
+function hasClass(node: Element, name: string): boolean {
+  const cls: unknown = node.properties?.className;
+  return (Array.isArray(cls) ? cls : String(cls ?? '').split(' ')).includes(name);
+}
+
+/** A `$$…$$` block: `<pre><code class="language-math">` (see `mathBlocksAsCode`). */
+function displayMath(node: RootContent | ElementContent | undefined): string | undefined {
+  if (!isElement(node, 'pre')) return undefined;
+  const code = meaningful(node.children)[0];
+  return isElement(code, 'code') && hasClass(code, 'language-math') ? textContent(code).trim() : undefined;
+}
+
+/** Typesets TeX with KaTeX. A formula KaTeX cannot parse is shown as its source, in red, and
+ *  reported in the build log rather than failing the build. */
+export function typeset(tex: string, displayMode: boolean, where = ''): RootContent {
+  let html: string;
+  try {
+    html = katex.renderToString(tex, { displayMode, throwOnError: true, output: 'htmlAndMathml' });
+  } catch (err) {
+    console.warn(`[blog] KaTeX could not typeset ${JSON.stringify(tex)}${where ? ` in ${where}` : ''}: ${(err as Error).message}`);
+    html = katex.renderToString(tex, { displayMode, throwOnError: false, output: 'htmlAndMathml' });
+  }
+  return { type: 'raw', value: html } as unknown as RootContent;
+}
+
+/** A numbered display equation. `\tag{…}` in the TeX supplies its own label instead. */
+function equationBox(body: ElementContent[], tex: string | undefined, counter: { eq: number }): Element {
+  if (tex && /\\tag\*?\{/.test(tex)) return el('div', { className: ['eq', 'eq--tagged'] }, [el('div', { className: ['eq-body'] }, body)]);
+  counter.eq += 1;
+  return el('div', { className: ['eq'], id: `eq-${counter.eq}` }, [
+    el('div', { className: ['eq-body'] }, body),
+    el('span', { className: ['eq-no'] }, [text(`(${counter.eq})`)]),
+  ]);
+}
+
 /**
  * Reads `[!TYPE] Title` off the start of a blockquote. The marker sits on its own paragraph; any
  * words after it on that line become the title. Returns undefined for a plain quotation.
@@ -130,6 +169,12 @@ function readAlert(quote: Element): { kind: string; title: ElementContent[]; bod
 function alerts(node: Parent, counter: { eq: number }): void {
   node.children.forEach((child, i) => {
     if (!isElement(child)) return;
+    // A `$$…$$` block standing on its own in the text is a numbered equation.
+    const tex = node.type === 'root' ? displayMath(child) : undefined;
+    if (tex !== undefined) {
+      node.children[i] = equationBox([child], tex, counter);
+      return;
+    }
     // Depth first, so an example's working lines are shaped before the example itself.
     alerts(child, counter);
     if (child.tagName !== 'blockquote') return;
@@ -138,14 +183,9 @@ function alerts(node: Parent, counter: { eq: number }): void {
 
     let replacement: Element;
     switch (alert.kind) {
-      case 'EQUATION': {
-        counter.eq += 1;
-        replacement = el('div', { className: ['eq'], id: `eq-${counter.eq}` }, [
-          el('div', { className: ['eq-body'] }, alert.body),
-          el('span', { className: ['eq-no'] }, [text(`(${counter.eq})`)]),
-        ]);
+      case 'EQUATION':
+        replacement = equationBox(alert.body, alert.body.map(displayMath).find((t) => t !== undefined), counter);
         break;
-      }
       case 'CALC':
         replacement = el('div', { className: ['eq', 'eq--calc'] }, [el('div', { className: ['eq-body'] }, alert.body)]);
         break;
@@ -241,13 +281,35 @@ function subscripts(node: Parent): void {
   if (changed) node.children = out as typeof node.children;
 }
 
-export function transformArticle(tree: Root): void {
+/**
+ * Replaces every math node with KaTeX output. Display math that is not already inside an
+ * equation box (it sits in an example, a list, a quotation) becomes an unnumbered working line.
+ */
+function math(node: Parent, inBox: boolean, where: string): void {
+  node.children.forEach((child, i) => {
+    if (!isElement(child)) return;
+    const tex = displayMath(child);
+    if (tex !== undefined) {
+      const rendered = typeset(tex, true, where) as ElementContent;
+      node.children[i] = inBox ? rendered : el('div', { className: ['eq', 'eq--calc'] }, [el('div', { className: ['eq-body'] }, [rendered])]);
+      return;
+    }
+    if (child.tagName === 'code' && hasClass(child, 'math-inline')) {
+      node.children[i] = typeset(textContent(child), false, where) as ElementContent;
+      return;
+    }
+    math(child, inBox || hasClass(child, 'eq-body'), where);
+  });
+}
+
+export function transformArticle(tree: Root, where = ''): void {
   figures(tree);
   alerts(tree, { eq: 0 });
   sectionNumbers(tree);
   tables(tree);
   runIns(tree);
   subscripts(tree);
+  math(tree, false, where);
 }
 
 /**
@@ -265,6 +327,19 @@ function clone(node: Readonly<Root | RootContent>): Root | RootContent {
 }
 
 /**
+ * Mdast plugin: turns each `$$…$$` block into a code block in the language `math`. Astro's syntax
+ * highlighter runs before the article plugin and skips `math` code blocks, but it only recognises
+ * them by that language, which Sätteri's own math blocks do not carry; without this, Shiki would
+ * colour the TeX as plain code before KaTeX ever saw it.
+ */
+export const mathBlocksAsCode = {
+  name: 'math-blocks-as-code',
+  math(node: { value: string }, ctx: { replaceNode(node: unknown, next: unknown): void }) {
+    ctx.replaceNode(node, { type: 'code', lang: 'math', meta: null, value: node.value });
+  },
+};
+
+/**
  * Hast plugin for Astro's Sätteri Markdown processor. It runs once per document, swaps the whole
  * root for the shaped one, and only for blog posts. Astro's own image and heading-id passes run
  * after it, so images inside figures are still optimised and heading ids come from unchanged text.
@@ -275,7 +350,7 @@ export const blogArticlePlugin = {
     const path = ctx.fileURL ? decodeURIComponent(ctx.fileURL.pathname) : '';
     if (!path.includes('/content/log/')) return;
     const next = clone(root) as Root;
-    transformArticle(next);
+    transformArticle(next, path.slice(path.indexOf('/content/log/') + 1));
     ctx.replaceNode(root, next);
   },
 };

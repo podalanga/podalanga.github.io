@@ -3,7 +3,7 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
-import { blogArticlePlugin } from './src/lib/blog-article.ts';
+import { blogArticlePlugin, mathBlocksAsCode } from './src/lib/blog-article.ts';
 
 const SITE = 'https://podalanga.github.io';
 
@@ -50,7 +50,8 @@ export default defineConfig({
   trailingSlash: 'ignore',
   markdown: {
     // Blog posts get figures, numbered equations and worked-example panels (src/lib/blog-article.ts).
-    processor: satteri({ hastPlugins: [blogArticlePlugin] }),
+    // `$…$` and `$$…$$` parse as math, which that plugin typesets with KaTeX.
+    processor: satteri({ features: { math: true }, mdastPlugins: [mathBlocksAsCode], hastPlugins: [blogArticlePlugin] }),
   },
   integrations: [
     sitemap({

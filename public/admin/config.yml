@@ -63,7 +63,10 @@ collections:
             widget: file
             media_folder: /public/media/attachments
             public_folder: /media/attachments
-      - { name: body, label: Body, widget: markdown }
+      - name: body
+        label: Body
+        widget: markdown
+        hint: 'Math: $\lambda_B$ inline; a $$ … $$ block on its own lines is a numbered equation (inside a "> [!EXAMPLE] Title" quote it is an unnumbered working line). Figures: an image followed by a line "_Figure N. Caption._".'
 
   - name: archive
     label: Archive
