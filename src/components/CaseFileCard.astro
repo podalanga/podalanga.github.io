@@ -188,9 +188,11 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Image tint disabled to keep the original colour grading.
     filter: saturate(0.85) sepia(0.08);
     transition: filter var(--dur-slow) var(--ease-out),
-      transform var(--dur-slow) var(--ease-out);
+      transform var(--dur-slow) var(--ease-out); */
+    transition: transform var(--dur-slow) var(--ease-out);
   }
 
   .thumb {
@@ -235,7 +237,7 @@ const docFlags = DOCUMENT_KINDS.filter((k) => k !== 'other' && documentKinds.inc
 
   @media (hover: hover) {
     .case-card:hover .thumb :global(img) {
-      filter: none;
+      /* filter: none; */
       transform: scale(1.03);
     }
   }

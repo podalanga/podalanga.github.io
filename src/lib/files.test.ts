@@ -26,6 +26,6 @@ describe('countPdfPages', () => {
 
 describe('pageCountOf', () => {
   it('skips files that are not PDFs', async () => {
-    expect(await pageCountOf('/media/attachments/signal-acquired.txt')).toBeNull();
+    expect(await pageCountOf('/media/attachments/notes.txt')).toBeNull();
   });
 });

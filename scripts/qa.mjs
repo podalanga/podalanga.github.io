@@ -15,7 +15,7 @@ const VIEWPORTS = [
 
 const THEMES = ['dark', 'light'];
 
-const ROUTES = ['/', '/projects', '/projects/zbot', '/archive', '/blog', '/blog/signal-acquired', '/404'];
+const ROUTES = ['/', '/projects', '/projects/zbot', '/archive', '/blog', '/blog/fibre-optic-shm', '/404'];
 
 async function shootRoute(browser, route, viewport, theme) {
   const context = await browser.newContext({ viewport });

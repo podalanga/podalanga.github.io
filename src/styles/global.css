@@ -275,6 +275,14 @@ p {
   font-size: var(--text-sm);
 }
 
+/* On a phone a wide table scrolls inside its own box instead of widening the page. */
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
 .prose th,
 .prose td {
   padding: var(--space-2) var(--space-3);
