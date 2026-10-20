@@ -9,7 +9,6 @@ import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 import { documentHref } from '../lib/documents';
-import { pageCountOf, sizeOf } from '../lib/files';
 import { PERSON_ID, absoluteUrl, pageTitle } from '../lib/seo';
 
 const entry = await getEntry('hire', 'hire');
@@ -17,9 +16,6 @@ if (!entry) throw new Error('src/content/hire/hire/index.md is missing: the /hir
 const { headline, summary, availability, lookingFor, highlights, skills, resume, permalink } = entry.data;
 
 const resumeHref = resume ? documentHref({ file: resume, permalink }) : null;
-const resumePages = resume ? await pageCountOf(resume) : null;
-const resumeSize = resume ? sizeOf(resume) : null;
-const resumeMeta = [resumePages && `${resumePages} page${resumePages === 1 ? '' : 's'}`, resumeSize].filter(Boolean).join(' · ');
 
 const [emailUser, emailDomain] = site.email.split('@');
 const subject = `Hiring enquiry for ${site.person.name}`;
@@ -51,7 +47,6 @@ const contactPage = {
         resumeHref && (
           <a class="action mono" href={resumeHref} target="_blank" rel="noopener" aria-label="View resume (PDF, opens in a new tab)">
             VIEW RESUME <span class="arrow" aria-hidden="true">↗</span>
-            <span class="meta">PDF{resumeMeta && ` · ${resumeMeta}`}</span>
           </a>
         )
       }
@@ -195,21 +190,10 @@ const contactPage = {
     transition: transform var(--dur-fast) var(--ease-out);
   }
 
-  .action .meta {
-    font-weight: 400;
-    color: var(--fg-muted);
-  }
-
   .action {
     white-space: nowrap;
   }
 
-  /* On a phone the page count and size would crowd the buttons onto extra lines. */
-  @media (max-width: 480px) {
-    .action .meta {
-      display: none;
-    }
-  }
 
   .action:hover,
   .action:focus-visible {
