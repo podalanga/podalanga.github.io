@@ -1,9 +1,10 @@
 ---
 // /hire: for recruiters. The pitch, what is wanted, proof of work linked to the projects, the
-// toolkit, the resume and an email with the brief filled in. Every word comes from the `hire`
-// entry (the CMS's "Hire page"). The resume is published at /docs/<permalink>.pdf and is censored of
-// phone numbers before it is saved (public/admin/pdf-censor.js) and again on deploy; the email
-// address is assembled in the browser, as the site's other email links are.
+// toolkit, the resume (viewed in the browser's own PDF viewer, or downloaded) and an email with the
+// brief filled in. Every word comes from the `hire` entry (the CMS's "Hire page"). The resume is
+// published at /docs/<permalink>.pdf and is censored of phone numbers before it is saved
+// (public/admin/pdf-censor.js) and again on deploy; the email address is assembled in the browser,
+// as the site's other email links are.
 import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
@@ -48,9 +49,15 @@ const contactPage = {
       </a>
       {
         resumeHref && (
-          <a class="action mono" href={resumeHref} download>
-            DOWNLOAD RESUME <span class="meta">PDF{resumeMeta && ` · ${resumeMeta}`}</span>
-          </a>
+          <>
+            <a class="action mono" href={resumeHref} target="_blank" rel="noopener" aria-label="View resume (PDF, opens in a new tab)">
+              VIEW RESUME <span class="arrow" aria-hidden="true">↗</span>
+              <span class="meta">PDF{resumeMeta && ` · ${resumeMeta}`}</span>
+            </a>
+            <a class="action mono" href={resumeHref} download="Joshua_John_L_resume.pdf" aria-label="Download resume (PDF)">
+              DOWNLOAD <span class="arrow" aria-hidden="true">↓</span>
+            </a>
+          </>
         )
       }
     </div>
@@ -196,6 +203,17 @@ const contactPage = {
   .action .meta {
     font-weight: 400;
     color: var(--fg-muted);
+  }
+
+  .action {
+    white-space: nowrap;
+  }
+
+  /* On a phone the page count and size would crowd the buttons onto extra lines. */
+  @media (max-width: 480px) {
+    .action .meta {
+      display: none;
+    }
   }
 
   .action:hover,
