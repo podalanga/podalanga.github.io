@@ -8,7 +8,7 @@ tags:
   - Dynamics
   - Control Systems
 context: "Robotics · course slide study notebook"
-draft: true
+draft: false
 ---
 
 **A manipulator becomes easier to understand when equations and motion are treated as two views of the same system.** These notes follow the original ten-chapter exam notebook, from specifying a frame to controlling a motor. Each section retains the original mathematical content, slide references, and derivation notes, with interactive experiments where seeing the motion helps.
