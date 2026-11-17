@@ -41,7 +41,7 @@ Machine learning fits a mathematical model using examples. After training, the m
 
 #### When ML is useful
 
-Use ML when useful example data exist but the input–output rule is difficult to program explicitly. Face detection, spam filtering, and rainfall prediction are examples. Password verification already has an exact rule, so ordinary programming is sufficient.
+Use ML when useful example data exist but the input-output rule is difficult to program explicitly. Face detection, spam filtering, and rainfall prediction are examples. Password verification already has an exact rule, so ordinary programming is sufficient.
 
 #### Two kinds of model
 
@@ -453,7 +453,7 @@ $$
 D_uf(a)=\nabla f(a)^Tu.
 $$
 
-The dot product selects the component of the gradient along the direction. The Cauchy–Schwarz inequality $|v^Tu|\le\|v\|\|u\|$ says this component cannot exceed the gradient length when u is a unit vector. Therefore, when $\nabla f(a)
+The dot product selects the component of the gradient along the direction. The Cauchy-Schwarz inequality $|v^Tu|\le\|v\|\|u\|$ says this component cannot exceed the gradient length when u is a unit vector. Therefore, when $\nabla f(a)
 e0$, steepest ascent is along $\nabla f/\|\nabla f\|$, at rate $\|\nabla f\|$; steepest descent is the opposite direction. Any unit u with $\nabla f(a)^Tu<0$ decreases f locally. The gradient is perpendicular to a smooth level contour through a, because movement along that contour has zero first-order change.
 
 **Worked example: compute a directional rate.**
@@ -527,7 +527,7 @@ Let $A$ be an $m$-row, n-column real matrix, written $A\in\mathbb R^{m\times n}$
 | Null space $N(A)$ | Inputs x satisfying $Ax=0$ | $\mathbb R^n$ | n−r |
 | Left null space $N(A^T)$ | Vectors y satisfying $A^Ty=0$ | $\mathbb R^m$ | m−r |
 
-For a subspace U, $U^\perp$ means all vectors perpendicular to every vector in U. The fundamental orthogonality relationships and rank–nullity theorem are
+For a subspace U, $U^\perp$ means all vectors perpendicular to every vector in U. The fundamental orthogonality relationships and rank-nullity theorem are
 
 $$
 \operatorname{rank}(A)+\operatorname{nullity}(A)=n,\qquad C(A^T)=N(A)^\perp,\qquad C(A)=N(A^T)^\perp.
@@ -558,7 +558,7 @@ A basis is a linearly independent list that spans the whole space. Row operation
 4. **Null space:** solve the reduced homogeneous system. Express pivot variables in terms of free variables, then set each free variable to 1 in turn and the others to 0 to get basis vectors.
 5. **Left null space:** solve $A^Ty=0$, where y has one coordinate per row of A.
 
-**Worked example: null-space basis (S21, pp. 5–8).**
+**Worked example: null-space basis (S21, pp. 5-8).**
 
 For the 3-by-4 matrix below, the displayed U is obtained by row operations. The pivot columns are 1 and 3; the free variables are $x_2,x_4$.
 
@@ -713,7 +713,7 @@ $$
 p=A\hat\theta=\tfrac17\begin{bmatrix}5\\13\\17\end{bmatrix},\qquad e=b-p=\tfrac17\begin{bmatrix}2\\-6\\4\end{bmatrix}.
 $$
 
-Check the perpendicularity: $A^Te=\tfrac17\begin{bmatrix}-2-6+8\\2-6+4\end{bmatrix}=0$. The minimum squared vertical error is $\|e\|^2=(4+36+16)/49=8/7$. This fit minimizes vertical prediction errors (differences in y), not perpendicular distances in the original x–y plot.
+Check the perpendicularity: $A^Te=\tfrac17\begin{bmatrix}-2-6+8\\2-6+4\end{bmatrix}=0$. The minimum squared vertical error is $\|e\|^2=(4+36+16)/49=8/7$. This fit minimizes vertical prediction errors (differences in y), not perpendicular distances in the original x-y plot.
 
 *Source IDs: S22, S23, S24, S25, S28.*
 
@@ -1364,7 +1364,7 @@ The MLE denominator is n. The n−1 denominator belongs to the unbiased sample-v
 *Source IDs: S07, S13.*
 
 
-### 10.3 Beta–Bernoulli posterior and MAP
+### 10.3 Beta-Bernoulli posterior and MAP
 
 #### Prior and posterior
 

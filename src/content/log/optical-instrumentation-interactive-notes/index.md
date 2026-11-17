@@ -70,7 +70,7 @@ $$
 \begin{aligned}c&=\nu\lambda_0,& E_{\mathrm{ph}}&=h\nu=\frac{hc}{\lambda_0}\\ E_{\mathrm{ph}}(\mathrm{eV})&\simeq\frac{1240}{\lambda_0(\mathrm{nm})}=\frac{1.240}{\lambda_0(\mu\mathrm m)}\end{aligned}
 $$
 
-UV has shorter wavelength than visible light; IR has longer wavelength. Visible light is approximately 380–750 nm, with boundaries depending on convention. Increasing wavelength reduces photon energy.
+UV has shorter wavelength than visible light; IR has longer wavelength. Visible light is approximately 380-750 nm, with boundaries depending on convention. Increasing wavelength reduces photon energy.
 
 **Standard clarification:** $\lambda_{0}$ is vacuum wavelength; inside index n, speed is c/n and wavelength is $\lambda_{0}$/n, while frequency stays unchanged. Optical power (W), intensity/irradiance (W/$m^{2}$), and photometric quantities weighted for human vision are different quantities.
 
@@ -160,7 +160,7 @@ The lifetime ratio describes radiative recombination inside the active region. T
 | Property | Direct gap | Indirect gap |
 | --- | --- | --- |
 | Band extrema | CB minimum and VB maximum at same k | Extrema at different k |
-| Optical transition | Photon transition approximately vertical in E–k plot | Phonon assists momentum conservation |
+| Optical transition | Photon transition approximately vertical in E-k plot | Phonon assists momentum conservation |
 | Examples / relevance | GaAs; efficient emission in suitable direct-gap alloys | Si, Ge, GaP; generally less efficient band-edge emission |
 
 **Correction / clarification.** GaP is an indirect-gap semiconductor. It can still be used for visible LEDs through impurity/isoelectronic-assisted processes. An indirect gap also does not prevent silicon from being a useful photodetector.
@@ -179,7 +179,7 @@ Material composition changes the band gap and therefore the emission wavelength.
 | Material / mechanism | Study point |
 | --- | --- |
 | GaAs | $E_{\mathrm{g}}$ ≈ 1.4 eV → $\lambda$ ≈ 886 nm, in the near-IR. Exact emission depends on temperature, doping and structure. |
-| $\mathrm{GaAs}_{1-x}\mathrm{P}_x$ | Increasing phosphorus generally raises the relevant gap; a direct-to-indirect crossover occurs near x ≈ 0.4–0.45 (approximate). |
+| $\mathrm{GaAs}_{1-x}\mathrm{P}_x$ | Increasing phosphorus generally raises the relevant gap; a direct-to-indirect crossover occurs near x ≈ 0.4-0.45 (approximate). |
 | Isoelectronic centres | Nitrogen is isoelectronic (isovalent) on the group-V sublattice, but it strongly changes electronic states. It can lower optical transition energies and, in nitrogen-containing alloys, reduce the fundamental band gap; localized-centre emission and a shifted bulk band edge are distinct effects. |
 | White LEDs | RGB mixing, or blue/UV excitation plus phosphor conversion. Blue + yellow phosphor is the common schematic in the notes. |
 
@@ -204,28 +204,28 @@ Primary checks: [nitrogen-bound excitons in GaP](https://journals.aps.org/pr/abs
 ### Formula reference
 
 *Lifetimes use the same units. Independent recombination rates add.  
-**Notes/PYQ basis:** Notes A pp.7–8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
+**Notes/PYQ basis:** Notes A pp.7-8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
 
 $$
 \frac1\tau=\frac1{\tau_{\mathrm r}}+\frac1{\tau_{\mathrm{nr}}}
 $$
 
 *Radiative fraction of total recombination.  
-**Notes/PYQ basis:** Notes A pp.7–8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
+**Notes/PYQ basis:** Notes A pp.7-8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
 
 $$
 \eta_{\mathrm{int}}=\frac{\tau_{\mathrm{nr}}}{\tau_{\mathrm r}+\tau_{\mathrm{nr}}}
 $$
 
 *Injection efficiency included in $\eta_{\mathrm{int}}$ or supplied as an extra factor.  
-**Notes/PYQ basis:** Notes A pp.7–8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
+**Notes/PYQ basis:** Notes A pp.7-8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
 
 $$
 \eta_{\mathrm{ext}}=\eta_{\mathrm{int}}\eta_{\mathrm{extract}}
 $$
 
 *Idealized optical output; I in amperes, $\lambda$ in metres.  
-**Notes/PYQ basis:** Notes A pp.7–8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
+**Notes/PYQ basis:** Notes A pp.7-8; PYQ S8 Q2: lifetimes and LED efficiency; S3 Q2: optical power/coupling.*
 
 $$
 P_{\mathrm{out}}\simeq\frac{\eta_{\mathrm{ext}}Ihc}{q\lambda}
@@ -336,21 +336,21 @@ Inorganic LEDs use crystalline semiconductor layers; OLEDs use organic emissive 
 | AlInGaP | Efficient red/orange/yellow-to-yellow-green devices; it does not cover all colours except violet. Blue commonly uses InGaN/GaN. |
 | InGaAsP / InP | Composition-engineered sources near telecom wavelengths with suitable guiding/confinement layers. |
 
-**Source caution.** A pp.29–32 include historical composition/efficiency tables and unspecified growth conditions. These are not universal device specifications. Nitrogen-related radiative centres affect internal emission, whereas transparent substrates chiefly improve extraction.
+**Source caution.** A pp.29-32 include historical composition/efficiency tables and unspecified growth conditions. These are not universal device specifications. Nitrogen-related radiative centres affect internal emission, whereas transparent substrates chiefly improve extraction.
 
 *Source tags: A pp. 27-30.*
 
 ### Formula reference
 
 *Critical angle at a high-to-low index interface; angles to the normal.  
-**Notes/PYQ basis:** Notes A pp.12–16; PYQ S8 Q2: extraction and external LED efficiency.*
+**Notes/PYQ basis:** Notes A pp.12-16; PYQ S8 Q2: extraction and external LED efficiency.*
 
 $$
 \theta_{\mathrm c}=\arcsin\!\left(\frac{n_{\mathrm{out}}}{n_{\mathrm s}}\right)
 $$
 
 *Simple isotropic one-face escape cone only; excludes Fresnel and absorption loss.  
-**Notes/PYQ basis:** Notes A pp.12–16; PYQ S8 Q2: extraction and external LED efficiency.*
+**Notes/PYQ basis:** Notes A pp.12-16; PYQ S8 Q2: extraction and external LED efficiency.*
 
 $$
 \eta_{\mathrm{extract,cone}}\simeq\frac{1-\cos\theta_{\mathrm c}}2
@@ -369,7 +369,7 @@ Separate the emission geometry from the amplification mechanism; the notebook us
 | Planar LED | Layered chip with a flat output surface | Simple geometry; substantial escape-cone loss. |
 | Dome LED | Curved semiconductor surface or encapsulation/lens | Improved escape and controlled angular pattern. |
 | Surface-emitting LED | Light leaves perpendicular to junction plane | Broad beam; relatively simple coupling arrangements. |
-| Burrus surface emitter | Recess etched near emitting region; fibre brought close and fixed with epoxy | Reduces source–fibre separation; assembly is more demanding. |
+| Burrus surface emitter | Recess etched near emitting region; fibre brought close and fixed with epoxy | Reduces source-fibre separation; assembly is more demanding. |
 | Edge-emitting LED (ELED) | Narrow active stripe acts as waveguide; light leaves a chip edge parallel to junction plane | Higher radiance/directionality and often improved fibre coupling. |
 
 ![Where does the light leave the chip? Emission direction is defined relative to the junction plane, not the page orientation. Surface-emitting and edge-emitting LEDs both use carrier recombination; their geometry and guiding differ.](./assets/opt-331b23c2b2cf.png)
@@ -394,7 +394,7 @@ A superluminescent diode amplifies spontaneous emission (ASE) along an optical g
 | Superluminescent diode | Amplified spontaneous emission | High brightness; gain without sustained resonant laser oscillation. |
 | Laser diode | Stimulated emission with feedback | Lasing threshold; narrow modal spectrum. |
 
-**Correction / clarification.** Notebook plots that rise linearly or show an optical threshold should be read as **optical power versus current (L–I)**, not universal linear voltage–current curves. Values such as 30 nm (LED), 10 nm (ELED) and 1 nm (laser envelope) are illustrative; linewidth, multimode-envelope width and longitudinal-mode spacing are different quantities. The handwritten bit rates omit a reliable prefix and are not used as specifications.
+**Correction / clarification.** Notebook plots that rise linearly or show an optical threshold should be read as **optical power versus current (L-I)**, not universal linear voltage-current curves. Values such as 30 nm (LED), 10 nm (ELED) and 1 nm (laser envelope) are illustrative; linewidth, multimode-envelope width and longitudinal-mode spacing are different quantities. The handwritten bit rates omit a reliable prefix and are not used as specifications.
 
 ![Read the full width at half maximum from a spectrum Find both wavelengths at half the peak spectral density; their separation is the FWHM. The centre wavelength, FWHM and laser mode spacing are different quantities.](./assets/opt-493b13f94bd0.png)
 
@@ -454,15 +454,15 @@ This expresses the occupation imbalance needed for stimulated emission to exceed
 
 ### 5.3 Resonator, threshold and longitudinal modes
 
-![Fabry–Pérot semiconductor laser cavity The active medium amplifies each pass. Feedback comes from the two facet reflectivities; output transmission is part of the cavity loss budget. Arrows show optical propagation, not carrier current.](./assets/opt-03cbeb56a9af.png)
+![Fabry-Pérot semiconductor laser cavity The active medium amplifies each pass. Feedback comes from the two facet reflectivities; output transmission is part of the cavity loss budget. Arrows show optical propagation, not carrier current.](./assets/opt-03cbeb56a9af.png)
 
-Two opposing facets form a Fabry–Pérot cavity. Repeated passes amplify resonant optical modes; a partly transmitting facet provides usable output. Below threshold output is mainly spontaneous; above threshold stimulated emission rises strongly with injection current I above $I_{\mathrm{th}}$.
+Two opposing facets form a Fabry-Pérot cavity. Repeated passes amplify resonant optical modes; a partly transmitting facet provides usable output. Below threshold output is mainly spontaneous; above threshold stimulated emission rises strongly with injection current I above $I_{\mathrm{th}}$.
 
 At the lasing threshold, optical amplification over a round trip balances internal and output-coupling losses. The notes and PYQs require this physical condition, not a separate detailed mirror-loss calculation.
 
 Only allowed cavity resonances are amplified strongly enough to form longitudinal modes. Several modes can lie within the gain spectrum; current and temperature can change their distribution.
 
-**Correction / clarification.** Laser wavelength is not simply proportional to applied voltage. Facet reflectivities such as “100%” and “10–20%” are schematic choices, not universal diode-laser specifications.
+**Correction / clarification.** Laser wavelength is not simply proportional to applied voltage. Facet reflectivities such as “100%” and “10-20%” are schematic choices, not universal diode-laser specifications.
 
 *Source tags: A pp. 40-47.*
 
@@ -502,14 +502,14 @@ Small rise/fall times support faster modulation. Conventional above-threshold la
 ### Formula reference
 
 *Gain criterion for a semiconductor transition; separate from cavity threshold.  
-**Notes/PYQ basis:** Notes A pp.42–44: gain; PYQs S1 Q4 and S4 Q6: temperature dependence.*
+**Notes/PYQ basis:** Notes A pp.42-44: gain; PYQs S1 Q4 and S4 Q6: temperature dependence.*
 
 $$
 E_{\mathrm{Fn}}-E_{\mathrm{Fp}}>h\nu
 $$
 
 *PYQ supplement: empirical temperature dependence; temperature differences and $T_{0}$ in K.  
-**Notes/PYQ basis:** Notes A pp.42–44: gain; PYQs S1 Q4 and S4 Q6: temperature dependence.*
+**Notes/PYQ basis:** Notes A pp.42-44: gain; PYQs S1 Q4 and S4 Q6: temperature dependence.*
 
 $$
 I_{\mathrm{th}}(T_2)=I_{\mathrm{th}}(T_1)\exp\!\left(\frac{T_2-T_1}{T_0}\right)
@@ -546,14 +546,14 @@ network: off
 
 A VCSEL emits perpendicular to the chip surface. A quantum-well active region lies between bottom and top distributed Bragg reflector (DBR) mirrors. Alternating high/low-index layers provide high reflectivity; the top mirror allows output. An aperture confines current and the optical mode.
 
-**Working:** forward injection → carrier capture/recombination in wells → vertical repeated reflection → stimulated amplification → gain–loss threshold → surface output.
+**Working:** forward injection → carrier capture/recombination in wells → vertical repeated reflection → stimulated amplification → gain-loss threshold → surface output.
 
 | Advantages | Limits and applications |
 | --- | --- |
 | Often low threshold and low power; nearly circular beam; easy two-dimensional arrays; wafer-level testing before dicing | Individual-device power and wavelength choices depend on design; thermal management remains necessary. |
 | Compact, readily coupled source for short links | Short-reach fibre/data links, optical interconnects, optical mice, 3D sensing/face recognition, LiDAR, monitoring/security. |
 
-The notes’ 1–5 mA thresholds and 850/940/980 nm examples are illustrative. VCSELs are not restricted to those wavelengths. Compared with typical edge emitters, VCSELs offer vertical output and easier wafer testing; edge emitters often provide greater single-device output power.
+The notes’ 1-5 mA thresholds and 850/940/980 nm examples are illustrative. VCSELs are not restricted to those wavelengths. Compared with typical edge emitters, VCSELs offer vertical output and easier wafer testing; edge emitters often provide greater single-device output power.
 
 *Source tags: A pp. 48-50, ['A', 55].*
 
@@ -577,7 +577,7 @@ $$
 
 ### 6.3 Single and multiple quantum-well lasers
 
-A quantum-well laser uses thin low-gap wells between high-gap barriers. Confinement normal to the layers produces discrete subbands; carrier motion within the plane remains continuous. Good carrier–optical overlap can lower threshold and improve gain efficiency.
+A quantum-well laser uses thin low-gap wells between high-gap barriers. Confinement normal to the layers produces discrete subbands; carrier motion within the plane remains continuous. Good carrier-optical overlap can lower threshold and improve gain efficiency.
 
 - **SQW:** a single active well. **MQW:** several wells separated by barriers; improves gain/interaction when appropriately designed.
 - Advantages: potentially low threshold, good efficiency, compact size and normal room-temperature operation.
@@ -602,7 +602,7 @@ $$
 
 ## 7. Photodetection & the PN photodiode
 
-Learn the absorption–generation–collection chain before comparing detector structures. For a descriptive answer: define the device → redraw and label its construction → explain working → write the key relation/curve → state merits, limits and one use.
+Learn the absorption-generation-collection chain before comparing detector structures. For a descriptive answer: define the device → redraw and label its construction → explain working → write the key relation/curve → state merits, limits and one use.
 
 
 ### 7.1 Detector families and material choice
@@ -633,7 +633,7 @@ Quantum versus thermal is the main mechanism split. Photovoltaic and photoconduc
 
 #### Internal photoemission
 
-A photon can excite a carrier over an interface barrier, for example at a metal–semiconductor junction. This is distinct from emission into vacuum and from bulk interband electron–hole generation. Schottky/MSM structures can use different detection mechanisms depending on their design; they are not all internal-photoemission-only detectors.
+A photon can excite a carrier over an interface barrier, for example at a metal-semiconductor junction. This is distinct from emission into vacuum and from bulk interband electron-hole generation. Schottky/MSM structures can use different detection mechanisms depending on their design; they are not all internal-photoemission-only detectors.
 
 *Source tags: A pp. 56-58, ['B', 5].*
 
@@ -642,20 +642,20 @@ A photon can excite a carrier over an interface barrier, for example at a metal�
 
 ![Reverse bias and charge collection directions Terminal signs indicate applied reverse bias. Carrier-motion arrows are distinct from the field direction: electrons move opposite the field; holes move with it.](./assets/opt-929ec4b636cc.png)
 
-A reverse-biased junction has p connected to negative and n to positive. Built-in plus applied reverse potential creates a depletion/space-charge region (SCL). A photon with hν ≥ $E_{\mathrm{g}}$ may generate an electron–hole pair; the field separates and collects it before recombination.
+A reverse-biased junction has p connected to negative and n to positive. Built-in plus applied reverse potential creates a depletion/space-charge region (SCL). A photon with hν ≥ $E_{\mathrm{g}}$ may generate an electron-hole pair; the field separates and collects it before recombination.
 
 - A thin entrance layer, optical window and anti-reflection coating allow light to reach the active region. The notes show a $p^{+}$ region on lightly doped n material with an Si₃$N_{4}$ coating.
-- In a one-sided $p^{+}$–n junction, most depletion lies in the lightly doped n region. Voltage drops mainly across the depletion layer; neutral regions have much smaller field.
+- In a one-sided $p^{+}$-n junction, most depletion lies in the lightly doped n region. Voltage drops mainly across the depletion layer; neutral regions have much smaller field.
 - An abrupt-junction field is approximately triangular, peaking near the junction; it is not uniform. With x increasing from left to right, the electric field points toward decreasing electrostatic potential; potential change is the negative spatial integral of the signed electric field.
 
-![Abrupt one-sided p + p^{+} p + –n junction: triangular field magnitude Most depletion extends into the lightly doped n side. The actual signed field points from n to p; the plot shows its nonnegative magnitude to avoid confusing sign with strength.](./assets/opt-d37afe52f9a0.png)
+![Abrupt one-sided p + p^{+} p + -n junction: triangular field magnitude Most depletion extends into the lightly doped n side. The actual signed field points from n to p; the plot shows its nonnegative magnitude to avoid confusing sign with strength.](./assets/opt-d37afe52f9a0.png)
 
 *Source tags: A pp. 58-63.*
 
 
 ### 7.3 Drift current, diffusion current and pulse response
 
-**Drift photocurrent:** electron–hole pairs generated in the depleted region are separated by its electric field; their directed motion produces a current contribution. **Diffusion photocurrent:** minority carriers generated in quasi-neutral material move down concentration gradients toward the depletion region, where surviving carriers are swept out and contribute to terminal photocurrent.
+**Drift photocurrent:** electron-hole pairs generated in the depleted region are separated by its electric field; their directed motion produces a current contribution. **Diffusion photocurrent:** minority carriers generated in quasi-neutral material move down concentration gradients toward the depletion region, where surviving carriers are swept out and contribute to terminal photocurrent.
 
 ![Drift and diffusion photocurrents have different time responses Traces are independently normalized for shape comparison; their heights do not specify a current partition. The drift-photocurrent response is fast; diffusion photocurrent from neutral material contributes a slow tail.](./assets/opt-43654742254b.png)
 
@@ -685,7 +685,7 @@ Terminal current is the total charge flow through the collecting area. In a dete
 *Source tags: A pp. 60-64, A pp. 70-79.*
 
 
-### 7.4 Shockley–Ramo theorem: why one pair gives q
+### 7.4 Shockley-Ramo theorem: why one pair gives q
 
 Moving carriers induce current at the electrodes throughout their motion, not only when they arrive. In a parallel-plate collecting region of thickness w, the weighting-field magnitude is 1/w.
 
@@ -697,7 +697,7 @@ The electron and hole travel complementary distances $d_{\mathrm{e}}$+$d_{\mathr
 
 General form: induced current depends on charge × velocity dotted with the electrode weighting field, with consistent sign conventions. The weighting field is a mathematical electrode-sensitivity field, not necessarily the physical drift field.
 
-![An electron–hole pair induces two current contributions Example with constant velocities and a uniform weighting field. Electron and hole pulse heights and durations may differ. The total area is q after full collection, not 2q.](./assets/opt-988ed83b8b8e.png)
+![An electron-hole pair induces two current contributions Example with constant velocities and a uniform weighting field. Electron and hole pulse heights and durations may differ. The total area is q after full collection, not 2q.](./assets/opt-988ed83b8b8e.png)
 
 #### Finite-pulse derivation you can reproduce in an exam
 
@@ -714,7 +714,7 @@ The measured pulse is the sum of the two contributions until the earlier arrival
 ### Formula reference
 
 *Uniform weighting field, full collection in a plane layer; use current magnitudes here.  
-**Notes/PYQ basis:** Notes A pp.64–66: Ramo current and collected charge.*
+**Notes/PYQ basis:** Notes A pp.64-66: Ramo current and collected charge.*
 
 $$
 i=\frac{qv}w,\qquad Q_{\mathrm{pair}}=q
@@ -815,28 +815,28 @@ Near the long-wavelength band edge, absorption weakens and photons can pass thro
 ### Formula reference
 
 *$\alpha$ in inverse length; αx dimensionless.  
-**Notes/PYQ basis:** Notes A pp.64, 67–75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
+**Notes/PYQ basis:** Notes A pp.64, 67-75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
 
 $$
 P(x)=P(0)e^{-\alpha x},\qquad\delta=\frac1\alpha
 $$
 
 *Simple single-pass absorption/collection model; no gain.  
-**Notes/PYQ basis:** Notes A pp.64, 67–75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
+**Notes/PYQ basis:** Notes A pp.64, 67-75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
 
 $$
 \eta_{\mathrm{ext}}\simeq(1-r)(1-e^{-\alpha w})\eta_{\mathrm{collection}}
 $$
 
 *For internal multiplication M, multiply R by M. P in W.  
-**Notes/PYQ basis:** Notes A pp.64, 67–75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
+**Notes/PYQ basis:** Notes A pp.64, 67-75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
 
 $$
 R=\frac{\eta q\lambda}{hc}\simeq\frac{\eta\lambda(\mu\mathrm m)}{1.240}\,\mathrm{A/W},\qquad I_{\mathrm{ph}}=RP
 $$
 
 *Approximate interband long-wavelength cutoff.  
-**Notes/PYQ basis:** Notes A pp.64, 67–75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
+**Notes/PYQ basis:** Notes A pp.64, 67-75; PYQs S8 Q4, Q10 and S5 Q6: absorption, responsivity and cutoff.*
 
 $$
 \lambda_{\mathrm c}(\mu\mathrm m)=\frac{1.240}{E_{\mathrm g}(\mathrm{eV})}
@@ -850,7 +850,7 @@ A wider depleted absorber improves collection and reduces capacitance, but incre
 
 ### 9.1 PIN structure and operating modes
 
-A PIN photodiode has p–i–n layers. The i layer is intrinsic or very lightly doped and forms a broad depleted absorber under suitable reverse bias. Thin p/n contact layers provide electrical access; front- and back-illuminated variants are shown in the notes.
+A PIN photodiode has p-i-n layers. The i layer is intrinsic or very lightly doped and forms a broad depleted absorber under suitable reverse bias. Thin p/n contact layers provide electrical access; front- and back-illuminated variants are shown in the notes.
 
 ![PIN construction: absorber width is structurally controlled The thin doped contact regions flank a much wider, depleted i region. No fixed micrometre dimensions are implied. Both front- and back-illuminated designs are possible.](./assets/opt-9bb17f932b88.png)
 
@@ -894,7 +894,7 @@ A full two-node network or amplifier input requires its actual transfer function
 *Source tags: A pp. 80-82, ['B', 3].*
 
 
-### 9.3 Absorption–transit–RC tradeoff
+### 9.3 Absorption-transit-RC tradeoff
 
 $$
 \tau_{\mathrm{tr}}\simeq\frac{w}{v_{\mathrm{sat}}},\qquad\tau_{\mathrm{RC}}\simeq\frac{R_{\mathrm L}\varepsilon_{\mathrm s}A}w
@@ -919,21 +919,21 @@ $$
 ### Formula reference
 
 *Simple large-shunt, small-series-resistance circuit without parasitics.  
-**Notes/PYQ basis:** Notes A pp.80–84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
+**Notes/PYQ basis:** Notes A pp.80-84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
 
 $$
 C_{\mathrm j}=\frac{\varepsilon_{\mathrm s}A}w,\qquad\tau_{\mathrm{RC}}\simeq R_{\mathrm L}C_{\mathrm j}
 $$
 
 *Representative saturated-velocity transit scale.  
-**Notes/PYQ basis:** Notes A pp.80–84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
+**Notes/PYQ basis:** Notes A pp.80-84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
 
 $$
 \tau_{\mathrm{tr}}\simeq\frac{w}{v_{\mathrm{sat}}}
 $$
 
 *Notes’ approximate delay model, not exact transit frequency response.  
-**Notes/PYQ basis:** Notes A pp.80–84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
+**Notes/PYQ basis:** Notes A pp.80-84 and B p.3; PYQs S3 Q4 and S4 Q8: load dependence and PIN width.*
 
 $$
 B_{\mathrm{notes}}\simeq\frac1{2\pi(\tau_{\mathrm{tr}}+\tau_{\mathrm{RC}})}
@@ -947,7 +947,7 @@ Compare semiconductor multiplication with transistor amplification and optical i
 
 ### 10.1 Avalanche photodiode: impact ionization
 
-An APD uses high reverse bias to create a strong electric field in a multiplication region. Primary carriers from photon absorption accelerate and collide with the lattice, generating additional electron–hole pairs by **impact ionization**. Repeated events multiply the photocurrent.
+An APD uses high reverse bias to create a strong electric field in a multiplication region. Primary carriers from photon absorption accelerate and collide with the lattice, generating additional electron-hole pairs by **impact ionization**. Repeated events multiply the photocurrent.
 
 ![Separate primary generation from avalanche gain This functional cross-section avoids guessing the unclear doping labels in the handwritten sketch. Gain requires a localized high field, not merely a long absorber.](./assets/opt-9ed1f84c91b7.png)
 
@@ -974,7 +974,7 @@ $$
 | Active region | Bias/doping-dependent depletion | Fabricated i-layer absorber | Absorber + high-field multiplication |
 | Internal signal gain | Approximately 1 | Approximately 1 | M > 1 |
 | Key benefit | Simple detection | Low capacitance, good collection and high speed | Internal amplification |
-| Key limit | Diffusion/capacitance can limit speed | Absorption–transit tradeoff | Bias, temperature, gain noise and avalanche delay |
+| Key limit | Diffusion/capacitance can limit speed | Absorption-transit tradeoff | Bias, temperature, gain noise and avalanche delay |
 
 Si is useful around 850 nm and visible light. Ge and InGaAs detect both 1.3 and 1.55 μm; InGaAs is widely used for telecom receivers. Do not assign one material exclusively to one window or read the unclear “InGap” label as a reliable telecom material specification.
 
@@ -983,7 +983,7 @@ Si is useful around 850 nm and visible light. Ge and InGaAs detect both 1.3 and 
 
 ### 10.3 Phototransistor: optical base drive
 
-A phototransistor is an NPN or PNP bipolar transistor whose collector–base region is optically exposed. In active operation the C–B junction is reverse biased. Absorbed light supplies a primary photocurrent that acts as base drive; transistor action gives a larger collector current.
+A phototransistor is an NPN or PNP bipolar transistor whose collector-base region is optically exposed. In active operation the C-B junction is reverse biased. Absorbed light supplies a primary photocurrent that acts as base drive; transistor action gives a larger collector current.
 
 $$
 I_{\mathrm C}\simeq\beta I_{\mathrm{photo}}\quad\text{(simplified active-region relation)}
@@ -1004,7 +1004,7 @@ The base layer physically exists, although many packaged devices expose only col
 
 **Correction / clarification.** Phototransistors do not respond equally to all wavelengths. A missing base pin does not mean there is no base region.
 
-![Output polarity follows where the load is connected NPN optical transistor symbols are simplified and enlarged. Collector–base illumination provides transistor drive; many packages have no external base pin, although the physical base is present.](./assets/opt-21a921664804.png)
+![Output polarity follows where the load is connected NPN optical transistor symbols are simplified and enlarged. Collector-base illumination provides transistor drive; many packages have no external base pin, although the physical base is present.](./assets/opt-21a921664804.png)
 
 *Source tags: B pp. 5-8.*
 
@@ -1022,14 +1022,14 @@ Applications include logic/power interfaces and interference reduction. Input an
 ### Formula reference
 
 *Signal currents exclude dark offsets; M is mean internal multiplication.  
-**Notes/PYQ basis:** Notes B pp.3–8; PYQs S4 Q9 and S6 Q9: APD/transistor gain.*
+**Notes/PYQ basis:** Notes B pp.3-8; PYQs S4 Q9 and S6 Q9: APD/transistor gain.*
 
 $$
 M=\frac{I_{\mathrm{APD,signal}}}{I_{\mathrm{primary}}},\qquad R_{\mathrm{APD}}=MR_{\mathrm{unity}}
 $$
 
 *Simplified active-region phototransistor relation; leakage and exact junction-current definitions matter.  
-**Notes/PYQ basis:** Notes B pp.3–8; PYQs S4 Q9 and S6 Q9: APD/transistor gain.*
+**Notes/PYQ basis:** Notes B pp.3-8; PYQs S4 Q9 and S6 Q9: APD/transistor gain.*
 
 $$
 I_{\mathrm C}\simeq\beta I_{\mathrm{photo}}
@@ -1047,8 +1047,8 @@ Calculate noise with consistent bandwidth conventions and understand what determ
 | --- | --- |
 | Shot | Discrete random carrier/photon events; approximately white under the usual Poisson assumption. |
 | Dark-current shot noise | Thermal generation/leakage even in darkness; part of total current shot noise. |
-| Johnson–Nyquist / thermal | Random thermal motion in resistance; depends on temperature and circuit resistance. |
-| Generation–recombination | Statistical generation, trapping and recombination fluctuations; characteristic lifetime dependence. |
+| Johnson-Nyquist / thermal | Random thermal motion in resistance; depends on temperature and circuit resistance. |
+| Generation-recombination | Statistical generation, trapping and recombination fluctuations; characteristic lifetime dependence. |
 | 1/f / flicker | Defects and trapping/detrapping; stronger at low frequency. |
 | Background / photon | Ambient/background radiation adds signal-independent illumination and photon noise. |
 | Amplifier / circuit | Input current/voltage noise, resistors and subsequent electronics. |
@@ -1102,42 +1102,42 @@ Let R = 0.5 A/W and noise density = 2 pA/√Hz. NEPspectral = 4 pW/√Hz. For wh
 ### Formula reference
 
 *RMS current, A; include signal, dark and background appropriately; unity gain.  
-**Notes/PYQ basis:** Notes B pp.8–10; PYQ S3 Q5: noise, NEP and detectivity.*
+**Notes/PYQ basis:** Notes B pp.8-10; PYQ S3 Q5: noise, NEP and detectivity.*
 
 $$
 i_{\mathrm{shot}}=\sqrt{2qI_{\mathrm{total}}B}
 $$
 
 *RMS thermal noise; T in K, B in Hz, R in Ω.  
-**Notes/PYQ basis:** Notes B pp.8–10; PYQ S3 Q5: noise, NEP and detectivity.*
+**Notes/PYQ basis:** Notes B pp.8-10; PYQ S3 Q5: noise, NEP and detectivity.*
 
 $$
 i_{\mathrm{thermal}}=\sqrt{\frac{4kTB}R},\qquad v_{\mathrm{thermal}}=\sqrt{4kTRB}
 $$
 
 *Uncorrelated noise contributions.  
-**Notes/PYQ basis:** Notes B pp.8–10; PYQ S3 Q5: noise, NEP and detectivity.*
+**Notes/PYQ basis:** Notes B pp.8-10; PYQ S3 Q5: noise, NEP and detectivity.*
 
 $$
 i_{\mathrm n}=\sqrt{\sum_j i_{\mathrm{n},j}^2}
 $$
 
 *Integrated NEP in W. Spectral NEP: W/√Hz, with D*=√A/NEPspectral.  
-**Notes/PYQ basis:** Notes B pp.8–10; PYQ S3 Q5: noise, NEP and detectivity.*
+**Notes/PYQ basis:** Notes B pp.8-10; PYQ S3 Q5: noise, NEP and detectivity.*
 
 $$
 \mathrm{NEP}_B=\frac{i_{\mathrm{n,rms}}}R,\qquad D^*=\frac{\sqrt{AB}}{\mathrm{NEP}_B}
 $$
 
 
-## 12. Schottky & metal–semiconductor contacts
+## 12. Schottky & metal-semiconductor contacts
 
 Use consistent energy units to explain barrier formation and bias response. For a descriptive answer: define the device → redraw and label its construction → explain working → write the key relation/curve → state merits, limits and one use.
 
 
 ### 12.1 Ohmic versus rectifying contact
 
-A metal–semiconductor interface can be approximately **ohmic** (linear, symmetric I–V) or **rectifying** (diode-like asymmetric I–V). For an ideal n-type contact, a metal work function greater than the semiconductor work function tends to produce depletion and a Schottky barrier; the opposite trend favors accumulation. Doping, interface states and tunnelling can change real behavior.
+A metal-semiconductor interface can be approximately **ohmic** (linear, symmetric I-V) or **rectifying** (diode-like asymmetric I-V). For an ideal n-type contact, a metal work function greater than the semiconductor work function tends to produce depletion and a Schottky barrier; the opposite trend favors accumulation. Doping, interface states and tunnelling can change real behavior.
 
 $$
 \begin{aligned}\Phi_{\mathrm m}&=E_{\mathrm{vac}}-E_{\mathrm{F,m}},&\chi&=E_{\mathrm{vac}}-E_{\mathrm C}\\\Phi_{\mathrm s}&=\chi+(E_{\mathrm C}-E_{\mathrm F})\end{aligned}
@@ -1173,7 +1173,7 @@ $$
 
 $n_{\mathrm{id}}$ is ideality factor (ideal ≈1), not optical quantum efficiency. Schottky devices are majority-carrier devices with little minority-charge storage, enabling fast response/switching and typically low forward drop. Leakage and reverse-voltage limits are device-dependent.
 
-An MSM structure has two metal–semiconductor contacts (often effectively back-to-back Schottky barriers). MSM structures **can** be photodetectors; the notebook’s shorthand “no light” is not a general prohibition.
+An MSM structure has two metal-semiconductor contacts (often effectively back-to-back Schottky barriers). MSM structures **can** be photodetectors; the notebook’s shorthand “no light” is not a general prohibition.
 
 #### Barrier height is not the same as band bending
 
@@ -1188,14 +1188,14 @@ The ideal interface barrier qφBn is measured from the metal Fermi level to the 
 ### Formula reference
 
 *Ideal n-type contact; $\Phi$,$\chi$ in joules, $\phi$,V in volts.  
-**Notes/PYQ basis:** Notes B pp.10–13: Schottky contact definitions and I–V.*
+**Notes/PYQ basis:** Notes B pp.10-13: Schottky contact definitions and I-V.*
 
 $$
 q\phi_{\mathrm{Bn}}=\Phi_{\mathrm m}-\chi,\qquad qV_{\mathrm{bi}}=\Phi_{\mathrm m}-\Phi_{\mathrm s}
 $$
 
-*Idealized rectifying I–V; nid is ideality factor.  
-**Notes/PYQ basis:** Notes B pp.10–13: Schottky contact definitions and I–V.*
+*Idealized rectifying I-V; nid is ideality factor.  
+**Notes/PYQ basis:** Notes B pp.10-13: Schottky contact definitions and I-V.*
 
 $$
 I=I_{\mathrm s}\left[\exp\!\left(\frac{qV}{n_{\mathrm{id}}kT}\right)-1\right]
@@ -1242,7 +1242,7 @@ A **fibre** is the optical core/cladding structure with its coating; a **cable**
 - **Multimode step-index:** different modal paths/group delays give intermodal pulse spreading and restrict bandwidth.
 - **Multimode graded-index:** outer low-index portions have greater speed, partially compensating longer paths and reducing intermodal dispersion.
 - **Single-mode:** avoids intermodal dispersion; material and waveguide dispersion remain. Single-mode coupling demands better source/core matching.
-- Common example dimensions: multimode 50/125 or 62.5/125 μm (core/cladding); typical conventional single-mode core about 8–10 μm and cladding 125 μm. Dimensions are examples, not the definition of a mode.
+- Common example dimensions: multimode 50/125 or 62.5/125 μm (core/cladding); typical conventional single-mode core about 8-10 μm and cladding 125 μm. Dimensions are examples, not the definition of a mode.
 
 **Correction / clarification.** Single-mode does not literally mean “one light ray”. Core and cladding diameters must not be interchanged. Fibre bandwidth is not generally proportional to wavelength or inverse attenuation; dispersion, length, source and launch conditions matter.
 
@@ -1290,9 +1290,9 @@ network: off
 
 ### 14.1 Total internal reflection and ray types
 
-![Keep external, axial and interface angles distinct The incoming ray refracts toward the axis and then reflects at the core–cladding boundary. The drawing enlarges angles for clarity; numerical acceptance must be calculated from the indices.](./assets/opt-b5664a02157b.png)
+![Keep external, axial and interface angles distinct The incoming ray refracts toward the axis and then reflects at the core-cladding boundary. The drawing enlarges angles for clarity; numerical acceptance must be calculated from the indices.](./assets/opt-b5664a02157b.png)
 
-- TIR requires incidence from **higher to lower** refractive index, $n_{1}$ > $n_{2}$, and $\theta_{\mathrm{i}}$ > $\theta_{\mathrm{c}}$ at the core–cladding interface.
+- TIR requires incidence from **higher to lower** refractive index, $n_{1}$ > $n_{2}$, and $\theta_{\mathrm{i}}$ > $\theta_{\mathrm{c}}$ at the core-cladding interface.
 - Critical angle: sinθc = $n_{2}$/$n_{1}$. At equality the refracted ray grazes the interface; strict TIR occurs above it.
 - The axial angle inside the core is $\alpha$ = 90°−$\theta_{\mathrm{i}}$. Thus maximum guided meridional axial angle is $\alpha_{\mathrm{max}}$ = 90°−$\theta_{\mathrm{c}}$.
 - **Meridional rays** cross the fibre axis; **skew rays** follow paths that do not cross it, often represented as helical. Skew does not mean “a cladding ray”.
@@ -1337,22 +1337,22 @@ $$
 
 ### Formula reference
 
-*Critical core–cladding incidence angle measured to the normal.  
-**Notes/PYQ basis:** Notes B pp.18–20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
+*Critical core-cladding incidence angle measured to the normal.  
+**Notes/PYQ basis:** Notes B pp.18-20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
 
 $$
 \sin\theta_{\mathrm c}=\frac{n_2}{n_1}
 $$
 
 *Step-index meridional-ray model. $\theta_{\mathrm{a}}$ external to the axis, full cone 2θa.  
-**Notes/PYQ basis:** Notes B pp.18–20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
+**Notes/PYQ basis:** Notes B pp.18-20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
 
 $$
 \mathrm{NA}=n_0\sin\theta_{\mathrm a}=\sqrt{n_1^2-n_2^2}
 $$
 
 *With weak contrast $\Delta$ ≈ ($n_{1}$−$n_{2}$)/$n_{1}$. Alternate definitions require adjusted formulas.  
-**Notes/PYQ basis:** Notes B pp.18–20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
+**Notes/PYQ basis:** Notes B pp.18-20; PYQ S2 Q2(ii): acceptance angle and $\mathrm{NA}$.*
 
 $$
 \Delta=\frac{n_1^2-n_2^2}{2n_1^2},\qquad\mathrm{NA}=n_1\sqrt{2\Delta}
@@ -1444,21 +1444,21 @@ A chain of N fibre pieces has N−1 internal inter-piece splices. For piece leng
 ### Formula reference
 
 *Power ratio, base-10 logarithm; ℓ in km for dB/km.  
-**Notes/PYQ basis:** Notes B pp.22–23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
+**Notes/PYQ basis:** Notes B pp.22-23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
 
 $$
 L_{\mathrm{dB}}=10\log_{10}\!\left(\frac{P_{\mathrm{in}}}{P_{\mathrm{out}}}\right),\qquad\alpha=\frac{L_{\mathrm{dB}}}{\ell}
 $$
 
 *Use matching attenuation/length units; add connector/splice losses in dB.  
-**Notes/PYQ basis:** Notes B pp.22–23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
+**Notes/PYQ basis:** Notes B pp.22-23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
 
 $$
 P_{\mathrm{out}}=P_{\mathrm{in}}10^{-\alpha\ell/10}
 $$
 
 *Absolute optical power; subtract positive dB losses when propagating dBm power through a link.  
-**Notes/PYQ basis:** Notes B pp.22–23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
+**Notes/PYQ basis:** Notes B pp.22-23; PYQs S2 Q1 and S3 Q6: dB loss and power budget.*
 
 $$
 P_{\mathrm{dBm}}=10\log_{10}(P/1\,\mathrm{mW})
@@ -1486,7 +1486,7 @@ $$
 \mathrm{MFD}=2w,\qquad\frac wa\simeq0.65+\frac{1.619}{V^{3/2}}+\frac{2.879}{V^6}
 $$
 
-$\mathrm{MFD}$ describes optical-field extent, not just the glass-core size. The last expression is a Marcuse approximation for a weakly guiding step-index fundamental mode over a suitable V range, commonly around 1.2–2.4 here. Lower V generally means greater field extension into the cladding at fixed a.
+$\mathrm{MFD}$ describes optical-field extent, not just the glass-core size. The last expression is a Marcuse approximation for a weakly guiding step-index fundamental mode over a suitable V range, commonly around 1.2-2.4 here. Lower V generally means greater field extension into the cladding at fixed a.
 
 
 ### 16.2 Intermodal versus chromatic spreading
@@ -1521,14 +1521,14 @@ Randomly varying birefringence axes make differential polarization delays accumu
 ### Formula reference
 
 *a and $\lambda$ in the same units; counts include polarization in the stated common convention.  
-**Notes/PYQ basis:** PYQs S2 Q6–7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
+**Notes/PYQ basis:** PYQs S2 Q6-7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
 
 $$
 V=\frac{2\pi a}{\lambda}\,\mathrm{NA},\qquad M_{\mathrm{SI}}\simeq\frac{V^2}2,\quad M_{\mathrm{parabolic\ GI}}\simeq\frac{V^2}4
 $$
 
 *Marcuse estimate for weak-guidance step-index fundamental mode; not a universal profile law.  
-**Notes/PYQ basis:** PYQs S2 Q6–7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
+**Notes/PYQ basis:** PYQs S2 Q6-7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
 
 $$
 \frac wa\simeq0.65+\frac{1.619}{V^{3/2}}+\frac{2.879}{V^6},\qquad\mathrm{MFD}=2w
@@ -1541,7 +1541,7 @@ $$
 $$
 
 *Random-coupling long-fibre scaling; $D_{\mathrm{PMD}}$ often ps/√km.  
-**Notes/PYQ basis:** PYQs S2 Q6–7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
+**Notes/PYQ basis:** PYQs S2 Q6-7, S3 Q1/Q8, S7 Q1/Q9 and S8 Q11: modes, $\mathrm{MFD}$ and dispersion.*
 
 $$
 \Delta\tau_{\mathrm{PMD,rms}}\simeq D_{\mathrm{PMD}}\sqrt L
@@ -1570,7 +1570,7 @@ PYQ-driven supplement
 
 ![A detachable optical connection needs repeatable alignment Ferrules locate each fibre; the mating sleeve aligns the ferrules. Connector body/latch/thread mechanisms provide retention and are distinct from the polished optical end-face finish.](./assets/opt-be47d2ec1901.png)
 
-Connectors enable detachable, repeatable connections. **Coupling styles:** FC threaded; ST bayonet; SC push–pull; LC small latch; MPO/MTP multifibre push–pull. **End-face finishes:** PC/UPC and angled APC; this is a separate classification from connector-body format. APC reduces back-reflection by angling reflected light away from the guided mode.
+Connectors enable detachable, repeatable connections. **Coupling styles:** FC threaded; ST bayonet; SC push-pull; LC small latch; MPO/MTP multifibre push-pull. **End-face finishes:** PC/UPC and angled APC; this is a separate classification from connector-body format. APC reduces back-reflection by angling reflected light away from the guided mode.
 
 Assess insertion loss, return loss, repeatability, cleanliness and format/finish compatibility. A connector’s specified loss normally refers to a mated connection, not an isolated unconnected ferrule.
 
@@ -1585,7 +1585,7 @@ PYQ-driven supplement
 
 An FOS encodes a measurand in intensity, phase, wavelength, polarization or time. Classify independently by **intrinsic/extrinsic**, modulation type, measurand and **point/quasi-distributed/distributed** spatial coverage.
 
-For the 0–500 °C geothermal PYQ, one workable answer is a qualified high-temperature FBG probe (regenerated or suitable femtosecond-written grating), a metal/ceramic protective sheath and remote wavelength interrogation. Standard polymer coating, adhesives and ordinary gratings may be the limiting parts even if silica glass survives.
+For the 0-500 °C geothermal PYQ, one workable answer is a qualified high-temperature FBG probe (regenerated or suitable femtosecond-written grating), a metal/ceramic protective sheath and remote wavelength interrogation. Standard polymer coating, adhesives and ordinary gratings may be the limiting parts even if silica glass survives.
 
 $$
 \lambda_{\mathrm B}=2n_{\mathrm{eff}}\Lambda\quad\text{(temperature changes both }n_{\mathrm{eff}}\text{ and }\Lambda\text{)}
@@ -1629,7 +1629,7 @@ network: off
     <div class="bar"><button id="prev">Previous</button><button id="reveal" aria-expanded="false">Reveal answer</button><button id="next">Next</button></div>
     <script>
     (()=>{
-    const items=[{"group":"LED","q":"How does a forward-biased p–n semiconductor junction emit light? Distinguish radiative and nonradiative recombination.","a":"Forward bias injects electrons and holes into the active region. Electron–hole recombination releases energy: radiative recombination produces a photon (hν≈$E_{\\mathrm g}$); nonradiative recombination transfers energy to phonons/heat. Efficient LEDs favor radiative pathways in suitable direct-gap materials."},{"group":"Photodetectors","q":"List four advantages of reverse bias in a photodiode.","a":"1. Stronger depletion-region field gives rapid carrier separation and drift collection. 2. Wider depletion reduces junction capacitance. 3. Lower capacitance improves RC-limited bandwidth. 4. Improved collection reduces recombination loss and slow diffusion contribution when absorption occurs in the depleted region. These are coupled benefits, not unlimited guarantees: high bias can raise dark current and approach breakdown."},{"group":"LED","q":"Why is the n side heavily doped in a typical LED construction?","a":"A heavily doped n region supplies electrons efficiently, lowers bulk/contact series resistance and helps form a low-resistance contact. In an asymmetrically doped junction it can favor electron injection into the p-side emitting region, supporting radiative recombination.Construction-dependent: an $n^{+}$ contact/substrate and the doping of the active junction are different design choices. “Every LED must have n more heavily doped than p” is not a universal requirement; excessive active-region doping can increase nonradiative loss."},{"group":"Lasers","q":"Expand DFB. What distinguishes a DFB laser diode?","a":"**Distributed-feedback laser.** A periodic index grating along the gain waveguide supplies wavelength-selective Bragg feedback. It can strongly favor one longitudinal mode, giving a narrow spectrum and stable wavelength selection for communications/sensing. First-order $\\lambda_{\\mathrm{B}}$=2neffΛ. Temperature stabilization may still be needed."},{"group":"Lasers","q":"Do laser-diode characteristics depend on temperature? Relate threshold current to temperature.","a":"Yes. Increasing junction temperature usually raises threshold current, reduces slope efficiency at a given operating point, and shifts wavelength. $$ I_{\\mathrm{th}}(T_2)=I_{\\mathrm{th}}(T_1)\\exp\\!\\left(\\frac{T_2-T_1}{T_0}\\right) $$ $T_{0}$ is the empirical characteristic temperature over the fitted operating range; a larger $T_{0}$ means less temperature sensitivity. Temperature differences and $T_{0}$ use kelvins (a temperature difference has the same numerical value in °C). This is an empirical relation, not an exact law for every laser over all temperatures."},{"group":"LED","q":"Explain the quantum-efficiency trend of GaAsP with alloy composition, with and without nitrogen doping.","a":"As the GaAsP composition enters the indirect-gap regime, ordinary band-edge radiative recombination becomes less probable. Isoelectronic nitrogen creates localized radiative centres that trap carriers/excitons and relax momentum restrictions, increasing emission efficiency. Nitrogen can lower the optical transition energy; at suitable concentrations it can also change the band structure and reduce the fundamental gap. In an exam, identify the centre/localization mechanism for the classic LED and distinguish it from alloy band-gap narrowing. The plotted efficiency trend is qualitative, not a calibrated composition or gap curve. See chapter 2 for the primary-source distinction. ![Nitrogen centres preserve radiative emission in indirect compositions Qualitative trend only: no efficiency percentage or universal crossover calibration is assigned. Nitrogen centres alter recombination pathways; substrate transparency chiefly affects extraction.](./assets/opt-4641957ad272.png)"},{"group":"LED","q":"Why use InGaAsP instead of GaAs for an LED in an optical communication link?","a":"InGaAsP composition can be chosen for emission near the low-loss silica windows around 1.3 and 1.55 μm, with suitable lattice matching to InP and heterostructure confinement. GaAs emits near 0.85–0.90 μm and cannot provide those longer wavelengths simply by changing drive voltage. The choice is wavelength/material-system matching, not GaAs being an intrinsically poor optoelectronic material."},{"group":"LED","q":"Name materials used for blue, UV and white LEDs.","a":"**Blue:** InGaN/GaN-based heterostructures (historical ZnSe and inefficient SiC devices may also be named). **UV:** GaN near-UV and AlGaN/AlN-based wider-gap structures for shorter UV wavelengths. **White:** commonly a blue InGaN emitter plus phosphor(s), or RGB mixing. White is a broad composite spectrum; there is no single “white band-gap semiconductor”."},{"group":"LED","q":"Differentiate surface-emitting and edge-emitting LEDs. Explain the usefulness of an ELED in optical communication.","a":"Surface emitter: light exits normal to the junction plane, usually with broader angular output. Edge emitter: a narrow active stripe guides light laterally and emits from an edge parallel to the junction; it usually gives higher radiance, better directionality and improved fibre coupling, and often a narrower spectrum for comparable materials. Draw active/cladding layers and show the output directions. Source dimensions, $\\mathrm{NA}$ and alignment still limit coupling."},{"group":"LED","q":"Define direct- and indirect-gap semiconductors, give examples, and justify the preferred type for LEDs.","a":"Direct gap: CB minimum and VB maximum occur at the same crystal momentum; transitions need no momentum-assisting phonon. Examples: GaAs and GaN. Indirect gap: extrema occur at different momenta; a phonon participates. Examples: Si, Ge, GaP. Direct-gap materials generally favor efficient radiative recombination and therefore LED emission. Draw E–k plots with a vertical direct transition and momentum-changing indirect transition."},{"group":"Fibre numericals","q":"A 1.55 μm, 500 Mbit/s link launches −13 “dB”, has receiver sensitivity −40 dBm, fibre loss 0.5 dB/km, 5 km fibre pieces, 0.1 dB per splice, receiver coupling loss 0.5 dB and a 7 dB margin. Find the loss budget and maximum repeaterless length.","a":"The launch power is printed as −13 dB. An absolute power needs a reference; interpret it as **−13 dBm**, consistent with the receiver value. A bandwidth-limited reach cannot be verified from the data supplied. $$ \\begin{aligned}\\text{Available attenuation}\u0026=-13-(-40)=27\\,\\mathrm{dB}\\\\\\text{Fibre + splice allowance}\u0026=27-0.5-7=19.5\\,\\mathrm{dB}\\\\0.5L+0.1N_{\\mathrm s}\u0026\\le19.5\\quad(L\\text{ in km})\\end{aligned} $$ For 5 km sections, Ns=ceil(L/5)−1 (no splice at the receiver). Between 35 and 40 km, Ns=7, so 0.5L+0.7≤19.5 → **Lmax=37.6 km** with a final shortened section. If only complete 5 km sections are permitted, maximum length is **35 km**. A distributed approximation Ns≈L/5 gives 37.5 km; state that approximation. The 500 Mbit/s rate does not enter a power-only budget."},{"group":"Fibre","q":"Define attenuation and loss in an optical fibre.","a":"Attenuation is reduction of guided optical power along a fibre due to absorption, scattering and radiation/bending. Power loss in dB is 10log₁₀($P_{\\mathrm{in}}$/$P_{\\mathrm{out}}$); attenuation coefficient is that loss divided by length. $P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$ is transmission, while 1−$P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$ is fractional power loss."},{"group":"Fibre numericals","q":"A step-index fibre has $\\mathrm{NA}$=0.17 and cladding index 1.46. Find its acceptance angle in water ($n_{0}$=1.33) and its critical core–cladding angle.","a":"$$ \\begin{aligned}n_1\u0026=\\sqrt{n_2^2+\\mathrm{NA}^2}=\\sqrt{1.46^2+0.17^2}=1.46986\\\\\\theta_{\\mathrm a}\u0026=\\arcsin(0.17/1.33)=7.34^\\circ\\\\\\theta_{\\mathrm c}\u0026=\\arcsin(n_2/n_1)=83.36^\\circ\\end{aligned} $$ The full external acceptance cone is 14.69°. $\\theta_{\\mathrm{a}}$ is measured to the fibre axis, whereas $\\theta_{\\mathrm{c}}$ is measured to the interface normal."},{"group":"Fibre","q":"What is a transparent window? State three main operating wavelengths of silica optical fibre.","a":"A transparency/transmission window is a wavelength band of relatively low attenuation (and useful link properties), not zero loss. Conventional centres are approximately **850 nm, 1310 nm and 1550 nm**, called first, second and third windows. These are low-loss transmission regions, not absorption peaks."},{"group":"Fibre","q":"Which fibre would you choose for short-, intermediate- and long-distance networks, and why?","a":"For a textbook comparison among three fibre types: **short/simple, lower-rate link:** multimode step-index; **intermediate reach:** graded-index multimode, reducing intermodal delay; **long/high-capacity:** single-mode, eliminating intermodal dispersion. In modern practical networks, graded-index multimode is common for short data links and single-mode can also be economical at short/intermediate reach. Actual choice requires specified distance, rate, source and budget; distance labels alone do not uniquely determine it."},{"group":"Fibre","q":"Why does numerical aperture not contain core diameter even though a larger core can gather more light?","a":"$\\mathrm{NA}$ describes **angular acceptance**, fixed by index contrast in the step-index ray model: $\\mathrm{NA}$=√($n_{1}^{2}$−$n_{2}^{2}$). Core diameter sets the entrance area and also affects supported mode count through V. A larger core can accept more total power from an extended source without changing the allowed angular cone. Power collection depends on area × angular acceptance and source matching, not $\\mathrm{NA}$ alone."},{"group":"Fibre","q":"Explain core and cladding functions, why their indices differ, and whether guidance is possible without cladding.","a":"The core carries most guided power; a lower-index cladding ($n_{1}$\u003e$n_{2}$) provides optical confinement, a controlled boundary and separation from external contamination/stress. Real guided fields extend into the cladding. A bare glass rod in air can guide by TIR because air acts as a lower-index surrounding medium, so guidance is possible in principle without a manufactured solid cladding. It is mechanically exposed, environment-sensitive and unsuitable as an equivalent robust telecom design."},{"group":"Fibre","q":"Distinguish guided, radiation and leaky modes.","a":"**Guided:** transversely confined field, normally $n_{\\mathrm{eff}}$ between cladding and core indices for a simple bound core mode; ideal propagation has no confinement loss. **Radiation:** unbound field carrying power away into the surrounding region. **Leaky:** only quasi-confined, losing power gradually by radiation; described by a complex propagation constant. This is a field/mode classification, not just three ray angles."},{"group":"Fibre","q":"Do manufacturers specify absorption loss of a fibre? If yes, how?","a":"Datasheets normally specify **total attenuation** in dB/km at stated wavelengths, which includes absorption plus scattering and other losses under defined conditions. Some also specify spectral attenuation, water-peak limits or material absorption for specialty fibres. If a separate absorption coefficient is given, it must have its wavelength and units, e.g. $m^{-1}$ or dB/km. Do not interpret a total attenuation entry as an absorption-only measurement."},{"group":"Dispersion","q":"Why are intermodal and chromatic effects both called dispersion? Explain the difference, including intermodal versus intramodal dispersion.","a":"Both spread an optical pulse in time because different parts of its energy have different group delays. **Intermodal:** different spatial modes arrive at different times in multimode fibre. **Chromatic/intramodal:** spectral components within a mode have different group velocities; includes material and waveguide dispersion. Single-mode removes intermodal dispersion but retains chromatic effects; polarization-mode dispersion can also remain."},{"group":"Dispersion","q":"Define single-mode fibre and mode-field diameter ($\\mathrm{MFD}$). How is $\\mathrm{MFD}$ related to V?","a":"A single-mode fibre supports only its fundamental spatial mode at the operating wavelength (with possible polarization states). For an approximately Gaussian fundamental mode, **$\\mathrm{MFD}$=2w**, the diameter at 1/e² peak intensity; it is not simply the physical core diameter. $$ \\begin{aligned}V\u0026=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA},\\qquad V\u003c2.405\\quad\\text{(SI single mode)}\\\\\\frac wa\u0026\\simeq0.65+\\frac{1.619}{V^{3/2}}+\\frac{2.879}{V^6}\\end{aligned} $$ The Marcuse approximation is for weakly guiding step-index LP₀₁ fields over an appropriate V range (commonly about 1.2–2.4 here); it is not an arbitrary-profile exact law. At fixed a, decreasing V makes the mode extend farther into cladding."},{"group":"Fibre numericals","q":"For step-index multimode fibre with $\\mathrm{NA}$=0.2 and $n_{1}$=1.486, estimate pulse spreading over 1 km and the maximum bit rate.","a":"$$ \\begin{aligned}\\Delta\u0026\\simeq\\frac{\\mathrm{NA}^2}{2n_1^2}=0.009057\\\\\\Delta t\u0026\\simeq\\frac{n_1\\Delta L}c=\\frac{\\mathrm{NA}^2L}{2n_1c}=44.86\\,\\mathrm{ns}\\\\T_{\\mathrm b}\\ge2\\Delta t\u0026\\ \\Longrightarrow\\ R_{\\mathrm{b,max}}\\simeq\\frac1{2\\Delta t}=11.15\\,\\mathrm{Mbit/s}\\end{aligned} $$ This is a simple ray/extreme-delay estimate and an explicitly stated bit-slot criterion. If the course uses Tb≥$\\Delta_{\\mathrm{t}}$, it gives 22.29 Mbit/s instead. Bit rate is not uniquely fixed by delay without a pulse-overlap/encoding criterion."},{"group":"LED numericals","q":"Find internal efficiency of a 1.3 μm surface LED at 100 mA if 7.5% of its output is coupled into fibre.","a":"**Insufficient data in the screenshot.** Coupling efficiency alone does not give optical output or radiative efficiency. $$ \\begin{aligned}P_{\\mathrm{int}}\u0026=\\frac{\\eta_{\\mathrm{int}}Ihc}{q\\lambda}=\\eta_{\\mathrm{int}}\\times95.4\\,\\mathrm{mW}\\\\P_{\\mathrm{fibre}}\u0026=0.075P_{\\mathrm{out}}\\\\\u0026=0.075\\eta_{\\mathrm{extract}}\\eta_{\\mathrm{int}}\\times95.4\\,\\mathrm{mW}\\end{aligned} $$ A measured fibre/output power and an extraction model, or recombination lifetimes, are needed to determine $\\eta_{\\mathrm{int}}$. Even if “output” meant internal generated power, $P_{\\mathrm{fibre}}$ would still be needed. 7.16 mW is only the ideal coupled upper bound with $\\eta_{\\mathrm{int}}$=$\\eta_{\\mathrm{extract}}$=1, not the calculated internal efficiency."},{"group":"Photodetectors","q":"Why must load resistance $R_L$ be specified when photodiode bandwidth is quoted?","a":"Measured bandwidth depends on the detector and its load circuit. Two useful limiting RC models are: $$ \\begin{aligned}\\tau_{\\mathrm{RC}}\u0026\\simeq(R_s+R_L)C_j\u0026\u0026 (C_p\\text{ negligible})\\\\\\tau_{\\mathrm{RC}}\u0026\\simeq R_L(C_j+C_p)\u0026\u0026 (R_s\\text{ negligible})\\\\f_{\\mathrm{RC}}\u0026\\simeq\\frac1{2\\pi\\tau_{\\mathrm{RC}}}\u0026\u0026\\text{(single dominant RC pole)}\\end{aligned} $$ A capacitance $C_p$ on the output side of a finite $R_s$ cannot always be combined with internal $C_j$ as one exact time constant. Changing $R_L$ changes bandwidth and output voltage; carrier transit time and diffusion-current response can impose additional limits."},{"group":"Noise","q":"Define NEP and detectivity. How are they related?","a":"NEP is the optical input producing SNR=1 under specified wavelength/bias/bandwidth. Lower NEP is better. Detectivity D=1/NEP under the specified convention; area-normalized specific detectivity obeys $$ D^*=\\frac{\\sqrt{AB}}{\\mathrm{NEP}_B}=\\frac{\\sqrt A}{\\mathrm{NEP}_{\\mathrm{spectral}}} $$ Integrated $\\mathrm{NEP}_B$ is in W; spectral NEP in W/√Hz. With A in $\\mathrm{cm}^{2}$, D* is in Jones (cm·√Hz/W). Higher D* means better sensitivity."},{"group":"Fibre numericals","q":"A fibre has attenuation 0.5 dB/km, launched power 1 mW and receiver sensitivity 50 μW. Find maximum transmission distance.","a":"$$ \\begin{aligned}\\text{Loss budget}\u0026=10\\log_{10}(1000/50)=13.010\\,\\mathrm{dB}\\\\L_{\\max}\u0026=\\frac{13.010}{0.5}=26.02\\,\\mathrm{km}\\end{aligned} $$ This power-only reach neglects connections, engineering margin and dispersion, since none are supplied. If such losses are present, subtract them from the available 13.010 dB first."},{"group":"LED","q":"Which factor severely limits LED efficiency and cannot be eliminated even in principle?","a":"The likely intended planar-LED answer is **escape-cone trapping/TIR at a high-index semiconductor–air boundary**, with additional reflection/reabsorption: many internally generated photons do not become useful output. However, the wording “cannot be eliminated even in principle” is too absolute. Domes, index matching, surface texturing and other extraction designs can greatly reduce trapping; no fixed 1–2% limit applies to all LEDs. Nonradiative recombination is also a real loss but is not a geometry-independent unavoidable fixed fraction. State the planar-interface assumption in the exam."},{"group":"Fibre numericals","q":"Find the number of modes in a graded-index fibre with core diameter 50 μm, $\\mathrm{NA}$=0.200 and $\\lambda$=1300 nm.","a":"$$ \\begin{aligned}a\u0026=25\\,\\mu\\mathrm m,\u0026\\lambda\u0026=1.3\\,\\mu\\mathrm m\\\\V\u0026=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA}=24.166\\\\M\u0026\\simeq\\frac{V^2}4=146\\end{aligned} $$ Assume an approximately parabolic graded-index profile, high V, and count both polarization states in the usual convention. A parabolic profile is assumed because the screenshot does not specify a general profile."},{"group":"Fibre","q":"Define microbending and macrobending losses.","a":"Macrobending is radiation caused by large-scale curvature with an excessively small bend radius. Microbending arises from small, often random axis deformations due to pressure, cabling or coating stress and couples guided power into lossy modes. Control routing radius for macrobends; use suitable coating, buffering and stress control for microbends."},{"group":"Photodetectors","q":"Draw and label the PIN equivalent circuit.","a":"Draw a photocurrent source $I_{\\mathrm{ph}}$ in parallel with junction capacitance $C_j$ and high shunt resistance $R_{sh}$; add small series resistance $R_s$ in the terminal path and load $R_L$ across output. Include parasitic $C_p$ where applicable. $C_j$≈εsA/w. The full labelled drawing is in chapter 9; the bias network can be shown separately."},{"group":"Light numericals","q":"A photon has energy 2 eV. Find wavelength and frequency.","a":"$$ \\begin{aligned}E\u0026=2\\times1.602\\times10^{-19}=3.204\\times10^{-19}\\,\\mathrm J\\\\\\lambda\u0026=\\frac{hc}E\\simeq620\\,\\mathrm{nm}\\\\\\nu\u0026=\\frac Eh\\simeq4.84\\times10^{14}\\,\\mathrm{Hz}\\end{aligned} $$ Use E in joules with h in J·s, or $\\lambda$(nm)≈1240/E(eV)."},{"group":"LED","q":"What does FWHM mean, and how does it apply to LED characteristics?","a":"**Full width at half maximum.** On a spectrum, find the two wavelengths where spectral power is half the peak; $\\Delta$λFWHM=$\\lambda_{2}$−$\\lambda_{1}$. It measures spectral width, not the centre wavelength or mode spacing. FWHM can also describe an angular emission pattern, so state whether the horizontal axis is wavelength or angle. A broad source spectrum can increase chromatic pulse spreading in fibre."},{"group":"Photodetectors","q":"Why can short-wavelength light be poorly detected at the depletion region? The screenshot says short wavelengths penetrate deeper than long wavelengths.","a":"The stated premise is generally reversed for common semiconductor photodiodes over much of their useful band: short wavelengths are often absorbed more strongly and **closer to the illuminated surface**. Absorption is wavelength/material dependent, not a universal monotonic rule everywhere.If absorption occurs in a heavily doped entrance/dead layer before the depletion region, generated carriers may recombine or contribute slowly by diffusion. A thin window layer and suitable junction depth improve short-wavelength response. Long wavelengths near cutoff penetrate farther and may transmit without being absorbed."},{"group":"Noise","q":"Why are photodiode noise sources drawn in parallel in the generalized equivalent circuit?","a":"Detector fluctuations are conveniently represented as **Norton-equivalent current sources** across the same detector terminals, alongside the signal current source. This is an equivalent-circuit representation, not a claim that microscopic mechanisms are physically wired in parallel. Electronics can alternatively be referred as voltage/current noise as appropriate. For uncorrelated sources, add mean squares, not RMS magnitudes."},{"group":"Photodetectors","q":"What factors determine the correct intrinsic-layer width in a PIN photodiode?","a":"Balance sufficient absorption (1−e^(−αw)), rapid drift transit ($\\tau_{\\mathrm{tr}}$≈w/$v_{\\mathrm{sat}}$), small capacitance ($C_j$≈εA/w), RC delay, complete depletion at practical bias, breakdown/dark-current constraints and fabrication quality. Thicker i layers improve absorption and reduce $C_j$ but lengthen transit. The best width depends on wavelength, material, area, load and required bandwidth."},{"group":"Photodetectors","q":"Distinguish a PN photodiode from an APD. Can both use the same semiconductor?","a":"PN photodiode collects primary photo-carriers with approximately unity internal gain at moderate reverse bias. An APD adds a high-field multiplication region with impact ionization, producing M\u003e1 but requiring higher bias and managing excess noise, temperature dependence and avalanche delay. **Yes**, e.g. silicon can form both; gain depends on structure, field and operation, not merely the chemical material name."},{"group":"Photodetectors","q":"Differentiate photovoltaic and photoconductive operating modes.","a":"Photovoltaic: no externally applied reverse bias; illumination supplies current/voltage to a load (or short-circuit current is measured). Often attractive for low leakage/bias-noise detection. Photoconductive: reverse bias provides stronger field and reduced capacitance for faster collection, with bias supply/dark-current tradeoffs. These are operating modes of a photodiode, not necessarily different materials."},{"group":"Fibre","q":"Define acceptance angle. Why do we need to know it?","a":"The acceptance half-angle is the maximum incident angle to the fibre axis within the ideal meridional-ray acceptance cone. $\\mathrm{NA}$=n₀sinθa; full cone=2θa. It tells us which source rays can be launched into guided trajectories and helps choose/alignment-match sources and coupling optics. Core-position and mode matching also matter."},{"group":"Sensors","q":"What is a fibre-optic sensor? How can FOS be classified?","a":"An FOS infers a measurand from a change in optical intensity, phase, wavelength, polarization or propagation time. **Intrinsic:** the fibre itself senses the quantity (FBG strain/temperature). **Extrinsic:** fibre carries light to/from an external transducer (reflective diaphragm). Also classify by modulation type, measurand, and spatial coverage: point, quasi-distributed (several discrete sensors) or distributed (continuous position-resolved sensing). These are different classification axes."},{"group":"Lasers","q":"Do we want small or large rise/fall times? Which is typically faster: LED or laser diode?","a":"Small rise and fall times allow rapid switching and less pulse overlap, supporting higher modulation bandwidth/bit rate. Above-threshold laser diodes typically support faster modulation than conventional LEDs because stimulated emission and their carrier–photon dynamics enable short optical transitions; LED modulation is often recombination-lifetime limited. Actual drive, bias, relaxation oscillations, capacitance and thermal behavior matter."},{"group":"Fibre","q":"Which is more sensitive to microbending: multimode or single-mode fibre, and why?","a":"The usual textbook comparison expects **conventional weakly guiding single-mode fibre**: perturbations can couple its fundamental field to lossy cladding/radiation states, and a field extending into cladding can be sensitive to external stress. This is not a universal ranking by mode count alone. Index profile/$\\mathrm{NA}$, wavelength, coating compliance and the deformation spatial spectrum determine actual sensitivity; bend-insensitive single-mode designs and highly excited multimode fibres can behave differently."},{"group":"LED","q":"Why use GaAsP rather than GaAs in an LED?","a":"GaAs emits near-IR (roughly 0.85–0.90 μm), while adding phosphorus in GaAs₁₋ₓPₓ changes the band structure/gap to obtain visible red/orange/yellow-range output for suitable compositions and radiative centres. Thus a visible indicator may use GaAsP even though GaAs is an excellent near-IR optoelectronic material. For longer 1.3/1.55 μm communication wavelengths, the relevant answer is **InGaAsP**, not GaAsP."},{"group":"Lasers","q":"Why cool a laser diode? Does industry prefer cooled or uncooled lasers?","a":"Heat raises threshold, shifts wavelength, can reduce output efficiency and accelerates degradation. Heat sinking limits temperature rise; a thermoelectric cooler can actively stabilize junction/package temperature. **No universal industry preference:** uncooled sources are attractive when their performance meets specifications because of lower cost, size and power; cooled/stabilized sources are justified for tight wavelength control, demanding long-haul/DWDM or precision spectroscopy. Distinguish passive heat removal from active temperature regulation."},{"group":"Photodetectors","q":"Explain PIN and APD operation using structures and electric-field profiles.","a":"**PIN:** $p^{+}$–i–$n^{+}$ with an extended depleted absorber; field is approximately broad/flat in an ideal nearly intrinsic fully depleted region, with edge variations. Light creates pairs collected by drift; no avalanche gain. **APD:** engineered absorption plus a narrow high-field multiplication region; primary carriers drift into that peak and cause impact ionization. Draw E(x) with a broad moderate PIN field and a pronounced APD multiplication peak; exact profiles depend on doping/heterostructure. Label contacts, reverse bias, absorption, carrier arrows and optical input. ![Absorption collection and avalanche multiplication need different fields The profiles illustrate functions rather than a unique doping solution. Field magnitude is plotted; actual signed field and exact shape depend on layer charge, bias and device architecture.](./assets/opt-e70904d37397.png)"},{"group":"Photodetectors","q":"Define photodiode cutoff wavelength and explain its physical origin.","a":"$$ \\lambda_{\\mathrm c}=\\frac{hc}{E_{\\mathrm g}}\\simeq\\frac{1.240}{E_{\\mathrm g}(\\mathrm{eV})}\\,\\mu\\mathrm m $$ The long-wavelength interband cutoff is where photon energy reaches the semiconductor band gap. For $\\lambda$\u003e$\\lambda_{\\mathrm{c}}$, hν"},{"group":"Joints","q":"Explain fibre splicing and its main types, with sketches.","a":"A splice is a normally permanent fibre joint. **Fusion:** strip/clean/cleave → align cores → arc-melt/fuse → protect joint; typically low loss and low reflection. **Mechanical:** align cleaved ends in a V-groove/capillary with index-matching medium and a clamp; no melting, useful for appropriate field/repair applications. Loss arises from offset, angular error, gaps, end-face defects or $\\mathrm{MFD}$ mismatch. Chapter 17 includes redrawable sketches."},{"group":"Joints","q":"State the purpose and categories of optical connectors, with sketches.","a":"Connectors provide detachable, repeatable optical alignment between fibres or equipment ports. A common design uses two precision ferrules aligned in a sleeve. Classify by coupling/format: ST bayonet, FC threaded, SC push–pull, LC latch/small form factor, and MPO/MTP multifibre push–pull. Separately classify end finish: PC/UPC or angled APC. These are different category axes; do not mate APC and UPC indiscriminately. Cleanliness, alignment, insertion loss and return loss matter."},{"group":"Applications","q":"Discuss limitations of lasers in dental, ophthalmic and surgical applications.","a":"**Dental:** wavelength-specific absorption means no single laser suits enamel, dentine and soft tissue; incorrect settings can thermally damage pulp/bone or char tissue. **Ophthalmic:** precise targeting is essential; unintended absorption/focusing may injure cornea, lens or retina, and suitability depends on the procedure/patient. **General surgery:** collateral thermal injury, limited penetration/selectivity, plume, fire risk, cost and training requirements. Lasers can give precise cutting/coagulation, but do not replace every conventional instrument. This is an exam-level limitations summary, not procedural treatment advice."},{"group":"Sensors","q":"How could an FOS measure 0–500 °C in geothermal mining when ordinary fibres are unsuitable?","a":"One defensible design is a **high-temperature regenerated or suitable femtosecond-written FBG probe**, protected in a metal/ceramic sheath, with high-temperature-rated fibre/coating in the hot zone and a remote interrogator. Temperature changes $n_{\\mathrm{eff}}$ and grating period, shifting $\\lambda_{\\mathrm{B}}$=2neffΛ; calibrate $\\lambda_{\\mathrm{B}}$(T), isolate/compensate strain and validate drift/hysteresis over 0–500 °C. Ordinary polymer coatings, adhesives and standard gratings may fail even though silica itself can survive the temperature. Use qualified high-temperature components, not ordinary coated telecom fibre. The question does not specify one unique sensing architecture; an appropriately designed extrinsic optical temperature probe is another possibility."},{"group":"LED","q":"What are the major drawbacks of a homostructure LED?","a":"Weak carrier confinement allows injected carriers to diffuse away from the useful emitting region and recombine less usefully; absence of engineered optical guiding reduces overlap/coupling. Same-gap surrounding material can reabsorb generated light, and planar extraction/TIR further limits useful output. A DH design confines carriers in a low-gap active layer and can guide photons with a suitable refractive-index profile."},{"group":"Light","q":"What is the scientific meaning of monochromaticity?","a":"Strictly, one optical frequency (and a corresponding vacuum wavelength). Real sources have a finite spectral linewidth, so practical “monochromatic” means very narrow spectral bandwidth relative to the centre frequency. It does not mean all photons share a phase (coherence) or travel in one direction (collimation). An ideal infinitely extended single-frequency wave is a limiting model."},{"group":"Photodetectors","q":"How does responsivity depend on optical wavelength?","a":"$$ R(\\lambda)=\\frac{\\eta(\\lambda)q\\lambda}{hc}\\simeq\\frac{\\eta(\\lambda)\\lambda(\\mu\\mathrm m)}{1.240}\\,\\mathrm{A/W} $$ For unity gain and constant $\\eta$, responsivity grows linearly with $\\lambda$ because a watt contains more low-energy photons. In a real device $\\eta$ varies with wavelength and response falls near cutoff; do not extend the linear law beyond its spectral band."},{"group":"Photodetectors","q":"Why is PN photodiode junction/shunt resistance high?","a":"In reverse operation the depletion region blocks majority-carrier conduction and only a small leakage/generation current flows; the incremental shunt resistance dV/dI is therefore large. High $R_{sh}$ reduces leakage error and its equivalent resistor thermal current noise. Do not confuse this high parallel resistance with the small series/contact resistance $R_s$ or with optical responsivity R."},{"group":"Photodetectors","q":"List APD drawbacks.","a":"Higher reverse-voltage supply; strong gain dependence on voltage/temperature; stochastic avalanche excess noise; avalanche buildup/gain–bandwidth limitations; greater fabrication and bias-control complexity; and potentially significant dark current. Internal gain can still improve a receiver whose amplifier noise otherwise dominates,so do not equate gain with universally worse overall sensitivity."},{"group":"Noise","q":"List photodiode noise sources in order of importance.","a":"There is **no universal ranking without operating conditions**. State the regime: weak-light/high-load receivers can be amplifier/thermal limited; at strong photocurrent, shot noise can dominate; at low modulation frequencies, 1/f and drift can matter; at high temperature, dark-current noise grows. List shot (signal+dark+background), Johnson/thermal, generation–recombination, flicker and amplifier noise; add APD excess noise when relevant. Rank using calculated/measured spectral contributions at the chosen bias, bandwidth and temperature."},{"group":"Photodetectors","q":"List advantages of PIN over an ordinary PN photodiode.","a":"A fabricated depleted i layer provides a broad controlled absorption region, efficient field-assisted collection and a relatively small capacitance without relying only on extreme reverse bias. This can give higher useful quantum efficiency and high bandwidth with less slow diffusion contribution. Thickness must still be optimized: more absorption/less capacitance competes with longer carrier transit. There is no avalanche internal gain."},{"group":"Fibre numericals","q":"A step-index fibre has $n_{1}$=1.50, $n_{2}$=1.49, core diameter 100 μm and $\\lambda$=0.85 μm. Estimate guided modes.","a":"$$ \\begin{aligned}\\mathrm{NA}\u0026=\\sqrt{1.50^2-1.49^2}=0.17292\\\\a\u0026=50\\,\\mu\\mathrm m,\\qquad V=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA}=63.910\\\\M\u0026\\simeq\\frac{V^2}2\\simeq2042\\quad\\text{modes}\\end{aligned} $$ High-V weak-guidance estimate, counting polarization states in the usual convention. If a course counts spatial modes excluding polarization, the corresponding value is roughly half; state the convention."},{"group":"Fibre","q":"What is the critical propagation angle, and what determines it?","a":"Terminology varies: **critical interface incidence** $\\theta_{\\mathrm{c}}$=sin⁻¹($n_{2}$/$n_{1}$), measured to the normal. **Maximum internal propagation angle to the axis** $\\alpha_{\\mathrm{max}}$=90°−$\\theta_{\\mathrm{c}}$=cos⁻¹($n_{2}$/$n_{1}$). Both depend on the index ratio, not the physical core diameter in the ideal ray model. The external acceptance angle additionally depends on $n_{0}$. Define your angle explicitly instead of using the two complementary angles interchangeably."},{"group":"Fibre","q":"What relationship between $n_{1}$ and $n_{2}$ follows from $\\mathrm{NA}$=√($n_{1}^{2}$−$n_{2}^{2}$)?","a":"A real positive core-guidance $\\mathrm{NA}$ requires **$n_{1}$\u003e$n_{2}$**. At equal indices the ideal core-guiding contrast vanishes; a reversed index contrast does not give conventional TIR core guidance. Practical weak guidance usually has only a small relative index difference; the formula alone does not impose a particular numerical difference."},{"group":"Fibre","q":"Do manufacturers specify scattering loss? Why?","a":"Usually they specify wavelength-dependent **total attenuation**, because that sets useful power loss in a link and includes scattering and absorption. Separate Rayleigh-scattering coefficients may be supplied for material characterization/specialty fibres, but are not a universal extra telecom datasheet entry. OTDR backscatter is used for testing, yet backscatter level alone is not identical to the total scattering attenuation."},{"group":"Fibre","q":"Is an attenuation specification of 0.5 dB/km positive or negative? Explain.","a":"The attenuation/loss coefficient is conventionally **positive**: $\\alpha$=(10/L)log₁₀($P_{\\mathrm{in}}$/$P_{\\mathrm{out}}$)\u003e0 for passive loss. A transfer gain written as 10log₁₀($P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$) is negative. Both express the same power decrease using different ratio/sign conventions."},{"group":"Dispersion","q":"Express step-index modal pulse spread in terms of relative index difference $\\Delta$.","a":"$$ \\Delta t_{\\mathrm{SI}}\\simeq\\frac{n_1\\Delta L}c\\simeq\\frac{\\mathrm{NA}^2L}{2n_1c} $$ This weak-guidance extreme-meridional-delay estimate uses $\\Delta$≈($n_{1}$−$n_{2}$)/$n_{1}$, length L in metres and c in m/s. It describes multimode step-index propagation, not single-mode chromatic broadening or an optimized graded-index fibre."},{"group":"Dispersion","q":"How can chromatic dispersion be reduced or compensated?","a":"Use a spectrally narrow laser (e.g. appropriate DFB), choose an operating wavelength with small total dispersion for the fibre, engineer the waveguide profile (dispersion-shifted/flattened designs), or add dispersion-compensating fibre, chirped gratings or suitable electronic DSP. Compensation must match accumulated dispersion and the source/link; zero material dispersion alone does not necessarily make total dispersion zero."},{"group":"Dispersion","q":"What are solutions to modal dispersion?","a":"Use **single-mode fibre** at the operating wavelength to eliminate spatial intermodal delay; use an optimized graded-index multimode profile to reduce it; shorten the link and/or control the launched mode distribution where appropriate. A narrower optical spectrum mainly addresses chromatic dispersion, not intermodal delay itself."},{"group":"Fibre","q":"Two identical fibres with different coatings show added drum/sandpaper-test attenuation of 0.8 and 3.2 dB/km. Why?","a":"The rough drum applies microscopic pressure/curvature variations. Different coating modulus, thickness, cushioning and stress-transfer properties create different **microbending** in the glass, causing different radiation loss even when optical core/cladding designs are identical. The lower-loss coating better shields the fibre under the stated test. These values describe induced attenuation in that test, not an intrinsic absorption difference."},{"group":"Dispersion","q":"Define communication bandwidth and bit rate.","a":"Bandwidth (Hz) is the useful frequency range of the channel/electrical response under a stated criterion, often the 3 dB bandwidth. Bit rate (bit/s) is the number of binary information bits transmitted per second. Their relationship depends on modulation, coding, pulse shaping and required error rate; they are not generally identical. For example, ideal Nyquist signaling has a particular symbol-rate relation, while real optical pulses/receivers require stated criteria."},{"group":"LED numericals","q":"For a GaAs LED, $\\tau_{\\mathrm{rr}}$=120 ns, $\\tau_{\\mathrm{nr}}$=100 ns, refractive index n=3.7 and internal absorption loss 10%. Calculate internal and external quantum efficiencies.","a":"$$ \\begin{aligned}\\eta_{\\mathrm{int}}\u0026=\\frac{\\tau_{\\mathrm{nr}}}{\\tau_{\\mathrm{rr}}+\\tau_{\\mathrm{nr}}}=\\frac{100}{220}=45.45\\%\\\\f_{\\mathrm{cone}}\u0026\\simeq\\frac1{4n^2}\\\\T_{\\mathrm F}\u0026\\simeq\\frac{4n}{(n+1)^2}\\\\\\eta_{\\mathrm{ext}}\u0026\\simeq\\eta_{\\mathrm{int}}\\times0.90\\times\\frac1{4n^2}\\times\\frac{4n}{(n+1)^2}\\\\\u0026\\simeq0.005005=0.5005\\%\\end{aligned} $$ External efficiency needs an extraction geometry/model. The value above assumes isotropic generation, one planar semiconductor–air escape face, small-cone approximation, a normal-incidence Fresnel approximation and 90% survival. Omitting Fresnel loss gives 0.747%, so state the adopted model. Some texts call extraction alone “external efficiency”; this guide uses escaped photons per injected carrier."},{"group":"Photodetectors","q":"Classify photodetectors.","a":"By mechanism: **quantum/photon detectors** (photovoltaic/photoconductive semiconductor devices; photoemissive devices) and **thermal detectors** (bolometer, thermopile, pyroelectric). Examples of photon devices include PN/PIN photodiodes, APDs, phototransistors, LDRs and photocathode/PMTs. Other valid axes are material, gain, structure and spectral band; avoid mixing unrelated axes into one exclusive tree."},{"group":"Photodetector numericals","q":"At $\\lambda$=0.85 μm, photons arrive at $4\\times 10^{10}$ $s^{-1}$ and electrons are collected at $2\\times 10^{10}$ $s^{-1}$. Find photodiode sensitivity.","a":"$$ \\begin{aligned}\\eta\u0026=\\frac{2\\times10^{10}}{4\\times10^{10}}=0.50\\\\R\u0026=\\frac{\\eta\\lambda(\\mu\\mathrm m)}{1.240}=0.3427\\,\\mathrm{A/W}\\\\I_{\\mathrm{ph}}\u0026=q\\times2\\times10^{10}=3.204\\,\\mathrm{nA}\\\\P_{\\mathrm{in}}\u0026=(4\\times10^{10})\\frac{hc}{\\lambda}\\simeq9.35\\,\\mathrm{nW}\\end{aligned} $$ Here “sensitivity” is interpreted as responsivity in A/W; the count ratio itself is quantum efficiency."},{"group":"Photodetectors","q":"Why does responsivity fall at both short and long wavelengths?","a":"At long wavelengths, absorption weakens near the material band edge; beyond $\\lambda_{\\mathrm{c}}$=hc/$E_{\\mathrm g}$ photons cannot normally generate interband pairs. At very short wavelengths, strong near-surface absorption, entrance-layer/contact losses and surface recombination can reduce collected charge. These are device/window-dependent limits; short-wavelength response need not be identically zero for every photodiode."},{"group":"Photodetectors","q":"Define detector quantum efficiency and responsivity and derive their relationship.","a":"Quantum efficiency $\\eta$ is collected primary electrons per incident photon; responsivity R=$I_{\\mathrm{ph}}$/$P_{\\mathrm{in}}$ in A/W. Incident photon flux $\\Phi$=$P_{\\mathrm{in}}$/hν gives $I_{\\mathrm{ph}}$=ηqΦ, hence $$ R=\\frac{\\eta q}{h\\nu}=\\frac{\\eta q\\lambda}{hc} $$ Multiply by M when internal multiplication is included, keeping primary $\\eta$ distinct from gain."},{"group":"Dispersion","q":"Why does polarization-mode pulse spreading in a long single-mode fibre scale with √length?","a":"Random birefringence gives two principal polarization states different group delays. Local birefringence axes and polarization coupling vary randomly along a long fibre; independent delay contributions add statistically like a random walk, so RMS differential group delay scales as $$ \\Delta\\tau_{\\mathrm{PMD,rms}}\\simeq D_{\\mathrm{PMD}}\\sqrt L $$ $D_{\\mathrm{PMD}}$ is commonly in ps/√km when L is in km. In a short/uniform section without random coupling, delay can instead grow approximately linearly with length. Single spatial mode does not remove polarization effects."}],el=s=>document.querySelector(s),input=el('#filter'),answer=el('#answer');
+    const items=[{"group":"LED","q":"How does a forward-biased p-n semiconductor junction emit light? Distinguish radiative and nonradiative recombination.","a":"Forward bias injects electrons and holes into the active region. Electron-hole recombination releases energy: radiative recombination produces a photon (hν≈$E_{\\mathrm g}$); nonradiative recombination transfers energy to phonons/heat. Efficient LEDs favor radiative pathways in suitable direct-gap materials."},{"group":"Photodetectors","q":"List four advantages of reverse bias in a photodiode.","a":"1. Stronger depletion-region field gives rapid carrier separation and drift collection. 2. Wider depletion reduces junction capacitance. 3. Lower capacitance improves RC-limited bandwidth. 4. Improved collection reduces recombination loss and slow diffusion contribution when absorption occurs in the depleted region. These are coupled benefits, not unlimited guarantees: high bias can raise dark current and approach breakdown."},{"group":"LED","q":"Why is the n side heavily doped in a typical LED construction?","a":"A heavily doped n region supplies electrons efficiently, lowers bulk/contact series resistance and helps form a low-resistance contact. In an asymmetrically doped junction it can favor electron injection into the p-side emitting region, supporting radiative recombination.Construction-dependent: an $n^{+}$ contact/substrate and the doping of the active junction are different design choices. “Every LED must have n more heavily doped than p” is not a universal requirement; excessive active-region doping can increase nonradiative loss."},{"group":"Lasers","q":"Expand DFB. What distinguishes a DFB laser diode?","a":"**Distributed-feedback laser.** A periodic index grating along the gain waveguide supplies wavelength-selective Bragg feedback. It can strongly favor one longitudinal mode, giving a narrow spectrum and stable wavelength selection for communications/sensing. First-order $\\lambda_{\\mathrm{B}}$=2neffΛ. Temperature stabilization may still be needed."},{"group":"Lasers","q":"Do laser-diode characteristics depend on temperature? Relate threshold current to temperature.","a":"Yes. Increasing junction temperature usually raises threshold current, reduces slope efficiency at a given operating point, and shifts wavelength. $$ I_{\\mathrm{th}}(T_2)=I_{\\mathrm{th}}(T_1)\\exp\\!\\left(\\frac{T_2-T_1}{T_0}\\right) $$ $T_{0}$ is the empirical characteristic temperature over the fitted operating range; a larger $T_{0}$ means less temperature sensitivity. Temperature differences and $T_{0}$ use kelvins (a temperature difference has the same numerical value in °C). This is an empirical relation, not an exact law for every laser over all temperatures."},{"group":"LED","q":"Explain the quantum-efficiency trend of GaAsP with alloy composition, with and without nitrogen doping.","a":"As the GaAsP composition enters the indirect-gap regime, ordinary band-edge radiative recombination becomes less probable. Isoelectronic nitrogen creates localized radiative centres that trap carriers/excitons and relax momentum restrictions, increasing emission efficiency. Nitrogen can lower the optical transition energy; at suitable concentrations it can also change the band structure and reduce the fundamental gap. In an exam, identify the centre/localization mechanism for the classic LED and distinguish it from alloy band-gap narrowing. The plotted efficiency trend is qualitative, not a calibrated composition or gap curve. See chapter 2 for the primary-source distinction. ![Nitrogen centres preserve radiative emission in indirect compositions Qualitative trend only: no efficiency percentage or universal crossover calibration is assigned. Nitrogen centres alter recombination pathways; substrate transparency chiefly affects extraction.](./assets/opt-4641957ad272.png)"},{"group":"LED","q":"Why use InGaAsP instead of GaAs for an LED in an optical communication link?","a":"InGaAsP composition can be chosen for emission near the low-loss silica windows around 1.3 and 1.55 μm, with suitable lattice matching to InP and heterostructure confinement. GaAs emits near 0.85-0.90 μm and cannot provide those longer wavelengths simply by changing drive voltage. The choice is wavelength/material-system matching, not GaAs being an intrinsically poor optoelectronic material."},{"group":"LED","q":"Name materials used for blue, UV and white LEDs.","a":"**Blue:** InGaN/GaN-based heterostructures (historical ZnSe and inefficient SiC devices may also be named). **UV:** GaN near-UV and AlGaN/AlN-based wider-gap structures for shorter UV wavelengths. **White:** commonly a blue InGaN emitter plus phosphor(s), or RGB mixing. White is a broad composite spectrum; there is no single “white band-gap semiconductor”."},{"group":"LED","q":"Differentiate surface-emitting and edge-emitting LEDs. Explain the usefulness of an ELED in optical communication.","a":"Surface emitter: light exits normal to the junction plane, usually with broader angular output. Edge emitter: a narrow active stripe guides light laterally and emits from an edge parallel to the junction; it usually gives higher radiance, better directionality and improved fibre coupling, and often a narrower spectrum for comparable materials. Draw active/cladding layers and show the output directions. Source dimensions, $\\mathrm{NA}$ and alignment still limit coupling."},{"group":"LED","q":"Define direct- and indirect-gap semiconductors, give examples, and justify the preferred type for LEDs.","a":"Direct gap: CB minimum and VB maximum occur at the same crystal momentum; transitions need no momentum-assisting phonon. Examples: GaAs and GaN. Indirect gap: extrema occur at different momenta; a phonon participates. Examples: Si, Ge, GaP. Direct-gap materials generally favor efficient radiative recombination and therefore LED emission. Draw E-k plots with a vertical direct transition and momentum-changing indirect transition."},{"group":"Fibre numericals","q":"A 1.55 μm, 500 Mbit/s link launches −13 “dB”, has receiver sensitivity −40 dBm, fibre loss 0.5 dB/km, 5 km fibre pieces, 0.1 dB per splice, receiver coupling loss 0.5 dB and a 7 dB margin. Find the loss budget and maximum repeaterless length.","a":"The launch power is printed as −13 dB. An absolute power needs a reference; interpret it as **−13 dBm**, consistent with the receiver value. A bandwidth-limited reach cannot be verified from the data supplied. $$ \\begin{aligned}\\text{Available attenuation}\u0026=-13-(-40)=27\\,\\mathrm{dB}\\\\\\text{Fibre + splice allowance}\u0026=27-0.5-7=19.5\\,\\mathrm{dB}\\\\0.5L+0.1N_{\\mathrm s}\u0026\\le19.5\\quad(L\\text{ in km})\\end{aligned} $$ For 5 km sections, Ns=ceil(L/5)−1 (no splice at the receiver). Between 35 and 40 km, Ns=7, so 0.5L+0.7≤19.5 → **Lmax=37.6 km** with a final shortened section. If only complete 5 km sections are permitted, maximum length is **35 km**. A distributed approximation Ns≈L/5 gives 37.5 km; state that approximation. The 500 Mbit/s rate does not enter a power-only budget."},{"group":"Fibre","q":"Define attenuation and loss in an optical fibre.","a":"Attenuation is reduction of guided optical power along a fibre due to absorption, scattering and radiation/bending. Power loss in dB is 10log₁₀($P_{\\mathrm{in}}$/$P_{\\mathrm{out}}$); attenuation coefficient is that loss divided by length. $P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$ is transmission, while 1−$P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$ is fractional power loss."},{"group":"Fibre numericals","q":"A step-index fibre has $\\mathrm{NA}$=0.17 and cladding index 1.46. Find its acceptance angle in water ($n_{0}$=1.33) and its critical core-cladding angle.","a":"$$ \\begin{aligned}n_1\u0026=\\sqrt{n_2^2+\\mathrm{NA}^2}=\\sqrt{1.46^2+0.17^2}=1.46986\\\\\\theta_{\\mathrm a}\u0026=\\arcsin(0.17/1.33)=7.34^\\circ\\\\\\theta_{\\mathrm c}\u0026=\\arcsin(n_2/n_1)=83.36^\\circ\\end{aligned} $$ The full external acceptance cone is 14.69°. $\\theta_{\\mathrm{a}}$ is measured to the fibre axis, whereas $\\theta_{\\mathrm{c}}$ is measured to the interface normal."},{"group":"Fibre","q":"What is a transparent window? State three main operating wavelengths of silica optical fibre.","a":"A transparency/transmission window is a wavelength band of relatively low attenuation (and useful link properties), not zero loss. Conventional centres are approximately **850 nm, 1310 nm and 1550 nm**, called first, second and third windows. These are low-loss transmission regions, not absorption peaks."},{"group":"Fibre","q":"Which fibre would you choose for short-, intermediate- and long-distance networks, and why?","a":"For a textbook comparison among three fibre types: **short/simple, lower-rate link:** multimode step-index; **intermediate reach:** graded-index multimode, reducing intermodal delay; **long/high-capacity:** single-mode, eliminating intermodal dispersion. In modern practical networks, graded-index multimode is common for short data links and single-mode can also be economical at short/intermediate reach. Actual choice requires specified distance, rate, source and budget; distance labels alone do not uniquely determine it."},{"group":"Fibre","q":"Why does numerical aperture not contain core diameter even though a larger core can gather more light?","a":"$\\mathrm{NA}$ describes **angular acceptance**, fixed by index contrast in the step-index ray model: $\\mathrm{NA}$=√($n_{1}^{2}$−$n_{2}^{2}$). Core diameter sets the entrance area and also affects supported mode count through V. A larger core can accept more total power from an extended source without changing the allowed angular cone. Power collection depends on area × angular acceptance and source matching, not $\\mathrm{NA}$ alone."},{"group":"Fibre","q":"Explain core and cladding functions, why their indices differ, and whether guidance is possible without cladding.","a":"The core carries most guided power; a lower-index cladding ($n_{1}$\u003e$n_{2}$) provides optical confinement, a controlled boundary and separation from external contamination/stress. Real guided fields extend into the cladding. A bare glass rod in air can guide by TIR because air acts as a lower-index surrounding medium, so guidance is possible in principle without a manufactured solid cladding. It is mechanically exposed, environment-sensitive and unsuitable as an equivalent robust telecom design."},{"group":"Fibre","q":"Distinguish guided, radiation and leaky modes.","a":"**Guided:** transversely confined field, normally $n_{\\mathrm{eff}}$ between cladding and core indices for a simple bound core mode; ideal propagation has no confinement loss. **Radiation:** unbound field carrying power away into the surrounding region. **Leaky:** only quasi-confined, losing power gradually by radiation; described by a complex propagation constant. This is a field/mode classification, not just three ray angles."},{"group":"Fibre","q":"Do manufacturers specify absorption loss of a fibre? If yes, how?","a":"Datasheets normally specify **total attenuation** in dB/km at stated wavelengths, which includes absorption plus scattering and other losses under defined conditions. Some also specify spectral attenuation, water-peak limits or material absorption for specialty fibres. If a separate absorption coefficient is given, it must have its wavelength and units, e.g. $m^{-1}$ or dB/km. Do not interpret a total attenuation entry as an absorption-only measurement."},{"group":"Dispersion","q":"Why are intermodal and chromatic effects both called dispersion? Explain the difference, including intermodal versus intramodal dispersion.","a":"Both spread an optical pulse in time because different parts of its energy have different group delays. **Intermodal:** different spatial modes arrive at different times in multimode fibre. **Chromatic/intramodal:** spectral components within a mode have different group velocities; includes material and waveguide dispersion. Single-mode removes intermodal dispersion but retains chromatic effects; polarization-mode dispersion can also remain."},{"group":"Dispersion","q":"Define single-mode fibre and mode-field diameter ($\\mathrm{MFD}$). How is $\\mathrm{MFD}$ related to V?","a":"A single-mode fibre supports only its fundamental spatial mode at the operating wavelength (with possible polarization states). For an approximately Gaussian fundamental mode, **$\\mathrm{MFD}$=2w**, the diameter at 1/e² peak intensity; it is not simply the physical core diameter. $$ \\begin{aligned}V\u0026=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA},\\qquad V\u003c2.405\\quad\\text{(SI single mode)}\\\\\\frac wa\u0026\\simeq0.65+\\frac{1.619}{V^{3/2}}+\\frac{2.879}{V^6}\\end{aligned} $$ The Marcuse approximation is for weakly guiding step-index LP₀₁ fields over an appropriate V range (commonly about 1.2-2.4 here); it is not an arbitrary-profile exact law. At fixed a, decreasing V makes the mode extend farther into cladding."},{"group":"Fibre numericals","q":"For step-index multimode fibre with $\\mathrm{NA}$=0.2 and $n_{1}$=1.486, estimate pulse spreading over 1 km and the maximum bit rate.","a":"$$ \\begin{aligned}\\Delta\u0026\\simeq\\frac{\\mathrm{NA}^2}{2n_1^2}=0.009057\\\\\\Delta t\u0026\\simeq\\frac{n_1\\Delta L}c=\\frac{\\mathrm{NA}^2L}{2n_1c}=44.86\\,\\mathrm{ns}\\\\T_{\\mathrm b}\\ge2\\Delta t\u0026\\ \\Longrightarrow\\ R_{\\mathrm{b,max}}\\simeq\\frac1{2\\Delta t}=11.15\\,\\mathrm{Mbit/s}\\end{aligned} $$ This is a simple ray/extreme-delay estimate and an explicitly stated bit-slot criterion. If the course uses Tb≥$\\Delta_{\\mathrm{t}}$, it gives 22.29 Mbit/s instead. Bit rate is not uniquely fixed by delay without a pulse-overlap/encoding criterion."},{"group":"LED numericals","q":"Find internal efficiency of a 1.3 μm surface LED at 100 mA if 7.5% of its output is coupled into fibre.","a":"**Insufficient data in the screenshot.** Coupling efficiency alone does not give optical output or radiative efficiency. $$ \\begin{aligned}P_{\\mathrm{int}}\u0026=\\frac{\\eta_{\\mathrm{int}}Ihc}{q\\lambda}=\\eta_{\\mathrm{int}}\\times95.4\\,\\mathrm{mW}\\\\P_{\\mathrm{fibre}}\u0026=0.075P_{\\mathrm{out}}\\\\\u0026=0.075\\eta_{\\mathrm{extract}}\\eta_{\\mathrm{int}}\\times95.4\\,\\mathrm{mW}\\end{aligned} $$ A measured fibre/output power and an extraction model, or recombination lifetimes, are needed to determine $\\eta_{\\mathrm{int}}$. Even if “output” meant internal generated power, $P_{\\mathrm{fibre}}$ would still be needed. 7.16 mW is only the ideal coupled upper bound with $\\eta_{\\mathrm{int}}$=$\\eta_{\\mathrm{extract}}$=1, not the calculated internal efficiency."},{"group":"Photodetectors","q":"Why must load resistance $R_L$ be specified when photodiode bandwidth is quoted?","a":"Measured bandwidth depends on the detector and its load circuit. Two useful limiting RC models are: $$ \\begin{aligned}\\tau_{\\mathrm{RC}}\u0026\\simeq(R_s+R_L)C_j\u0026\u0026 (C_p\\text{ negligible})\\\\\\tau_{\\mathrm{RC}}\u0026\\simeq R_L(C_j+C_p)\u0026\u0026 (R_s\\text{ negligible})\\\\f_{\\mathrm{RC}}\u0026\\simeq\\frac1{2\\pi\\tau_{\\mathrm{RC}}}\u0026\u0026\\text{(single dominant RC pole)}\\end{aligned} $$ A capacitance $C_p$ on the output side of a finite $R_s$ cannot always be combined with internal $C_j$ as one exact time constant. Changing $R_L$ changes bandwidth and output voltage; carrier transit time and diffusion-current response can impose additional limits."},{"group":"Noise","q":"Define NEP and detectivity. How are they related?","a":"NEP is the optical input producing SNR=1 under specified wavelength/bias/bandwidth. Lower NEP is better. Detectivity D=1/NEP under the specified convention; area-normalized specific detectivity obeys $$ D^*=\\frac{\\sqrt{AB}}{\\mathrm{NEP}_B}=\\frac{\\sqrt A}{\\mathrm{NEP}_{\\mathrm{spectral}}} $$ Integrated $\\mathrm{NEP}_B$ is in W; spectral NEP in W/√Hz. With A in $\\mathrm{cm}^{2}$, D* is in Jones (cm·√Hz/W). Higher D* means better sensitivity."},{"group":"Fibre numericals","q":"A fibre has attenuation 0.5 dB/km, launched power 1 mW and receiver sensitivity 50 μW. Find maximum transmission distance.","a":"$$ \\begin{aligned}\\text{Loss budget}\u0026=10\\log_{10}(1000/50)=13.010\\,\\mathrm{dB}\\\\L_{\\max}\u0026=\\frac{13.010}{0.5}=26.02\\,\\mathrm{km}\\end{aligned} $$ This power-only reach neglects connections, engineering margin and dispersion, since none are supplied. If such losses are present, subtract them from the available 13.010 dB first."},{"group":"LED","q":"Which factor severely limits LED efficiency and cannot be eliminated even in principle?","a":"The likely intended planar-LED answer is **escape-cone trapping/TIR at a high-index semiconductor-air boundary**, with additional reflection/reabsorption: many internally generated photons do not become useful output. However, the wording “cannot be eliminated even in principle” is too absolute. Domes, index matching, surface texturing and other extraction designs can greatly reduce trapping; no fixed 1-2% limit applies to all LEDs. Nonradiative recombination is also a real loss but is not a geometry-independent unavoidable fixed fraction. State the planar-interface assumption in the exam."},{"group":"Fibre numericals","q":"Find the number of modes in a graded-index fibre with core diameter 50 μm, $\\mathrm{NA}$=0.200 and $\\lambda$=1300 nm.","a":"$$ \\begin{aligned}a\u0026=25\\,\\mu\\mathrm m,\u0026\\lambda\u0026=1.3\\,\\mu\\mathrm m\\\\V\u0026=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA}=24.166\\\\M\u0026\\simeq\\frac{V^2}4=146\\end{aligned} $$ Assume an approximately parabolic graded-index profile, high V, and count both polarization states in the usual convention. A parabolic profile is assumed because the screenshot does not specify a general profile."},{"group":"Fibre","q":"Define microbending and macrobending losses.","a":"Macrobending is radiation caused by large-scale curvature with an excessively small bend radius. Microbending arises from small, often random axis deformations due to pressure, cabling or coating stress and couples guided power into lossy modes. Control routing radius for macrobends; use suitable coating, buffering and stress control for microbends."},{"group":"Photodetectors","q":"Draw and label the PIN equivalent circuit.","a":"Draw a photocurrent source $I_{\\mathrm{ph}}$ in parallel with junction capacitance $C_j$ and high shunt resistance $R_{sh}$; add small series resistance $R_s$ in the terminal path and load $R_L$ across output. Include parasitic $C_p$ where applicable. $C_j$≈εsA/w. The full labelled drawing is in chapter 9; the bias network can be shown separately."},{"group":"Light numericals","q":"A photon has energy 2 eV. Find wavelength and frequency.","a":"$$ \\begin{aligned}E\u0026=2\\times1.602\\times10^{-19}=3.204\\times10^{-19}\\,\\mathrm J\\\\\\lambda\u0026=\\frac{hc}E\\simeq620\\,\\mathrm{nm}\\\\\\nu\u0026=\\frac Eh\\simeq4.84\\times10^{14}\\,\\mathrm{Hz}\\end{aligned} $$ Use E in joules with h in J·s, or $\\lambda$(nm)≈1240/E(eV)."},{"group":"LED","q":"What does FWHM mean, and how does it apply to LED characteristics?","a":"**Full width at half maximum.** On a spectrum, find the two wavelengths where spectral power is half the peak; $\\Delta$λFWHM=$\\lambda_{2}$−$\\lambda_{1}$. It measures spectral width, not the centre wavelength or mode spacing. FWHM can also describe an angular emission pattern, so state whether the horizontal axis is wavelength or angle. A broad source spectrum can increase chromatic pulse spreading in fibre."},{"group":"Photodetectors","q":"Why can short-wavelength light be poorly detected at the depletion region? The screenshot says short wavelengths penetrate deeper than long wavelengths.","a":"The stated premise is generally reversed for common semiconductor photodiodes over much of their useful band: short wavelengths are often absorbed more strongly and **closer to the illuminated surface**. Absorption is wavelength/material dependent, not a universal monotonic rule everywhere.If absorption occurs in a heavily doped entrance/dead layer before the depletion region, generated carriers may recombine or contribute slowly by diffusion. A thin window layer and suitable junction depth improve short-wavelength response. Long wavelengths near cutoff penetrate farther and may transmit without being absorbed."},{"group":"Noise","q":"Why are photodiode noise sources drawn in parallel in the generalized equivalent circuit?","a":"Detector fluctuations are conveniently represented as **Norton-equivalent current sources** across the same detector terminals, alongside the signal current source. This is an equivalent-circuit representation, not a claim that microscopic mechanisms are physically wired in parallel. Electronics can alternatively be referred as voltage/current noise as appropriate. For uncorrelated sources, add mean squares, not RMS magnitudes."},{"group":"Photodetectors","q":"What factors determine the correct intrinsic-layer width in a PIN photodiode?","a":"Balance sufficient absorption (1−e^(−αw)), rapid drift transit ($\\tau_{\\mathrm{tr}}$≈w/$v_{\\mathrm{sat}}$), small capacitance ($C_j$≈εA/w), RC delay, complete depletion at practical bias, breakdown/dark-current constraints and fabrication quality. Thicker i layers improve absorption and reduce $C_j$ but lengthen transit. The best width depends on wavelength, material, area, load and required bandwidth."},{"group":"Photodetectors","q":"Distinguish a PN photodiode from an APD. Can both use the same semiconductor?","a":"PN photodiode collects primary photo-carriers with approximately unity internal gain at moderate reverse bias. An APD adds a high-field multiplication region with impact ionization, producing M\u003e1 but requiring higher bias and managing excess noise, temperature dependence and avalanche delay. **Yes**, e.g. silicon can form both; gain depends on structure, field and operation, not merely the chemical material name."},{"group":"Photodetectors","q":"Differentiate photovoltaic and photoconductive operating modes.","a":"Photovoltaic: no externally applied reverse bias; illumination supplies current/voltage to a load (or short-circuit current is measured). Often attractive for low leakage/bias-noise detection. Photoconductive: reverse bias provides stronger field and reduced capacitance for faster collection, with bias supply/dark-current tradeoffs. These are operating modes of a photodiode, not necessarily different materials."},{"group":"Fibre","q":"Define acceptance angle. Why do we need to know it?","a":"The acceptance half-angle is the maximum incident angle to the fibre axis within the ideal meridional-ray acceptance cone. $\\mathrm{NA}$=n₀sinθa; full cone=2θa. It tells us which source rays can be launched into guided trajectories and helps choose/alignment-match sources and coupling optics. Core-position and mode matching also matter."},{"group":"Sensors","q":"What is a fibre-optic sensor? How can FOS be classified?","a":"An FOS infers a measurand from a change in optical intensity, phase, wavelength, polarization or propagation time. **Intrinsic:** the fibre itself senses the quantity (FBG strain/temperature). **Extrinsic:** fibre carries light to/from an external transducer (reflective diaphragm). Also classify by modulation type, measurand, and spatial coverage: point, quasi-distributed (several discrete sensors) or distributed (continuous position-resolved sensing). These are different classification axes."},{"group":"Lasers","q":"Do we want small or large rise/fall times? Which is typically faster: LED or laser diode?","a":"Small rise and fall times allow rapid switching and less pulse overlap, supporting higher modulation bandwidth/bit rate. Above-threshold laser diodes typically support faster modulation than conventional LEDs because stimulated emission and their carrier-photon dynamics enable short optical transitions; LED modulation is often recombination-lifetime limited. Actual drive, bias, relaxation oscillations, capacitance and thermal behavior matter."},{"group":"Fibre","q":"Which is more sensitive to microbending: multimode or single-mode fibre, and why?","a":"The usual textbook comparison expects **conventional weakly guiding single-mode fibre**: perturbations can couple its fundamental field to lossy cladding/radiation states, and a field extending into cladding can be sensitive to external stress. This is not a universal ranking by mode count alone. Index profile/$\\mathrm{NA}$, wavelength, coating compliance and the deformation spatial spectrum determine actual sensitivity; bend-insensitive single-mode designs and highly excited multimode fibres can behave differently."},{"group":"LED","q":"Why use GaAsP rather than GaAs in an LED?","a":"GaAs emits near-IR (roughly 0.85-0.90 μm), while adding phosphorus in GaAs₁₋ₓPₓ changes the band structure/gap to obtain visible red/orange/yellow-range output for suitable compositions and radiative centres. Thus a visible indicator may use GaAsP even though GaAs is an excellent near-IR optoelectronic material. For longer 1.3/1.55 μm communication wavelengths, the relevant answer is **InGaAsP**, not GaAsP."},{"group":"Lasers","q":"Why cool a laser diode? Does industry prefer cooled or uncooled lasers?","a":"Heat raises threshold, shifts wavelength, can reduce output efficiency and accelerates degradation. Heat sinking limits temperature rise; a thermoelectric cooler can actively stabilize junction/package temperature. **No universal industry preference:** uncooled sources are attractive when their performance meets specifications because of lower cost, size and power; cooled/stabilized sources are justified for tight wavelength control, demanding long-haul/DWDM or precision spectroscopy. Distinguish passive heat removal from active temperature regulation."},{"group":"Photodetectors","q":"Explain PIN and APD operation using structures and electric-field profiles.","a":"**PIN:** $p^{+}$-i-$n^{+}$ with an extended depleted absorber; field is approximately broad/flat in an ideal nearly intrinsic fully depleted region, with edge variations. Light creates pairs collected by drift; no avalanche gain. **APD:** engineered absorption plus a narrow high-field multiplication region; primary carriers drift into that peak and cause impact ionization. Draw E(x) with a broad moderate PIN field and a pronounced APD multiplication peak; exact profiles depend on doping/heterostructure. Label contacts, reverse bias, absorption, carrier arrows and optical input. ![Absorption collection and avalanche multiplication need different fields The profiles illustrate functions rather than a unique doping solution. Field magnitude is plotted; actual signed field and exact shape depend on layer charge, bias and device architecture.](./assets/opt-e70904d37397.png)"},{"group":"Photodetectors","q":"Define photodiode cutoff wavelength and explain its physical origin.","a":"$$ \\lambda_{\\mathrm c}=\\frac{hc}{E_{\\mathrm g}}\\simeq\\frac{1.240}{E_{\\mathrm g}(\\mathrm{eV})}\\,\\mu\\mathrm m $$ The long-wavelength interband cutoff is where photon energy reaches the semiconductor band gap. For $\\lambda$\u003e$\\lambda_{\\mathrm{c}}$, hν"},{"group":"Joints","q":"Explain fibre splicing and its main types, with sketches.","a":"A splice is a normally permanent fibre joint. **Fusion:** strip/clean/cleave → align cores → arc-melt/fuse → protect joint; typically low loss and low reflection. **Mechanical:** align cleaved ends in a V-groove/capillary with index-matching medium and a clamp; no melting, useful for appropriate field/repair applications. Loss arises from offset, angular error, gaps, end-face defects or $\\mathrm{MFD}$ mismatch. Chapter 17 includes redrawable sketches."},{"group":"Joints","q":"State the purpose and categories of optical connectors, with sketches.","a":"Connectors provide detachable, repeatable optical alignment between fibres or equipment ports. A common design uses two precision ferrules aligned in a sleeve. Classify by coupling/format: ST bayonet, FC threaded, SC push-pull, LC latch/small form factor, and MPO/MTP multifibre push-pull. Separately classify end finish: PC/UPC or angled APC. These are different category axes; do not mate APC and UPC indiscriminately. Cleanliness, alignment, insertion loss and return loss matter."},{"group":"Applications","q":"Discuss limitations of lasers in dental, ophthalmic and surgical applications.","a":"**Dental:** wavelength-specific absorption means no single laser suits enamel, dentine and soft tissue; incorrect settings can thermally damage pulp/bone or char tissue. **Ophthalmic:** precise targeting is essential; unintended absorption/focusing may injure cornea, lens or retina, and suitability depends on the procedure/patient. **General surgery:** collateral thermal injury, limited penetration/selectivity, plume, fire risk, cost and training requirements. Lasers can give precise cutting/coagulation, but do not replace every conventional instrument. This is an exam-level limitations summary, not procedural treatment advice."},{"group":"Sensors","q":"How could an FOS measure 0-500 °C in geothermal mining when ordinary fibres are unsuitable?","a":"One defensible design is a **high-temperature regenerated or suitable femtosecond-written FBG probe**, protected in a metal/ceramic sheath, with high-temperature-rated fibre/coating in the hot zone and a remote interrogator. Temperature changes $n_{\\mathrm{eff}}$ and grating period, shifting $\\lambda_{\\mathrm{B}}$=2neffΛ; calibrate $\\lambda_{\\mathrm{B}}$(T), isolate/compensate strain and validate drift/hysteresis over 0-500 °C. Ordinary polymer coatings, adhesives and standard gratings may fail even though silica itself can survive the temperature. Use qualified high-temperature components, not ordinary coated telecom fibre. The question does not specify one unique sensing architecture; an appropriately designed extrinsic optical temperature probe is another possibility."},{"group":"LED","q":"What are the major drawbacks of a homostructure LED?","a":"Weak carrier confinement allows injected carriers to diffuse away from the useful emitting region and recombine less usefully; absence of engineered optical guiding reduces overlap/coupling. Same-gap surrounding material can reabsorb generated light, and planar extraction/TIR further limits useful output. A DH design confines carriers in a low-gap active layer and can guide photons with a suitable refractive-index profile."},{"group":"Light","q":"What is the scientific meaning of monochromaticity?","a":"Strictly, one optical frequency (and a corresponding vacuum wavelength). Real sources have a finite spectral linewidth, so practical “monochromatic” means very narrow spectral bandwidth relative to the centre frequency. It does not mean all photons share a phase (coherence) or travel in one direction (collimation). An ideal infinitely extended single-frequency wave is a limiting model."},{"group":"Photodetectors","q":"How does responsivity depend on optical wavelength?","a":"$$ R(\\lambda)=\\frac{\\eta(\\lambda)q\\lambda}{hc}\\simeq\\frac{\\eta(\\lambda)\\lambda(\\mu\\mathrm m)}{1.240}\\,\\mathrm{A/W} $$ For unity gain and constant $\\eta$, responsivity grows linearly with $\\lambda$ because a watt contains more low-energy photons. In a real device $\\eta$ varies with wavelength and response falls near cutoff; do not extend the linear law beyond its spectral band."},{"group":"Photodetectors","q":"Why is PN photodiode junction/shunt resistance high?","a":"In reverse operation the depletion region blocks majority-carrier conduction and only a small leakage/generation current flows; the incremental shunt resistance dV/dI is therefore large. High $R_{sh}$ reduces leakage error and its equivalent resistor thermal current noise. Do not confuse this high parallel resistance with the small series/contact resistance $R_s$ or with optical responsivity R."},{"group":"Photodetectors","q":"List APD drawbacks.","a":"Higher reverse-voltage supply; strong gain dependence on voltage/temperature; stochastic avalanche excess noise; avalanche buildup/gain-bandwidth limitations; greater fabrication and bias-control complexity; and potentially significant dark current. Internal gain can still improve a receiver whose amplifier noise otherwise dominates,so do not equate gain with universally worse overall sensitivity."},{"group":"Noise","q":"List photodiode noise sources in order of importance.","a":"There is **no universal ranking without operating conditions**. State the regime: weak-light/high-load receivers can be amplifier/thermal limited; at strong photocurrent, shot noise can dominate; at low modulation frequencies, 1/f and drift can matter; at high temperature, dark-current noise grows. List shot (signal+dark+background), Johnson/thermal, generation-recombination, flicker and amplifier noise; add APD excess noise when relevant. Rank using calculated/measured spectral contributions at the chosen bias, bandwidth and temperature."},{"group":"Photodetectors","q":"List advantages of PIN over an ordinary PN photodiode.","a":"A fabricated depleted i layer provides a broad controlled absorption region, efficient field-assisted collection and a relatively small capacitance without relying only on extreme reverse bias. This can give higher useful quantum efficiency and high bandwidth with less slow diffusion contribution. Thickness must still be optimized: more absorption/less capacitance competes with longer carrier transit. There is no avalanche internal gain."},{"group":"Fibre numericals","q":"A step-index fibre has $n_{1}$=1.50, $n_{2}$=1.49, core diameter 100 μm and $\\lambda$=0.85 μm. Estimate guided modes.","a":"$$ \\begin{aligned}\\mathrm{NA}\u0026=\\sqrt{1.50^2-1.49^2}=0.17292\\\\a\u0026=50\\,\\mu\\mathrm m,\\qquad V=\\frac{2\\pi a}{\\lambda}\\,\\mathrm{NA}=63.910\\\\M\u0026\\simeq\\frac{V^2}2\\simeq2042\\quad\\text{modes}\\end{aligned} $$ High-V weak-guidance estimate, counting polarization states in the usual convention. If a course counts spatial modes excluding polarization, the corresponding value is roughly half; state the convention."},{"group":"Fibre","q":"What is the critical propagation angle, and what determines it?","a":"Terminology varies: **critical interface incidence** $\\theta_{\\mathrm{c}}$=sin⁻¹($n_{2}$/$n_{1}$), measured to the normal. **Maximum internal propagation angle to the axis** $\\alpha_{\\mathrm{max}}$=90°−$\\theta_{\\mathrm{c}}$=cos⁻¹($n_{2}$/$n_{1}$). Both depend on the index ratio, not the physical core diameter in the ideal ray model. The external acceptance angle additionally depends on $n_{0}$. Define your angle explicitly instead of using the two complementary angles interchangeably."},{"group":"Fibre","q":"What relationship between $n_{1}$ and $n_{2}$ follows from $\\mathrm{NA}$=√($n_{1}^{2}$−$n_{2}^{2}$)?","a":"A real positive core-guidance $\\mathrm{NA}$ requires **$n_{1}$\u003e$n_{2}$**. At equal indices the ideal core-guiding contrast vanishes; a reversed index contrast does not give conventional TIR core guidance. Practical weak guidance usually has only a small relative index difference; the formula alone does not impose a particular numerical difference."},{"group":"Fibre","q":"Do manufacturers specify scattering loss? Why?","a":"Usually they specify wavelength-dependent **total attenuation**, because that sets useful power loss in a link and includes scattering and absorption. Separate Rayleigh-scattering coefficients may be supplied for material characterization/specialty fibres, but are not a universal extra telecom datasheet entry. OTDR backscatter is used for testing, yet backscatter level alone is not identical to the total scattering attenuation."},{"group":"Fibre","q":"Is an attenuation specification of 0.5 dB/km positive or negative? Explain.","a":"The attenuation/loss coefficient is conventionally **positive**: $\\alpha$=(10/L)log₁₀($P_{\\mathrm{in}}$/$P_{\\mathrm{out}}$)\u003e0 for passive loss. A transfer gain written as 10log₁₀($P_{\\mathrm{out}}$/$P_{\\mathrm{in}}$) is negative. Both express the same power decrease using different ratio/sign conventions."},{"group":"Dispersion","q":"Express step-index modal pulse spread in terms of relative index difference $\\Delta$.","a":"$$ \\Delta t_{\\mathrm{SI}}\\simeq\\frac{n_1\\Delta L}c\\simeq\\frac{\\mathrm{NA}^2L}{2n_1c} $$ This weak-guidance extreme-meridional-delay estimate uses $\\Delta$≈($n_{1}$−$n_{2}$)/$n_{1}$, length L in metres and c in m/s. It describes multimode step-index propagation, not single-mode chromatic broadening or an optimized graded-index fibre."},{"group":"Dispersion","q":"How can chromatic dispersion be reduced or compensated?","a":"Use a spectrally narrow laser (e.g. appropriate DFB), choose an operating wavelength with small total dispersion for the fibre, engineer the waveguide profile (dispersion-shifted/flattened designs), or add dispersion-compensating fibre, chirped gratings or suitable electronic DSP. Compensation must match accumulated dispersion and the source/link; zero material dispersion alone does not necessarily make total dispersion zero."},{"group":"Dispersion","q":"What are solutions to modal dispersion?","a":"Use **single-mode fibre** at the operating wavelength to eliminate spatial intermodal delay; use an optimized graded-index multimode profile to reduce it; shorten the link and/or control the launched mode distribution where appropriate. A narrower optical spectrum mainly addresses chromatic dispersion, not intermodal delay itself."},{"group":"Fibre","q":"Two identical fibres with different coatings show added drum/sandpaper-test attenuation of 0.8 and 3.2 dB/km. Why?","a":"The rough drum applies microscopic pressure/curvature variations. Different coating modulus, thickness, cushioning and stress-transfer properties create different **microbending** in the glass, causing different radiation loss even when optical core/cladding designs are identical. The lower-loss coating better shields the fibre under the stated test. These values describe induced attenuation in that test, not an intrinsic absorption difference."},{"group":"Dispersion","q":"Define communication bandwidth and bit rate.","a":"Bandwidth (Hz) is the useful frequency range of the channel/electrical response under a stated criterion, often the 3 dB bandwidth. Bit rate (bit/s) is the number of binary information bits transmitted per second. Their relationship depends on modulation, coding, pulse shaping and required error rate; they are not generally identical. For example, ideal Nyquist signaling has a particular symbol-rate relation, while real optical pulses/receivers require stated criteria."},{"group":"LED numericals","q":"For a GaAs LED, $\\tau_{\\mathrm{rr}}$=120 ns, $\\tau_{\\mathrm{nr}}$=100 ns, refractive index n=3.7 and internal absorption loss 10%. Calculate internal and external quantum efficiencies.","a":"$$ \\begin{aligned}\\eta_{\\mathrm{int}}\u0026=\\frac{\\tau_{\\mathrm{nr}}}{\\tau_{\\mathrm{rr}}+\\tau_{\\mathrm{nr}}}=\\frac{100}{220}=45.45\\%\\\\f_{\\mathrm{cone}}\u0026\\simeq\\frac1{4n^2}\\\\T_{\\mathrm F}\u0026\\simeq\\frac{4n}{(n+1)^2}\\\\\\eta_{\\mathrm{ext}}\u0026\\simeq\\eta_{\\mathrm{int}}\\times0.90\\times\\frac1{4n^2}\\times\\frac{4n}{(n+1)^2}\\\\\u0026\\simeq0.005005=0.5005\\%\\end{aligned} $$ External efficiency needs an extraction geometry/model. The value above assumes isotropic generation, one planar semiconductor-air escape face, small-cone approximation, a normal-incidence Fresnel approximation and 90% survival. Omitting Fresnel loss gives 0.747%, so state the adopted model. Some texts call extraction alone “external efficiency”; this guide uses escaped photons per injected carrier."},{"group":"Photodetectors","q":"Classify photodetectors.","a":"By mechanism: **quantum/photon detectors** (photovoltaic/photoconductive semiconductor devices; photoemissive devices) and **thermal detectors** (bolometer, thermopile, pyroelectric). Examples of photon devices include PN/PIN photodiodes, APDs, phototransistors, LDRs and photocathode/PMTs. Other valid axes are material, gain, structure and spectral band; avoid mixing unrelated axes into one exclusive tree."},{"group":"Photodetector numericals","q":"At $\\lambda$=0.85 μm, photons arrive at $4\\times 10^{10}$ $s^{-1}$ and electrons are collected at $2\\times 10^{10}$ $s^{-1}$. Find photodiode sensitivity.","a":"$$ \\begin{aligned}\\eta\u0026=\\frac{2\\times10^{10}}{4\\times10^{10}}=0.50\\\\R\u0026=\\frac{\\eta\\lambda(\\mu\\mathrm m)}{1.240}=0.3427\\,\\mathrm{A/W}\\\\I_{\\mathrm{ph}}\u0026=q\\times2\\times10^{10}=3.204\\,\\mathrm{nA}\\\\P_{\\mathrm{in}}\u0026=(4\\times10^{10})\\frac{hc}{\\lambda}\\simeq9.35\\,\\mathrm{nW}\\end{aligned} $$ Here “sensitivity” is interpreted as responsivity in A/W; the count ratio itself is quantum efficiency."},{"group":"Photodetectors","q":"Why does responsivity fall at both short and long wavelengths?","a":"At long wavelengths, absorption weakens near the material band edge; beyond $\\lambda_{\\mathrm{c}}$=hc/$E_{\\mathrm g}$ photons cannot normally generate interband pairs. At very short wavelengths, strong near-surface absorption, entrance-layer/contact losses and surface recombination can reduce collected charge. These are device/window-dependent limits; short-wavelength response need not be identically zero for every photodiode."},{"group":"Photodetectors","q":"Define detector quantum efficiency and responsivity and derive their relationship.","a":"Quantum efficiency $\\eta$ is collected primary electrons per incident photon; responsivity R=$I_{\\mathrm{ph}}$/$P_{\\mathrm{in}}$ in A/W. Incident photon flux $\\Phi$=$P_{\\mathrm{in}}$/hν gives $I_{\\mathrm{ph}}$=ηqΦ, hence $$ R=\\frac{\\eta q}{h\\nu}=\\frac{\\eta q\\lambda}{hc} $$ Multiply by M when internal multiplication is included, keeping primary $\\eta$ distinct from gain."},{"group":"Dispersion","q":"Why does polarization-mode pulse spreading in a long single-mode fibre scale with √length?","a":"Random birefringence gives two principal polarization states different group delays. Local birefringence axes and polarization coupling vary randomly along a long fibre; independent delay contributions add statistically like a random walk, so RMS differential group delay scales as $$ \\Delta\\tau_{\\mathrm{PMD,rms}}\\simeq D_{\\mathrm{PMD}}\\sqrt L $$ $D_{\\mathrm{PMD}}$ is commonly in ps/√km when L is in km. In a short/uniform section without random coupling, delay can instead grow approximately linearly with length. Single spatial mode does not remove polarization effects."}],el=s=>document.querySelector(s),input=el('#filter'),answer=el('#answer');
     let matched=items.map((_,i)=>i),at=0;
     function update(){const item=items[matched[at]];
       el('#pos').textContent=item?'Question '+(at+1)+' of '+matched.length+' | '+item.group:'No matching questions';
@@ -1653,7 +1653,7 @@ network: off
 
 #### PYQ 1
 
-**Question.** How does a forward-biased p–n semiconductor junction emit light? Distinguish radiative and nonradiative recombination.
+**Question.** How does a forward-biased p-n semiconductor junction emit light? Distinguish radiative and nonradiative recombination.
 
 *Source reference: S4 Q1, S6 Q1, S8 Q1.*
 
@@ -1661,7 +1661,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> Forward bias injects electrons and holes into the active region. Electron–hole recombination releases energy: radiative recombination produces a photon (hν≈$E_{\mathrm g}$); nonradiative recombination transfers energy to phonons/heat. Efficient LEDs favor radiative pathways in suitable direct-gap materials.
+> Forward bias injects electrons and holes into the active region. Electron-hole recombination releases energy: radiative recombination produces a photon (hν≈$E_{\mathrm g}$); nonradiative recombination transfers energy to phonons/heat. Efficient LEDs favor radiative pathways in suitable direct-gap materials.
 
 
 #### PYQ 3
@@ -1702,7 +1702,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> InGaAsP composition can be chosen for emission near the low-loss silica windows around 1.3 and 1.55 μm, with suitable lattice matching to InP and heterostructure confinement. GaAs emits near 0.85–0.90 μm and cannot provide those longer wavelengths simply by changing drive voltage. The choice is wavelength/material-system matching, not GaAs being an intrinsically poor optoelectronic material.
+> InGaAsP composition can be chosen for emission near the low-loss silica windows around 1.3 and 1.55 μm, with suitable lattice matching to InP and heterostructure confinement. GaAs emits near 0.85-0.90 μm and cannot provide those longer wavelengths simply by changing drive voltage. The choice is wavelength/material-system matching, not GaAs being an intrinsically poor optoelectronic material.
 
 
 #### PYQ 8
@@ -1741,7 +1741,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> Direct gap: CB minimum and VB maximum occur at the same crystal momentum; transitions need no momentum-assisting phonon. Examples: GaAs and GaN. Indirect gap: extrema occur at different momenta; a phonon participates. Examples: Si, Ge, GaP. Direct-gap materials generally favor efficient radiative recombination and therefore LED emission. Draw E–k plots with a vertical direct transition and momentum-changing indirect transition.
+> Direct gap: CB minimum and VB maximum occur at the same crystal momentum; transitions need no momentum-assisting phonon. Examples: GaAs and GaN. Indirect gap: extrema occur at different momenta; a phonon participates. Examples: Si, Ge, GaP. Direct-gap materials generally favor efficient radiative recombination and therefore LED emission. Draw E-k plots with a vertical direct transition and momentum-changing indirect transition.
 
 
 #### PYQ 27
@@ -1754,7 +1754,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> The likely intended planar-LED answer is **escape-cone trapping/TIR at a high-index semiconductor–air boundary**, with additional reflection/reabsorption: many internally generated photons do not become useful output. However, the wording “cannot be eliminated even in principle” is too absolute. Domes, index matching, surface texturing and other extraction designs can greatly reduce trapping; no fixed 1–2% limit applies to all LEDs. Nonradiative recombination is also a real loss but is not a geometry-independent unavoidable fixed fraction. State the planar-interface assumption in the exam.
+> The likely intended planar-LED answer is **escape-cone trapping/TIR at a high-index semiconductor-air boundary**, with additional reflection/reabsorption: many internally generated photons do not become useful output. However, the wording “cannot be eliminated even in principle” is too absolute. Domes, index matching, surface texturing and other extraction designs can greatly reduce trapping; no fixed 1-2% limit applies to all LEDs. Nonradiative recombination is also a real loss but is not a geometry-independent unavoidable fixed fraction. State the planar-interface assumption in the exam.
 
 > [!NOTE] Qualification
 >
@@ -1784,7 +1784,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> GaAs emits near-IR (roughly 0.85–0.90 μm), while adding phosphorus in GaAs₁₋ₓPₓ changes the band structure/gap to obtain visible red/orange/yellow-range output for suitable compositions and radiative centres. Thus a visible indicator may use GaAsP even though GaAs is an excellent near-IR optoelectronic material. For longer 1.3/1.55 μm communication wavelengths, the relevant answer is **InGaAsP**, not GaAsP.
+> GaAs emits near-IR (roughly 0.85-0.90 μm), while adding phosphorus in GaAs₁₋ₓPₓ changes the band structure/gap to obtain visible red/orange/yellow-range output for suitable compositions and radiative centres. Thus a visible indicator may use GaAsP even though GaAs is an excellent near-IR optoelectronic material. For longer 1.3/1.55 μm communication wavelengths, the relevant answer is **InGaAsP**, not GaAsP.
 
 
 #### PYQ 50
@@ -1919,7 +1919,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> **PIN:** $p^{+}$–i–$n^{+}$ with an extended depleted absorber; field is approximately broad/flat in an ideal nearly intrinsic fully depleted region, with edge variations. Light creates pairs collected by drift; no avalanche gain. **APD:** engineered absorption plus a narrow high-field multiplication region; primary carriers drift into that peak and cause impact ionization. Draw E(x) with a broad moderate PIN field and a pronounced APD multiplication peak; exact profiles depend on doping/heterostructure. Label contacts, reverse bias, absorption, carrier arrows and optical input.
+> **PIN:** $p^{+}$-i-$n^{+}$ with an extended depleted absorber; field is approximately broad/flat in an ideal nearly intrinsic fully depleted region, with edge variations. Light creates pairs collected by drift; no avalanche gain. **APD:** engineered absorption plus a narrow high-field multiplication region; primary carriers drift into that peak and cause impact ionization. Draw E(x) with a broad moderate PIN field and a pronounced APD multiplication peak; exact profiles depend on doping/heterostructure. Label contacts, reverse bias, absorption, carrier arrows and optical input.
 >
 > ![Absorption collection and avalanche multiplication need different fields The profiles illustrate functions rather than a unique doping solution. Field magnitude is plotted; actual signed field and exact shape depend on layer charge, bias and device architecture.](./assets/opt-e70904d37397.png)
 
@@ -1981,7 +1981,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> Higher reverse-voltage supply; strong gain dependence on voltage/temperature; stochastic avalanche excess noise; avalanche buildup/gain–bandwidth limitations; greater fabrication and bias-control complexity; and potentially significant dark current. Internal gain can still improve a receiver whose amplifier noise otherwise dominates,so do not equate gain with universally worse overall sensitivity.
+> Higher reverse-voltage supply; strong gain dependence on voltage/temperature; stochastic avalanche excess noise; avalanche buildup/gain-bandwidth limitations; greater fabrication and bias-control complexity; and potentially significant dark current. Internal gain can still improve a receiver whose amplifier noise otherwise dominates,so do not equate gain with universally worse overall sensitivity.
 
 
 #### PYQ 56
@@ -2087,7 +2087,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> Small rise and fall times allow rapid switching and less pulse overlap, supporting higher modulation bandwidth/bit rate. Above-threshold laser diodes typically support faster modulation than conventional LEDs because stimulated emission and their carrier–photon dynamics enable short optical transitions; LED modulation is often recombination-lifetime limited. Actual drive, bias, relaxation oscillations, capacitance and thermal behavior matter.
+> Small rise and fall times allow rapid switching and less pulse overlap, supporting higher modulation bandwidth/bit rate. Above-threshold laser diodes typically support faster modulation than conventional LEDs because stimulated emission and their carrier-photon dynamics enable short optical transitions; LED modulation is often recombination-lifetime limited. Actual drive, bias, relaxation oscillations, capacitance and thermal behavior matter.
 
 
 #### PYQ 43
@@ -2131,7 +2131,7 @@ network: off
 
 #### PYQ 13
 
-**Question.** A step-index fibre has $\mathrm{NA}$=0.17 and cladding index 1.46. Find its acceptance angle in water ($n_{0}$=1.33) and its critical core–cladding angle.
+**Question.** A step-index fibre has $\mathrm{NA}$=0.17 and cladding index 1.46. Find its acceptance angle in water ($n_{0}$=1.33) and its critical core-cladding angle.
 
 *Source reference: S2 Q2(ii).*
 
@@ -2444,7 +2444,7 @@ network: off
 
 **Question.** Define single-mode fibre and mode-field diameter ($\mathrm{MFD}$). How is $\mathrm{MFD}$ related to V?
 
-*Source reference: S2 Q7(i–ii).*
+*Source reference: S2 Q7(i-ii).*
 
 *Type: Theory.*
 
@@ -2456,7 +2456,7 @@ network: off
 > \begin{aligned}V&=\frac{2\pi a}{\lambda}\,\mathrm{NA},\qquad V<2.405\quad\text{(SI single mode)}\\\frac wa&\simeq0.65+\frac{1.619}{V^{3/2}}+\frac{2.879}{V^6}\end{aligned}
 > $$
 >
-> The Marcuse approximation is for weakly guiding step-index LP₀₁ fields over an appropriate V range (commonly about 1.2–2.4 here); it is not an arbitrary-profile exact law. At fixed a, decreasing V makes the mode extend farther into cladding.
+> The Marcuse approximation is for weakly guiding step-index LP₀₁ fields over an appropriate V range (commonly about 1.2-2.4 here); it is not an arbitrary-profile exact law. At fixed a, decreasing V makes the mode extend farther into cladding.
 
 
 #### PYQ 62
@@ -2574,7 +2574,7 @@ network: off
 > \begin{aligned}\eta_{\mathrm{int}}&=\frac{\tau_{\mathrm{nr}}}{\tau_{\mathrm{rr}}+\tau_{\mathrm{nr}}}=\frac{100}{220}=45.45\%\\f_{\mathrm{cone}}&\simeq\frac1{4n^2}\\T_{\mathrm F}&\simeq\frac{4n}{(n+1)^2}\\\eta_{\mathrm{ext}}&\simeq\eta_{\mathrm{int}}\times0.90\times\frac1{4n^2}\times\frac{4n}{(n+1)^2}\\&\simeq0.005005=0.5005\%\end{aligned}
 > $$
 >
-> External efficiency needs an extraction geometry/model. The value above assumes isotropic generation, one planar semiconductor–air escape face, small-cone approximation, a normal-incidence Fresnel approximation and 90% survival. Omitting Fresnel loss gives 0.747%, so state the adopted model. Some texts call extraction alone “external efficiency”; this guide uses escaped photons per injected carrier.
+> External efficiency needs an extraction geometry/model. The value above assumes isotropic generation, one planar semiconductor-air escape face, small-cone approximation, a normal-incidence Fresnel approximation and 90% survival. Omitting Fresnel loss gives 0.747%, so state the adopted model. Some texts call extraction alone “external efficiency”; this guide uses escaped photons per injected carrier.
 
 > [!NOTE] Qualification
 >
@@ -2626,7 +2626,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> There is **no universal ranking without operating conditions**. State the regime: weak-light/high-load receivers can be amplifier/thermal limited; at strong photocurrent, shot noise can dominate; at low modulation frequencies, 1/f and drift can matter; at high temperature, dark-current noise grows. List shot (signal+dark+background), Johnson/thermal, generation–recombination, flicker and amplifier noise; add APD excess noise when relevant. Rank using calculated/measured spectral contributions at the chosen bias, bandwidth and temperature.
+> There is **no universal ranking without operating conditions**. State the regime: weak-light/high-load receivers can be amplifier/thermal limited; at strong photocurrent, shot noise can dominate; at low modulation frequencies, 1/f and drift can matter; at high temperature, dark-current noise grows. List shot (signal+dark+background), Johnson/thermal, generation-recombination, flicker and amplifier noise; add APD excess noise when relevant. Rank using calculated/measured spectral contributions at the chosen bias, bandwidth and temperature.
 
 > [!NOTE] Qualification
 >
@@ -2671,7 +2671,7 @@ network: off
 
 #### PYQ 49
 
-**Question.** How could an FOS measure 0–500 °C in geothermal mining when ordinary fibres are unsuitable?
+**Question.** How could an FOS measure 0-500 °C in geothermal mining when ordinary fibres are unsuitable?
 
 *Source reference: S5 Q10.*
 
@@ -2679,7 +2679,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> One defensible design is a **high-temperature regenerated or suitable femtosecond-written FBG probe**, protected in a metal/ceramic sheath, with high-temperature-rated fibre/coating in the hot zone and a remote interrogator. Temperature changes $n_{\mathrm{eff}}$ and grating period, shifting $\lambda_{\mathrm{B}}$=2neffΛ; calibrate $\lambda_{\mathrm{B}}$(T), isolate/compensate strain and validate drift/hysteresis over 0–500 °C. Ordinary polymer coatings, adhesives and standard gratings may fail even though silica itself can survive the temperature. Use qualified high-temperature components, not ordinary coated telecom fibre. The question does not specify one unique sensing architecture; an appropriately designed extrinsic optical temperature probe is another possibility.
+> One defensible design is a **high-temperature regenerated or suitable femtosecond-written FBG probe**, protected in a metal/ceramic sheath, with high-temperature-rated fibre/coating in the hot zone and a remote interrogator. Temperature changes $n_{\mathrm{eff}}$ and grating period, shifting $\lambda_{\mathrm{B}}$=2neffΛ; calibrate $\lambda_{\mathrm{B}}$(T), isolate/compensate strain and validate drift/hysteresis over 0-500 °C. Ordinary polymer coatings, adhesives and standard gratings may fail even though silica itself can survive the temperature. Use qualified high-temperature components, not ordinary coated telecom fibre. The question does not specify one unique sensing architecture; an appropriately designed extrinsic optical temperature probe is another possibility.
 
 
 ### Joints
@@ -2708,7 +2708,7 @@ network: off
 
 > [!EXAMPLE] Answer and explanation
 >
-> Connectors provide detachable, repeatable optical alignment between fibres or equipment ports. A common design uses two precision ferrules aligned in a sleeve. Classify by coupling/format: ST bayonet, FC threaded, SC push–pull, LC latch/small form factor, and MPO/MTP multifibre push–pull. Separately classify end finish: PC/UPC or angled APC. These are different category axes; do not mate APC and UPC indiscriminately. Cleanliness, alignment, insertion loss and return loss matter.
+> Connectors provide detachable, repeatable optical alignment between fibres or equipment ports. A common design uses two precision ferrules aligned in a sleeve. Classify by coupling/format: ST bayonet, FC threaded, SC push-pull, LC latch/small form factor, and MPO/MTP multifibre push-pull. Separately classify end finish: PC/UPC or angled APC. These are different category axes; do not mate APC and UPC indiscriminately. Cleanliness, alignment, insertion loss and return loss matter.
 
 
 ### Applications

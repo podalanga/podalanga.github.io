@@ -17,7 +17,7 @@ draft: false
 
 This is a *study guide*, not a replacement for the course slide decks. Frame superscripts specify the expression frame; joint coordinates are written as $q$; Cartesian pose or position is written as $X$. All slider angles in the visualizations are shown in degrees, while the underlying mathematical functions use radians.
 
-**Contents:** frames → D–H → inverse kinematics → velocities → Jacobians → forces → Newton–Euler → Lagrange → feedback control → motor implementation.
+**Contents:** frames → D-H → inverse kinematics → velocities → Jacobians → forces → Newton-Euler → Lagrange → feedback control → motor implementation.
 
 
 ## 1. Frames & transformations
@@ -83,7 +83,7 @@ The first row shows the forward command path; the second shows the feedback path
 >
 > Coverage detail · PPT I · slide 4
 >
-> **Read the three pictures:** “left” and “right” show different hand orientations. The final human–robot hand arrangement illustrates the need for the correct *combination* of location and orientation; specifying only where the gripper is does not specify its pose.
+> **Read the three pictures:** “left” and “right” show different hand orientations. The final human-robot hand arrangement illustrates the need for the correct *combination* of location and orientation; specifying only where the gripper is does not specify its pose.
 
 
 ### 1.2 Position, orientation, and notation
@@ -129,7 +129,7 @@ A frame is specified by one origin vector and three unit-axis vectors, equivalen
 
 > [!EXAMPLE] Derivation · Why the reverse rotation is the transpose
 >
-> PPT Part 1 · slides 8–9 · intermediate algebra expanded
+> PPT Part 1 · slides 8-9 · intermediate algebra expanded
 >
 > The entries of R are dot products of frame axes. Because each frame is orthonormal, the dot product of column i with column j is 1 for i = j and 0 otherwise.
 >
@@ -169,7 +169,7 @@ The same matrix can be interpreted as a coordinate mapping or an active rigid-mo
 
 > [!EXAMPLE] Derivation · Combine rotation and translation
 >
-> PPT Part 1 · slides 11–14 · intermediate algebra expanded
+> PPT Part 1 · slides 11-14 · intermediate algebra expanded
 >
 > First express B’s point vector along A’s axes. Then add the vector from A’s origin to B’s origin:
 >
@@ -214,7 +214,7 @@ network: off
 
 
 
-## 2. D–H & forward kinematics
+## 2. D-H & forward kinematics
 
 Turn link geometry and joint variables into a tool pose.
 
@@ -261,7 +261,7 @@ _Figure 1. Original geometry · Part I, slide 17. Common normal aᵢ₋₁, twis
 >
 > Motion without considering the Forces which cause it.
 
-> [!KEY] Denavit–Hartenberg description
+> [!KEY] Denavit-Hartenberg description
 >
 > Source wording: verbatim · PPT Part I · slide 16
 >
@@ -271,7 +271,7 @@ Explanation / application, not a source quotation
 
 Kinematics studies position, velocity, acceleration, and higher motion derivatives without the forces causing them. Forward kinematics maps joint variables to end-effector pose relative to the base.
 
-The slides use **Craig’s modified D–H convention**. Joint axis $i$ is $\hat z_i$; $\hat x_i$ lies along the common normal from axis $i$ toward $i+1$. The origin is its intersection with joint axis $i$. Use right-hand positive angles.
+The slides use **Craig’s modified D-H convention**. Joint axis $i$ is $\hat z_i$; $\hat x_i$ lies along the common normal from axis $i$ toward $i+1$. The origin is its intersection with joint axis $i$. Use right-hand positive angles.
 
 | Parameter | Geometric meaning |
 | --- | --- |
@@ -284,15 +284,15 @@ The slides use **Craig’s modified D–H convention**. Joint axis $i$ is $\hat 
 
 > [!NOTE] Source clarification
 >
-> Convention check · Frame assignment, parameter indexing, and transform order must agree. Do not combine a standard D–H table with this modified D–H matrix. Slide 18’s length labels are inconsistent with its $a_{i-1}$ heading.
+> Convention check · Frame assignment, parameter indexing, and transform order must agree. Do not combine a standard D-H table with this modified D-H matrix. Slide 18’s length labels are inconsistent with its $a_{i-1}$ heading.
 
 > [!NOTE] Additional coverage
 >
 > Coverage detail · PPT I · slide 18
 >
-> **Source versus consistent convention.** Slide 18 prints lengths a₁ and a₂ in the two rows under an aᵢ₋₁ heading. Its picture puts frames along the drawn arm, so copying that table straight into Craig’s modified-D–H equations changes the indexing. The original table remains available in Complete slides.
+> **Source versus consistent convention.** Slide 18 prints lengths a₁ and a₂ in the two rows under an aᵢ₋₁ heading. Its picture puts frames along the drawn arm, so copying that table straight into Craig’s modified-D-H equations changes the indexing. The original table remains available in Complete slides.
 >
-> A consistent modified-D–H example places frame 1 at joint 1 (base), frame 2 at joint 2 (elbow), and the tool point a distance l₂ along x₂:
+> A consistent modified-D-H example places frame 1 at joint 1 (base), frame 2 at joint 2 (elbow), and the tool point a distance l₂ along x₂:
 >
 > | Joint i | $a_{i-1}$ | $\alpha_{i-1}$ | $d_i$ | $\theta_i$ |
 > | --- | --- | --- | --- | --- |
@@ -379,7 +379,7 @@ The two columns give the tool’s planar x and y axes in the base frame. Check a
 
 > [!EXAMPLE] Derivation · Planar forward position and orientation
 >
-> PPT Part 1 · slides 22–23 · intermediate algebra expanded
+> PPT Part 1 · slides 22-23 · intermediate algebra expanded
 >
 > Link 1 makes angle θ₁ with the base x-axis. Link 2 is rotated by θ₂ relative to link 1, so its absolute angle is θ₁ + θ₂.
 >
@@ -418,7 +418,7 @@ network: off
 <button class="btn" type="button" id="reveal" aria-expanded="false">Show answer</button>
 <p id="answer" class="answer" hidden></p>
 <script>
-(()=>{const items=[{"q": "Which D–H parameter varies for each joint type?", "a": "Revolute: \\(\\theta_i\\). Prismatic: \\(d_i\\). The other three are constant. In the modified convention the link transform is \\(R_x(\\alpha_{i-1})D_x(a_{i-1})R_z(\\theta_i)D_z(d_i)\\)."}, {"q": "For l₁=l₂=1 m, θ₁=0°, θ₂=90°, find the tool pose.", "a": "\\[x=1+0=1\\text{ m},\\quad y=0+1=1\\text{ m},\\quad\\phi=90^\\circ\\]The orientation is \\(R_z(90^\\circ)\\)."}, {"q": "What checks catch most forward-kinematics errors?", "a": "Confirm the D–H convention and joint axes; check transform dimensions and the last row; test a simple zero-angle pose; verify \\(R^TR=I\\), \\(\\det R=1\\); include the final tool offset."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
+(()=>{const items=[{"q": "Which D-H parameter varies for each joint type?", "a": "Revolute: \\(\\theta_i\\). Prismatic: \\(d_i\\). The other three are constant. In the modified convention the link transform is \\(R_x(\\alpha_{i-1})D_x(a_{i-1})R_z(\\theta_i)D_z(d_i)\\)."}, {"q": "For l₁=l₂=1 m, θ₁=0°, θ₂=90°, find the tool pose.", "a": "\\[x=1+0=1\\text{ m},\\quad y=0+1=1\\text{ m},\\quad\\phi=90^\\circ\\]The orientation is \\(R_z(90^\\circ)\\)."}, {"q": "What checks catch most forward-kinematics errors?", "a": "Confirm the D-H convention and joint axes; check transform dimensions and the last row; test a simple zero-angle pose; verify \\(R^TR=I\\), \\(\\det R=1\\); include the final tool offset."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
 </script>
 ```
 
@@ -456,7 +456,7 @@ Use $\operatorname{atan2}$, rather than a single-argument inverse tangent, to pr
 
 > [!EXAMPLE] Derivation · Both branches of the planar inverse solution
 >
-> PPT Part 1 · slides 24–25 · intermediate algebra expanded
+> PPT Part 1 · slides 24-25 · intermediate algebra expanded
 >
 > Square and add the two forward-position equations. The mixed trigonometric terms combine using cos(A−B):
 >
@@ -704,7 +704,7 @@ _Figure 3. Velocity of a Point due to Angular Velocity._
 
 > [!EXAMPLE] Derivation · Velocity caused by a rotating frame
 >
-> PPT Part 2 · slides 9–11 · intermediate algebra expanded
+> PPT Part 2 · slides 9-11 · intermediate algebra expanded
 >
 > For a point fixed in B, its perpendicular distance from the rotation axis is |r| sin γ. In Δt the rotation angle is |ω|Δt, so the small arc length is
 >
@@ -744,7 +744,7 @@ _Figure 4. Velocity Propagation from Link-to-Link._
 
 > [!EXAMPLE] Derivation · Rotate propagated link velocities into the next frame
 >
-> PPT Part 2 · slides 12–14 · intermediate algebra expanded
+> PPT Part 2 · slides 12-14 · intermediate algebra expanded
 >
 > For a revolute joint, first sum the old angular velocity and the new joint rotation in frame i:
 >
@@ -829,7 +829,7 @@ For n joints and m independent task-velocity coordinates, J is $m\times n$. A fu
 
 > [!EXAMPLE] Derivation · From scalar differentials to the Jacobian
 >
-> PPT Part 2 · slides 15–17 · intermediate algebra expanded
+> PPT Part 2 · slides 15-17 · intermediate algebra expanded
 >
 > For each output yᵢ = fᵢ(X), the total differential is
 >
@@ -964,7 +964,7 @@ network: off
 Use equilibrium and virtual work to map loads to actuator effort.
 
 
-### 6.1 Static force–moment recursion
+### 6.1 Static force-moment recursion
 
 
 Neglect gravity here, as the slides do. Let $f_i,n_i$ be the force and moment exerted on link i by link $i-1$. Define $R={}^i_{i+1}R$ and $p={}^i p_{i+1,org}$.
@@ -985,7 +985,7 @@ _Figure 5. Static Force-Moment Balance._
 
 > [!EXAMPLE] Derivation · Static force and moment balance
 >
-> PPT Part 2 · slides 20–22 · intermediate algebra expanded
+> PPT Part 2 · slides 20-22 · intermediate algebra expanded
 >
 > First express both child loads along the parent axes:
 >
@@ -1083,7 +1083,7 @@ The velocity vectors refer to the respective frame origins. A wrench moment chan
 
 > [!EXAMPLE] Derivation · Assemble the 6 × 6 transformation blocks
 >
-> PPT Part 2 · slides 25–26 · intermediate algebra expanded
+> PPT Part 2 · slides 25-26 · intermediate algebra expanded
 >
 > For two frames rigidly attached to the same body, define $R={}^A_BR$, $p={}^Ap_{Borg}$, and $[p]_\times u=p\times u$. This calculation shifts the velocity reference point as well as changing expression axes.
 >
@@ -1162,7 +1162,7 @@ network: off
 
 
 
-## 7. Acceleration, inertia & Newton–Euler
+## 7. Acceleration, inertia & Newton-Euler
 
 Compute the forces and moments required by motion.
 
@@ -1202,7 +1202,7 @@ $$
 
 > [!EXAMPLE] Derivation · Differentiate velocity to obtain acceleration
 >
-> PPT Part 2 · slides 28–30 · intermediate algebra expanded
+> PPT Part 2 · slides 28-30 · intermediate algebra expanded
 >
 > Use $r=R{}^Br$, $v_r=Rv_{rel}$, and $\alpha=\dot\omega$, with all displayed vectors expressed in A. The subscript r here denotes relative motion expressed in A; it is unrelated to the controller command u.
 >
@@ -1232,9 +1232,9 @@ $$
 > \boxed{a=a_O+Ra_{rel}+2\omega\times v_r+\alpha\times r+\omega\times(\omega\times r)}
 > $$
 >
-> The two copies of ω × vᵣ give Coriolis acceleration. For a point fixed in B, vᵣ = aᵣₑₗ = 0, leaving the translation, tangential, and centripetal terms (source equations 70–71).
+> The two copies of ω × vᵣ give Coriolis acceleration. For a point fixed in B, vᵣ = aᵣₑₗ = 0, leaving the translation, tangential, and centripetal terms (source equations 70-71).
 >
-> **4 · Angular-acceleration composition (source equations 72–73).**
+> **4 · Angular-acceleration composition (source equations 72-73).**
 >
 > $$
 > {}^A\Omega_C={}^A\Omega_B+R{}^B\Omega_C
@@ -1352,7 +1352,7 @@ $$
 a_{Ci}=a_i+\alpha_i\times r_i+\omega_i\times(\omega_i\times r_i)
 $$
 
-Apply Newton–Euler at each COM. Fixed base: $\omega_0=\alpha_0=0$. Include gravity by initializing $a_0=-g_0$, where $g_0$ is the physical gravity vector; then do not add gravity a second time.
+Apply Newton-Euler at each COM. Fixed base: $\omega_0=\alpha_0=0$. Include gravity by initializing $a_0=-g_0$, where $g_0$ is the physical gravity vector; then do not add gravity a second time.
 
 > [!NOTE] Source clarification
 >
@@ -1360,9 +1360,9 @@ Apply Newton–Euler at each COM. Fixed base: $\omega_0=\alpha_0=0$. Include gra
 
 > [!EXAMPLE] Derivation · Obtain outward acceleration recursion
 >
-> PPT Part 2 · slides 38–39, 43 · intermediate algebra expanded
+> PPT Part 2 · slides 38-39, 43 · intermediate algebra expanded
 >
-> Use the rotation ${}^{i+1}_iR$, $p={}^ip_{i+1,org}$, and $z=[0,0,1]^T$. Each link vector uses its own frame. This is an application of the preceding transport formulas, as on slides 38–39.
+> Use the rotation ${}^{i+1}_iR$, $p={}^ip_{i+1,org}$, and $z=[0,0,1]^T$. Each link vector uses its own frame. This is an application of the preceding transport formulas, as on slides 38-39.
 >
 > **1 · Revolute angular velocity and acceleration.**
 >
@@ -1444,7 +1444,7 @@ _Figure 9. Forces and Torques acting on a Link._
 
 > [!EXAMPLE] Derivation · From link balance to inward recursion
 >
-> PPT Part 2 · slides 40–43 · intermediate algebra expanded
+> PPT Part 2 · slides 40-43 · intermediate algebra expanded
 >
 > Newton’s force balance is Fᵢ = fᵢ − Rfᵢ₊₁. About the COM, the parent force fᵢ acts at lever arm −rᵢ. The child reaction force −Rfᵢ₊₁ acts at lever arm p − rᵢ, and the corresponding child reaction moment is −Rnᵢ₊₁. Therefore the moment balance is
 >
@@ -1491,7 +1491,7 @@ network: off
 <button class="btn" type="button" id="reveal" aria-expanded="false">Show answer</button>
 <p id="answer" class="answer" hidden></p>
 <script>
-(()=>{const items=[{"q": "Name the five terms in the general point-acceleration equation.", "a": "Origin translation; relative acceleration; Coriolis \\(2\\omega\\times v_{rel}\\); tangential \\(\\alpha\\times r\\); centripetal \\(\\omega\\times(\\omega\\times r)\\). All vectors must be in one expression frame."}, {"q": "For the point in Q14, if angular speed is constant, what is its acceleration?", "a": "With \\(r=(0.4,0,0)\\) m and \\(\\omega=(0,0,3)\\) rad/s:\\[a=\\omega\\times(\\omega\\times r)=(-3.6,0,0)\\text{ m/s}^2\\]It points toward the rotation axis."}, {"q": "What do principal axes and moments represent?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"principal\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 33\u003c/p\u003e\u003cp class=\"definition-term\"\u003ePrincipal Axes and Principal Moments\u003c/p\u003e\u003cblockquote\u003eThe axes of the Reference Frame when so aligned are called the Principal Axes. The corresponding Mass Moments are the Principal Moments of Inertia.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003eThe principal axes are eigenvectors of the symmetric inertia tensor; principal moments are its eigenvalues. In that orientation the off-diagonal products of inertia are zero."}, {"q": "State the outward and inward Newton–Euler passes.", "a": "Outward: compute link angular velocity, angular acceleration, origin/COM acceleration, and inertial F and N. Inward: combine terminal and inertial loads to get interaction forces/moments; project on joint axes to obtain actuator effort."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
+(()=>{const items=[{"q": "Name the five terms in the general point-acceleration equation.", "a": "Origin translation; relative acceleration; Coriolis \\(2\\omega\\times v_{rel}\\); tangential \\(\\alpha\\times r\\); centripetal \\(\\omega\\times(\\omega\\times r)\\). All vectors must be in one expression frame."}, {"q": "For the point in Q14, if angular speed is constant, what is its acceleration?", "a": "With \\(r=(0.4,0,0)\\) m and \\(\\omega=(0,0,3)\\) rad/s:\\[a=\\omega\\times(\\omega\\times r)=(-3.6,0,0)\\text{ m/s}^2\\]It points toward the rotation axis."}, {"q": "What do principal axes and moments represent?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"principal\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 33\u003c/p\u003e\u003cp class=\"definition-term\"\u003ePrincipal Axes and Principal Moments\u003c/p\u003e\u003cblockquote\u003eThe axes of the Reference Frame when so aligned are called the Principal Axes. The corresponding Mass Moments are the Principal Moments of Inertia.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003eThe principal axes are eigenvectors of the symmetric inertia tensor; principal moments are its eigenvalues. In that orientation the off-diagonal products of inertia are zero."}, {"q": "State the outward and inward Newton-Euler passes.", "a": "Outward: compute link angular velocity, angular acceleration, origin/COM acceleration, and inertial F and N. Inward: combine terminal and inertial loads to get interaction forces/moments; project on joint axes to obtain actuator effort."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
 </script>
 ```
 
@@ -1523,21 +1523,21 @@ Thus $\tau_1=M_{11}\ddot \theta_1+M_{12}\ddot \theta_2+h_1+G_1$, and similarly f
 
 > [!NOTE] Source clarification
 >
-> Corrections · Slides 46–50 contain repeated joint-1 subscripts, force-component signs, and link-length typos. The consistent intermediate quantities and final model above agree with slide 51 and Craig Chapter 6.
+> Corrections · Slides 46-50 contain repeated joint-1 subscripts, force-component signs, and link-length typos. The consistent intermediate quantities and final model above agree with slide 51 and Craig Chapter 6.
 
-> [!EXAMPLE] Derivation · Two-link Newton–Euler worked derivation
+> [!EXAMPLE] Derivation · Two-link Newton-Euler worked derivation
 >
-> PPT Part 2 · slides 44–51 · intermediate algebra expanded
+> PPT Part 2 · slides 44-51 · intermediate algebra expanded
 >
-> This is the complete chronological calculation for slides 44–50, followed by the grouping on slide 51. All vectors are expressed in the frame identified by their link index; c₁₂ and s₁₂ mean cosine and sine of θ₁ + θ₂.
+> This is the complete chronological calculation for slides 44-50, followed by the grouping on slide 51. All vectors are expressed in the frame identified by their link index; c₁₂ and s₁₂ mean cosine and sine of θ₁ + θ₂.
 >
-> **1 · Model and initialization (slides 44–45).** Mass mᵢ is concentrated at the distal end of link lᵢ. Thus r₁ = l₁x̂₁, r₂ = l₂x̂₂ and both COM inertia tensors are zero. Use f₃ = n₃ = 0, ω₀ = α₀ = 0, and effective base acceleration a₀ = gŷ₀ for physical gravity −gŷ₀.
+> **1 · Model and initialization (slides 44-45).** Mass mᵢ is concentrated at the distal end of link lᵢ. Thus r₁ = l₁x̂₁, r₂ = l₂x̂₂ and both COM inertia tensors are zero. Use f₃ = n₃ = 0, ω₀ = α₀ = 0, and effective base acceleration a₀ = gŷ₀ for physical gravity −gŷ₀.
 >
 > $$
 > {}^i_{i+1}R=\begin{bmatrix}c_{i+1}&-s_{i+1}&0\\s_{i+1}&c_{i+1}&0\\0&0&1\end{bmatrix},\qquad{}^{i+1}_iR=({}^i_{i+1}R)^T
 > $$
 >
-> **2 · Link 1 outward (slides 46–47).**
+> **2 · Link 1 outward (slides 46-47).**
 >
 > $$
 > \omega_1=\begin{bmatrix}0\\0\\\dot\theta_1\end{bmatrix},\quad\alpha_1=\begin{bmatrix}0\\0\\\ddot\theta_1\end{bmatrix}
@@ -1585,7 +1585,7 @@ Thus $\tau_1=M_{11}\ddot \theta_1+M_{12}\ddot \theta_2+h_1+G_1$, and similarly f
 > \boxed{\tau_2=m_2l_1l_2c_2\ddot\theta_1+m_2l_2^2(\ddot\theta_1+\ddot\theta_2)+m_2l_1l_2s_2\dot\theta_1^2+m_2gl_2c_{12}}
 > $$
 >
-> **6 · Link 1 inward (slides 49–50).** Put R = ¹₂R and p₂ = l₁x̂₁:
+> **6 · Link 1 inward (slides 49-50).** Put R = ¹₂R and p₂ = l₁x̂₁:
 >
 > $$
 > f_1=RF_2+F_1=\begin{bmatrix}c_2F_{2x}-s_2F_{2y}+F_{1x}\\s_2F_{2x}+c_2F_{2y}+F_{1y}\\0\end{bmatrix}
@@ -1671,7 +1671,7 @@ The two velocity contributions together equal h above. This organization separat
 
 > [!EXAMPLE] Derivation · Separate Coriolis products from squared rates
 >
-> PPT Part 2 · slides 52–53 · intermediate algebra expanded
+> PPT Part 2 · slides 52-53 · intermediate algebra expanded
 >
 > With a = m₂l₁l₂sin θ₂, the velocity vector is
 >
@@ -1735,9 +1735,9 @@ Equivalent energy form: $\tau_i=\frac{d}{dt}\frac{\partial K}{\partial\dot q_i}-
 
 > [!EXAMPLE] Derivation · Insert L = K − P in the given equation of motion
 >
-> PPT Part 2 · slides 54–56 · intermediate algebra expanded
+> PPT Part 2 · slides 54-56 · intermediate algebra expanded
 >
-> **What the source does:** slides 54–55 state the link and total energy formulas. Slide 56 states the Euler–Lagrange equation, then substitutes L = K − P. A first-principles proof of the Euler–Lagrange law is not supplied by this PPT.
+> **What the source does:** slides 54-55 state the link and total energy formulas. Slide 56 states the Euler-Lagrange equation, then substitutes L = K − P. A first-principles proof of the Euler-Lagrange law is not supplied by this PPT.
 >
 > $$
 > \tau_i=\frac d{dt}\frac{\partial L}{\partial\dot q_i}-\frac{\partial L}{\partial q_i},\qquad L=K-P
@@ -1793,11 +1793,11 @@ The velocity terms can also be regrouped into Cartesian-derived coefficient matr
 
 > [!NOTE] Source clarification
 >
-> Corrections · Slides 57–59 omit a plus sign and mix $\dot J\dot q$ with other products. Also, the label “velocity vector” for $V_x$ means a *velocity-dependent force term*, not Cartesian velocity itself.
+> Corrections · Slides 57-59 omit a plus sign and mix $\dot J\dot q$ with other products. Also, the label “velocity vector” for $V_x$ means a *velocity-dependent force term*, not Cartesian velocity itself.
 
 > [!EXAMPLE] Derivation · Convert joint dynamics to Cartesian dynamics
 >
-> PPT Part 2 · slides 57–59 · intermediate algebra expanded
+> PPT Part 2 · slides 57-59 · intermediate algebra expanded
 >
 > Assume a square nonsingular Jacobian with compatible task coordinates, reference point, and expression frame. The PPT’s V or C vector of velocity-dependent efforts is denoted h here.
 >
@@ -1841,7 +1841,7 @@ The velocity terms can also be regrouped into Cartesian-derived coefficient matr
 > \boxed{M_x\ddot x+h_x+G_x=F}
 > $$
 >
-> **5 · Return to joint effort, as in source equations 136–139.**
+> **5 · Return to joint effort, as in source equations 136-139.**
 >
 > $$
 > \tau=J^T(M_x\ddot x+h_x+G_x)
@@ -1886,7 +1886,7 @@ network: off
 <button class="btn" type="button" id="reveal" aria-expanded="false">Show answer</button>
 <p id="answer" class="answer" hidden></p>
 <script>
-(()=>{const items=[{"q": "What remains in the robot dynamics when it is stationary?", "a": "With \\(\\dot q=\\ddot q=0\\), the unloaded model gives \\(\\tau=G(q)\\). Contact loads, friction, or other modeled effects must be added if present."}, {"q": "For m₁=m₂=l₁=l₂=1 and θ₂=90°, find M.", "a": "\\(\\cos \\theta_2=0\\), so\\[M=\\begin{bmatrix}3\u00261\\\\1\u00261\\end{bmatrix}\\]It is symmetric and has positive determinant 2. With zero rates and gravity omitted, \\(\\ddot q=(1,0)\\) needs \\(\\tau=(3,1)\\)."}, {"q": "Why can the reference potential be chosen freely?", "a": "Adding a constant to P changes L by a constant, whose derivatives vanish in the Euler–Lagrange equations. The resulting joint torques are unchanged."}, {"q": "How is Cartesian inertia obtained from joint inertia?", "a": "For square nonsingular J, \\(M_x=J^{-T}MJ^{-1}\\). This follows from substituting \\(\\ddot q=J^{-1}(\\ddot x-\\dot J\\dot q)\\) into joint dynamics and premultiplying by \\(J^{-T}\\)."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
+(()=>{const items=[{"q": "What remains in the robot dynamics when it is stationary?", "a": "With \\(\\dot q=\\ddot q=0\\), the unloaded model gives \\(\\tau=G(q)\\). Contact loads, friction, or other modeled effects must be added if present."}, {"q": "For m₁=m₂=l₁=l₂=1 and θ₂=90°, find M.", "a": "\\(\\cos \\theta_2=0\\), so\\[M=\\begin{bmatrix}3\u00261\\\\1\u00261\\end{bmatrix}\\]It is symmetric and has positive determinant 2. With zero rates and gravity omitted, \\(\\ddot q=(1,0)\\) needs \\(\\tau=(3,1)\\)."}, {"q": "Why can the reference potential be chosen freely?", "a": "Adding a constant to P changes L by a constant, whose derivatives vanish in the Euler-Lagrange equations. The resulting joint torques are unchanged."}, {"q": "How is Cartesian inertia obtained from joint inertia?", "a": "For square nonsingular J, \\(M_x=J^{-T}MJ^{-1}\\). This follows from substituting \\(\\ddot q=J^{-1}(\\ddot x-\\dot J\\dot q)\\) into joint dynamics and premultiplying by \\(J^{-T}\\)."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;const sh=document.documentElement.dataset.answers==='all';$('#answer').hidden=!sh;$('#reveal').textContent=sh?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(sh));$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});document.addEventListener('pdl:answers',render);render()})();
 </script>
 ```
 
@@ -2003,7 +2003,7 @@ _Figure 11. Mass-Spring-Damper System._
 
 > [!EXAMPLE] Derivation · Characteristic equation and damping cases
 >
-> PPT Part 3 · slides 8–10 · intermediate algebra expanded
+> PPT Part 3 · slides 8-10 · intermediate algebra expanded
 >
 > Try x(t) = Ceˢᵗ in mẍ + bẋ + kx = 0. Substitution gives
 >
@@ -2061,7 +2061,7 @@ _Figure 13. Closed-Loop System._
 
 > [!EXAMPLE] Derivation · PD feedback changes effective damping and stiffness
 >
-> PPT Part 3 · slides 12–14 · intermediate algebra expanded
+> PPT Part 3 · slides 12-14 · intermediate algebra expanded
 >
 > Substitute f = −kₚx − kᵥẋ into the forced plant:
 >
@@ -2121,7 +2121,7 @@ _Figure 15. Trajectory Tracking Control._
 
 > [!EXAMPLE] Derivation · Model cancellation and the tracking-error equation
 >
-> PPT Part 3 · slides 15–19 · intermediate algebra expanded
+> PPT Part 3 · slides 15-19 · intermediate algebra expanded
 >
 > **1 · Cancel known plant terms.**
 >
@@ -2175,7 +2175,7 @@ _Figure 16. Trajectory Tracking Control under Disturbance._
 
 > [!EXAMPLE] Derivation · PD offset and PID elimination of constant offset
 >
-> PPT Part 3 · slides 20–23 · intermediate algebra expanded
+> PPT Part 3 · slides 20-23 · intermediate algebra expanded
 >
 > **PD:** at steady state under a constant signed normalized disturbance d, set ė = ë = 0:
 >
@@ -2290,7 +2290,7 @@ _Figure 18. DC Torque Motor connected through Gearing to Inertial Load._
 
 > [!EXAMPLE] Derivation · Reflect inertia and damping through the gears
 >
-> PPT Part 3 · slides 31–32 · intermediate algebra expanded
+> PPT Part 3 · slides 31-32 · intermediate algebra expanded
 >
 > Begin with the motor torque balance and ideal ratio θ̇ₘ = ηθ̇. The same constant ratio applies to acceleration.
 >
@@ -2316,7 +2316,7 @@ _Figure 18. DC Torque Motor connected through Gearing to Inertial Load._
 ### 10.3 Structural flexibility and practical gains
 
 
-Shafts, gears, bearings, and links have finite stiffness. Neglecting flexibility removes higher-order resonances from the model, but control must avoid exciting them. The slides cite typical industrial structural resonances of 5–25 Hz; this is a course example range.
+Shafts, gears, bearings, and links have finite stiffness. Neglecting flexibility removes higher-order resonances from the model, but control must avoid exciting them. The slides cite typical industrial structural resonances of 5-25 Hz; this is a course example range.
 
 $$
 \omega_r\approx\sqrt{k/m},\qquad\omega_n\le\tfrac12\omega_r
@@ -2340,7 +2340,7 @@ At the chosen upper bandwidth limit the inequalities become equalities. The appr
 
 > [!EXAMPLE] Derivation · Normalized rotary-joint control and resonance-limited gains
 >
-> PPT Part 3 · slides 33–35 · intermediate algebra expanded
+> PPT Part 3 · slides 33-35 · intermediate algebra expanded
 >
 > Approximate the output model by αθ̈ + bₑθ̇ = τ with α = Iₘₐₓ + η²Iₘ and bₑ = b + η²bₘ. Choose τ = αu + bₑθ̇, giving θ̈ = u. Insert u = θ̈ᵈ + kᵥė + kₚe:
 >
