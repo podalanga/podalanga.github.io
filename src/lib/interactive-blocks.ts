@@ -81,7 +81,7 @@ const BRIDGE = String.raw`<script>
     if(typeof ResizeObserver==='function'&&document.body)new ResizeObserver(schedule).observe(document.body);
     schedule();
   }
-  const RX=/\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$/g;
+  const RX=/\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$|\$([^\s$](?:[^$\n]*?[^\s$])?)\$(?!\d)/g;
   const pending=new Map();let seq=0;
   addEventListener('message',e=>{
     if(e.source!==parent||!e.data||e.data.type!=='pdl-interactive:math-result')return;
@@ -94,17 +94,17 @@ const BRIDGE = String.raw`<script>
     mathTick=0;
     const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
       const t=n.parentElement&&n.parentElement.closest('script,style,textarea,[data-math-pending],math');
-      return t||!n.nodeValue||n.nodeValue.indexOf('\\')<0&&n.nodeValue.indexOf('$$')<0?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+      return t||!n.nodeValue||n.nodeValue.indexOf('\\')<0&&n.nodeValue.indexOf('$')<0?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
     const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
     for(const n of nodes){
       const text=n.nodeValue;RX.lastIndex=0;let last=0,m,frag=null;
       while((m=RX.exec(text))){
         frag=frag||document.createDocumentFragment();
         if(m.index>last)frag.appendChild(document.createTextNode(text.slice(last,m.index)));
-        const tex=m[1]!==undefined?m[1]:m[2]!==undefined?m[2]:m[3];
+        const tex=m[1]!==undefined?m[1]:m[2]!==undefined?m[2]:m[3]!==undefined?m[3]:m[4];
         const el=document.createElement('span');el.setAttribute('data-math-pending','');el.textContent=m[0];
         const id=++seq;pending.set(id,el);
-        parent.postMessage({type:'pdl-interactive:math',id,tex,display:m[1]===undefined},'*');
+        parent.postMessage({type:'pdl-interactive:math',id,tex,display:m[1]===undefined&&m[4]===undefined},'*');
         frag.appendChild(el);last=m.index+m[0].length;
       }
       if(frag){if(last<text.length)frag.appendChild(document.createTextNode(text.slice(last)));n.parentNode.replaceChild(frag,n)}

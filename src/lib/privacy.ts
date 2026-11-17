@@ -6,9 +6,39 @@ import { join } from 'node:path';
 
 const PHONE = /(?<![\d.,])(?:\(?\+\s?\d{1,3}\)?[\s-]*)?(?:\(?0\)?[\s-]*)?[6-9](?:[\s-]*\d){9}(?![\d.,])|\+\d(?:[\s()-]*\d){7,14}(?!\d)|\btel:/gi;
 
+/**
+ * Typeset maths (KaTeX) is drawn as one tiny span per glyph, so the digits of a matrix read as a
+ * long run of single digits. Drop those spans, balanced, and keep each formula's TeX source from its
+ * `<annotation>`, where the digits are written as they were typed: a real number put inside `$...$`
+ * is still found.
+ */
+function withoutTypesetMath(html: string): string {
+  const open = /<span class="katex(?:-display)?"[^>]*>/g;
+  let out = '';
+  let last = 0;
+  for (let m = open.exec(html); m; m = open.exec(html)) {
+    if (m.index < last) continue;
+    let depth = 1;
+    const tag = /<(\/?)span\b[^>]*>/g;
+    tag.lastIndex = m.index + m[0].length;
+    let end = html.length;
+    for (let t = tag.exec(html); t; t = tag.exec(html)) {
+      depth += t[1] ? -1 : 1;
+      if (depth === 0) {
+        end = t.index + t[0].length;
+        break;
+      }
+    }
+    const tex = [...html.slice(m.index, end).matchAll(/<annotation[^>]*>([\s\S]*?)<\/annotation>/g)].map((a) => a[1]);
+    out += `${html.slice(last, m.index)} ${tex.join(' ')} `;
+    last = end;
+  }
+  return out + html.slice(last);
+}
+
 /** What a reader sees: the text of a page without its scripts, styles, drawings and tags. */
 function visibleText(html: string): string {
-  return html
+  return withoutTypesetMath(html)
     .replace(/<(script|style|svg|template)\b[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<[^>]*>/g, ' ')
     .replace(/&nbsp;|&#160;/g, ' ')

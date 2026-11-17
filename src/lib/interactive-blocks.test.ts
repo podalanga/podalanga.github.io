@@ -84,4 +84,13 @@ describe('generic interactive embeds', () => {
     expect(doc).toContain('pdl-interactive:answers');
     expect(doc).toContain("new CustomEvent('pdl:answers')");
   });
+  it('finds inline $...$ and display math in a block, but not prices', () => {
+    const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
+    const rx = new RegExp(doc.match(/const RX=\/(.*?)\/g;/)![1], 'g');
+    const find = (text: string) => [...text.matchAll(rx)].map((m) => m[1] ?? m[2] ?? m[3] ?? m[4]);
+    expect(find('Here $k(1,2)=2+4+2+1=9$, while $k(2,1)=15$.')).toEqual(['k(1,2)=2+4+2+1=9', 'k(2,1)=15']);
+    expect(find('Valid? $$ \\begin{aligned}a\\end{aligned} $$ yes')).toEqual([' \\begin{aligned}a\\end{aligned} ']);
+    expect(find('so $x$ and \\(y\\) and \\[z\\]')).toEqual(['x', 'y', 'z']);
+    expect(find('It costs $5 and then $10 more.')).toEqual([]);
+  });
 });
