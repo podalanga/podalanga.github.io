@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import katex from 'katex';
 import type { Root } from 'hast';
 import { makeInteractiveDocument, parseInteractive, transformInteractiveBlocks } from './interactive-blocks';
 import { interactiveFenceAsText, INTERACTIVE_SENTINEL } from './interactive-fence';
@@ -62,5 +63,20 @@ describe('generic interactive embeds', () => {
     expect(frame.properties.srcDoc).toContain(injected);
     // The serializer must escape the srcDoc attribute. Never use `raw` HAST here.
     expect(frame.type).toBe('element');
+  });
+  it('themes the frame with the site tokens and carries the math bridge', () => {
+    const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
+    expect(doc).toContain('--bg:#0a0a0a');
+    expect(doc).toContain('--accent:#ff3333');
+    expect(doc).toContain('pdl-interactive:math');
+  });
+  it('ships a bridge script that parses, and its math delimiters typeset as MathML', () => {
+    const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
+    const scripts = [...doc.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+    expect(scripts.length).toBe(1);
+    expect(() => new Function(scripts[0])).not.toThrow();
+    const html = katex.renderToString('k_p=m\\omega_n^2-k=10,\\quad \\ddot x', { displayMode: true, output: 'mathml', throwOnError: false });
+    expect(html).toContain('<math');
+    expect(html).not.toContain('katex-html');
   });
 });

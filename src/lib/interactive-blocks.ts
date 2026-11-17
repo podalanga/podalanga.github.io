@@ -76,6 +76,38 @@ const BRIDGE = String.raw`<script>
     if(typeof ResizeObserver==='function'&&document.body)new ResizeObserver(schedule).observe(document.body);
     schedule();
   }
+  const RX=/\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$/g;
+  const pending=new Map();let seq=0;
+  addEventListener('message',e=>{
+    if(e.source!==parent||!e.data||e.data.type!=='pdl-interactive:math-result')return;
+    const el=pending.get(e.data.id);if(!el)return;pending.delete(e.data.id);
+    if(typeof e.data.html==='string'&&e.data.html){el.innerHTML=e.data.html;el.removeAttribute('data-math-pending')}
+    schedule();
+  });
+  let mathTick=0;
+  const typeset=()=>{
+    mathTick=0;
+    const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
+      const t=n.parentElement&&n.parentElement.closest('script,style,textarea,[data-math-pending],math');
+      return t||!n.nodeValue||n.nodeValue.indexOf('\\')<0&&n.nodeValue.indexOf('$$')<0?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+    const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    for(const n of nodes){
+      const text=n.nodeValue;RX.lastIndex=0;let last=0,m,frag=null;
+      while((m=RX.exec(text))){
+        frag=frag||document.createDocumentFragment();
+        if(m.index>last)frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+        const tex=m[1]!==undefined?m[1]:m[2]!==undefined?m[2]:m[3];
+        const el=document.createElement('span');el.setAttribute('data-math-pending','');el.textContent=m[0];
+        const id=++seq;pending.set(id,el);
+        parent.postMessage({type:'pdl-interactive:math',id,tex,display:m[1]===undefined},'*');
+        frag.appendChild(el);last=m.index+m[0].length;
+      }
+      if(frag){if(last<text.length)frag.appendChild(document.createTextNode(text.slice(last)));n.parentNode.replaceChild(frag,n)}
+    }
+  };
+  const scheduleMath=()=>{if(!mathTick)mathTick=requestAnimationFrame(typeset)};
+  const startMath=()=>{scheduleMath();new MutationObserver(scheduleMath).observe(document.body,{childList:true,subtree:true,characterData:true})};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startMath);else startMath();
   parent.postMessage({type:'pdl-interactive:ready'},'*');
 })();
 </script>`;
@@ -102,11 +134,14 @@ export function makeInteractiveDocument(body: string, options: InteractiveOption
   // CSP is in the iframe document, and the parent iframe lacks allow-same-origin.
   const head = `<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="${csp}">`;
   const baseStyle = String.raw`<style>
-    :root {color-scheme:dark;--bg:#101414;--fg:#e9eeec;--muted:#b5c3c0;--accent:#df776a;}
-    :root[data-theme="light"]{color-scheme:light;--bg:#f7f8f6;--fg:#182323;--muted:#52635f;--accent:#a13f34;}
+    :root{color-scheme:dark;--bg:#0a0a0a;--bg-raised:#121212;--fg:#e8e6e3;--muted:#8a8783;--line:#262626;--line-strong:#3a3a3a;--accent:#ff3333;--on-accent:#0a0a0a}
+    :root[data-theme="light"]{color-scheme:light;--bg:#f2f0eb;--bg-raised:#e8e5de;--fg:#0a0a0a;--muted:#55524d;--line:#cfcac0;--line-strong:#b3ada1;--accent:#d90000;--on-accent:#f2f0eb}
     *{box-sizing:border-box}html{overflow-x:hidden}body{margin:0;padding:14px;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
     button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    button:disabled{opacity:.4;cursor:default}
     svg{max-width:100%;height:auto}a{color:var(--accent)}.muted{color:var(--muted)}
+    math{font-family:"Latin Modern Math","STIX Two Math","Cambria Math",serif;font-size:1.08em}
+    math[display="block"]{margin:.5rem 0;overflow-x:auto;overflow-y:hidden;max-width:100%}
   </style>`;
   // Complete-document fragments are intentionally disallowed. Authors write fragment markup;
   // this prevents them from inserting a second head before the CSP meta tag.

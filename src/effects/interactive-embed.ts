@@ -1,3 +1,16 @@
+type Katex = typeof import('katex').default;
+let katexPromise: Promise<Katex> | undefined;
+/** KaTeX renders in the host (the sandboxed frame has no scripts, fonts or network); MathML needs no CSS. */
+async function typeset(tex: string, display: boolean): Promise<string> {
+  try {
+    katexPromise ??= import('katex').then((m) => m.default);
+    const katex = await katexPromise;
+    return katex.renderToString(tex, { displayMode: display, throwOnError: false, output: 'mathml', trust: false, maxExpand: 1000 });
+  } catch {
+    return '';
+  }
+}
+
 /** Host-side lifecycle for sandboxed, post-authored interactive iframes. */
 export function initInteractiveEmbeds(): () => void {
   const iframes = Array.from(document.querySelectorAll<HTMLIFrameElement>(
@@ -21,6 +34,14 @@ export function initInteractiveEmbeds(): () => void {
     const frame = sourceMap.get(event.source as Window);
     if (!frame || !frame.isConnected) return;
     const { type, height } = event.data as { type?: unknown; height?: unknown };
+    if (type === 'pdl-interactive:math') {
+      const { id, tex, display } = event.data as { id?: unknown; tex?: unknown; display?: unknown };
+      if (typeof id !== 'number' || typeof tex !== 'string' || tex.length > 4000) return;
+      void typeset(tex, display === true).then((html) => {
+        if (active && frame.isConnected) frame.contentWindow?.postMessage({ type: 'pdl-interactive:math-result', id, html }, '*');
+      });
+      return;
+    }
     if (type === 'pdl-interactive:ready') {
       applyTheme(frame);
     } else if (type === 'pdl-interactive:resize' && typeof height === 'number' && Number.isFinite(height)) {

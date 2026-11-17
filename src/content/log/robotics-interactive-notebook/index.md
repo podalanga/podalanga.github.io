@@ -8,6 +8,8 @@ tags:
   - Dynamics
   - Control Systems
 context: "Robotics · course slide study notebook"
+cover: ./cover.png
+coverAlt: "A two-link robot arm drawn on a dark background with red joints, under the label Robotics: frames, kinematics, dynamics, control."
 draft: false
 ---
 
@@ -32,17 +34,17 @@ network: off
 -->
 <style>
   .stage{display:grid;grid-template-columns:minmax(180px,1fr) minmax(120px,.8fr);gap:12px;align-items:center}
-  .panel{border:1px solid #6f817744;border-radius:8px;padding:12px;min-width:0}
+  .panel{border:1px solid var(--line-strong);border-radius:8px;padding:12px;min-width:0}
   .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-block:12px}
-  input{accent-color:#df776a;flex:1;min-width:120px}output{font-variant-numeric:tabular-nums}
+  input{accent-color:var(--accent);flex:1;min-width:120px}output{font-variant-numeric:tabular-nums}
   @media(max-width:480px){.stage{grid-template-columns:1fr}}
 </style>
 <label for="rot">Rotate frame B relative to frame A</label>
 <div class="toolbar"><input id="rot" type="range" min="-180" max="180" value="35"><output id="deg" for="rot">35°</output></div>
 <div class="stage"><svg id="axes" viewBox="0 0 300 250" role="img" aria-label="Two coordinate systems rotated relative to each other">
-  <defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#8c9f9a" stroke-width="1.3"/></marker></defs>
-  <line x1="25" y1="125" x2="275" y2="125" stroke="#8c9f9a" stroke-width="2" marker-end="url(#a)"/><line x1="150" y1="240" x2="150" y2="15" stroke="#8c9f9a" stroke-width="2" marker-end="url(#a)"/>
-  <g id="rotFrame"><path d="M150 125 L258 125" stroke="#df776a" stroke-width="4"/><path d="M150 125 L150 17" stroke="#41bcb6" stroke-width="4"/><text x="266" y="121" fill="#df776a">xB</text><text x="157" y="20" fill="#41bcb6">yB</text></g>
+  <defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="var(--muted)" stroke-width="1.3"/></marker></defs>
+  <line x1="25" y1="125" x2="275" y2="125" stroke="var(--muted)" stroke-width="2" marker-end="url(#a)"/><line x1="150" y1="240" x2="150" y2="15" stroke="var(--muted)" stroke-width="2" marker-end="url(#a)"/>
+  <g id="rotFrame"><path d="M150 125 L258 125" stroke="var(--accent)" stroke-width="4"/><path d="M150 125 L150 17" stroke="var(--fg)" stroke-width="4"/><text x="266" y="121" fill="var(--accent)">xB</text><text x="157" y="20" fill="var(--fg)">yB</text></g>
   <circle cx="150" cy="125" r="5" fill="currentColor"/><text x="271" y="142" fill="currentColor">xA</text><text x="130" y="18" fill="currentColor">yA</text>
 </svg><div class="panel"><strong>Rotation B → A</strong><pre id="mat" aria-live="polite" style="white-space:pre-wrap;font:15px/1.8 ui-monospace,monospace"></pre><small class="muted">Columns are B’s basis vectors expressed in A.</small></div></div>
 <script>
@@ -195,10 +197,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -225,17 +227,17 @@ height: 575
 network: off
 -->
 <style>
-.control{display:grid;grid-template-columns:6em 1fr 3.3em;gap:.5rem;align-items:center;margin-block:.5rem}.control input{width:100%;accent-color:#df776a}.values{display:flex;gap:1rem;flex-wrap:wrap;font-variant-numeric:tabular-nums}.values strong{color:var(--accent)}.chart{border:1px solid #789b9044;background:var(--bg);border-radius:8px;width:100%}
+.control{display:grid;grid-template-columns:6em 1fr 3.3em;gap:.5rem;align-items:center;margin-block:.5rem}.control input{width:100%;accent-color:var(--accent)}.values{display:flex;gap:1rem;flex-wrap:wrap;font-variant-numeric:tabular-nums}.values strong{color:var(--accent)}.chart{border:1px solid var(--line-strong);background:var(--bg);border-radius:8px;width:100%}
 </style>
 <p class="muted">Link lengths: L₁ = 1.0 m, L₂ = 0.8 m. θ₂ is relative to the first link.</p>
 <label class="control" for="q1"><span>θ₁</span><input id="q1" type="range" min="-180" max="180" value="30"/><output id="o1">30°</output></label>
 <label class="control" for="q2"><span>θ₂</span><input id="q2" type="range" min="-180" max="180" value="60"/><output id="o2">60°</output></label>
 <svg class="chart" id="arm" viewBox="0 0 420 300" role="img" aria-label="A two-link arm with manipulable joint angles">
 <g stroke="currentColor" opacity=".16"><path d="M18 150H405 M205 10V290"/></g>
-<g stroke="#80aaa0" stroke-width="2" fill="none"><circle cx="205" cy="150" r="120" stroke-dasharray="4 5"/><circle cx="205" cy="150" r="13" stroke-dasharray="3 3"/></g>
-<line id="link1" x1="205" y1="150" x2="280" y2="100" stroke="#df776a" stroke-width="10" stroke-linecap="round"/>
-<line id="link2" x1="280" y1="100" x2="350" y2="45" stroke="#41bcb6" stroke-width="8" stroke-linecap="round"/>
-<circle id="elbow" cx="280" cy="100" r="7" fill="var(--fg)"/><circle cx="205" cy="150" r="7" fill="var(--fg)"/><circle id="tip" cx="350" cy="45" r="8" fill="#df776a"/>
+<g stroke="var(--line-strong)" stroke-width="2" fill="none"><circle cx="205" cy="150" r="120" stroke-dasharray="4 5"/><circle cx="205" cy="150" r="13" stroke-dasharray="3 3"/></g>
+<line id="link1" x1="205" y1="150" x2="280" y2="100" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+<line id="link2" x1="280" y1="100" x2="350" y2="45" stroke="var(--fg)" stroke-width="8" stroke-linecap="round"/>
+<circle id="elbow" cx="280" cy="100" r="7" fill="var(--fg)"/><circle cx="205" cy="150" r="7" fill="var(--fg)"/><circle id="tip" cx="350" cy="45" r="8" fill="var(--accent)"/>
 <text x="210" y="169" fill="currentColor" font-size="12">Base</text></svg>
 <div class="values" aria-live="polite"><span>x = <strong id="x"></strong> m</span><span>y = <strong id="y"></strong> m</span><span>det(J) = <strong id="det"></strong></span></div>
 <p id="warning" class="muted" aria-live="polite"></p>
@@ -405,10 +407,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -611,10 +613,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -772,10 +774,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -940,10 +942,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -1143,10 +1145,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -1478,10 +1480,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -1873,10 +1875,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -1903,12 +1905,12 @@ height: 440
 network: off
 -->
 <style>
-input{accent-color:#df776a}.g{display:grid;grid-template-columns:4rem 1fr 3.5rem;gap:.65rem;align-items:center;margin:.5rem 0}.metric{display:flex;gap:1rem;flex-wrap:wrap;font-size:.9rem}.metric output{color:var(--accent);font-variant-numeric:tabular-nums}svg{width:100%;border:1px solid #77968c55;border-radius:6px}
+input{accent-color:var(--accent)}.g{display:grid;grid-template-columns:4rem 1fr 3.5rem;gap:.65rem;align-items:center;margin:.5rem 0}.metric{display:flex;gap:1rem;flex-wrap:wrap;font-size:.9rem}.metric output{color:var(--accent);font-variant-numeric:tabular-nums}svg{width:100%;border:1px solid var(--line-strong);border-radius:6px}
 </style>
 <p class="muted">Unit-inertia joint, target position 1 rad, initially at rest. Numerical integration uses Δt = 0.005 s.</p>
 <label class="g" for="kp">Kp <input id="kp" type="range" min="1" max="60" value="16" step="1"><output id="kpo">16</output></label>
 <label class="g" for="kd">Kd <input id="kd" type="range" min="0" max="30" value="8" step=".5"><output id="kdo">8</output></label>
-<svg id="plot" viewBox="0 0 480 230" role="img" aria-label="Simulated joint response to a unit position step"><g stroke="currentColor" opacity=".18"><path d="M45 12V198H466 M45 57H466 M45 104H466 M45 151H466"/></g><path d="M45 57H466" fill="none" stroke="#41bcb6" stroke-width="2" stroke-dasharray="5 5"/><path id="curve" fill="none" stroke="#df776a" stroke-width="3" stroke-linejoin="round"/><g fill="currentColor" font-size="12"><text x="9" y="61">1 rad</text><text x="45" y="216">0 s</text><text x="431" y="216">8 s</text></g></svg>
+<svg id="plot" viewBox="0 0 480 230" role="img" aria-label="Simulated joint response to a unit position step"><g stroke="currentColor" opacity=".18"><path d="M45 12V198H466 M45 57H466 M45 104H466 M45 151H466"/></g><path d="M45 57H466" fill="none" stroke="var(--fg)" stroke-width="2" stroke-dasharray="5 5"/><path id="curve" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round"/><g fill="currentColor" font-size="12"><text x="9" y="61">1 rad</text><text x="45" y="216">0 s</text><text x="431" y="216">8 s</text></g></svg>
 <div class="metric" aria-live="polite"><span>Damping ratio ζ = <output id="zeta"></output></span><span>Peak = <output id="peak"></output> rad</span><span>Final = <output id="final"></output> rad</span></div>
 <script>
 (()=>{const $=s=>document.querySelector(s);function render(){const kp=Number($('#kp').value),kd=Number($('#kd').value),dt=.005;let x=0,v=0,peak=0,pts=[];for(let i=0;i<=1600;i++){const t=i*dt;if(i%4===0)pts.push([t,x]);peak=Math.max(peak,x);const a=kp*(1-x)-kd*v;v+=a*dt;x+=v*dt;}const sx=t=>45+421*t/8,sy=x=>198-141*x;$('#curve').setAttribute('d',pts.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(2)+','+sy(p[1]).toFixed(2)).join(' '));$('#kpo').textContent=kp;$('#kdo').textContent=kd;$('#zeta').textContent=(kd/(2*Math.sqrt(kp))).toFixed(2);$('#peak').textContent=peak.toFixed(3);$('#final').textContent=x.toFixed(3);}$('#kp').addEventListener('input',render);$('#kd').addEventListener('input',render);render()})();
@@ -2209,10 +2211,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
@@ -2383,10 +2385,10 @@ height: 300
 network: off
 -->
 <style>
-  .btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:.48rem .85rem}
-  .btn.secondary{background:none;border:1px solid #8b999466;color:var(--fg)}
+  .btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:5px;padding:.48rem .85rem}
+  .btn.secondary{background:none;border:1px solid var(--line-strong);color:var(--fg)}
   .quizbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
-  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:#808b8130;white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
+  .answer{border-left:3px solid var(--accent);padding:.75rem 1rem;background:var(--bg-raised);white-space:pre-wrap;overflow-wrap:anywhere;margin:1rem 0}
   .question{font-weight:650;font-size:1rem;margin-block:.85rem}
 </style>
 <div class="quizbar"><small id="pos" class="muted"></small><div><button class="btn secondary" type="button" id="prev">Previous</button> <button class="btn secondary" type="button" id="next">Next</button></div></div>
