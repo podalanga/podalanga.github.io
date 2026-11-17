@@ -16,6 +16,7 @@
 //
 // Only files under content/log are touched, so project pages keep their plain prose.
 import type { Element, ElementContent, Root, RootContent, Text } from 'hast';
+import { transformInteractiveBlocks } from './interactive-blocks';
 import katex from 'katex';
 
 type Parent = Root | Element;
@@ -303,6 +304,7 @@ function math(node: Parent, inBox: boolean, where: string): void {
 }
 
 export function transformArticle(tree: Root, where = ''): void {
+  transformInteractiveBlocks(tree);
   figures(tree);
   alerts(tree, { eq: 0 });
   sectionNumbers(tree);

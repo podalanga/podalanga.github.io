@@ -1,0 +1,32 @@
+/* Generic scoped embed shell; independent of topic, post, and authored widget CSS. */
+.article-body figure.interactive-embed {
+  display: block;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin-block: 1.75rem;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border, rgba(140,155,150,.4));
+  border-radius: 8px;
+  background: var(--surface, #111816);
+}
+.article-body .interactive-embed iframe {
+  display: block;
+  border: 0;
+  width: 100%;
+  min-height: 160px;
+  max-height: 2200px;
+  background: #101414;
+}
+.article-body .interactive-embed figcaption {
+  padding: .6rem .85rem;
+  margin: 0;
+  border-top: 1px solid var(--border, rgba(140,155,150,.4));
+  font-size: .75rem;
+  line-height: 1.35;
+  opacity: .78;
+}
+@media (prefers-reduced-motion: reduce) {
+  .article-body .interactive-embed iframe { scroll-behavior: auto; }
+}

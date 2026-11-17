@@ -78,6 +78,8 @@ collections:
           line. Figures: an image, then a line `_Figure N. Caption._`. The preview here shows math
           as TeX; the site typesets it.
 
+          Interactive HTML/CSS/JS: use a fenced `interactive` code block; see docs/INTERACTIVE_BLOG.md.
+          CMS preview does not execute scripts.
   - name: archive
     label: Archive
     label_singular: Archive entry

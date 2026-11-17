@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import { blogArticlePlugin, mathBlocksAsCode } from './src/lib/blog-article.ts';
+import { interactiveFenceAsText } from './src/lib/interactive-fence.ts';
 import { collectPublished, findLockViolations, findMissingOutput, formatLockReport, readLocks } from './src/lib/locks.ts';
 import { findPhonesInSite } from './src/lib/privacy.ts';
 import { fileURLToPath } from 'node:url';
@@ -100,7 +101,7 @@ export default defineConfig({
   markdown: {
     // Blog posts get figures, numbered equations and worked-example panels (src/lib/blog-article.ts).
     // `$…$` and `$$…$$` parse as math, which that plugin typesets with KaTeX.
-    processor: satteri({ features: { math: true }, mdastPlugins: [mathBlocksAsCode], hastPlugins: [blogArticlePlugin] }),
+    processor: satteri({ features: { math: true }, mdastPlugins: [mathBlocksAsCode, interactiveFenceAsText], hastPlugins: [blogArticlePlugin] }),
   },
   integrations: [
     lockedAddresses(),

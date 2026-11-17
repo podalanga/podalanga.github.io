@@ -178,6 +178,7 @@ const structuredData = {
       import { initSectionIndex } from '../effects/section-index';
       import { initReadingObserver } from '../effects/reading-observer';
       import { initWatchMargins } from '../effects/watch-margins';
+       import { initInteractiveEmbeds } from '../effects/interactive-embed';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -205,6 +206,7 @@ const structuredData = {
           initSectionIndex(),
           initReadingObserver(),
           initWatchMargins(),
+          initInteractiveEmbeds(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });
