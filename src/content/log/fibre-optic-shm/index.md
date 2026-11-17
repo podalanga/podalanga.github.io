@@ -13,10 +13,11 @@ context: "Seminar for the Optical Instrumentation (OI) course, given with Kalida
 series:
   title: Optical Instrumentation seminar
   part: 1
+updated: 2026-11-18
 draft: false
 ---
 
-This article is the written form of my half of a seminar for our Optical Instrumentation (OI) course, presented with Kalidas J on 20 October 2026. My topic was fibre optic sensors for structural health monitoring (SHM). Kalidas covered the industrial applications of the laser in manufacturing, which has [its own article](/blog/lasers-in-manufacturing). The two topics were chosen to sit together: every sensor described here is illuminated by a laser, and the same coherent light, concentrated by a lens, becomes one of the most versatile tools in a factory.
+This article is the written form of my half of a seminar for our Optical Instrumentation (OI) course, presented on 20 October 2026 together with my co-presenter, Kalidas J. My topic was fibre optic sensors for structural health monitoring (SHM). Kalidas covered the industrial applications of the laser in manufacturing, which has [its own article](/blog/lasers-in-manufacturing). The two topics were chosen to sit together: every sensor described here is illuminated by a laser, and the same coherent light, concentrated by a lens, becomes one of the most versatile tools in a factory.
 
 The article is longer than the talk. I have kept the derivations and worked examples that did not fit into seven minutes, because they are what make the subject make sense.
 
@@ -26,11 +27,11 @@ On 30 October 2022 the suspension footbridge at Morbi in Gujarat collapsed, and 
 
 The two failures have something in common that is worth stating plainly. In both cases the damage developed _inside_ members that looked acceptable from the outside. No amount of careful looking would have revealed it.
 
-This is the central problem of infrastructure. A structure degrades continuously, through corrosion, fatigue, creep and ever-heavier traffic, but it is inspected only periodically, and mostly by eye. Visual inspection is partly subjective; two inspectors with different experience will not always agree. Bridges in particular are designed for decades or centuries, and are routinely kept in service beyond their design life on limited maintenance budgets. Glišić and Inaudi summarise the difficulty in one sentence that is worth remembering: information that is not registered between two inspections is lost forever.
+This is the central problem of infrastructure. A structure degrades continuously, through corrosion, fatigue, creep and ever-heavier traffic, but it is inspected only periodically, and mostly by eye. Visual inspection is partly subjective; two inspectors with different experience will not always agree. Bridges in particular are designed for decades or centuries, and are routinely kept in service beyond their design life on limited maintenance budgets. B. Glišić and D. Inaudi, whose book _Fibre Optic Methods for Structural Health Monitoring_ (reference 1) is the main source for this article, summarise the difficulty in one sentence that is worth remembering: information that is not registered between two inspections is lost forever.
 
 ## 2. What structural health monitoring is
 
-Glišić and Inaudi define SHM as "a process aimed at providing accurate and in-time information concerning structural condition and performance". In practice it means recording representative parameters (strain, displacement, crack opening, temperature and so on) permanently, continuously or periodically, over the life of the structure.
+In that book, Glišić and Inaudi define SHM as "a process aimed at providing accurate and in-time information concerning structural condition and performance". In practice it means recording representative parameters (strain, displacement, crack opening, temperature and so on) permanently, continuously or periodically, over the life of the structure.
 
 They also offer an analogy that I find helpful. Think of the human nervous system. The nerves sense pain, the patient goes to a doctor, and the doctor diagnoses and treats. In a monitored structure, the sensors play the part of the nerves. A good monitoring system should be able to:
 
@@ -69,7 +70,7 @@ A conventional electrical resistance strain gauge works well in the laboratory. 
 | Absolute measurand | Many OFS encode the measurand in wavelength or frequency, so losses in the cable do not matter. |
 | New capabilities | Fully distributed sensing has no electrical equivalent at all. |
 
-It would be dishonest to present only the advantages. Fibre sensors were slow to replace mature electrical gauges, and as late as 1998 Wilson and Hawkes could write that few of them had achieved widespread commercial success. They have won where they offer something genuinely new, and by now fibre optic SHM is routine on major structures.
+It would be dishonest to present only the advantages. Fibre sensors were slow to replace mature electrical gauges, and as late as 1998 J. Wilson and J. Hawkes, in their textbook _Optoelectronics: An Introduction_ (reference 6), could write that few of them had achieved widespread commercial success. They have won where they offer something genuinely new, and by now fibre optic SHM is routine on major structures.
 
 A particularly clear demonstration of electromagnetic immunity comes from India, and I will return to it in Section 9: on a railway bridge at Vasai Creek near Mumbai, electrical gauges picked up considerable noise from the overhead traction supply, while fibre sensors installed next to them gave clean data.
 
@@ -77,19 +78,21 @@ A particularly clear demonstration of electromagnetic immunity comes from India,
 
 Before looking at particular sensors, it helps to have a vocabulary.
 
-- **Extrinsic versus intrinsic.** In an extrinsic sensor the fibre only carries light to and from an external transducer, for example the air gap of an extrinsic Fabry–Perot interferometer (EFPI). In an intrinsic sensor the measurand acts on the fibre itself, as in a Bragg grating or Brillouin sensor.
+- **Extrinsic versus intrinsic.** In an extrinsic sensor the fibre only carries light to and from an external transducer, for example the air gap of an extrinsic Fabry-Perot interferometer (EFPI). In an intrinsic sensor the measurand acts on the fibre itself, as in a Bragg grating or Brillouin sensor.
 - **By the property of light that is modulated:** intensity, phase, polarisation or wavelength.
 - **By geometry:** _point_ sensors measure at one location; _long-gauge_ sensors average over a base of one to ten metres; _quasi-distributed_ systems place many point sensors along one fibre; and _fully distributed_ systems measure continuously along the entire fibre.
 
-The two technologies that dominate bridge monitoring sit at opposite ends of this geometric scale: the fibre Bragg grating, a point sensor that can be multiplexed into a quasi-distributed array, and Brillouin scattering, which is fully distributed. Typical figures are summarised below (after Glišić and Inaudi).
+The two technologies that dominate bridge monitoring sit at opposite ends of this geometric scale: the fibre Bragg grating, a point sensor that can be multiplexed into a quasi-distributed array, and Brillouin scattering, which is fully distributed. Sections 5 and 6 take them in turn. Typical figures are summarised below (after Glišić and Inaudi).
 
 | Technology | Type | Points per line | Strain resolution | Range |
 | --- | --- | --- | --- | --- |
 | SOFO | long gauge | 1 | 1 µε | 20 m gauge |
-| Fabry–Perot | point | 1 | 1 µε | n/a |
+| Fabry-Perot | point | 1 | 1 µε | n/a |
 | FBG | point | 10 to 50 | 1 µε | n/a |
 | Raman | distributed | 10 000 | temperature only | 8 km |
 | Brillouin | distributed | 30 000 | 20 µε | 30 km |
+
+SOFO is a commercial long-gauge sensor system; long-gauge sensors are discussed in Section 8.1.
 
 ## 5. Fibre Bragg gratings
 
@@ -99,7 +102,7 @@ The fibre Bragg grating (FBG) was discovered almost by accident. In 1978 Ken Hil
 
 Two later developments made gratings practical. In 1989 Meltz, Morey and Glenn showed that two interfering ultraviolet beams at 244 nm could write a grating through the _side_ of the fibre, so that its wavelength could be chosen freely. In 1993 Hill's group introduced the phase mask, which is how almost all gratings are made today. A single UV beam passes through a silica plate with a fine surface ripple; the two diffracted orders interfere and print a fringe pattern into the core whose period is half that of the mask. A 1550 nm grating therefore needs a mask period of about 1.06 µm.
 
-The UV light breaks germanium–oxygen bonds and raises the core index by roughly 10⁻⁴. A typical grating is 5 to 10 mm long, reflects 50% to 90% of the light at its resonant wavelength, and has a bandwidth of 0.05 to 0.3 nm.
+The UV light breaks germanium-oxygen bonds and raises the core index by roughly 10⁻⁴. A typical grating is 5 to 10 mm long, reflects 50% to 90% of the light at its resonant wavelength, and has a bandwidth of 0.05 to 0.3 nm.
 
 ### 5.2 The Bragg condition
 
@@ -147,7 +150,7 @@ $$
 
 _Figure 2. Stretching the grating lengthens its period and moves the reflected peak to a longer wavelength._
 
-At 1550 nm the sources I studied agree to within about ten per cent:
+At 1550 nm the sources I studied agree to within about ten per cent. They are Kersey et al., a paper on fibre grating sensors (reference 5); Wilson and Hawkes, the textbook mentioned in Section 3; Udd and Udd Scheel, a book chapter on the same subject (reference 8); and Chan et al., who measured on the Tsing Ma bridge in Hong Kong, which Section 9 describes (reference 9).
 
 | Source | Strain (pm/µε) | Temperature (pm/°C) |
 | --- | --- | --- |
@@ -211,7 +214,7 @@ which can be inverted provided the determinant is not zero. An FBG and long-peri
 Because the measurand is encoded in wavelength, the reading does not depend on the source power or on losses in connectors and bends. This property is called **self-referencing**, and it is one of the most important practical advantages of the FBG. Several methods are used to read the wavelength:
 
 - **Edge filter.** A filter whose transmission slopes with wavelength turns a wavelength shift into a power change; taking a ratio removes source drift. Simple and fast.
-- **Scanning Fabry–Perot filter.** A piezo-tuned filter with a narrow passband (about 0.3 nm) sweeps across a free spectral range of about 50 nm, resolving about 1 µε.
+- **Scanning Fabry-Perot filter.** A piezo-tuned filter with a narrow passband (about 0.3 nm) sweeps across a free spectral range of about 50 nm, resolving about 1 µε.
 - **Spectrometer with a CCD array.** A diffraction grating spreads the spectrum across a detector array, so all gratings are read in parallel at kilohertz rates. This was used on the Tsing Ma bridge.
 - **Swept tunable laser.** A narrow laser sweeps the band and the reflection peaks are timed.
 
@@ -283,7 +286,7 @@ $$
 \nu_B = \frac{2\,n\,V_a}{\lambda}
 $$
 
-where V_a is the acoustic velocity. With n = 1.45, V_a ≈ 5800 m/s and λ = 1550 nm, ν_B ≈ 10.85 GHz, close to the 10.861 GHz measured in standard SMF-28 fibre.
+where V_a is the acoustic velocity. With n = 1.45, V_a ≈ 5800 m/s and λ = 1550 nm, ν_B ≈ 10.85 GHz, close to the 10.861 GHz measured in standard SMF-28 single-mode fibre.
 
 The acoustic velocity depends on the density and elastic moduli of the glass, both of which change with strain and temperature. Therefore
 
@@ -366,14 +369,14 @@ Integrating the curvature twice along the span gives the deflected shape. On the
 
 ### 8.3 Where to put the sensors
 
-Following Inaudi, a sensor network is designed from the risks the bridge faces:
+Following D. Inaudi's chapter on civil engineering applications (reference 2), a sensor network is designed from the risks the bridge faces:
 
 | Risk | Response to measure | Suitable sensor |
 | --- | --- | --- |
 | Traffic, wind, earthquake | large strain, fatigue | FBG with dynamic readout |
 | Creep, loss of prestress | global deformation | long-gauge sensors |
 | Change in cable force | force redistribution | fibre optic load cells |
-| Cracking of concrete or steel | crack opening | FBG, Fabry–Perot, distributed |
+| Cracking of concrete or steel | crack opening | FBG, Fabry-Perot, distributed |
 | Pier settlement | tilt | FBG tiltmeters |
 
 For a simple beam, parallel sensor pairs at mid-span and at the supports give axial force and bending, crossed sensors near the abutments give shear and torsion, and inclinometers detect settlement. For a suspension bridge there is an important additional point: a broken strand in the main cable barely changes the strain in the deck, so a distributed sensor along the cable itself is recommended.
@@ -407,7 +410,7 @@ There is a nice irony here. Telecommunication cables are designed to _protect_ t
 | Götaälvbron | Gothenburg, c. 2006 | about 5 km Brillouin | crack alarms for 15 years |
 | Vasai Creek | Mumbai, 2013 | 6 FBGs | clean data where electrical gauges were noisy |
 
-**Beddington Trail Bridge, Calgary (1993).** A team led by Raymond Measures integrated FBGs into the precast prestressed girders of a new two-span bridge, six of whose 26 girders used carbon-fibre tendons instead of steel. Eighteen gratings were bonded to the tendons after prestressing. Measures describes it as the first time fibre optic strain sensors were structurally integrated into a bridge. Over 18 months the sensors recorded prestress loss, about 25% less in the carbon tendons than in the steel ones, and responded to a 25-tonne truck with strain pulses of about 20 µε.
+**Beddington Trail Bridge, Calgary (1993).** A team led by Raymond Measures integrated FBGs into the precast prestressed girders of a new two-span bridge, six of whose 26 girders used carbon-fibre tendons instead of steel. Eighteen gratings were bonded to the tendons after prestressing. In his book _Structural Monitoring with Fiber Optic Technology_ (reference 4), Measures describes it as the first time fibre optic strain sensors were structurally integrated into a bridge. Over 18 months the sensors recorded prestress loss, about 25% less in the carbon tendons than in the steel ones, and responded to a 25-tonne truck with strain pulses of about 20 µε.
 
 **Tsing Ma Bridge, Hong Kong (2003).** Tsing Ma has a main span of 1377 m and carries a dual three-lane expressway on its upper deck and two railway tracks on its lower deck. It opened in 1997 with the Highways Department's Wind and Structural Health Monitoring System (WASHMS), about 800 conventional sensors across three bridges. In May 2003, forty FBGs in three arrays were installed on a hanger cable, a rocker bearing and the truss girders at one deck section, next to existing resistive gauges, with strain-free gratings for temperature compensation. A CCD-based interrogator read the arrays at up to 20 kHz with 1 pm resolution. The gratings captured each train passage, distinguished the direction of travel on the hanger cable, and agreed closely with WASHMS, which samples at only about 20 Hz.
 
@@ -444,16 +447,16 @@ Every sensor in this article is illuminated by a laser. In the second half of ou
 ### References
 
 1. B. Glišić and D. Inaudi, _Fibre Optic Methods for Structural Health Monitoring_. Chichester, U.K.: Wiley, 2007.
-2. D. Inaudi, "Civil engineering applications," in _Fiber Optic Sensors: An Introduction for Engineers and Scientists_, 3rd ed., E. Udd and W. B. Spillman, Jr., Eds. Hoboken, NJ: Wiley, 2024, pp. 479–494.
-3. X. Bao and L. Chen, "Recent progress in distributed fiber optic sensors," _Sensors_, vol. 12, no. 7, pp. 8601–8639, 2012.
+2. D. Inaudi, "Civil engineering applications," in _Fiber Optic Sensors: An Introduction for Engineers and Scientists_, 3rd ed., E. Udd and W. B. Spillman, Jr., Eds. Hoboken, NJ: Wiley, 2024, pp. 479-494.
+3. X. Bao and L. Chen, "Recent progress in distributed fiber optic sensors," _Sensors_, vol. 12, no. 7, pp. 8601-8639, 2012.
 4. R. M. Measures, _Structural Monitoring with Fiber Optic Technology_. San Diego, CA: Academic Press, 2001.
-5. A. D. Kersey et al., "Fiber grating sensors," _J. Lightwave Technol._, vol. 15, no. 8, pp. 1442–1463, 1997.
+5. A. D. Kersey et al., "Fiber grating sensors," _J. Lightwave Technol._, vol. 15, no. 8, pp. 1442-1463, 1997.
 6. J. Wilson and J. Hawkes, _Optoelectronics: An Introduction_, 3rd ed. London: Prentice Hall Europe, 1998.
 7. R. Kashyap, _Fiber Bragg Gratings_. San Diego, CA: Academic Press, 1999.
-8. E. Udd and I. Udd Scheel, "Fiber grating sensors," in _Fiber Optic Sensors_, 3rd ed., E. Udd and W. B. Spillman, Jr., Eds. Hoboken, NJ: Wiley, 2024, pp. 397–478.
-9. T. H. T. Chan et al., "Fiber Bragg grating sensors for structural health monitoring of Tsing Ma bridge: Background and experimental observation," _Eng. Struct._, vol. 28, no. 5, pp. 648–659, 2006.
-10. M. Enckell, B. Glišić, F. Myrvoll and B. Bergstrand, "Evaluation of a large-scale bridge strain, temperature and crack monitoring with distributed fibre optic sensors," _J. Civil Struct. Health Monit._, vol. 1, pp. 37–46, 2011.
-11. R. H. Scott et al., "Commissioning and evaluation of a fiber-optic sensor system for bridge monitoring," _IEEE Sensors J._, vol. 13, no. 7, pp. 2555–2562, 2013.
+8. E. Udd and I. Udd Scheel, "Fiber grating sensors," in _Fiber Optic Sensors_, 3rd ed., E. Udd and W. B. Spillman, Jr., Eds. Hoboken, NJ: Wiley, 2024, pp. 397-478.
+9. T. H. T. Chan et al., "Fiber Bragg grating sensors for structural health monitoring of Tsing Ma bridge: Background and experimental observation," _Eng. Struct._, vol. 28, no. 5, pp. 648-659, 2006.
+10. M. Enckell, B. Glišić, F. Myrvoll and B. Bergstrand, "Evaluation of a large-scale bridge strain, temperature and crack monitoring with distributed fibre optic sensors," _J. Civil Struct. Health Monit._, vol. 1, pp. 37-46, 2011.
+11. R. H. Scott et al., "Commissioning and evaluation of a fiber-optic sensor system for bridge monitoring," _IEEE Sensors J._, vol. 13, no. 7, pp. 2555-2562, 2013.
 12. Al Jazeera, "Broken wires, faulty renovation caused India bridge mishap: Probe," Feb. 2023; Associated Press, "Experts warned before Italy bridge collapse that cables were corroding," Aug. 2018.
 
 _All diagrams were drawn for this seminar, after the sources cited in their captions and text._

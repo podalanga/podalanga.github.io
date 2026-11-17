@@ -13,29 +13,30 @@ context: "Seminar for the Optical Instrumentation (OI) course. Presented by Kali
 series:
   title: Optical Instrumentation seminar
   part: 2
+updated: 2026-11-18
 draft: false
 ---
 
-This article is the written form of the second half of a seminar for our Optical Instrumentation (OI) course, presented on 20 October 2026. This half, on the industrial applications of the laser in manufacturing, was presented by **Kalidas J**; the first half, on [fibre optic sensors for structural health monitoring](/blog/fibre-optic-shm), was mine. The two halves were designed around a single idea. The coherent light that lets a fibre sense a picometre of strain in a bridge is the same light that, focused by a lens, cuts steel and welds car bodies.
+This article is the written form of the second half of a seminar for our Optical Instrumentation (OI) course, presented on 20 October 2026. This half, on the industrial applications of the laser in manufacturing, was presented by my co-presenter, **Kalidas J**; the first half, on [fibre optic sensors for structural health monitoring](/blog/fibre-optic-shm), was mine. The two halves were designed around a single idea. The coherent light that lets a fibre sense a picometre of strain in a bridge is the same light that, focused by a lens, cuts steel and welds car bodies.
 
 As with the first article, this one goes further than the seven-minute talk could. I have kept the worked examples and the reasoning behind each process.
 
 ## 1. A new form of energy
 
-Steen and Mazumder open their book _Laser Material Processing_ with an observation worth reflecting on. Each time humanity learned to control a new form of energy, manufacturing changed. Mechanical energy gave us tools; fire gave us bronze and iron; steam gave us the industrial revolution; electricity gave us almost everything else. The laser, they argue, gave us optical energy in large and precisely controllable quantities for the first time.
+W. M. Steen and J. Mazumder open their book _Laser Material Processing_ (reference 1), the main source for this article, with an observation worth reflecting on. Each time humanity learned to control a new form of energy, manufacturing changed. Mechanical energy gave us tools; fire gave us bronze and iron; steam gave us the industrial revolution; electricity gave us almost everything else. The laser, they argue, gave us optical energy in large and precisely controllable quantities for the first time.
 
 The history moved remarkably quickly.
 
 | Year | Event |
 | --- | --- |
-| 1916–17 | Einstein shows that stimulated emission must exist |
+| 1916-17 | Einstein shows that stimulated emission must exist |
 | 1954 | Townes builds the maser |
 | 16 May 1960 | Maiman operates the first laser, using ruby, at Hughes |
-| 1961 | Helium–neon laser (Javan, Bell Labs) |
+| 1961 | Helium-neon laser (Javan, Bell Labs) |
 | 1962 | Semiconductor laser (Hall, GE) |
 | 1964 | CO₂ laser (Patel) and Nd:YAG laser (Geusic), both at Bell Labs |
 | 1969 | First industrial installation: three lasers on an automobile application at General Motors' Delco division |
-| 1974–75 | Excimer laser |
+| 1974-75 | Excimer laser |
 | 1990s onward | Ytterbium fibre and disc lasers |
 
 A small story from that list illustrates how fast the field matured. Patel's first CO₂ laser, using pure CO₂, gave 1 mW at an efficiency of 0.0001%. Adding nitrogen raised the output to 200 mW. Adding helium raised it to 100 W at 6% efficiency, all within about a year.
@@ -90,7 +91,7 @@ Read the second form carefully, because it tells you how to design a processing 
 
 ### 3.2 Worked example: one watt
 
-Thyagarajan and Ghatak give an example that is genuinely surprising the first time you meet it. Take a modest **1 W** Nd:YAG laser at λ = 1.06 µm, with a beam radius of a = 1 cm and a lens of focal length f = 2 cm.
+K. Thyagarajan and A. Ghatak, in their textbook _Lasers: Fundamentals and Applications_ (reference 2), give an example that is genuinely surprising the first time you meet it. Take a modest **1 W** Nd:YAG laser at λ = 1.06 µm, with a beam radius of a = 1 cm and a lens of focal length f = 2 cm.
 
 > [!CALC]
 >
@@ -128,7 +129,7 @@ so the spot grows in direct proportion to M². This is a large part of why fibre
 
 ### 3.4 Advantages over conventional tools
 
-Wilson and Hawkes list the advantages of laser processing, and they follow directly from what we have just seen:
+Wilson and Hawkes, in their textbook _Optoelectronics: An Introduction_ (reference 3), list the advantages of laser processing, and they follow directly from what we have just seen:
 
 - the energy is **clean and contactless**, so there is no tool wear and no contamination;
 - it can be focused to a very **small area**, so heating is local and the surrounding material is left largely unaffected;
@@ -366,7 +367,7 @@ To return to where the seminar began: the same coherent light that lets a fibre 
 1. W. M. Steen and J. Mazumder, _Laser Material Processing_, 4th ed. London: Springer, 2010.
 2. K. Thyagarajan and A. Ghatak, _Lasers: Fundamentals and Applications_, 2nd ed. New York: Springer, 2010.
 3. J. Wilson and J. Hawkes, _Optoelectronics: An Introduction_, 3rd ed. London: Prentice Hall Europe, 1998.
-4. T. H. Maiman, "Stimulated optical radiation in ruby," _Nature_, vol. 187, pp. 493–494, 1960.
+4. T. H. Maiman, "Stimulated optical radiation in ruby," _Nature_, vol. 187, pp. 493-494, 1960.
 5. D. Belforte, "There's more to materials processing than fiber lasers," _Industrial Laser Solutions / Laser Focus World_, Aug. 2021.
 
 _All diagrams were drawn for this seminar, after the sources cited in their captions and text._
