@@ -229,7 +229,7 @@ const profilePage = {
                   {a.data.file ? (
                     <a
                       class="award-link"
-                      href={documentHref(a.data)}
+                      href={documentHref({ file: a.data.file, permalink: a.data.permalink })}
                       target="_blank"
                       rel="noopener"
                     >

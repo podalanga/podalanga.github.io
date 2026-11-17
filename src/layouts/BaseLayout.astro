@@ -144,7 +144,7 @@ const structuredData = {
         // A soft navigation swaps in the incoming document's <html>, which carries no
         // data-theme (the attribute only ever exists because this script set it). Without
         // this the attribute is dropped on every in-site link and the page falls back to
-        // the dark default — invisible to dark users, but it threw light users back to
+        // the dark default, invisible to dark users, but it threw light users back to
         // dark on every click. astro:after-swap runs before paint, so there's no flash.
         // This script is is:inline and does not re-run on swap, but the listener persists.
         document.addEventListener('astro:after-swap', function () {
