@@ -127,7 +127,19 @@ const structuredData = {
           }
         }
 
+        // Reader settings (text size, line width) are written as CSS variables on <html>, so the
+        // article never paints at the default size first. They are set by post-tools.ts.
+        function applyReader() {
+          try {
+            var r = JSON.parse(localStorage.getItem('pdl:reader') || 'null');
+            var root = document.documentElement.style;
+            if (r && typeof r.scale === 'number' && r.scale >= 0.8 && r.scale <= 1.5) root.setProperty('--reader-scale', String(r.scale));
+            if (r && typeof r.measure === 'string' && /^\d{2}(\.\d)?rem$/.test(r.measure)) root.setProperty('--reader-measure', r.measure);
+          } catch (e) {}
+        }
+
         applyTheme();
+        applyReader();
 
         // A soft navigation swaps in the incoming document's <html>, which carries no
         // data-theme (the attribute only ever exists because this script set it). Without
@@ -135,7 +147,10 @@ const structuredData = {
         // the dark default — invisible to dark users, but it threw light users back to
         // dark on every click. astro:after-swap runs before paint, so there's no flash.
         // This script is is:inline and does not re-run on swap, but the listener persists.
-        document.addEventListener('astro:after-swap', applyTheme);
+        document.addEventListener('astro:after-swap', function () {
+          applyTheme();
+          applyReader();
+        });
 
         document.documentElement.classList.add('eye-pending');
       })();
@@ -178,7 +193,9 @@ const structuredData = {
       import { initSectionIndex } from '../effects/section-index';
       import { initReadingObserver } from '../effects/reading-observer';
       import { initWatchMargins } from '../effects/watch-margins';
-       import { initInteractiveEmbeds } from '../effects/interactive-embed';
+      import { initInteractiveEmbeds } from '../effects/interactive-embed';
+      import { initBookmarks } from '../effects/bookmarks';
+      import { initPostTools } from '../effects/post-tools';
       import { initKonami } from '../effects/konami';
       import { initConsoleSigil } from '../effects/console-sigil';
 
@@ -207,6 +224,8 @@ const structuredData = {
           initReadingObserver(),
           initWatchMargins(),
           initInteractiveEmbeds(),
+          initBookmarks(),
+          initPostTools(),
         ];
         destroy = () => teardowns.forEach((fn) => fn());
       });

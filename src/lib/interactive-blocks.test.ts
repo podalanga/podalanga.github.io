@@ -79,4 +79,9 @@ describe('generic interactive embeds', () => {
     expect(html).toContain('<math');
     expect(html).not.toContain('katex-html');
   });
+  it('lets the host reveal every answer, and tells the page with a DOM event', () => {
+    const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
+    expect(doc).toContain('pdl-interactive:answers');
+    expect(doc).toContain("new CustomEvent('pdl:answers')");
+  });
 });

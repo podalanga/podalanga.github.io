@@ -1,0 +1,98 @@
+/* Printing (or saving as PDF) a blog post: the text, figures and equations on white, without the
+   site's chrome, the reading aids or the sandboxed interactive demos, which cannot print. */
+
+@media print {
+  /* Ink on paper: the site's tokens, forced to a plain light scheme whatever theme is on screen. */
+  html,
+  html[data-theme] {
+    --bg: #fff !important;
+    --bg-raised: #fff !important;
+    --bg-sunken: #fff !important;
+    --fg: #000 !important;
+    --fg-muted: #333 !important;
+    --fg-subtle: #555 !important;
+    --line: #bbb !important;
+    --line-strong: #888 !important;
+    --signal: #900 !important;
+    --on-signal: #fff !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .grain,
+  .scanlines,
+  .watch-margins,
+  #eye-loader,
+  #terminal,
+  .post-index,
+  .reader-tools,
+  .sec-tools,
+  .save,
+  [data-figure-zoom] {
+    display: none !important;
+  }
+
+  .post-layout {
+    display: block !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .article-body {
+    --article-measure: 100% !important;
+    --article-wide: 100% !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .article-body h2,
+  .article-body h3 {
+    break-after: avoid;
+  }
+
+  .article-body figure,
+  .article-body pre,
+  .article-body table,
+  .article-body .eq {
+    break-inside: avoid;
+  }
+
+  .article-body a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  /* Say where a link goes, since paper cannot be clicked. */
+  .article-body a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #333;
+    word-break: break-all;
+  }
+
+  /* An interactive demo is a sandboxed page; on paper it is its caption and a pointer online. */
+  .interactive-embed iframe {
+    display: none !important;
+  }
+
+  .interactive-embed {
+    border-style: dashed !important;
+  }
+
+  .interactive-embed figcaption {
+    border-top: 0 !important;
+    opacity: 1 !important;
+    font-size: 10pt !important;
+  }
+
+  .interactive-embed figcaption::after {
+    content: ' (open the post online to use it)';
+  }
+}

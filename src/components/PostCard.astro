@@ -20,7 +20,7 @@ const href = `/blog/${post.id}/`;
 const { minutes } = readingStats(post.body ?? '');
 ---
 
-<article class="post-card">
+<article class="post-card" data-post-slug={post.id}>
   <a class="cover" href={href} tabindex="-1" aria-hidden="true">
     {
       data.cover ? (
@@ -44,6 +44,7 @@ const { minutes } = readingStats(post.body ?? '');
     <p class="meta mono">
       <time datetime={data.date.toISOString()}>{formatDateLong(data.date)}</time>
       <span>{minutes} min read</span>
+      <span class="state" data-post-state hidden></span>
     </p>
     {
       data.tags.length > 0 && (
@@ -68,6 +69,16 @@ const { minutes } = readingStats(post.body ?? '');
     border: 1px solid var(--line);
     background: var(--bg-raised);
     transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  /* The Saved / In progress filter hides cards; `display` above would otherwise win. */
+  .post-card[hidden] {
+    display: none;
+  }
+
+  /* Filled in by bookmarks.ts from this browser's own saved posts and reading progress. */
+  .state {
+    color: var(--signal);
   }
 
   .post-card:hover,

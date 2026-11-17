@@ -15,6 +15,13 @@ const posts = (await getCollection('log', ({ data }) => (import.meta.env.PROD ? 
   <section class="container intro">
     <h1>Blog</h1>
     <p class="dek">A working log of builds, coursework and seminars. Follow it by <a href="/rss.xml">RSS</a>.</p>
+    <!-- Shown by bookmarks.ts; saved posts and progress live only in this browser. -->
+    <div class="filter mono" data-post-filter role="group" aria-label="Show posts" hidden>
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="saved" aria-pressed="false">Saved</button>
+      <button type="button" data-filter="progress" aria-pressed="false">In progress</button>
+    </div>
+    <p class="filter-empty mono" data-filter-empty hidden></p>
   </section>
 
   <section class="container posts">
@@ -48,6 +55,42 @@ const posts = (await getCollection('log', ({ data }) => (import.meta.env.PROD ? 
 
   .dek a:hover {
     color: var(--signal);
+  }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .filter[hidden],
+  .filter-empty[hidden] {
+    display: none;
+  }
+
+  .filter button {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    cursor: pointer;
+  }
+
+  .filter button:hover {
+    color: var(--fg);
+  }
+
+  .filter button[aria-pressed='true'] {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .filter-empty {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
   }
 
   /* Every post the same card, in an even grid: two or three across on a desktop, one on a phone. */

@@ -1,0 +1,282 @@
+---
+// Reader aids that float over a post: the "Continue from..." bar, and a dock with back to top and
+// the reading settings. bookmarks.ts shows the bar; post-tools.ts shows the dock. Both are hidden
+// until their script runs, so with JS off the post is exactly the text.
+---
+
+<div class="reader-tools">
+  <div class="resume" data-resume role="region" aria-label="Continue reading" hidden>
+    <p class="resume-text">Continue from <strong data-resume-label></strong>?</p>
+    <div class="resume-actions mono">
+      <button type="button" class="act primary" data-resume-go>Resume</button>
+      <button type="button" class="act" data-resume-dismiss>Dismiss</button>
+    </div>
+  </div>
+
+  <div class="dock" data-reader-dock hidden>
+    <div class="panel" id="reader-panel" data-reader-panel role="group" aria-label="Reading settings" hidden>
+      <div class="row">
+        <span class="lbl mono">Text size</span>
+        <div class="seg mono">
+          <button type="button" data-size="-1" aria-label="Smaller text">A-</button>
+          <output data-size-out aria-live="off">100%</output>
+          <button type="button" data-size="1" aria-label="Larger text">A+</button>
+        </div>
+      </div>
+      <div class="row">
+        <span class="lbl mono" id="reader-width-label">Line width</span>
+        <div class="seg mono" role="group" aria-labelledby="reader-width-label">
+          <button type="button" data-width="narrow" aria-pressed="false">Narrow</button>
+          <button type="button" data-width="default" aria-pressed="true">Default</button>
+          <button type="button" data-width="wide" aria-pressed="false">Wide</button>
+        </div>
+      </div>
+      <label class="row check" data-answers-row hidden>
+        <input type="checkbox" data-answers-toggle />
+        <span>Show all answers in the practice questions</span>
+      </label>
+      <div class="row foot">
+        <button type="button" class="act mono" data-reader-reset>Reset</button>
+      </div>
+      <p class="keys mono">
+        <kbd>[</kbd> <kbd>]</kbd> previous / next section<br />
+        <kbd>b</kbd> bookmark this section<br />
+        <kbd>?</kbd> this panel
+      </p>
+    </div>
+    <button type="button" class="tool mono" data-to-top hidden>Top</button>
+    <button
+      type="button"
+      class="tool mono"
+      data-reader-toggle
+      aria-expanded="false"
+      aria-controls="reader-panel"
+      aria-label="Reading settings"
+    >
+      Aa
+    </button>
+  </div>
+
+  <p class="live" data-tools-live aria-live="polite"></p>
+</div>
+
+<style>
+  .reader-tools [hidden] {
+    display: none !important;
+  }
+
+  .live {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ---- the "Continue from..." bar: bottom centre, above the dock on a phone ---- */
+
+  .resume {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    z-index: 36;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-5);
+    width: min(36rem, calc(100% - 2 * var(--gutter)));
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--signal);
+    background: var(--veil);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: var(--text-sm);
+  }
+
+  .resume-text {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .resume-text strong {
+    font-weight: 600;
+  }
+
+  .resume-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .act {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    cursor: pointer;
+  }
+
+  .act:hover:not(:disabled) {
+    color: var(--fg);
+  }
+
+  .act:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .act.primary {
+    border-color: var(--signal);
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+
+  /* ---- the dock: bottom right ---- */
+
+  .dock {
+    position: fixed;
+    right: var(--space-4);
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    z-index: 35;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+  }
+
+  .tool {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line-strong);
+    background: var(--veil);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .tool:hover,
+  .tool[aria-expanded='true'] {
+    color: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: min(19rem, calc(100vw - 2 * var(--space-4)));
+    padding: var(--space-4);
+    border: 1px solid var(--line-strong);
+    background: var(--bg-raised);
+    font-size: var(--text-sm);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .lbl {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+
+  .seg {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--line-strong);
+    font-size: var(--text-xs);
+  }
+
+  .seg button {
+    padding: var(--space-1) var(--space-2);
+    border: 0;
+    background: none;
+    color: var(--fg-muted);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .seg button:hover:not(:disabled) {
+    color: var(--fg);
+  }
+
+  .seg button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .seg button[aria-pressed='true'] {
+    background: var(--signal);
+    color: var(--on-signal);
+  }
+
+  .seg output {
+    display: grid;
+    place-items: center;
+    min-width: 3.2rem;
+    color: var(--fg);
+    border-inline: 1px solid var(--line-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .check {
+    justify-content: flex-start;
+    align-items: flex-start;
+    cursor: pointer;
+    line-height: var(--leading-snug);
+  }
+
+  .check input {
+    margin-top: 0.2em;
+    accent-color: var(--signal);
+  }
+
+  .foot {
+    justify-content: flex-end;
+  }
+
+  .keys {
+    margin: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+    font-size: var(--text-xs);
+    line-height: 1.9;
+    color: var(--fg-muted);
+  }
+
+  .keys kbd {
+    padding: 0 0.4em;
+    border: 1px solid var(--line-strong);
+    font: inherit;
+    color: var(--fg);
+  }
+
+  .tool:focus-visible,
+  .act:focus-visible,
+  .seg button:focus-visible,
+  .check input:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool {
+      transition: none;
+    }
+  }
+</style>

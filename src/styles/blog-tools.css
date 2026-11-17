@@ -1,0 +1,89 @@
+/* The copy-link and bookmark buttons that post-tools.ts and bookmarks.ts add after each h2/h3.
+   They live inside Markdown-rendered headings, so these rules are global and scoped to the article. */
+
+.article-body .sec-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variation-settings: normal;
+}
+
+/* A section number sits above an h2 as its own block line; keep the buttons with the title. */
+.article-body h2 .sec-tools {
+  position: relative;
+  top: -0.1em;
+}
+
+.article-body .sec-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+/* Shown when the heading is hovered or anything in it has focus; a bookmark stays visible. */
+.article-body h2:hover .sec-btn,
+.article-body h3:hover .sec-btn,
+.article-body h2:focus-within .sec-btn,
+.article-body h3:focus-within .sec-btn,
+.article-body .sec-btn[aria-pressed='true'] {
+  opacity: 1;
+}
+
+/* No hover on touch screens: keep them present but quiet. */
+@media (hover: none) {
+  .article-body .sec-btn {
+    opacity: 0.55;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+.article-body .sec-btn:hover {
+  color: var(--fg);
+}
+
+.article-body .sec-btn:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--signal);
+  outline-offset: 1px;
+}
+
+.article-body .sec-btn[data-sec-btn='bookmark'] svg path {
+  fill: none;
+}
+
+.article-body .sec-btn[aria-pressed='true'] {
+  color: var(--signal);
+}
+
+.article-body .sec-btn[aria-pressed='true'] svg path {
+  fill: currentColor;
+}
+
+/* The link button turns signal red for a moment once the link is copied. */
+.article-body .sec-btn[data-done] {
+  color: var(--signal);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-body .sec-btn {
+    transition: none;
+  }
+}

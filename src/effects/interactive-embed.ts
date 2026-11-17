@@ -25,6 +25,16 @@ export function initInteractiveEmbeds(): () => void {
   }
   const heightCap = 2200;
   let active = true;
+  let showAnswers = false;
+  const sendAnswers = (frame: HTMLIFrameElement): void => {
+    frame.contentWindow?.postMessage({ type: 'pdl-interactive:answers', show: showAnswers }, '*');
+  };
+  // The reader-tools "Show all answers" switch (post-tools.ts) announces itself on `window`.
+  const onAnswers = (event: Event): void => {
+    showAnswers = (event as CustomEvent<{ show?: boolean }>).detail?.show === true;
+    for (const frame of iframes) sendAnswers(frame);
+  };
+  window.addEventListener('pdl:answers', onAnswers);
   const applyTheme = (frame: HTMLIFrameElement): void => {
     const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
     frame.contentWindow?.postMessage({ type: 'pdl-interactive:theme', theme }, '*');
@@ -44,6 +54,7 @@ export function initInteractiveEmbeds(): () => void {
     }
     if (type === 'pdl-interactive:ready') {
       applyTheme(frame);
+      if (showAnswers) sendAnswers(frame);
     } else if (type === 'pdl-interactive:resize' && typeof height === 'number' && Number.isFinite(height)) {
       const next = Math.ceil(Math.min(heightCap, Math.max(160, height + 4)));
       if (Math.abs(frame.getBoundingClientRect().height - next) > 4) frame.style.height = `${next}px`;
@@ -67,6 +78,7 @@ export function initInteractiveEmbeds(): () => void {
     active = false;
     observer.disconnect();
     window.removeEventListener('message', onMessage);
+    window.removeEventListener('pdl:answers', onAnswers);
     for (const frame of iframes) frame.removeEventListener('load', onLoad);
     sourceMap.clear();
   };

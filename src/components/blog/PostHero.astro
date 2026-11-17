@@ -62,6 +62,12 @@ const byline = authors.length > 1 ? `${authors.slice(0, -1).join(', ')} and ${au
 
   {context && <p class="context">{context}</p>}
 
+  <!-- Revealed by bookmarks.ts; a saved post is remembered in this browser only. -->
+  <button type="button" class="save mono" data-save-post aria-pressed="false" hidden>
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M4 1.8h8v12.4L8 11.4l-4 2.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+    <span data-save-label>Save post</span>
+  </button>
+
   {
     tags.length > 0 && (
       <ul class="tags" aria-label="Tags">
@@ -134,6 +140,45 @@ const byline = authors.length > 1 ? `${authors.slice(0, -1).join(', ')} and ${au
     max-width: 62ch;
     font-size: var(--text-sm);
     color: var(--fg-muted);
+  }
+
+  .save {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .save[hidden] {
+    display: none;
+  }
+
+  .save svg path {
+    fill: none;
+  }
+
+  .save:hover {
+    color: var(--fg);
+    border-color: var(--fg-muted);
+  }
+
+  .save[aria-pressed='true'] {
+    color: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .save[aria-pressed='true'] svg path {
+    fill: currentColor;
   }
 
   .tags {

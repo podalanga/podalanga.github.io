@@ -64,6 +64,11 @@ const BRIDGE = String.raw`<script>
   let tick=0;
   const schedule=()=>{if(tick)return;tick=requestAnimationFrame(()=>{tick=0;send()})};
   addEventListener('message',e=>{
+    if(e.source!==parent||!e.data||e.data.type!=='pdl-interactive:answers')return;
+    document.documentElement.dataset.answers=e.data.show?'all':'';
+    document.dispatchEvent(new CustomEvent('pdl:answers'));
+  });
+  addEventListener('message',e=>{
     if(e.source!==parent||!e.data||e.data.type!=='pdl-interactive:theme')return;
     document.documentElement.dataset.theme=e.data.theme==='light'?'light':'dark';
     schedule();

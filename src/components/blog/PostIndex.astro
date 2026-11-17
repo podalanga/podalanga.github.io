@@ -57,6 +57,10 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
     </summary>
 
     <div class="index-list">
+      <div class="saved" data-saved-sections hidden>
+        <p class="saved-title mono">Bookmarks</p>
+        <ol data-saved-list></ol>
+      </div>
       <ol class="chapters">
         {
           chapters.map((c) => (
@@ -277,6 +281,43 @@ const label = (e: TocEntry) => (e.number ? `${e.number} ${e.text}` : e.text);
     box-shadow: 0 0 0 3px var(--bg);
     animation: pulse 2.4s var(--ease-in-out) infinite;
     --pulse-trough: 0.35;
+  }
+
+  /* Bookmarked sections (bookmarks.ts): a list above the index, and a mark on each linked entry. */
+  .saved[hidden] {
+    display: none;
+  }
+
+  .saved {
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .saved-title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-normal);
+    color: var(--signal);
+  }
+
+  .saved :global(.saved-link) {
+    display: block;
+    padding-block: 0.25rem;
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .saved :global(.saved-link:hover) {
+    color: var(--fg);
+  }
+
+  a[data-bookmarked] .text::after {
+    content: ' \2605';
+    color: var(--signal);
+    font-size: 0.8em;
   }
 
   .sections {

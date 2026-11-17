@@ -2,10 +2,11 @@
    src/lib/blog-article.ts: numbered headings, figures, equations, worked examples, table boxes. */
 
 .article-body {
-  --article-measure: 40rem;
+  /* The reader's own settings (post-tools.ts) arrive as --reader-* on <html>. */
+  --article-measure: var(--reader-measure, 40rem);
   /* Figures and tables may run past the text into the right-hand margin. */
   --article-wide: min(100%, 54rem);
-  --article-size: clamp(1.0625rem, 1rem + 0.22vw, 1.1875rem);
+  --article-size: calc(clamp(1.0625rem, 1rem + 0.22vw, 1.1875rem) * var(--reader-scale, 1));
 
   font-size: var(--article-size);
   line-height: 1.72;
