@@ -1,7 +1,7 @@
 ---
 title: "Robotics: An Interactive Notebook from Frames to Control"
 date: 2026-11-17
-description: "A ten-chapter study guide to robot kinematics, Jacobians, dynamics, forces, and feedback control—with visual experiments and self-check questions."
+description: "A ten-chapter study guide to robot kinematics, Jacobians, dynamics, forces, and feedback control, with visual experiments and self-check questions."
 tags:
   - Robotics
   - Kinematics
@@ -59,11 +59,11 @@ network: off
 
 > [!KEY] Robotic Manipulation
 >
-> Source wording — verbatim · PPT Part I · slide 3
+> Source wording: verbatim · PPT Part I · slide 3
 >
 > Moving objects and tools around in space through a mechanism.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 Manipulation moves objects and tools through a mechanism to perform a task. A tool’s **pose is specified by position and orientation**. Motion analysis uses linear/angular velocity and acceleration; loading and dynamic analysis use forces and torques.
 
@@ -91,23 +91,23 @@ The first row shows the forward command path; the second shows the feedback path
 
 > [!KEY] Position
 >
-> Source wording — verbatim · PPT Part I · slide 5
+> Source wording: verbatim · PPT Part I · slide 5
 >
 > With respect to the Base Coordinate System, a point can be located with a 3 × 1 position vector:
 
 > [!KEY] Orientation of a rigid body
 >
-> Source wording — verbatim · PPT Part I · slide 8
+> Source wording: verbatim · PPT Part I · slide 8
 >
 > Orientation of a Rigid Body is described by an attached Coordinate System.
 
 > [!KEY] Description of Frame
 >
-> Source wording — verbatim · PPT Part I · slide 10
+> Source wording: verbatim · PPT Part I · slide 10
 >
 > Reference Coordinate System with both Position Vector and Rotation Matrix.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 ${}^A p=[p_x,p_y,p_z]^T$ gives a point’s coordinates in frame $\{A\}$. Its components are projections on the frame axes. A rigid body’s orientation is described by an **attached coordinate frame**.
 
@@ -257,17 +257,17 @@ _Figure 1. Original geometry · Part I, slide 17. Common normal aᵢ₋₁, twis
 
 > [!KEY] Kinematics
 >
-> Source wording — verbatim · PPT Part I · slide 15
+> Source wording: verbatim · PPT Part I · slide 15
 >
 > Motion without considering the Forces which cause it.
 
 > [!KEY] Denavit–Hartenberg description
 >
-> Source wording — verbatim · PPT Part I · slide 16
+> Source wording: verbatim · PPT Part I · slide 16
 >
 > A Robot can be described kinematically by four quantities for each link. Two describe the Link itself and two describe its connection to the neighbouring link.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 Kinematics studies position, velocity, acceleration, and higher motion derivatives without the forces causing them. Forward kinematics maps joint variables to end-effector pose relative to the base.
 
@@ -355,11 +355,11 @@ Include a final fixed tool transform if the tool origin is offset from frame $n$
 
 > [!KEY] Forward-kinematics objective
 >
-> Source wording — verbatim · PPT Part I · slide 15
+> Source wording: verbatim · PPT Part I · slide 15
 >
 > Objective →To express the Position and Orientation of the end-effector of the Robot relative to its base as a function of the Joint Variables.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 For link lengths $l_1,l_2$, with joint 2 measured relative to link 1:
 
@@ -434,11 +434,11 @@ Find joint configurations and decide whether a pose is possible.
 
 > [!KEY] Inverse Kinematics Problem
 >
-> Source wording — verbatim · PPT Part I · slide 26
+> Source wording: verbatim · PPT Part I · slide 26
 >
 > Given the desired position and orientation of the tool relative to the base, how to compute the set of joint angles which will achieve this desired result?
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 Given target $(x,y)$, apply the cosine rule:
 
@@ -488,23 +488,23 @@ Use $\operatorname{atan2}$, rather than a single-argument inverse tangent, to pr
 
 > [!KEY] Workspace
 >
-> Source wording — verbatim · PPT Part I · slide 27
+> Source wording: verbatim · PPT Part I · slide 27
 >
 > The volume of space which the end-effector can reach defines the Workspace of the Robot.
 
 > [!KEY] Dextrous Workspace
 >
-> Source wording — verbatim · PPT Part I · slide 27
+> Source wording: verbatim · PPT Part I · slide 27
 >
 > It is the volume of space that the end-effector can reach with all orientations. At each point, the end-effector can be arbitrarily oriented.
 
 > [!KEY] Reachable Workspace
 >
-> Source wording — verbatim · PPT Part I · slide 27
+> Source wording: verbatim · PPT Part I · slide 27
 >
 > It is the volume of space that the end-effector can reach with at least one orientation.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 **Reachable workspace:** points reachable in at least one orientation. **Dexterous workspace:** points reachable with every orientation in the relevant task space. Dexterous workspace is a subset of reachable workspace.
 
@@ -532,11 +532,11 @@ Joint limits can shrink the region or remove branches. With full rotation of joi
 
 > [!KEY] Solvable manipulator
 >
-> Source wording — verbatim · PPT Part I · slide 33
+> Source wording: verbatim · PPT Part I · slide 33
 >
 > A Robotic Manipulator is solvable if the joint variables can be determined by an algorithm which allows one to determine all the sets of joint variables associated with a given position and orientation.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 A solvable manipulator has an algorithm that determines the joint configurations associated with a specified attainable pose. Existence depends on workspace; multiplicity depends on geometry, DOF, and joint limits.
 
@@ -640,11 +640,11 @@ Keep the differentiation frame separate from the expression frame.
 
 > [!KEY] Angular Velocity
 >
-> Source wording — verbatim · PPT Part II · slide 5
+> Source wording: verbatim · PPT Part II · slide 5
 >
 > Angular Velocity describes the rotational motion of a Frame.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 ${}^B V_P=d({}^B p)/dt$ is the velocity differentiated relative to frame B. A second frame label may specify where that resulting vector is expressed:
 
@@ -801,17 +801,17 @@ The local map from joint rates to tool velocity.
 
 > [!KEY] Jacobian
 >
-> Source wording — verbatim · PPT Part II · slide 15
+> Source wording: verbatim · PPT Part II · slide 15
 >
 > Jacobian is a multidimensional form of the derivative.
 
 > [!KEY] Jacobian in robotics
 >
-> Source wording — verbatim · PPT Part II · slide 17
+> Source wording: verbatim · PPT Part II · slide 17
 >
 > In the context of Robotics, Jacobian relates Joint Velocities to Cartesian Velocities of the tip of the Robot,
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 $$
 Y=F(X),\quad\delta Y=J(X)\delta X,\quad J_{ij}=\frac{\partial f_i}{\partial x_j},\quad\dot Y=J(X)\dot X
@@ -895,23 +895,23 @@ Use the two-link diagram in §2.3: select **Jacobian → velocity**, set a joint
 
 > [!KEY] Singularities
 >
-> Source wording — verbatim · PPT Part II · slide 19
+> Source wording: verbatim · PPT Part II · slide 19
 >
 > Most Robotic Manipulators have the values of θ where the Jacobian becomes singular. Such locations are called Singularities.
 
 > [!KEY] Workspace-Boundary Singularities
 >
-> Source wording — verbatim · PPT Part II · slide 19
+> Source wording: verbatim · PPT Part II · slide 19
 >
 > Workspace-Boundary Singularities occur when the Robotic Manipulator is fully stretched out or folded back on itself in such a way that the tip is at of very near the boundary of the Workspace.
 
 > [!KEY] Workspace-Interior Singularities
 >
-> Source wording — verbatim · PPT Part II · slide 19
+> Source wording: verbatim · PPT Part II · slide 19
 >
 > Workspace-Interior Singularities occur away from the Workspace boundary. Generally, they are caused by a lining up of 2 or more Joint axes.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 A singularity is a configuration where J loses rank relative to its normal maximum. Some task-space velocity directions become unavailable, regardless of the chosen joint rates.
 
@@ -953,7 +953,7 @@ network: off
 <button class="btn" type="button" id="reveal" aria-expanded="false">Show answer</button>
 <p id="answer" class="answer" hidden></p>
 <script>
-(()=>{const items=[{"q": "Derive the planar 2R position Jacobian.", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording — verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application — not a source quotation\u003c/p\u003eDifferentiate x and y with respect to both angles.\\[J=\\begin{bmatrix}-l_1s_1-l_2s_{12}\u0026-l_2s_{12}\\\\l_1c_1+l_2c_{12}\u0026l_2c_{12}\\end{bmatrix}\\]Then \\([\\dot x,\\dot y]^T=J\\dot q\\)."}, {"q": "Where is the planar 2R position task singular?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording — verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application — not a source quotation\u003c/p\u003e\\(\\det J=l_1l_2\\sin\\theta_2\\). For nonzero lengths, singularity occurs at \\(\\theta_2=0\\) or \\(\\pi\\). At a straight arm, instantaneous radial tool velocity is unavailable."}, {"q": "What is the size of a spatial geometric Jacobian for a 7-joint arm?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording — verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application — not a source quotation\u003c/p\u003e\\(6\\times7\\): three linear and three angular velocity rows, one column per joint. It has no ordinary matrix inverse."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;$('#answer').hidden=true;$('#reveal').textContent='Show answer';$('#reveal').setAttribute('aria-expanded','false');$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});render()})();
+(()=>{const items=[{"q": "Derive the planar 2R position Jacobian.", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003eDifferentiate x and y with respect to both angles.\\[J=\\begin{bmatrix}-l_1s_1-l_2s_{12}\u0026-l_2s_{12}\\\\l_1c_1+l_2c_{12}\u0026l_2c_{12}\\end{bmatrix}\\]Then \\([\\dot x,\\dot y]^T=J\\dot q\\)."}, {"q": "Where is the planar 2R position task singular?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003e\\(\\det J=l_1l_2\\sin\\theta_2\\). For nonzero lengths, singularity occurs at \\(\\theta_2=0\\) or \\(\\pi\\). At a straight arm, instantaneous radial tool velocity is unavailable."}, {"q": "What is the size of a spatial geometric Jacobian for a 7-joint arm?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"jacobian\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 15\u003c/p\u003e\u003cp class=\"definition-term\"\u003eJacobian\u003c/p\u003e\u003cblockquote\u003eJacobian is a multidimensional form of the derivative.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003e\\(6\\times7\\): three linear and three angular velocity rows, one column per joint. It has no ordinary matrix inverse."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;$('#answer').hidden=true;$('#reveal').textContent='Show answer';$('#reveal').setAttribute('aria-expanded','false');$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});render()})();
 </script>
 ```
 
@@ -1172,11 +1172,11 @@ Compute the forces and moments required by motion.
 
 > [!KEY] Dynamics
 >
-> Source wording — verbatim · PPT Part II · slide 27
+> Source wording: verbatim · PPT Part II · slide 27
 >
 > The Forces required to cause the Motion constitutes the Dynamics.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 **Forward dynamics (analysis):** from applied effort and current state, find acceleration and integrate motion. **Inverse dynamics (design):** from $q,\dot q,\ddot q$, find the required effort.
 
@@ -1262,17 +1262,17 @@ $$
 
 > [!KEY] Inertia Tensor
 >
-> Source wording — verbatim · PPT Part II · slide 31
+> Source wording: verbatim · PPT Part II · slide 31
 >
 > Inertia Tensor is the generalization of the scalar Moment of Inertia.
 
 > [!KEY] Principal Axes and Principal Moments
 >
-> Source wording — verbatim · PPT Part II · slide 33
+> Source wording: verbatim · PPT Part II · slide 33
 >
 > The axes of the Reference Frame when so aligned are called the Principal Axes. The corresponding Mass Moments are the Principal Moments of Inertia.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 $$
 I=\begin{bmatrix}I_{xx}&-I_{xy}&-I_{xz}\\-I_{xy}&I_{yy}&-I_{yz}\\-I_{xz}&-I_{yz}&I_{zz}\end{bmatrix}
@@ -1491,7 +1491,7 @@ network: off
 <button class="btn" type="button" id="reveal" aria-expanded="false">Show answer</button>
 <p id="answer" class="answer" hidden></p>
 <script>
-(()=>{const items=[{"q": "Name the five terms in the general point-acceleration equation.", "a": "Origin translation; relative acceleration; Coriolis \\(2\\omega\\times v_{rel}\\); tangential \\(\\alpha\\times r\\); centripetal \\(\\omega\\times(\\omega\\times r)\\). All vectors must be in one expression frame."}, {"q": "For the point in Q14, if angular speed is constant, what is its acceleration?", "a": "With \\(r=(0.4,0,0)\\) m and \\(\\omega=(0,0,3)\\) rad/s:\\[a=\\omega\\times(\\omega\\times r)=(-3.6,0,0)\\text{ m/s}^2\\]It points toward the rotation axis."}, {"q": "What do principal axes and moments represent?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"principal\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording — verbatim · PPT Part II · slide 33\u003c/p\u003e\u003cp class=\"definition-term\"\u003ePrincipal Axes and Principal Moments\u003c/p\u003e\u003cblockquote\u003eThe axes of the Reference Frame when so aligned are called the Principal Axes. The corresponding Mass Moments are the Principal Moments of Inertia.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application — not a source quotation\u003c/p\u003eThe principal axes are eigenvectors of the symmetric inertia tensor; principal moments are its eigenvalues. In that orientation the off-diagonal products of inertia are zero."}, {"q": "State the outward and inward Newton–Euler passes.", "a": "Outward: compute link angular velocity, angular acceleration, origin/COM acceleration, and inertial F and N. Inward: combine terminal and inertial loads to get interaction forces/moments; project on joint axes to obtain actuator effort."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;$('#answer').hidden=true;$('#reveal').textContent='Show answer';$('#reveal').setAttribute('aria-expanded','false');$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});render()})();
+(()=>{const items=[{"q": "Name the five terms in the general point-acceleration equation.", "a": "Origin translation; relative acceleration; Coriolis \\(2\\omega\\times v_{rel}\\); tangential \\(\\alpha\\times r\\); centripetal \\(\\omega\\times(\\omega\\times r)\\). All vectors must be in one expression frame."}, {"q": "For the point in Q14, if angular speed is constant, what is its acceleration?", "a": "With \\(r=(0.4,0,0)\\) m and \\(\\omega=(0,0,3)\\) rad/s:\\[a=\\omega\\times(\\omega\\times r)=(-3.6,0,0)\\text{ m/s}^2\\]It points toward the rotation axis."}, {"q": "What do principal axes and moments represent?", "a": "\u003csection class=\"source-definitions\" aria-label=\"Original source definitions\"\u003e\u003cdiv class=\"source-definition\" data-definition=\"principal\"\u003e\u003cp class=\"definition-meta\"\u003eSource wording: verbatim · PPT Part II · slide 33\u003c/p\u003e\u003cp class=\"definition-term\"\u003ePrincipal Axes and Principal Moments\u003c/p\u003e\u003cblockquote\u003eThe axes of the Reference Frame when so aligned are called the Principal Axes. The corresponding Mass Moments are the Principal Moments of Inertia.\u003c/blockquote\u003e\u003c/div\u003e\u003c/section\u003e\u003cp class=\"explanation-label\"\u003eExplanation / application, not a source quotation\u003c/p\u003eThe principal axes are eigenvectors of the symmetric inertia tensor; principal moments are its eigenvalues. In that orientation the off-diagonal products of inertia are zero."}, {"q": "State the outward and inward Newton–Euler passes.", "a": "Outward: compute link angular velocity, angular acceleration, origin/COM acceleration, and inertial F and N. Inward: combine terminal and inertial loads to get interaction forces/moments; project on joint axes to obtain actuator effort."}], $=s=>document.querySelector(s);let i=0;function render(){const q=items[i];$('#pos').textContent=`Question ${i+1} of ${items.length}`;$('#question').textContent=q.q;$('#answer').textContent=q.a;$('#answer').hidden=true;$('#reveal').textContent='Show answer';$('#reveal').setAttribute('aria-expanded','false');$('#prev').disabled=i===0;$('#next').disabled=i===items.length-1;}$('#prev').addEventListener('click',()=>{i=Math.max(0,i-1);render()});$('#next').addEventListener('click',()=>{i=Math.min(items.length-1,i+1);render()});$('#reveal').addEventListener('click',()=>{const hidden=$('#answer').hidden;$('#answer').hidden=!hidden;$('#reveal').textContent=hidden?'Hide answer':'Show answer';$('#reveal').setAttribute('aria-expanded',String(hidden));});render()})();
 </script>
 ```
 
@@ -1699,11 +1699,11 @@ The two velocity contributions together equal h above. This organization separat
 
 > [!KEY] Lagrangian
 >
-> Source wording — verbatim · PPT Part II · slide 56
+> Source wording: verbatim · PPT Part II · slide 56
 >
 > Lagrangian is a scalar function which is defined as the difference between the Kinetic and Potential Energy of a Mechanical System.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 $$
 K=\sum_i\left(\tfrac12m_iv_{Ci}^Tv_{Ci}+\tfrac12\omega_i^TI_{Ci}\omega_i\right)=\tfrac12\dot q^TM(q)\dot q
@@ -1721,7 +1721,7 @@ Equivalent energy form: $\tau_i=\frac{d}{dt}\frac{\partial K}{\partial\dot q_i}-
 
 **Exam workflow:** locate COMs → derive COM velocities → sum K and P → form L → apply the equation for each joint → group terms into $M\ddot q+h+G$.
 
-> [!EXAMPLE] Supporting energy check for the same 2R model — not an extra PPT derivation
+> [!EXAMPLE] Supporting energy check for the same 2R model, not an extra PPT derivation
 >
 > $$
 > K=\tfrac12(m_1+m_2)l_1^2\dot \theta_1^2+\tfrac12m_2l_2^2(\dot \theta_1+\dot \theta_2)^2+m_2l_1l_2c_2\dot \theta_1(\dot \theta_1+\dot \theta_2)
@@ -1924,17 +1924,17 @@ input{accent-color:var(--accent)}.g{display:grid;grid-template-columns:4rem 1fr 
 
 > [!KEY] Stability in the context of Robotics
 >
-> Source wording — verbatim · PPT Part III · slide 6
+> Source wording: verbatim · PPT Part III · slide 6
 >
 > In the context of Robotics, a System is said to be Stable if the errors remain in a small region when achieving the desired Trajectories even in the presence of disturbances.
 
 > [!KEY] Independent Joint Control
 >
-> Source wording — verbatim · PPT Part III · slide 7
+> Source wording: verbatim · PPT Part III · slide 7
 >
 > This is an approximate method which assumes each Joint as independent System →Independent Joint Control.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 A manipulator is nonlinear and coupled. Joint sensors measure q and sometimes $\dot q$; actuators apply a torque vector. The trajectory generator supplies $q_d,\dot q_d,\ddot q_d$.
 
@@ -2029,11 +2029,11 @@ _Figure 11. Mass-Spring-Damper System._
 
 > [!KEY] Position Regulation System
 >
-> Source wording — verbatim · PPT Part III · slide 13
+> Source wording: verbatim · PPT Part III · slide 13
 >
 > It simply attempts to maintain the Position of the block at a fixed value regardless of the disturbance Forces applied to the block.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 $$
 m\ddot x+b\dot x+kx=f,\qquad f=-k_px-k_v\dot x
@@ -2087,11 +2087,11 @@ _Figure 13. Closed-Loop System._
 
 > [!KEY] Model based part and Servo part
 >
-> Source wording — verbatim · PPT Part III · slide 15
+> Source wording: verbatim · PPT Part III · slide 15
 >
 > The Model based part contains the parameters of the System and the Servo part is free from the parameters.
 
-Explanation / application — not a source quotation
+Explanation / application, not a source quotation
 
 Partition the input into a model-based part and a servo part:
 
