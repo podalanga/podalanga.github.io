@@ -39,6 +39,11 @@ export function initInteractiveEmbeds(): () => void {
     const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
     frame.contentWindow?.postMessage({ type: 'pdl-interactive:theme', theme }, '*');
   };
+  const syncFrame = (frame: HTMLIFrameElement): void => {
+    applyTheme(frame);
+    frame.contentWindow?.postMessage({ type: 'pdl-interactive:math-ready' }, '*');
+    if (showAnswers) sendAnswers(frame);
+  };
   const onMessage = (event: MessageEvent): void => {
     if (!active || !event.source || typeof event.data !== 'object' || event.data === null) return;
     const frame = sourceMap.get(event.source as Window);
@@ -53,8 +58,7 @@ export function initInteractiveEmbeds(): () => void {
       return;
     }
     if (type === 'pdl-interactive:ready') {
-      applyTheme(frame);
-      if (showAnswers) sendAnswers(frame);
+      syncFrame(frame);
     } else if (type === 'pdl-interactive:resize' && typeof height === 'number' && Number.isFinite(height)) {
       const next = Math.ceil(Math.min(heightCap, Math.max(160, height + 4)));
       if (Math.abs(frame.getBoundingClientRect().height - next) > 4) frame.style.height = `${next}px`;
@@ -64,16 +68,17 @@ export function initInteractiveEmbeds(): () => void {
     const target = event.currentTarget;
     if (target instanceof HTMLIFrameElement && target.contentWindow) {
       sourceMap.set(target.contentWindow, target);
-      applyTheme(target);
+      syncFrame(target);
     }
   };
+  // Listen before announcing readiness, including for frames that loaded before us.
+  window.addEventListener('message', onMessage);
   for (const frame of iframes) {
     frame.addEventListener('load', onLoad);
-    applyTheme(frame);
+    syncFrame(frame);
   }
   const observer = new MutationObserver(() => { for (const frame of iframes) applyTheme(frame); });
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  window.addEventListener('message', onMessage);
   return () => {
     active = false;
     observer.disconnect();

@@ -89,9 +89,10 @@ const BRIDGE = String.raw`<script>
     if(typeof e.data.html==='string'&&e.data.html){el.innerHTML=e.data.html;el.removeAttribute('data-math-pending')}
     schedule();
   });
-  let mathTick=0;
+  let mathTick=0,mathReady=false;
   const typeset=()=>{
     mathTick=0;
+    if(!mathReady)return;
     const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{
       const t=n.parentElement&&n.parentElement.closest('script,style,textarea,[data-math-pending],math');
       return t||!n.nodeValue||n.nodeValue.indexOf('\\')<0&&n.nodeValue.indexOf('$')<0?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
@@ -111,6 +112,12 @@ const BRIDGE = String.raw`<script>
     }
   };
   const scheduleMath=()=>{if(!mathTick)mathTick=requestAnimationFrame(typeset)};
+  // A lazy frame can run before its host load handler, or before page hydration.
+  // Keep the source intact until the host confirms it can receive math requests.
+  addEventListener('message',e=>{
+    if(e.source!==parent||!e.data||e.data.type!=='pdl-interactive:math-ready')return;
+    mathReady=true;scheduleMath();
+  });
   const startMath=()=>{scheduleMath();new MutationObserver(scheduleMath).observe(document.body,{childList:true,subtree:true,characterData:true})};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startMath);else startMath();
   parent.postMessage({type:'pdl-interactive:ready'},'*');

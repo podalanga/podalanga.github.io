@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { runInNewContext } from 'node:vm';
 import katex from 'katex';
 import type { Root } from 'hast';
 import { makeInteractiveDocument, parseInteractive, transformInteractiveBlocks } from './interactive-blocks';
@@ -83,6 +84,59 @@ describe('generic interactive embeds', () => {
     const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
     expect(doc).toContain('pdl-interactive:answers');
     expect(doc).toContain("new CustomEvent('pdl:answers')");
+  });
+  it('waits for the host before sending math, then renders its response', () => {
+    const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
+    const script = [...doc.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)![1];
+    const messages: Record<string, unknown>[] = [];
+    const listeners: Record<string, ((event: unknown) => void)[]> = {};
+    const ticks: (() => void)[] = [];
+    const spans: { textContent: string; innerHTML?: string; setAttribute: () => void; removeAttribute: () => void }[] = [];
+    const node = {
+      nodeValue: String.raw`Then \(J\dot q\).`,
+      parentElement: { closest: () => null },
+      parentNode: { replaceChild: () => { nodes = []; } },
+    };
+    let nodes = [node];
+    const parent = { postMessage: (message: Record<string, unknown>) => messages.push(message) };
+    runInNewContext(script, {
+      parent,
+      addEventListener: (name: string, listener: (event: unknown) => void) => (listeners[name] ??= []).push(listener),
+      requestAnimationFrame: (callback: () => void) => ticks.push(callback),
+      MutationObserver: class { observe() {} },
+      NodeFilter: { SHOW_TEXT: 4, FILTER_REJECT: 2, FILTER_ACCEPT: 1 },
+      document: {
+        readyState: 'complete', body: {}, documentElement: {},
+        createTreeWalker: () => {
+          let i = 0;
+          return { currentNode: node, nextNode: () => nodes[i++] };
+        },
+        createDocumentFragment: () => ({ appendChild() {} }),
+        createTextNode: (textContent: string) => ({ textContent }),
+        createElement: () => {
+          const span = { textContent: '', innerHTML: '', setAttribute() {}, removeAttribute() {} };
+          spans.push(span);
+          return span;
+        },
+      },
+    });
+    const flush = () => { while (ticks.length) ticks.shift()!(); };
+    const receive = (data: unknown, source: unknown = parent) => {
+      listeners.message.forEach((listener) => listener({ source, data }));
+      flush();
+    };
+    flush();
+    expect(messages.filter((m) => m.type === 'pdl-interactive:math')).toHaveLength(0);
+    receive({ type: 'pdl-interactive:math-ready' }, {});
+    expect(spans).toHaveLength(0);
+    receive({ type: 'pdl-interactive:math-ready' });
+    const request = messages.find((m) => m.type === 'pdl-interactive:math')!;
+    expect(request).toMatchObject({ tex: String.raw`J\dot q`, display: false });
+    const html = katex.renderToString(String(request.tex), { output: 'mathml' });
+    receive({ type: 'pdl-interactive:math-result', id: request.id, html });
+    expect(spans[0].innerHTML).toContain('<math');
+    receive({ type: 'pdl-interactive:math-ready' });
+    expect(messages.filter((m) => m.type === 'pdl-interactive:math')).toHaveLength(1);
   });
   it('finds inline $...$ and display math in a block, but not prices', () => {
     const doc = makeInteractiveDocument('<p>x</p>', parseInteractive('x').options);
